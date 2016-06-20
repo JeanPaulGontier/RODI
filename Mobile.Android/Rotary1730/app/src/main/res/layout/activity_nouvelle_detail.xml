@@ -1,0 +1,80 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollViewNouvelle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp">
+
+
+
+    <LinearLayout android:id="@+id/linlaDetailNouvelle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="10dp">
+
+        <TextView android:id="@+id/tvw_Titre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:singleLine="false"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
+            android:text="nom "
+            android:textSize="30dip"
+            android:width="0dip"
+            style="@style/TitleNouvelle"/>
+
+        <TextView android:id="@+id/tvw_Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textSize="18dip"
+            android:text="date "
+            android:width="0dip"/>
+
+        <ImageView android:id="@+id/ImageViewNouvelle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logomap"/>
+
+        <TextView android:id="@+id/tvw_Descrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:text="Description "
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="18dip"
+            android:width="0dip"/>
+
+        <TextView
+            android:id="@+id/tvw_Url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:text="Document à télécharger "
+            android:width="0dip"
+            android:onClick="onDownloadClick"
+            android:textSize="18dip"
+            android:clickable="true"/>
+
+        <Button android:id="@+id/AddAgenda"
+            style="@style/TextButton"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onAddAgendaClick"
+            android:text="@string/AddAgenda"
+            android:layout_marginBottom="10dp"/>
+
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

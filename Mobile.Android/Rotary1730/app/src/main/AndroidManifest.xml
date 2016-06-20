@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.aisdev.rotary1730" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logomap"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Splash"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Start"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Home"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Tab_Nouvelles"
+            android:label="@string/title_activity_nouvelles"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Tab_Agenda"
+            android:label="@string/title_activity_agenda"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Tab_Annuaire"
+            android:label="@string/title_activity_annuaire"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".MembreDetail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Contact"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".NouvelleDetail"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".A_Propos"
+            android:screenOrientation="portrait">
+        </activity>
+    </application>
+
+</manifest>

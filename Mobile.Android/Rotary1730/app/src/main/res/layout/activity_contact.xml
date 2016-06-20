@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.aisdev.rotary1730.Contact">
+
+    <LinearLayout android:id="@+id/linlaContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="10dp">
+
+    <EditText android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:id="@+id/mailExp"
+        android:hint="@string/mailExp"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="10dp"/>
+
+        <EditText android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/mailNom"
+            android:hint="@string/mailNom"
+            android:layout_marginBottom="10dp"/>
+
+    <EditText android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:id="@+id/mailObj"
+        android:hint="@string/mailObj"
+        android:layout_marginBottom="10dp"/>
+
+        <ProgressBar android:id="@+id/ProgressB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="false"
+            android:max="100"
+            android:minHeight="50dp"
+            android:minWidth="200dp"
+            android:progress="1" />
+
+    <EditText android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:id="@+id/mailCorps"
+        android:hint="@string/mailCorps"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:scrollbars="vertical"/>
+
+        <Button android:id="@+id/btn_Contact"
+            style="@style/TextButton"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onSendClick"
+            android:text="@string/envoyer"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

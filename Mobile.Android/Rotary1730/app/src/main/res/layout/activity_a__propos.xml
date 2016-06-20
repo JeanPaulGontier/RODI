@@ -1,0 +1,54 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollViewNouvelle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp">
+
+
+
+    <LinearLayout android:id="@+id/linlaDetailPropos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="fill_horizontal"
+        android:layout_margin="10dp">
+
+        <ImageView android:id="@+id/ImageViewPropos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/a_propos"
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView android:id="@+id/tvw_Titre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:singleLine="false"
+            android:scrollHorizontally="false"
+            android:text="@string/texte_a__propos"
+            android:textSize="20dip"
+
+            android:layout_weight="2"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"/>
+
+       <!-- <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/webAIS"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView android:id="@+id/tvw_Copyright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/copyright"
+            android:textSize="10dip"
+            android:clickable="true"
+            android:onClick="onAISClick"/>-->
+        </LinearLayout>
+    </ScrollView>

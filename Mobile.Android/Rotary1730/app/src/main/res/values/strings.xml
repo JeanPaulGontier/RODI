@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rotary1730</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings"></string>
+    <string name="action_settings_Conn">Connexion</string>
+    <string name="action_settings_Deconn">Déconnection</string>
+    <string name="action_Propos">A propos</string>
+    <string name="Rot">Je suis Rotarien</string>
+    <string name="uc_lbl_username">Adresse email</string>
+    <string name="uc_lbl_password">Mot de passe</string>
+    <string name="submit">Valider</string>
+    <string name="NoRot">Je ne suis pas Rotarien</string>
+    <string name="forgotPassword">J\'ai oublié mon mot de passe</string>
+    <string name="go">Accéder à l\'application</string>
+    <string name="contact">Question ou suggestion</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_my">MyActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_activity_annuaire">Annuaire</string>
+    <string name="title_activity_nouvelles">Nouvelles</string>
+    <string name="title_activity_agenda">Agenda</string>
+    <string name="title_activity_tab__annuaire">Tab_Annuaire</string>
+    <string name="rechercher">Rechercher</string>
+    <string name="Professionnel">Professionnel</string>
+    <string name="General">General</string>
+    <string name="title_activity_membre_detail">MembreDetail</string>
+    <string name="contactMembre">Contacter le membre</string>
+    <string name="contactMembrePrivee">Ajouter aux contacts</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_contact">Contact</string>
+    <string name="mailExp">Votre adresse email</string>
+    <string name="mailObj">Le sujet du message</string>
+    <string name="mailCorps">Votre message</string>
+    <string name="radioNewsTous">Tous</string>
+    <string name="radioNewsDistrict">District</string>
+    <string name="radioNewsClubs">Clubs</string>
+    <string name="title_activity_nouvelle_detail">NouvelleDetail</string>
+    <string name="AddAgenda">Ajouter à l\'agenda</string>
+    <string name="mailNom">Vos nom et prénom</string>
+    <string name="title_activity_change_password">ChangePassword</string>
+    <string name="title_activity_a__propos">A_Propos</string>
+    <string name="texte_a__propos">Version d\'évaluation. Pour toute question ou suggestion, merci d\'envoyer un mail à webmaster@rotary1730.org</string>
+    <string name="copyright">Copyright rotary 1730 - 2014</string>
+    <string name="webAIS">http://www.aisdev.net/</string>
+    <string name="envoyer">Envoyer</string>
+
+
+</resources>
