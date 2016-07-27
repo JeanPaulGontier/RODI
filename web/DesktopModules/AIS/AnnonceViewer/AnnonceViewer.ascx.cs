@@ -155,11 +155,12 @@ public partial class DesktopModules_AIS_AnnonceViewer_AnnonceViewer : PortalModu
 
 
         }
-        else if (UserInfo.IsSuperUser)
+        else if (UserInfo.IsSuperUser && contenus!=null)
         {
             Panel1.Visible = true;
             Panel2.Visible = true;
             Panel3.Visible = true;
+            
 
             if (contenus.Count == 1)
             {

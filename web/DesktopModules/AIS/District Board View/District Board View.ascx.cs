@@ -90,12 +90,14 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        BindDDL();
-
-
         
-
-        RefreshList();
+        if(section!=null && section!="" && ddl_rotaryYear.Items.Count == 0)
+        {
+            BindDDL();
+            if(ddl_rotaryYear.Items.Count!=0)
+                RefreshList();
+        }
+       
     }
 
     protected void dataList_Members_ItemDataBound(object sender, DataListItemEventArgs e)

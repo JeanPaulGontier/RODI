@@ -77,7 +77,7 @@ using System.Web.UI.WebControls;
 public partial class DesktopModules_AIS_Commission_View_Commission_View : PortalModuleBase
 {
 
-    ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    ModuleController objModules = new ModuleController();
     bool admin
     {
         get
@@ -88,6 +88,7 @@ public partial class DesktopModules_AIS_Commission_View_Commission_View : Portal
         }
     }
 
+    string rotaryYear;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -95,55 +96,90 @@ public partial class DesktopModules_AIS_Commission_View_Commission_View : Portal
             pnl_admin.Visible = true;
         else
             pnl_admin.Visible = false;
-        List<Commission> commissions = DataMapping.GetListCommission("rotary_year = '"+Functions.GetRotaryYear()+"'");
 
-        
-        Dictionary<String, List<String>> com = createDictionary(commissions);
 
-        foreach (KeyValuePair<String, List<String>> kvp in com)
+        if ((rotaryYear == null || rotaryYear == "")&& ddl_rotary_year.Items.Count == 0)
         {
-            Panel name = new Panel();
-            name.CssClass = "panel panel-default panel-body";
-            Label lblName = new Label();
-            lblName.Text = "<h1>" + kvp.Key + "</h1>";
-            name.Controls.Add(lblName);
-            foreach(String jobMember in kvp.Value)
-            {
-                Panel child = new Panel();
-                child.CssClass = "row";
-
-
-                string[] splits = jobMember.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-                Panel pnl_job = new Panel();
-                pnl_job.CssClass = "col-sm-4";
-                Label lbljob = new Label();
-                lbljob.Text = "<strong>" + splits[0] + "</strong>";
-                pnl_job.Controls.Add(lbljob);
-                child.Controls.Add(pnl_job);
-
-                Panel pnl_member = new Panel();
-                pnl_member.CssClass = "col-sm-8";
-                Label lbl_Member = new Label();
-                lbl_Member.Text =  splits.Length>1 ? splits[1] : "";
-                pnl_member.Controls.Add(lbl_Member);
-                child.Controls.Add(pnl_member);
-
-                name.Controls.Add(child);
-            }
-            pnl_com.Controls.Add(name);
+            BindDDLYear();
+            if (ddl_rotary_year.Items.Count != 0)
+                displayComm();
         }
+            
+
         
+        
+    }
+
+    public void displayComm()
+    {
+        rotaryYear = ddl_rotary_year.SelectedValue;
+        List<Commission> commissions = DataMapping.GetListCommission("rotary_year = '" + rotaryYear + "'");
+
+        if (commissions == null || commissions.Count == 0)
+        {
+            lbl_noCommissions.Visible = true;
+        }
+        else
+        {
+
+            lbl_noCommissions.Visible = false;
+            Dictionary<String, List<String>> com = createDictionary(commissions);
+
+
+
+            foreach (KeyValuePair<String, List<String>> kvp in com)
+            {
+                Panel name = new Panel();
+                name.CssClass = "panel panel-default panel-body";
+                Label lblName = new Label();
+                lblName.Text = "<h1>" + kvp.Key + "</h1>";
+                name.Controls.Add(lblName);
+                foreach (String jobMember in kvp.Value)
+                {
+                    Panel child = new Panel();
+                    child.CssClass = "row";
+
+
+                    string[] splits = jobMember.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+                    Panel pnl_job = new Panel();
+                    pnl_job.CssClass = "col-sm-4";
+                    Label lbljob = new Label();
+                    lbljob.Text = "<strong>" + splits[0] + "</strong>";
+                    pnl_job.Controls.Add(lbljob);
+                    child.Controls.Add(pnl_job);
+
+                    Panel pnl_member = new Panel();
+                    pnl_member.CssClass = "col-sm-8";
+                    Label lbl_Member = new Label();
+                    lbl_Member.Text = splits.Length > 1 ? splits[1] : "";
+                    pnl_member.Controls.Add(lbl_Member);
+                    child.Controls.Add(pnl_member);
+
+                    name.Controls.Add(child);
+                }
+                pnl_com.Controls.Add(name);
+
+            }
+        }
     }
 
     public Dictionary<String, List<String>> createDictionary(List<Commission> comms)
     {
+        if (comms == null || comms.Count == 0)
+            throw new Exception("No commissions");
+
+        
         Dictionary<String, List<String>> res = new Dictionary<string, List<string>>();
         List<String> members = new List<string>();
         String name = "";
         foreach(Commission c in comms)
         {
+            
             if (name == "")
+            {
                 name = c.name;
+            }
+                
 
             if(c.name==name)
             {
@@ -155,9 +191,11 @@ public partial class DesktopModules_AIS_Commission_View_Commission_View : Portal
                 name = c.name;
                 members = new List<string>();
                 members.Add(c.job + "_" + c.memberName);
+                
             }
         }
-
+        if(!res.ContainsKey(name) || !res.ContainsValue(members))
+            res.Add(name, members);
         return res;
 
 
@@ -193,7 +231,7 @@ public partial class DesktopModules_AIS_Commission_View_Commission_View : Portal
 
     protected void btn_commission_Click(object sender, EventArgs e)
     {
-        List<Commission> com = DataMapping.GetListCommission("name ='" + ddl_commission.SelectedValue + "'");
+        List<Commission> com = DataMapping.GetListCommission("name ='" + ddl_commission.SelectedValue + "' and rotary_year = '"+Functions.GetRotaryYear()+"'");
         gvw_com.DataSource = com;
         gvw_com.DataBind();
         gvw_com.Visible = true;
@@ -239,11 +277,47 @@ public partial class DesktopModules_AIS_Commission_View_Commission_View : Portal
         Commission com = new Commission();
         com.name = btn_validate.CommandArgument;
         com.memberName = tbx_membre.Text;
-        com.rotary_year = 2015;
+        com.rotary_year = Functions.GetRotaryYear();
         com.job = tbx_job.Text;
         if (hfd_id.Value != "")
             com.id = int.Parse(hfd_id.Value);
         DataMapping.InsertCommission(com);
         Response.Redirect(Globals.NavigateURL());
+    }
+
+    private void BindDDLYear()
+    {
+        ddl_rotary_year.Items.Clear();
+        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+        conn.Open();
+        String query = "SELECT DISTINCT rotary_year FROM ais_commission";
+        SqlCommand sql = new SqlCommand(query, conn);
+        SqlDataAdapter da = new SqlDataAdapter(sql);
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        foreach (DataRow rd in ds.Tables[0].Rows)
+        {
+            if ((int)rd["rotary_year"] <= Functions.GetRotaryYear())
+            {
+                int year = (int)rd["rotary_year"];
+                ddl_rotary_year.Items.Add(new ListItem("" + year + "-" + (year + 1), "" + year));
+
+            }
+
+        }
+        if (!ddl_rotary_year.Items.Contains(new ListItem("" + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1), "" + Functions.GetRotaryYear())))
+            ddl_rotary_year.Items.Add(new ListItem("" + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1), "" + Functions.GetRotaryYear()));
+            
+
+        foreach (ListItem li in ddl_rotary_year.Items)
+        {
+            if (li.Value == "" + Functions.GetRotaryYear())
+                li.Selected = true;
+        }
+    }
+
+    protected void ddl_rotary_year_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        displayComm();
     }
 }

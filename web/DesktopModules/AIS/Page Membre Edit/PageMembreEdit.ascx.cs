@@ -125,6 +125,7 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
                 {
                     if (UserInfo.IsSuperUser)
                     {
+                        contenu = DataMapping.GetContentPagePro(UserIdQuery);
                         Binding_Panel1();
                     }
                     else
@@ -250,7 +251,24 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
         {
             Session["id_contenu"] = contenu.id;
             Session["publie"] = contenu.published;
+            
+            if(contenu.mode == "Advanced" || contenu.mode == null)
+            {
+                pnl_advanced.Visible = true;
+                pnl_simple.Visible = false;
+            }
+            else
+            {
+                pnl_simple.Visible = true;
+                pnl_advanced.Visible = false;
 
+                List<News.Bloc> b = new List<News.Bloc>();
+                b=(List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+                LI_Blocs.DataSource = b;
+                LI_Blocs.DataBind();
+            }
+
+            
             if (!string.IsNullOrEmpty(contenu.text))
             {
                 TXT_Editor.Content = contenu.text;
@@ -357,8 +375,8 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
         int id_c = 0;
         try
         {            
-            AIS.Content c = new AIS.Content();
-            string id_contenu = "" + Session["id_contenu"];
+            AIS.Content c = DataMapping.GetContentPagePro(UserId)!=null? DataMapping.GetContentPagePro(UserId) : new AIS.Content();
+            /*string id_contenu = "" + Session["id_contenu"];
             if (!string.IsNullOrEmpty(id_contenu))
             {
                 int i = 0;
@@ -367,15 +385,16 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
                 {
                     c.id = i;
                 }
-            }
+            }*/
             
+
             c.id_user = UserInfo.UserID;
             c.photo = HF_Logo.Value;
             c.text = TXT_Editor.Content;
             c.title = TBX_Titre.Text.Trim();
             c.company = TBX_Societe.Text.Trim();
             c.type = "PagePro";
-            c.url = TBX_URL.Text.Trim();
+            c.url = TBX_URL.Text.Trim()!=""? Functions.GetCorrectUrl(TBX_URL.Text.Trim()) : "";
 
             string pub = "" + Session["publie"];
             if (pub.ToLower() == "o")
@@ -425,7 +444,7 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
             if (DataMapping.Sub_Active(UserIdQuery, "PagePro") == true || UserInfo.IsSuperUser)
             {
                 //retour à pagemembre
-                Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(Presentationtabid), "UserId", "" + UserInfo.UserID));
+                Response.Redirect(Functions.UrlAddParam(Functions.UrlAddParam(Globals.NavigateURL(Presentationtabid), "UserId", "" + UserInfo.UserID),"modif","true"));
             }
             else
             {
@@ -443,5 +462,379 @@ public partial class DesktopModules_AIS_Page_Member_Edit_PageMemberEdit : Portal
         //retour à pagemembre
         Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(Presentationtabid), "UserId", "" + UserInfo.UserID));
     }
+
+
+
+
+
+    protected void btn_type_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem li in rbl_type.Items)
+        {
+            if (li.Selected && li.Value != "NoPhoto" && li.Value != "Video")
+            {
+                tbx_contenu.Visible = true;
+                pnl_video.Visible = false;
+                pnl_image.Visible = true;
+                return;
+            }
+            if (li.Selected && li.Value == "Video")
+            {
+                tbx_contenu.Visible = false;
+                pnl_image.Visible = false;
+                pnl_video.Visible = true;
+                return;
+            }
+        }
+        tbx_contenu.Visible = true;
+        pnl_image.Visible = false;
+        pnl_video.Visible = false;
+    }
+    
+    protected void btn_image_Click(object sender, EventArgs e)
+    {
+        if (ful_image.HasFile)
+        {
+            ///////////////////////////////////////////////////////*Changer ici l'image*//////////////////////////////////
+            string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + ful_image.PostedFile.FileName);
+            string path = PortalSettings.HomeDirectory + "Espace Professionnel/" + UserId+ "/Images/";
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
+            if (!d.Exists)
+                d.Create();
+            ful_image.PostedFile.SaveAs(Server.MapPath(path) + "/" + fileName);
+            img.ImageUrl = path + fileName;
+            hfd_image.Value = path + fileName;
+
+            btn_image.Text = "Changer l'image";
+        }
+    }
+
+    protected void LI_Blocs_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (Request.QueryString["UserId"] != null)
+            contenu = DataMapping.GetContentPagePro(int.Parse(Request.QueryString["UserId"]));
+        News.Bloc b = (News.Bloc)e.Item.DataItem;
+        if (b == null)
+            return;
+        System.Web.UI.WebControls.Image Image1 = (System.Web.UI.WebControls.Image)e.Item.FindControl("Image1");
+
+        if(b.photo!=null)
+            Image1.ImageUrl = b.photo;
+
+        if (b.type.Contains("Video"))
+        {
+            Video vid = new Video();
+            vid = (Video)Functions.Deserialize(b.content, vid.GetType());
+            Label Texte1 = (Label)e.Item.FindControl("Texte1");
+            Texte1.Text = vid.getLink();
+            Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+            pnl_content.CssClass += " videoContainer";
+        }
+
+        LinkButton btn_up = (LinkButton)e.Item.FindControl("btn_up");
+        LinkButton btn_down = (LinkButton)e.Item.FindControl("btn_down");
+        btn_up.Visible = b.ord > 10;
+        List<News.Bloc> blocs = new List<News.Bloc>();
+        blocs = (List<News.Bloc>)Functions.Deserialize(contenu.text, blocs.GetType());
+        btn_down.Visible = b.ord < (blocs.Count) * 10;
+
+
+
+    }
+
+    protected void LI_Blocs_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if(Request.QueryString["UserId"]!=null)
+            contenu = DataMapping.GetContentPagePro(int.Parse(Request.QueryString["UserId"]));
+        if(e.CommandSource==(LinkButton)e.Item.FindControl("lbt_delete"))
+        {
+            LinkButton lbt_delete = (LinkButton)e.Item.FindControl("lbt_delete");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+
+            foreach(News.Bloc bloc in b)
+            {
+                if (bloc.id == lbt_delete.CommandArgument)
+                {
+                    foreach(News.Bloc bl in b)
+                    {
+                        if (bl.ord > bloc.ord)
+                        {
+                            bl.ord -= 10;
+                            int id = int.Parse(bl.id);
+                            id -= 1;
+                            bl.id = "" + id;
+
+                        }
+                            
+                    }
+                    b.Remove(bloc);
+                    break;
+                }
+                    
+            }
+
+
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "PagePro";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = TBX_Societe.Text;
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "UserId", "" + UserId));
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("hlk_edit_texte"))
+        {
+            pnl_Edit.Visible = true;
+            pnl_display.Visible = false;
+            LinkButton hlk_edit_texte = (LinkButton)e.Item.FindControl("hlk_edit_texte");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+            News.Bloc bloc = new News.Bloc();
+            foreach(News.Bloc bl in b)
+            {
+                if(bl.id==hlk_edit_texte.CommandName)
+                {
+                    bloc = bl;
+                    break;
+                }
+            }
+
+            if (!bloc.type.Contains("Video"))
+                tbx_contenu.Text = bloc.content;
+            else
+            {
+                Video vid = new Video();
+                vid = (Video)Functions.Deserialize(bloc.content, vid.GetType());
+                TextBox2.Text = vid.Url;
+            }
+
+            foreach(ListItem li in rbl_type.Items)
+            {
+                if("Bloc"+li.Value == bloc.type)
+                {
+                    li.Selected = true;
+                    if(li.Value.Contains("Video"))
+                    {
+                        tbx_contenu.Visible = false;
+                        pnl_image.Visible = false;
+                        pnl_video.Visible = true;
+                    }
+                    else if(li.Value.Contains("Photo"))
+                    {
+                        tbx_contenu.Visible = true;
+                        pnl_video.Visible = false;
+                        if (!li.Value.Contains("No"))
+                            pnl_image.Visible = true;
+                        else
+                            pnl_image.Visible = false;
+                    }
+                    break;
+                }
+            }
+
+            btn_validateAdd.Text = "Modifier le bloc";
+
+            if (bloc.photo != null)
+                img.ImageUrl = bloc.photo;
+
+
+            btn_validateAdd.CommandArgument = hlk_edit_texte.CommandName;
+
+            
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("btn_up"))
+        {
+            LinkButton btn_up = (LinkButton)e.Item.FindControl("btn_up");
+            
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+            
+
+            foreach(News.Bloc bl in b)
+            {
+                if (bl.id == btn_up.CommandName)
+                {
+                    int index = b.IndexOf(bl)-1;
+                    b.ElementAt(index).ord += 10;
+                    b.Remove(bl);
+                    bl.ord -= 10;
+                    b.Insert(index, bl);
+                    break;
+                }
+                    
+            }
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "PagePro";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = TBX_Societe.Text;
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "UserId", "" + UserId));
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("btn_down"))
+        {
+            LinkButton btn_down = (LinkButton)e.Item.FindControl("btn_down");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+
+
+            foreach (News.Bloc bl in b)
+            {
+                if (bl.id == btn_down.CommandName)
+                {
+                    int index = b.IndexOf(bl) + 1;
+                    b.ElementAt(index).ord -= 10;
+                    b.Remove(bl);
+                    bl.ord += 10;
+                    b.Insert(index, bl);
+                    break;
+                }
+
+            }
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "PagePro";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = TBX_Societe.Text;
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "UserId", "" + UserId));
+        }
+    }
+
+    protected void btn_add_Click(object sender, EventArgs e)
+    {
+        pnl_display.Visible = false;
+        pnl_Edit.Visible = true;
+    }
+
+    protected void btn_validateAdd_Click(object sender, EventArgs e)
+    {
+        contenu = DataMapping.GetContentPagePro(UserId);
+        if (contenu == null)
+            contenu = new AIS.Content();
+        News.Bloc bloc = new News.Bloc();
+        foreach(ListItem li in rbl_type.Items)
+        {
+            if(li.Selected)
+            {
+                bloc.type = "Bloc" + li.Value;
+                break;
+            }
+        }
+
+        if(!bloc.type.Contains("Video"))
+        {
+            bloc.content = tbx_contenu.Text;
+        }
+        else
+        {
+            Video v = new Video();
+            v.Url = TextBox2.Text;
+            if (v.Url.Contains("youtube"))
+                v.Type = "youtube";
+            else if (v.Url.Contains("daily"))
+                v.Type = "daily";
+            else
+                v.Type = "vimeo";
+            bloc.content = Functions.Serialize(v);
+        }
+        if(bloc.type.Contains("Photo")&& ! bloc.type.Contains("No"))
+        {
+            bloc.photo = img.ImageUrl;
+        }
+
+        List<News.Bloc> b = new List<News.Bloc>();
+        if (contenu.text!=null && contenu.text!="")
+        {
+            b = (List<News.Bloc>) Functions.Deserialize(contenu.text, b.GetType());
+            if (btn_validateAdd.CommandArgument != "")
+            {
+                bloc.id = btn_validateAdd.CommandArgument;
+                foreach (News.Bloc bl in b)
+                {
+                    if (bl.id == bloc.id)
+                    {
+                        bloc.ord = bl.ord;
+                        int index = b.IndexOf(bl);
+                        b.Remove(bl);
+                        b.Insert(index, bloc);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                bloc.id = ""+(b.Count + 1);
+                bloc.ord = (b.Count+1) * 10;
+                b.Add(bloc);
+            }
+        }
+        else
+        {
+            bloc.ord = 10;
+            bloc.id = ""+1;
+            b.Add(bloc);
+        }
+        contenu.text = Functions.Serialize(b);
+        contenu.type = "PagePro";
+        contenu.dt = DateTime.Now;
+        contenu.id_user = UserId;
+        contenu.title = TBX_Titre.Text;
+        contenu.announcementType = "";
+        contenu.photo = contenu.photo!=null? contenu.photo : "";
+        contenu.url = contenu.url != null ? contenu.url : "";
+        contenu.file = contenu.file != null ? contenu.file : "";
+        contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+        contenu.published = contenu.published != null ? contenu.published : "N";
+        contenu.company = TBX_Societe.Text;
+        contenu.mode = "Simple";
+        DataMapping.Insert_Content(contenu);
+        Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "UserId", ""+UserId));
+
+
+
+
+    }
+
+    protected void btn_cancelAdd_Click(object sender, EventArgs e)
+    {
+        pnl_display.Visible = true;
+        pnl_Edit.Visible = false;
+    }
+
    
 }

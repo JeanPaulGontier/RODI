@@ -153,6 +153,40 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
             case "detail":
                
                 break;
+            case "Editer":
+                Panel2.Visible = false;
+                pnl_modif.Visible = true;
+                hfd_id.Value =""+ e.CommandArgument;
+                BindPanelModif();
+                break;
+
+        }
+    }
+
+    private void BindPanelModif()
+    {
+        Order o = DataMapping.GetOrder(hfd_id.Value);
+        lbl_Titre.Text = "Taxe per capita du club " + o.club;
+        BindDDL(o.cric);
+        if(o.rule_par!=null && o.rule_par!="")
+        {
+            foreach(ListItem li in ddl_members.Items)
+            {
+                if (li.Text == o.rule_par)
+                    li.Selected = true;
+            }
+        }
+        if (o.rule_type != null && o.rule_type != "")
+            rbl_type.SelectedValue = o.rule_type;
+        btn_validate.CommandArgument = ""+o.id;
+    }
+
+    private void BindDDL(int cric)
+    {
+        ddl_members.Items.Clear();
+        foreach (Member m in DataMapping.ListMembers(cric: cric))
+        {
+            ddl_members.Items.Add(new ListItem(m.name + " " + m.surname, "" + m.id));
         }
     }
 
@@ -319,7 +353,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         if (RB_Type.SelectedValue == "T")
         {
             LBL_libelle1.Text = "Montant par membre :";
-            TXT_montant1.Value = 49;
+            //TXT_montant1.Value = 50;
             P_Montant1.Visible = true;
             P_Montant2.Visible = false;
             BT_Generer_Orders.Visible = HF_id.Value!="" && !DataMapping.OrdersComplete(HF_id.Value);
@@ -327,9 +361,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         else if (RB_Type.SelectedValue == "M")
         {
             LBL_libelle1.Text = "Montant par membre :";
-            TXT_montant1.Value = 50;
+            //TXT_montant1.Value = 50;
             LBL_libelle2.Text = "Montant par invité :";
-            TXT_montant2.Value = 50;
+            //TXT_montant2.Value = 50;
             P_Montant1.Visible = true;
             P_Montant2.Visible = true;
             BT_Generer_Orders.Visible = false;
@@ -419,8 +453,13 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         if (e.Row.DataItem == null)
             return;
 
-        RadioButtonList RB_Regle = e.Row.FindControl("RB_Regle") as RadioButtonList;
-        RB_Regle.SelectedValue = ((Order)e.Row.DataItem).rule;
+        Label lbl_paid = (Label)e.Row.FindControl("lbl_paid");
+
+        if (((Order)e.Row.DataItem).rule == "O")
+            lbl_paid.Text = "Oui";
+
+        //RadioButtonList RB_Regle = e.Row.FindControl("RB_Regle") as RadioButtonList;
+        //RB_Regle.SelectedValue = ((Order)e.Row.DataItem).rule;
 
         HyperLink HL_Detail = e.Row.FindControl("HL_Detail") as HyperLink;
         HL_Detail.NavigateUrl = Functions.UrlAddParam(Const.ORDER_VIEW_URL, "id", ((Order)e.Row.DataItem).guid);
@@ -498,5 +537,28 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
             Session[guid] = media;
             Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
        
+    }
+
+    protected void btn_validate_Click(object sender, EventArgs e)
+    {
+        Order o = DataMapping.GetOrder(hfd_id.Value);
+        o.rule_type = rbl_type.SelectedValue;
+        o.rule_par = ddl_members.SelectedItem.Text;
+        o.rule_info = tbx_info.Text;
+        o.rule = "O";
+        o.rule_dt = DateTime.Now;
+
+        DataMapping.UpdateOrder(o);
+        RefreshGridOrders();
+        Panel2.Visible = true;
+        pnl_modif.Visible = false;
+        tbx_info.Text = "";
+    }
+
+    protected void btn_cancel_Click(object sender, EventArgs e)
+    {
+        tbx_info.Text = "";
+        pnl_modif.Visible = false;
+        Panel2.Visible = true;
     }
 }

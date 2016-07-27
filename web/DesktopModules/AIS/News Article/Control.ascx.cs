@@ -670,8 +670,10 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
                         video.Type = "youtube";
                     else if (video.Url.Contains("vimeo"))
                         video.Type = "vimeo";
-                    else
+                    else if (video.Url.Contains("daily"))
                         video.Type = "daily";
+                    else
+                        video.Type = "other";
                     bloc.content = Functions.Serialize(video);
                     bloc.photo = "";
                     bloc.content_type = "video/"+video.Type;

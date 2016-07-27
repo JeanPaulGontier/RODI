@@ -231,9 +231,25 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     public void BindDDLNames(String filter)
     {
         ddl_name.Items.Clear();
-        List<Member> members = DataMapping.ListMembers(criterion: filter, top:"TOP 5" );
-        foreach (Member d in members)
-            ddl_name.Items.Add(d.name + " " + d.surname);
+        List<Member> members = DataMapping.ListMembers(criterion: filter, top: "TOP 5");
+        List<Member> ls = new List<Member>();
+        if (members != null)
+        {
+            foreach (Member d in members)
+            {
+                if (d.nim > 0)
+                { 
+                    d.name = d.name + " " + d.surname;
+                    //ddl_name.Items.Add(d.name + " " + d.surname);
+                    ls.Add(d);
+                }
+            }
+
+            ddl_name.DataValueField = "nim";
+            ddl_name.DataTextField = "name";
+            ddl_name.DataSource = ls;
+            ddl_name.DataBind();
+        }
     }
 
     public void BindDDLSection()
@@ -447,10 +463,14 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         drya.job = ddl_fonction2.SelectedValue;
         drya.description = tbx_desc2.Text;
         drya.rank = int.Parse(tbx_rank.Text);
-        String nomPrenom = ddl_name.SelectedValue;
-        String[] splits = nomPrenom.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        //String nomPrenom = ddl_name.SelectedValue;
+        //String[] splits = nomPrenom.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        //Member m = DataMapping.ListMembers().Where(x => x.name == splits[0] && x.surname == splits[1]).FirstOrDefault();
 
-        Member m = DataMapping.ListMembers().Where(x => x.name == splits[0] && x.surname == splits[1]).FirstOrDefault();
+        int nimMember = 0;
+        int.TryParse(ddl_name.SelectedValue, out nimMember);
+
+        Member m = DataMapping.GetMemberByNim(nimMember);
         if (m == null)
             throw new Exception("Member null");
         drya.name = m.name;

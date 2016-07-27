@@ -86,7 +86,13 @@ public partial class DesktopModules_AIS_Page_Membre_Settings : ModuleSettingsBas
         Tab.DataSource = Functions.GetListItemsFromTabs(tabid);
         Tab.DataBind();
         Tab.SelectedValue = tabid.ToString();
-       
+
+        string leType = "" + objModules.GetModuleSettings(ModuleId)["type"];
+        foreach (ListItem li in type.Items)
+            if (li.Value == leType)
+                li.Selected = true;
+
+
     }
     public override void UpdateSettings()
     {
@@ -94,8 +100,9 @@ public partial class DesktopModules_AIS_Page_Membre_Settings : ModuleSettingsBas
 
         DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
         objModules.UpdateModuleSetting(ModuleId, "PresentationEdittabid", Tab.SelectedValue);
+        objModules.UpdateModuleSetting(ModuleId, "type", type.SelectedValue);
 
-        
-        
+
+
     }
 }

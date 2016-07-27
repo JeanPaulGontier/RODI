@@ -95,8 +95,7 @@ public partial class DesktopModules_AIS_Admin_DRYA_DRYA : PortalModuleBase
             
             if (!IsPostBack)
             {
-                if(UserInfo ==null)
-                { }
+                
                 int testSession = 0;
                 // Sélectionne la page à afficher si l'on vient de la page d'arborescence
                 if (Session["ID"] != null && Session["ID"].ToString() != null && Session["ID"].ToString() != "")
@@ -573,29 +572,29 @@ public partial class DesktopModules_AIS_Admin_DRYA_DRYA : PortalModuleBase
                 List<Commission> listeCommission =new List<Commission>();
                 if(testCom!=0)
                     listeCommission = DataMapping.GetListCommission("[rotary_year] =" + rbl_anneeRot.SelectedValue );
+                
 
+                #region fonction
+                //Bind des fonctions
 
-            #region fonction
-            //Bind des fonctions
-
-            for (int i = 1; i < 7; i++)
-            {
-                string fonctionAdjoint = "";
-                if (lbl_cache.Text == "amMonaco")
-                    fonctionAdjoint = "Adjoint du Gouverneur : Groupe 06-" + i;
-                else if (lbl_cache.Text == "Corse")
+                for (int i = 1; i < 7; i++)
                 {
-                    fonctionAdjoint = "Adjoint du Gouverneur : Groupe 20-" + i;
+                    string fonctionAdjoint = "";
+                    if (lbl_cache.Text == "amMonaco")
+                        fonctionAdjoint = "Adjoint du Gouverneur : Groupe 06-" + i;
+                    else if (lbl_cache.Text == "Corse")
+                    {
+                        fonctionAdjoint = "Adjoint du Gouverneur : Groupe 20-" + i;
+                    }
+                    else if (lbl_cache.Text == "var")
+                        fonctionAdjoint = "Adjoint du Gouverneur : Groupe 83-" + i;
+
+                    if (fonctionAdjoint != "")
+                        fonctionsAdjoints.Add(fonctionAdjoint);
                 }
-                else if (lbl_cache.Text == "var")
-                    fonctionAdjoint = "Adjoint du Gouverneur : Groupe 83-" + i;
-
-                if (fonctionAdjoint != "")
-                    fonctionsAdjoints.Add(fonctionAdjoint);
-            }
 
 
-            if (fonctionsAdjoints.Count != 0)
+                if (fonctionsAdjoints.Count != 0)
                 {
                     foreach (string fonctionAdjoint in fonctionsAdjoints)
                         ddl_fonctModif.Items.Add(fonctionAdjoint);

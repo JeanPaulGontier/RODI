@@ -7,7 +7,7 @@
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="District Board View.ascx.cs" Inherits="DesktopModules_AIS_District_Board_View_District_Board_View" %>
 
-
+<asp:Label runat="server" ID="lbl_test" ></asp:Label>
 <div class="panel panel-default panel-body" >
     <div class="row text-center">
         Année rotarienne : <asp:DropDownList ID="ddl_rotaryYear" AutoPostBack="true" OnSelectedIndexChanged="ddl_rotaryYear_SelectedIndexChanged" runat="server" ></asp:DropDownList>

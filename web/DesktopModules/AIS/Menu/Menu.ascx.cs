@@ -63,6 +63,7 @@
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,24 +117,26 @@ public partial class DesktopModules_AIS_Menu_Menu : PortalModuleBase
         TabController TC = new TabController();
         foreach(TabInfo tab in tabs)
         {
-            if(!tab.HasChildren)
+            
+            bool visible = false;
+            foreach(TabPermissionInfo p in tab.TabPermissions)
+            {
+                if (p.PermissionKey == "VIEW" && p.RoleName == "All Users")
+                {
+                    visible = true;
+                    break;
+                }
+                    
+                
+            }
+
+            if (!tab.HasChildren && visible)
             {
                 res += "<li><a href='" + tab.FullUrl + "'>" + tab.TabName + "</a>";
-                /*if (tab.HasChildren)
-                {
-                    List<TabInfo> children = new List<TabInfo>();
-
-                    foreach (TabInfo t in TC.GetTabsByPortal(PortalId).Values)
-                    {
-                        if (t.ParentId == tab.TabID)
-                            children.Add(t);
-                    }
-
-                    res += createContent(children, theRank + 1);
-                }*/
+                
                 res += "</li>";
             }
-            else
+            else if(tab.HasChildren)
             {
                 res += "<li><i>"+ tab.TabName + "</i>";
                 if (tab.HasChildren)

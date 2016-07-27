@@ -43,6 +43,10 @@
     <Reference Include="Aspose.Words">
       <HintPath>Librairies\Aspose.Words.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke, Version=7.0.3.64, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\web\bin\DotNetNuke.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -83,6 +87,9 @@
     <Compile Include="News.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Video.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Aspose.Total.lic" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

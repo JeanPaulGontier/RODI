@@ -13,6 +13,12 @@
 
 
 <asp:Panel ID="pnl_com" runat="server" >
+    <asp:Panel CssClass="text-center panel panel-body" runat="server">
+        Année rotarienne : <asp:DropDownList ID="ddl_rotary_year" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddl_rotary_year_SelectedIndexChanged"></asp:DropDownList>    
+        <h3><asp:Label ID="lbl_noCommissions" runat="server" Text="Aucune commission à afficher" Visible="false"></asp:Label></h3>
+    </asp:Panel>
+    
+    
     
 </asp:Panel>
 
@@ -21,14 +27,14 @@
         <p>Sélectionnez une commission à modifier : <asp:DropDownList ID="ddl_commission" runat="server"></asp:DropDownList> &nbsp <asp:Button ID="btn_commission" CssClass="btn btn-primary" runat="server" Text="Valider" OnClick="btn_commission_Click" /></p>
         <br />
 
-        <asp:GridView ID="gvw_com" AutoGenerateColumns="false" OnRowCommand="gvw_com_RowCommand" CssClass="table table-stripped" runat="server">
+        <asp:GridView ID="gvw_com" AutoGenerateColumns="false" GridLines="None" OnRowCommand="gvw_com_RowCommand" CssClass="table table-stripped" runat="server">
             <Columns>
                 <asp:TemplateField HeaderText ="Fonction">
                     <ItemTemplate>
                         <asp:Label ID="lbl_job" runat="server" Text='<%# Bind("job") %>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText ="Nom du member">
+                <asp:TemplateField HeaderText ="Nom du membre">
                     <ItemTemplate>
                         <asp:Label ID="lbl_member" runat="server" Text='<%# Bind("memberName") %>'></asp:Label>
                     </ItemTemplate>

@@ -70,6 +70,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
 using DotNetNuke.Entities.Modules;
+using System.Data.SqlClient;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Common;
+using System.Collections;
+using DotNetNuke.Entities.Users;
+using System.Data;
 
 public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 {
@@ -98,7 +105,6 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         LBL_AR.Visible = (Functions.CurrentCric != 0);
         if (!Page.IsPostBack)
         {
-            
             RB_AR.Items.Clear();
             int rotary_year = Functions.GetRotaryYear();
 
@@ -193,11 +199,11 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
             if (nbError == 1)
             {
-                lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée chez <a href=http://www.lerotarien.org Target=_blank>le rotatien</a>, vous ne pourrez pas affecter ce membre à un poste.";
+                lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée chez <a href=http://www.lerotarien.org Target=_blank>le rotarien</a>, vous ne pourrez pas affecter ce membre à un poste.";
             }
             else
             {
-                lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que cette erreur n'est pas corrigée chez <a href=http://www.lerotarien.org Target=_blank>le rotatien</a>, vous ne pourrez pas affecter ces membres à un poste.";
+                lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que cette erreur n'est pas corrigée chez <a href=http://www.lerotarien.org Target=_blank>le rotarien</a>, vous ne pourrez pas affecter ces membres à un poste.";
             }
             PanelErreur.Visible = true;
         }
@@ -289,6 +295,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             
             AIS.Functions.SendMail("secretaire@rotary1730.org", subject, body);
             AIS.Functions.SendMail("webmaster@rotary1730.org", subject, body);
+            MajAAR();
         }
 
     }
@@ -302,5 +309,94 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
     {
         CreatePanel();
         SetPanel();
+    }
+
+    private void MajAAR ()
+    {
+        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+        try
+        {
+            conn.Open();
+
+            int annee = Functions.GetRotaryYear();
+
+            RoleController rc = new RoleController();
+            
+            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
+            ArrayList users = rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
+            
+            List<UserInfo> club = new List<UserInfo>();
+            foreach (UserInfo user in users)
+            {
+                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric))
+                {
+                    if (m.userid == user.UserID)
+                        club.Add(user);
+                }
+            }
+
+            foreach (UserInfo user in club)
+            {
+                rc.DeleteUserRole(Globals.GetPortalSettings().PortalId, user.UserID, uri.RoleID);
+            }
+
+
+            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE cric='"+Functions.CurrentCric+"' AND rotary_year IN (";
+
+            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
+                query += annee + "," + (annee + 1);
+            else if (DateTime.Now.Month >= 7)
+                query += (annee - 1) + "," + annee;
+
+            query += ")";
+
+
+            SqlCommand sql = new SqlCommand(query, conn);
+            SqlDataAdapter da = new SqlDataAdapter(sql);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                cestbon:
+
+                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
+                if (membre != null)
+                {
+                    if (membre.userid == 0)
+                    {
+                        //TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
+                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+                        {
+                            //TXT_Result.Text += "<br/>et a été créé";
+                            goto cestbon;
+                        }
+                        else
+                        {
+                           // TXT_Result.Text += "<br/>et n'a pas été créé";
+                        }
+
+                    }
+                    else
+                    {
+                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                        if (ui != null)
+                        {
+
+                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+                            //TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
+                        }
+                    }
+                }
+            }
+
+        }
+        catch (Exception ee)
+        {
+            //TXT_Result.Text += ee.ToString();
+        }
+        finally
+        {
+            conn.Close();
+        }
     }
 }

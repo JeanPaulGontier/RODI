@@ -82,16 +82,16 @@ using System.Threading;
 
 public partial class DesktopModules_AIS_Schedule : PortalModuleBase
 {
-    //DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
-    //int presentationtabid
-    //{
-    //    get
-    //    {
-    //        int t = 0;
-    //        int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["presentationtabid"], out t);
-    //        return t;
-    //    }
-    //}
+    DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
+    int presentationtabid
+    {
+        get
+        {
+            int t = 0;
+            int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["presentationtabid"], out t);
+            return t;
+        }
+    }
 
     public const string username = "gouverneur@rotary1730.org";
     public const string pwd = "TiensLeDroitEtFaisLeBien";
@@ -170,14 +170,32 @@ public partial class DesktopModules_AIS_Schedule : PortalModuleBase
             {
                 liste = SmarterMailSchedule.DataMapping.Get_Event_Schedule(0, "", "", " and start > '" + DateTime.Now.AddDays(-1).Date + "' ORDER BY start ASC ");
             }
-                    GridView1.DataSource = liste;
-                    GridView1.DataBind();
-
-                    //Thread oThread = new Thread(new ThreadStart(SmarterMailSchedule.CallWS.GetSchedule));
                     
+
+            //Thread oThread = new Thread(new ThreadStart(SmarterMailSchedule.CallWS.GetSchedule));
+
+            foreach (News n in AIS.DataMapping.ListNews_EN(category: "District", where: "dt >='" + DateTime.Now + "'"))
+            {
+                liste.Add(newsToSchedule(n));
+            }
+
             
-            //    }
-            //}
+            for (int i=0;i<liste.Count;i++)
+            {
+                for(int j =i+1; j<liste.Count; j++)
+                {
+                    if(liste[i].start>liste[j].start)
+                    {
+                        Schedule.Schedule_events s = liste[i];
+                        liste[i] = liste[j];
+                        liste[j] = s;
+                    }
+                }
+            }
+
+
+            GridView1.DataSource = liste;
+            GridView1.DataBind();
         }
         catch (Exception ee)
         {
@@ -186,5 +204,34 @@ public partial class DesktopModules_AIS_Schedule : PortalModuleBase
         
     }
 
-   
+    public Schedule.Schedule_events newsToSchedule(News news)
+    {
+        Schedule.Schedule_events s = new Schedule.Schedule_events();
+        s.start = news.dt;
+        s.description = news.Abstract;
+        s.topic = news.title;
+        s.id_calendar = 0;
+        s.category = "news";
+        s.guid = news.id;
+        return s;
+    }
+
+
+
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        Schedule.Schedule_events s = (Schedule.Schedule_events)e.Row.DataItem;
+        if (s == null)
+            return;
+        HyperLink lbt_more = (HyperLink)e.Row.FindControl("lbt_more");
+        if(s.category=="news")
+        {
+            lbt_more.NavigateUrl = Functions.UrlAddParam(Globals.NavigateURL(presentationtabid), "newsid", "" + s.guid);
+        }
+        else
+        {
+            lbt_more.Visible = false;
+        }
+
+    }
 }

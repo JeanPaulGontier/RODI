@@ -377,7 +377,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
             newsToValidate.photo = hfd_image.Value;
         else
             newsToValidate.photo = "";
-        newsToValidate.category = "courrierdistrict";
+        newsToValidate.category = categorie;
         /*news.tag1 = ""+DateTime.Now.Year;
         news.tag1 += DateTime.Now.Month < 10 ? "0" + DateTime.Now.Month : ""+DateTime.Now.Month;*/
         newsToValidate.tag1 = "" + objModules.GetModuleSettings(ModuleId)["tags_included"];
@@ -420,7 +420,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
     {
         News laNews = DataMapping.GetNews(Request.QueryString["id"]);
         List<News> newsAfter = new List<News>();
-        foreach(News n in DataMapping.ListNews_EN(category:"courrierdistrict"))
+        foreach(News n in DataMapping.ListNews_EN(category:categorie))
         {
             if(n.ord>laNews.ord)
             {

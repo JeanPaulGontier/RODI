@@ -1,0 +1,73 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using AIS;
+using DotNetNuke.Entities.Modules;
+
+public partial class DesktopModules_AIS_Admin_Club_Control : PortalModuleBase
+{
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        
+        if (HF_Cric.Value != Functions.CurrentCric + "")
+        {
+            HF_Cric.Value = "" + Functions.CurrentCric;
+
+            Club club = DataMapping.GetClub(Functions.CurrentCric);
+            if (club != null)
+            {
+                LBL_Nom.Text = club.nom;
+                TXT_Latitude.Text = club.latitude;
+                TXT_Longitude.Text = club.longitude;
+                TXT_Reunion_Adr1.Text = club.reunion_adr1;
+                TXT_Reunion_Adr2.Text = club.reunion_adr2;
+                TXT_Reunion_CP.Text = club.reunion_cp;
+                TXT_Reunion_Ville.Text = club.reunion_ville;
+                TXT_Reunions.Content = club.reunions;
+                TXT_Texte.Content = club.texte;
+                TXT_Url.Text = club.web;
+
+                //BT_Valider.Style.Add("visibility", "hidden");
+                //TXT_Texte.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Reunions.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Longitude.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Latitude.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Reunion_Adr1.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Reunion_Adr2.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Reunion_CP.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Reunion_Ville.Attributes.Add("onchange", "javascript: AfficheValider();");
+                //TXT_Url.Attributes.Add("onchange", "javascript: AfficheValider();");
+            }
+        }
+        P1.Visible = HF_Cric.Value!="0";
+    }
+    protected void BT_Valider_Click(object sender, EventArgs e)
+    {
+        int cric = 0;
+        int.TryParse(HF_Cric.Value, out cric);
+        if (cric != 0)
+        {
+            Club club = DataMapping.GetClub(cric);
+            if (club != null)
+            {
+                club.reunions = TXT_Reunions.Content;
+                club.texte = TXT_Texte.Content;
+                //club.reunion_adr1 = TXT_Reunion_Adr1.Text;
+                //club.reunion_adr2 = TXT_Reunion_Adr2.Text;
+                //club.reunion_cp = TXT_Reunion_CP.Text;
+                //club.reunion_ville = TXT_Reunion_Ville.Text;
+                //club.longitude = TXT_Longitude.Text;
+                //club.latitude =  TXT_Latitude.Text;
+                club.web = TXT_Url.Text.Trim() ;
+                if (DataMapping.UpdateClub(club))
+                {
+                   // BT_Valider.Style.Add("visibility", "hidden");
+                }
+            }
+        }
+    }
+}

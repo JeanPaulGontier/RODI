@@ -96,7 +96,7 @@ namespace AIS
         public const string MEDIA_DOWNLOAD_URL = "/AIS/download.aspx";
         public const string MEDIA_VIEW_URL = "/AIS/mediaview.aspx";
         public const string ORDER_VIEW_URL = "/AIS/commandeview.aspx";
-        public const string ORDER_PAY_URL = "/EspaceMembre/PaiementCommande.aspx";
+        public const string ORDER_PAY_URL = "/EspaceMembre/MonClub/PaiementCommande.aspx";
         public const string MERCANET_RETURN_URL = "/Mercanet/response.aspx";
 
         public static string IMG_PREFIX = "images/";

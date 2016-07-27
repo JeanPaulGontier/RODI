@@ -263,16 +263,42 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
             HF_Logo.Value = contenu.photo;
             BT_Effacer_Logo.Visible = contenu.photo != "";
 
-            if (!string.IsNullOrEmpty(contenu.file))
-            {                
-                HL_Url.NavigateUrl = contenu.GetAnnonceFichier();
-            }
+            //if (!string.IsNullOrEmpty(contenu.file))
+            //{                
+            //    HL_Url.NavigateUrl = contenu.GetAnnonceFichier();
+            //}
 
-            if (!string.IsNullOrEmpty(contenu.textFile))
+            //if (!string.IsNullOrEmpty(contenu.textFile))
+            //{
+            //    HL_Url.Text = contenu.textFile;
+            //   // TXT_Url_Texte.Text = contenu.textFile;                
+            //}
+
+            if (contenu.mode == "Advanced")
             {
-                HL_Url.Text = contenu.textFile;
-                TXT_Url_Texte.Text = contenu.textFile;                
+                pnl_advanced.Visible = true;
+                pnl_simple.Visible = false;
             }
+            else
+            {
+                pnl_simple.Visible = true;
+                pnl_advanced.Visible = false;
+
+                if(contenu.text!="")
+                {
+                    List<News.Bloc> b = new List<News.Bloc>();
+                    b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+                    LI_Blocs.DataSource = b;
+                    LI_Blocs.DataBind();
+                }
+                
+            }
+            cbx_publish.Checked = contenu.published == "o";
+        }
+        else
+        {
+            pnl_simple.Visible = true;
+            pnl_advanced.Visible = false;
         }
     }
 
@@ -346,16 +372,16 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
                 HF_Logo.Value = contenu.photo;
                 BT_Effacer_Logo.Visible = contenu.photo != "";
 
-                if (!string.IsNullOrEmpty(contenu.file))
-                {
-                    HL_Url.NavigateUrl = contenu.GetAnnonceFichier();
-                }
+                //if (!string.IsNullOrEmpty(contenu.file))
+                //{
+                //    HL_Url.NavigateUrl = contenu.GetAnnonceFichier();
+                //}
 
-                if (!string.IsNullOrEmpty(contenu.textFile))
-                {
-                    HL_Url.Text = contenu.textFile;
-                    TXT_Url_Texte.Text = contenu.textFile;
-                }
+                //if (!string.IsNullOrEmpty(contenu.textFile))
+                //{
+                //    HL_Url.Text = contenu.textFile;
+                //    //TXT_Url_Texte.Text = contenu.textFile;
+                //}
             }
         }
         else
@@ -399,40 +425,7 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
         HF_Logo.Value = "";
         IMG_Logo.ImageUrl = Const.MEMBERS_NOPHOTO_F;
     }
-       
-    protected void BT_Upload_Fichier_Click(object sender, EventArgs e)
-    {
-        if (FU_Url.UploadedFiles.Count > 0)
-        {
-            UploadedFile file = FU_Url.UploadedFiles[0];
-            string guid =  Guid.NewGuid().ToString();
-            string filename = Functions.ClearFileName("news_" + guid + file.GetExtension());
-            TXT_Url_Texte.Text = file.FileName.Substring(0, file.FileName.Length - file.GetExtension().Length);
-            HL_Url.Text = filename;
-            MemoryStream ms = new MemoryStream();
-            file.InputStream.CopyTo(ms, (int)file.InputStream.Length);
-            Media media = new Media();
-            media.content = ms.GetBuffer();
-            media.content_size = media.content.Length;
-            media.dt = DateTime.Now;
-            media.w = 0;
-            media.h = 0;
-            media.name = filename;
-            media.content_type = file.ContentType;
-            Session[HL_Url.Text] = media;
 
-            HL_Url.NavigateUrl = Const.MEDIA_DOWNLOAD_URL + "?id=" + filename;
-            BT_Effacer_Fichier.Visible = true;
-        }
-    }
-    protected void BT_Effacer_Fichier_Click(object sender, EventArgs e)
-    {
-        BT_Effacer_Fichier.Visible = false;
-        Session[HL_Url.Text] = null;
-        HL_Url.Text = "";
-        HL_Url.NavigateUrl = "";
-        TXT_Url_Texte.Text = "";
-    }
 
     protected void BT_Valider_Click(object sender, EventArgs e)
     {
@@ -440,24 +433,24 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
         int id_c = 0;
         try
         {            
-            AIS.Content c = new AIS.Content();
-            string id_contenu = "" + Session["id_contenu"];
-            if (!string.IsNullOrEmpty(id_contenu))
-            {                
-                int.TryParse(id_contenu, out i);
-                if (i > 0)
-                {
-                    c.id = i;
-                }
-            }
+            AIS.Content c = DataMapping.GetContent_by_ID(id_contenu) != null ? DataMapping.GetContent_by_ID(id_contenu) : new AIS.Content();
+            //string id_contenu = "" + Session["id_contenu"];
+            //if (!string.IsNullOrEmpty(id_contenu))
+            //{                
+            //    int.TryParse(id_contenu, out i);
+            //    if (i > 0)
+            //    {
+            //        c.id = i;
+            //    }
+            //}
 
-            c.published = "" + Session["publie"];
+            c.published = cbx_publish.Checked? "o" : "n";
             c.id_user = UserInfo.UserID;
             c.photo = HF_Logo.Value;
             c.text = TXT_Editor.Content ;
             c.title = TBX_Titre.Text.Trim();
             c.type = "Annonce";
-            c.textFile = TXT_Url_Texte.Text.Trim();
+            c.textFile = "";
 
             if (RBT_Demande.Checked == true)
             {
@@ -490,18 +483,18 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
                     Session[HF_Logo.Value] = null;
                 }
 
-                if (Session[HL_Url.Text] != null)
-                {
-                    string chemin = PortalSettings.Current.HomeDirectory + Const.CONTENT_ANNOUNCEMENT_PREFIX + id_c + "/" + HL_Url.Text;
-                    DirectoryInfo d = new DirectoryInfo(Server.MapPath(PortalSettings.Current.HomeDirectory + Const.CONTENT_ANNOUNCEMENT_PREFIX + id_c + "/"));
-                    if (!d.Exists)
-                    {
-                        d.Create();
-                    }
-                    File.WriteAllBytes(Server.MapPath(chemin), ((Media)Session[HL_Url.Text]).content);
+                //if (Session[HL_Url.Text] != null)
+                //{
+                //    string chemin = PortalSettings.Current.HomeDirectory + Const.CONTENT_ANNOUNCEMENT_PREFIX + id_c + "/" + HL_Url.Text;
+                //    DirectoryInfo d = new DirectoryInfo(Server.MapPath(PortalSettings.Current.HomeDirectory + Const.CONTENT_ANNOUNCEMENT_PREFIX + id_c + "/"));
+                //    if (!d.Exists)
+                //    {
+                //        d.Create();
+                //    }
+                //    File.WriteAllBytes(Server.MapPath(chemin), ((Media)Session[HL_Url.Text]).content);
 
-                    Session[HL_Url.Text] = null;
-                }            
+                //    Session[HL_Url.Text] = null;
+                //}            
             }
             else
             {
@@ -517,14 +510,14 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
 
         if (id_c > 0)
         {
-            if (DataMapping.Sub_Active_by_id_content(id_c, "Annonce") == true || UserInfo.IsSuperUser)
+            if (DataMapping.Sub_Active_by_id_content(id_c, "Annonce") == true)
             {
                 //retour à l'annonce
                 Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(Annoncetabid), "id_contenu", "" + id_c));
             }
             else
             {
-                string s = Functions.UrlAddParam(Globals.NavigateURL(Dontabid), "id_contenu", "" + id_c);
+                string s = Functions.UrlAddParam(Functions.UrlAddParam(Globals.NavigateURL(Annoncetabid), "id_contenu", "" + id_c),"modif","true");
                 Response.Redirect(s);
             }
         }
@@ -532,14 +525,18 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
 
     protected void BT_Annuler_Click(object sender, EventArgs e)
     {
-        if (Session["Insert"] == "o")
+        if (Request.QueryString["id_contenu"] != null && int.Parse(Request.QueryString["id_contenu"]) > 0 && (DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"])).text == null || DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"])).text == ""))
         {
+            DataMapping.Delete_Content(int.Parse(Request.QueryString["id_contenu"]), UserInfo.UserID);
+        }
+        //if (Session["Insert"] == "o")
+        //{
             if (Session["id_contenu"] != null)
             {
                 //Le user a voulu créer une annonce mais le user n'a pas validé donc, il faut la supprimer
                 int idcontenu = 0;
                 int.TryParse(Session["id_contenu"].ToString(), out idcontenu);
-                if (idcontenu > 0)
+                /*if (idcontenu > 0)
                 {
                     if (DataMapping.Delete_Content(idcontenu, UserInfo.UserID) > 0)
                     {
@@ -552,20 +549,609 @@ public partial class DesktopModules_AIS_Admin_Annonce_Edit_AdminAnnonceEdit : Po
                         //retour à l'espace pro
                         Response.Redirect(Globals.NavigateURL(ProTabId));
                     }
-                }
+                }*/
+                Response.Redirect(Globals.NavigateURL(Annoncetabid));
             }
-        }
+        //}
         else
         {
             Session["Insert"] = null;
             Session["id_contenu"] = null;
             Session[HF_Logo.Value] = null;
-            Session[HL_Url.Text] = null;
+            //Session[HL_Url.Text] = null;
             Session["publie"] = null;
 
             //retour à l'annonce
-            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(Annoncetabid), "id_contenu", "" + id_contenu));
+            Response.Redirect(Globals.NavigateURL(Annoncetabid));
+        }
+
+        
+    }
+
+
+
+
+
+    protected void LI_Blocs_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (Request.QueryString["id_contenu"] != null)
+            contenu = DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"]));
+        News.Bloc b = (News.Bloc)e.Item.DataItem;
+        if (b == null)
+            return;
+        System.Web.UI.WebControls.Image Image1 = (System.Web.UI.WebControls.Image)e.Item.FindControl("Image1");
+
+        if (b.photo != null)
+            Image1.ImageUrl = b.photo;
+
+        if (b.type.Contains("Video"))
+        {
+            Video vid = new Video();
+            vid = (Video)Functions.Deserialize(b.content, vid.GetType());
+            Label Texte1 = (Label)e.Item.FindControl("Texte1");
+            Texte1.Text = vid.getLink();
+            Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+            pnl_content.CssClass += " videoContainer";
+        }
+        else if(b.type.Contains("Files"))
+        {
+            try
+            {
+                Label Texte1 = (Label)e.Item.FindControl("Texte1");
+                List<AIS_File> files = new List<AIS_File>();
+                if (b.content != null && b.content != "")
+                    files = (List<AIS_File>)Functions.Deserialize(b.content, files.GetType());
+
+                //if (hfd_files.Value != "")
+                //    files = (List<AIS_File>) Functions.Deserialize(hfd_files.Value, files.GetType());
+
+
+
+                Panel pnl_filesUploaded = (Panel)e.Item.FindControl("pnl_filesUploaded");
+
+
+                #region Edit mode
+
+                if (files.Count > 0)
+                {
+                    if (hfd_files.Value == "")
+                        hfd_files.Value = b.content;
+                    gvw_filesUploaded.DataSource = files;
+                    gvw_filesUploaded.DataBind();
+                }
+
+
+
+                #endregion Edit mode
+
+                #region Display mode
+
+                Texte1.Text = createListFile(files);
+
+                #endregion Display mode
+
+
+
+
+                btn_image.Text = "Changer l'image";
+
+
+
+
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+        }
+
+        LinkButton btn_up = (LinkButton)e.Item.FindControl("btn_up");
+        LinkButton btn_down = (LinkButton)e.Item.FindControl("btn_down");
+        btn_up.Visible = b.ord > 10;
+        List<News.Bloc> blocs = new List<News.Bloc>();
+        if(contenu != null && contenu.text!=null && contenu.text!="")
+            blocs = (List<News.Bloc>)Functions.Deserialize(contenu.text, blocs.GetType());
+        btn_down.Visible = b.ord < (blocs.Count) * 10;
+    }
+
+    protected void LI_Blocs_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (Request.QueryString["id_contenu"] != null)
+            contenu = DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"]));
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("lbt_delete"))
+        {
+            LinkButton lbt_delete = (LinkButton)e.Item.FindControl("lbt_delete");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+
+            foreach (News.Bloc bloc in b)
+            {
+                if (bloc.id == lbt_delete.CommandArgument)
+                {
+                    foreach (News.Bloc bl in b)
+                    {
+                        if (bl.ord > bloc.ord)
+                        {
+                            bl.ord -= 10;
+                            int id = int.Parse(bl.id);
+                            id -= 1;
+                            bl.id = "" + id;
+
+                        }
+
+                    }
+                    b.Remove(bloc);
+                    break;
+                }
+
+            }
+
+
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "Annonce";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = contenu.announcementType!=null? contenu.announcementType : "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = "";
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "id_contenu", "" + Request.QueryString["id_contenu"]));
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("hlk_edit_texte"))
+        {
+            pnl_Edit.Visible = true;
+            pnl_display.Visible = false;
+            LinkButton hlk_edit_texte = (LinkButton)e.Item.FindControl("hlk_edit_texte");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+            News.Bloc bloc = new News.Bloc();
+            foreach (News.Bloc bl in b)
+            {
+                if (bl.id == hlk_edit_texte.CommandName)
+                {
+                    bloc = bl;
+                    break;
+                }
+            }
+
+            if (!bloc.type.Contains("Video"))
+                tbx_contenu.Text = bloc.content;
+            else
+            {
+                Video vid = new Video();
+                vid = (Video)Functions.Deserialize(bloc.content, vid.GetType());
+                TextBox2.Text = vid.Url;
+            }
+
+            foreach (ListItem li in rbl_type.Items)
+            {
+                if ("Bloc" + li.Value == bloc.type)
+                {
+                    li.Selected = true;
+                    if (li.Value.Contains("Video"))
+                    {
+                        tbx_contenu.Visible = false;
+                        pnl_image.Visible = false;
+                        pnl_video.Visible = true;
+                        pnl_files.Visible = false;
+                    }
+                    else if (li.Value.Contains("Photo"))
+                    {
+                        tbx_contenu.Visible = true;
+                        pnl_video.Visible = false;
+                        pnl_files.Visible = false;
+                        if (!li.Value.Contains("No"))
+                            pnl_image.Visible = true;
+                        else
+                            pnl_image.Visible = false;
+                    }
+                    else if (li.Value.Contains("Files"))
+                    {
+                        tbx_contenu.Visible = false;
+                        pnl_image.Visible = false;
+                        pnl_video.Visible = false;
+                        pnl_files.Visible = true;
+                    }
+                    break;
+                }
+            }
+
+            btn_validateAdd.Text = "Modifier le bloc";
+
+            if (bloc.photo != null)
+                img.ImageUrl = bloc.photo;
+
+
+            btn_validateAdd.CommandArgument = hlk_edit_texte.CommandName;
+
+
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("btn_up"))
+        {
+            LinkButton btn_up = (LinkButton)e.Item.FindControl("btn_up");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+
+
+            foreach (News.Bloc bl in b)
+            {
+                if (bl.id == btn_up.CommandName)
+                {
+                    int index = b.IndexOf(bl) - 1;
+                    b.ElementAt(index).ord += 10;
+                    b.Remove(bl);
+                    bl.ord -= 10;
+                    b.Insert(index, bl);
+                    break;
+                }
+
+            }
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "Annonce";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = contenu.announcementType != null ? contenu.announcementType : "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = "";
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "id_contenu", "" + Request.QueryString["id_contenu"]));
+
+        }
+        if (e.CommandSource == (LinkButton)e.Item.FindControl("btn_down"))
+        {
+            LinkButton btn_down = (LinkButton)e.Item.FindControl("btn_down");
+
+            List<News.Bloc> b = new List<News.Bloc>();
+            b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+
+
+            foreach (News.Bloc bl in b)
+            {
+                if (bl.id == btn_down.CommandName)
+                {
+                    int index = b.IndexOf(bl) + 1;
+                    b.ElementAt(index).ord -= 10;
+                    b.Remove(bl);
+                    bl.ord += 10;
+                    b.Insert(index, bl);
+                    break;
+                }
+
+            }
+
+            contenu.text = Functions.Serialize(b);
+            contenu.type = "Annonce";
+            contenu.dt = DateTime.Now;
+            contenu.id_user = UserId;
+            contenu.title = TBX_Titre.Text;
+            contenu.announcementType = contenu.announcementType != null ? contenu.announcementType : "";
+            contenu.photo = contenu.photo != null ? contenu.photo : "";
+            contenu.url = contenu.url != null ? contenu.url : "";
+            contenu.file = contenu.file != null ? contenu.file : "";
+            contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+            contenu.published = contenu.published != null ? contenu.published : "N";
+            contenu.company = "";
+            contenu.mode = "Simple";
+            DataMapping.Insert_Content(contenu);
+            Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "id_contenu", "" + Request.QueryString["id_contenu"]));
         }
     }
-   
+
+    protected void btn_add_Click(object sender, EventArgs e)
+    {
+        pnl_display.Visible = false;
+        pnl_Edit.Visible = true;
+    }
+
+    protected void btn_image_Click(object sender, EventArgs e)
+    {
+        if (ful_image.HasFile)
+        {
+            ///////////////////////////////////////////////////////*Changer ici l'image*//////////////////////////////////
+            string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + ful_image.PostedFile.FileName);
+            string path = PortalSettings.HomeDirectory + "Espace Professionnel/Annonces/" + Request.QueryString["id_contenu"] + "/Images/";
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
+            if (!d.Exists)
+                d.Create();
+            ful_image.PostedFile.SaveAs(Server.MapPath(path) + "/" + fileName);
+            img.ImageUrl = path + fileName;
+            hfd_image.Value = path + fileName;
+
+            btn_image.Text = "Changer l'image";
+        }
+    }
+
+    protected void btn_validateAdd_Click(object sender, EventArgs e)
+    {
+        contenu = DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"]));
+        if (contenu == null)
+            contenu = new AIS.Content();
+        News.Bloc bloc = new News.Bloc();
+        foreach (ListItem li in rbl_type.Items)
+        {
+            if (li.Selected)
+            {
+                bloc.type = "Bloc" + li.Value;
+                break;
+            }
+        }
+        List<News.Bloc> b = new List<News.Bloc>();
+        if (!bloc.type.Contains("Files"))
+        {
+            if (!bloc.type.Contains("Video"))
+            {
+                bloc.content = tbx_contenu.Text;
+            }
+            else
+            {
+                Video v = new Video();
+                v.Url = TextBox2.Text;
+                if (v.Url.Contains("youtube"))
+                    v.Type = "youtube";
+                else if (v.Url.Contains("daily"))
+                    v.Type = "daily";
+                else
+                    v.Type = "vimeo";
+                bloc.content = Functions.Serialize(v);
+            }
+            if (bloc.type.Contains("Photo") && !bloc.type.Contains("No"))
+            {
+                bloc.photo = img.ImageUrl;
+            }
+
+
+
+
+            if (contenu.text != null && contenu.text != "")
+            {
+                b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+                if (btn_validateAdd.CommandArgument != "")
+                {
+                    bloc.id = btn_validateAdd.CommandArgument;
+                    foreach (News.Bloc bl in b)
+                    {
+                        if (bl.id == bloc.id)
+                        {
+                            bloc.ord = bl.ord;
+                            int index = b.IndexOf(bl);
+                            b.Remove(bl);
+                            b.Insert(index, bloc);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    bloc.id = hfd_id.Value != "" ? hfd_id.Value : "" + (b.Count + 1);
+                    bloc.ord = (b.Count + 1) * 10;
+                    b.Add(bloc);
+                }
+            }
+            else
+            {
+                bloc.ord = 10;
+                bloc.id = "" + 1;
+                b.Add(bloc);
+            }
+        }
+        else
+        {
+            if (contenu.text != null && contenu.text != "")
+                b = (List<News.Bloc>)Functions.Deserialize(contenu.text, b.GetType());
+        }    
+        contenu.text = Functions.Serialize(b);
+        contenu.type = "Annonce";
+        contenu.dt = DateTime.Now;
+        contenu.id_user = UserId;
+        contenu.title = TBX_Titre.Text;
+        contenu.announcementType = contenu.announcementType!=null? contenu.announcementType : "";
+        contenu.photo = contenu.photo != null ? contenu.photo : "";
+        contenu.url = contenu.url != null ? contenu.url : "";
+        contenu.file = contenu.file != null ? contenu.file : "";
+        contenu.textFile = contenu.textFile != null ? contenu.textFile : "";
+        contenu.published = contenu.published != null ? contenu.published : "N";
+        contenu.company = "";
+        contenu.mode = "Simple";
+        DataMapping.Insert_Content(contenu);
+        hfd_id.Value = "";
+        Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(), "id_contenu", "" + Request.QueryString["id_contenu"]));
+    }
+
+    protected void btn_cancelAdd_Click(object sender, EventArgs e)
+    {
+        pnl_display.Visible = true;
+        pnl_Edit.Visible = false;
+    }
+
+    protected void btn_type_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem li in rbl_type.Items)
+        {
+            if (li.Selected && li.Value != "NoPhoto" && li.Value != "Video" && li.Value != "Files")
+            {
+                tbx_contenu.Visible = true;
+                pnl_video.Visible = false;
+                pnl_image.Visible = true;
+                pnl_files.Visible = false;
+                return;
+            }
+            if (li.Selected && li.Value == "Video")
+            {
+                tbx_contenu.Visible = false;
+                pnl_image.Visible = false;
+                pnl_video.Visible = true;
+                pnl_files.Visible = false;
+                return;
+            }
+            if(li.Selected && li.Value == "Files")
+            {
+                tbx_contenu.Visible = false;
+                pnl_image.Visible = false;
+                pnl_video.Visible = false;
+                pnl_files.Visible = true;
+                break;
+            }
+            else if(li.Selected)
+            {
+                tbx_contenu.Visible = true;
+                pnl_image.Visible = false;
+                pnl_video.Visible = false;
+                pnl_files.Visible = false;
+                break;
+            }
+        }
+       
+    }
+
+    protected void gvw_filesUploaded_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        GridView gv = (GridView)sender;
+        List<AIS_File> files = new List<AIS_File>();
+        if (hfd_files.Value == "")
+            throw new Exception("Problem : no files");
+        files = (List<AIS_File>)Functions.Deserialize(hfd_files.Value, files.GetType());
+
+        int index = (gv.PageIndex * gv.PageSize) + int.Parse("" + e.CommandArgument);
+        AIS_File file = files[index];
+        files.Remove(file);
+        try
+        {
+            File.Delete(Server.MapPath(file.Url));
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+        }
+        hfd_files.Value = Functions.Serialize(files);
+        gv.DataSource = files;
+        gv.DataBind();
+    }
+
+    protected void btn_uploadFiles_Click(object sender, EventArgs e)
+    {
+        contenu = DataMapping.GetContent_by_ID(int.Parse(Request.QueryString["id_contenu"]));
+        if (ful_files.HasFile)
+        {
+            News.Bloc bloc = new News.Bloc();
+            List<News.Bloc> blocs = new List<News.Bloc>();
+            if (contenu.text != "" && contenu.mode == "Simple")
+                blocs = (List<News.Bloc>)Functions.Deserialize(contenu.text, blocs.GetType());
+            bloc.id = hfd_id.Value != "" ? hfd_id.Value : "" + (blocs.Count + 1);
+
+            int index = -1;
+            foreach(News.Bloc b in blocs)
+            {
+                if (b.id == bloc.id)
+                {
+                    bloc = b;
+                    index = blocs.IndexOf(b);
+                }
+                    
+            }
+            if (bloc.ord == 0)
+                bloc.ord = (blocs.Count + 1) * 10;
+
+            if (bloc.id != hfd_id.Value)
+                hfd_id.Value = bloc.id;
+
+            string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + ful_files.PostedFile.FileName);
+            string path = PortalSettings.HomeDirectory + "Espace Professionnel/Annonces/" + Request.QueryString["id_contenu"] + "/Documents";
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
+            if (!d.Exists)
+                d.Create();
+            ful_files.PostedFile.SaveAs(Server.MapPath(path) + fileName);
+
+            foreach (ListItem li in rbl_type.Items)
+            {
+                if (li.Selected)
+                    bloc.type = "Bloc" + li.Value;
+            }
+
+            bloc.visible = "O";
+
+            List<AIS_File> files = new List<AIS_File>();
+
+            if (bloc.content != null && bloc.content != "")
+            {
+                files = (List<AIS_File>)Functions.Deserialize(bloc.content, files.GetType());
+            }
+            else 
+            {
+                files = hfd_filesToDelete.Value == "" ? new List<AIS_File>() : (List<AIS_File>)Functions.Deserialize(hfd_filesToDelete.Value, files.GetType());
+            }
+            AIS_File file = new AIS_File();
+            file.Name = ful_files.PostedFile.FileName;
+            file.Url = path + fileName;
+
+            files.Add(file);
+            bloc.content = Functions.Serialize(files);
+            bloc.content_type = "files";
+            bloc.photo = "";
+            hfd_files.Value = Functions.Serialize(files);
+
+            List<AIS_File> filesToDelete = new List<AIS_File>();
+            if (hfd_filesToDelete.Value != "")
+            {
+                filesToDelete = (List<AIS_File>)Functions.Deserialize(hfd_filesToDelete.Value, files.GetType());
+
+            }
+            filesToDelete.Add(file);
+            hfd_filesToDelete.Value = Functions.Serialize(filesToDelete);
+
+            if(index!=-1)
+            {
+                News.Bloc old = blocs.ElementAt(index);
+                blocs.Remove(old);
+                blocs.Insert(index, bloc);
+            }
+            else
+            {
+                blocs.Add(bloc);
+            }
+
+            
+            
+            
+            
+
+            
+
+            contenu.text = Functions.Serialize(blocs);
+            DataMapping.Insert_Content(contenu);
+
+            LI_Blocs.DataSource = blocs;
+            LI_Blocs.DataBind();
+
+
+        }
+    }
+
+    private String createListFile(List<AIS_File> files)
+    {
+        String result = "<div><ul>";
+        foreach (AIS_File file in files)
+        {
+            result += "<li><a href=\"" + file.Url + "\" >" + file.Name + "</a></li>";
+        }
+        return result + "</ul></div>";
+    }
 }

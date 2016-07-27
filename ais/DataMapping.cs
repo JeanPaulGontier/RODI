@@ -2501,7 +2501,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name WHERE [id]=@id", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid WHERE [id]=@id", conn, trans);
                 sql.Parameters.AddWithValue("@id", m.id);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
@@ -2556,6 +2556,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@removed", m.removed);
                 sql.Parameters.AddWithValue("@district_id", m.district_id);
                 sql.Parameters.AddWithValue("@club_name", m.club_name);
+                sql.Parameters.AddWithValue("@userid", m.userid);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);
@@ -5483,6 +5484,7 @@ namespace AIS
                     content.url = "" + rd["URL"];
                     content.published = "" + rd["published"];
                     content.company = "" + rd["company"];
+                    content.mode = "" + rd["mode"];
                 }
                 else
                 {
@@ -5546,6 +5548,7 @@ namespace AIS
                     content.url = "" + rd["URL"];
                     content.published = "" + rd["published"];
                     content.company = "" + rd["company"];
+                    content.mode = "" + rd["mode"];
                 }
                 else
                 {
@@ -5609,6 +5612,7 @@ namespace AIS
                     content.url = "" + rd["url"];
                     content.published = "" + rd["published"];
                     content.company = "" + rd["company"];
+                    content.mode = "" + rd["mode"];
                 }
                 else
                 {
@@ -5689,17 +5693,18 @@ namespace AIS
 
                 if (content.id != 0)
                 {
-                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "content SET [id_user]=@id_user,[dt]=@dt,[type]=@type,[title]=@title, company=@company, [announcementType]=@announcementType,[text]=@text,[photo]=@photo,[URL]=@URL,[file]=@file, [textFile] = @textFile, [published]=@published WHERE [id]=@id", conn, trans);
+                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "content SET [id_user]=@id_user,[dt]=@dt,[type]=@type,[title]=@title, company=@company, [announcementType]=@announcementType,[text]=@text,[photo]=@photo,[URL]=@URL,[file]=@file, [textFile] = @textFile, [published]=@published, [mode]=@mode WHERE [id]=@id", conn, trans);
                     sql.Parameters.AddWithValue("id", content.id);
                 }
                 else
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "content ([id_user],[dt],[type],[title], company ,[announcementType],[text],[photo],[URL],[file], [textFile],[published]) VALUES (@id_user,@dt,@type,@title, @company,@announcementType,@text,@photo,@URL,@file,@textFile,@published)", conn, trans);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "content ([id_user],[dt],[type],[title], company ,[announcementType],[text],[photo],[URL],[file], [textFile],[published],[mode]) VALUES (@id_user,@dt,@type,@title, @company,@announcementType,@text,@photo,@URL,@file,@textFile,@published,@mode)", conn, trans);
                 }
 
                 sql.Parameters.AddWithValue("@id_user", content.id_user);
                 sql.Parameters.AddWithValue("@dt", DateTime.Now);
                 sql.Parameters.AddWithValue("@type", content.type);
+                sql.Parameters.AddWithValue("@mode", content.mode);
                 if (!string.IsNullOrEmpty(content.title))
                 {
                     sql.Parameters.AddWithValue("@title", content.title);
@@ -5938,6 +5943,7 @@ namespace AIS
                         content.url = "" + rd["url"];
                         content.published = "" + rd["published"];
                         content.company = "" + rd["company"];
+                        content.mode = "" + rd["mode"];
 
                         contents.Add(content);
                     }

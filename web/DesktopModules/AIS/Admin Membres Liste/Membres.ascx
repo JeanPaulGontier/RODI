@@ -110,42 +110,53 @@
 	</div>
 	
 	<div class="Table">
-		<div class="TableCell">
-			<asp:Image runat="server" ID="IMG_Photo" />
-			<telerik:RadAsyncUpload ID="FU_Photo" Localization-Select="Changer la photo" HideFileInput="true" DisablePlugins="true" MultipleFileSelection="Disabled" runat="server" OnClientFileUploaded="OnClientPhotoUploaded" AllowedFileExtensions="jpg,jpeg,gif,png,bmp" ></telerik:RadAsyncUpload>
-			<div style="display:none; width:130px;">
-				<asp:Button runat="server" ID="BT_Upload_Photo" Text="Mettre à jour" OnClick="BT_Upload_Photo_Click" CausesValidation="false"/>
-				<script>function OnClientPhotoUploaded(sender, args) { var contentType = args.get_fileInfo().ContentType; var bt = document.getElementById('<%=BT_Upload_Photo.ClientID %>'); bt.click(); }</script>
-			</div><asp:HiddenField runat="server" ID="HF_Photo" /><asp:Button CssClass="btn btn-danger" runat="server" ID="BT_Effacer_Photo" Text="Supprimer la photo" OnClick="BT_Effacer_Photo_Click" CausesValidation="false"/>
-		</div>
+        <div class="row">
+            <div class="TableCell col-sm-2">
+			    <asp:Image runat="server" ID="IMG_Photo" />
+			    <telerik:RadAsyncUpload ID="FU_Photo" Localization-Select="Changer la photo" HideFileInput="true" DisablePlugins="true" MultipleFileSelection="Disabled" runat="server" OnClientFileUploaded="OnClientPhotoUploaded" AllowedFileExtensions="jpg,jpeg,gif,png,bmp" ></telerik:RadAsyncUpload>
+			    <div style="display:none; width:130px;">
+				    <asp:Button runat="server" ID="BT_Upload_Photo" Text="Mettre à jour" OnClick="BT_Upload_Photo_Click" CausesValidation="false"/>
+				    <script>function OnClientPhotoUploaded(sender, args) { var contentType = args.get_fileInfo().ContentType; var bt = document.getElementById('<%=BT_Upload_Photo.ClientID %>'); bt.click(); }</script>
+			    </div><asp:HiddenField runat="server" ID="HF_Photo" /><asp:Button CssClass="btn btn-danger" runat="server" ID="BT_Effacer_Photo" Text="Supprimer la photo" OnClick="BT_Effacer_Photo_Click" CausesValidation="false"/>
+		    </div>
+		    <div class="col-sm-10">
+                <div>
+			        <p>NIM <asp:Label runat="server" ID="LBL_NIM" /></p>
+			        <p>Année naissance : <asp:Label runat="server" ID="LBL_DT_Naissance" /></p>
+		        </div>
 		
-		<div>
-			<p>NIM <asp:Label runat="server" ID="LBL_NIM" /></p>
-			<p>Année naissance : <asp:Label runat="server" ID="LBL_DT_Naissance" /></p>
-		</div>
+		        <div>
+			        <p>Branche d'activité : <asp:Label runat="server" ID="LBL_Branche_Activite" /></p>
+			        <p>Année d&#39;entrée au Rotary : <asp:Label runat="server" ID="LBL_DT_Entree_Rotary" /></p>
+		        </div>
+		    </div>
+        </div>
 		
-		<div>
-			<p>Branche d'activité : <asp:Label runat="server" ID="LBL_Branche_Activite" /></p>
-			<p>Année d&#39;entrée au Rotary : <asp:Label runat="server" ID="LBL_DT_Entree_Rotary" /></p>
-		</div>
 		
-		<div class="Adresse">
-			<p>Coordonnées personnelles :<br/>
-			<asp:Label runat="server" ID="LBL_Adresse" /></p>
-			<p><asp:Label runat="server" ID="LBL_Emailt" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email" /><br />
-			<asp:Label runat="server" ID="LBL_Telt" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel" /><br />
-			<asp:Label runat="server" ID="LBL_GSMt" Text="GSM : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Gsm" /><br />
-			<asp:Label runat="server" ID="LBL_Faxt" Text="Fax : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Fax" /></p>
-		</div>
+        <asp:Panel CssClass="row" runat="server">
+            <div class="Adresse col-sm-6">
+			    <h3>Coordonnées personnelles :</h3>
+                
+			        <p><asp:Label runat="server" ID="LBL_Adresse" /></p>
+			        <p><asp:Label runat="server" ID="LBL_Emailt" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email" /><br />
+			        <asp:Label runat="server" ID="LBL_Telt" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel" /><br />
+			        <asp:Label runat="server" ID="LBL_GSMt" Text="GSM : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Gsm" /><br />
+			        <asp:Label runat="server" ID="LBL_Faxt" Text="Fax : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Fax" /></p>
+                
+		    </div>
 		
-		<asp:Panel runat="server" ID="Panel_Coord_Pro" CssClass="Adresse">
-			<p>Coordonnées professionnelles :<br />
-			<asp:Label runat="server" ID="LBL_Adresse_Pro" /></p>
-			<p><asp:Label runat="server" ID="LBL_Email_Prot" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email_Pro" /><br />
-			<asp:Label runat="server" ID="LBL_Tel_Prot" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel_Pro" /><br />
-			<asp:Label runat="server" ID="LBL_GSM_Prot" Text="GSM : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_GSM_Pro" /><br />
-			<asp:Label runat="server" ID="LBL_Fax_Prot" Text="Fax : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_FAX_Pro" /></p>
-		</asp:Panel>
+		    <asp:Panel runat="server" ID="Panel_Coord_Pro" CssClass="Adresse col-sm-6">
+			    <h3>Coordonnées professionnelles :</h3>
+                
+                    <p><asp:Label runat="server" ID="LBL_Adresse_Pro" /></p>
+			        <p><asp:Label runat="server" ID="LBL_Email_Prot" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email_Pro" /><br />
+			        <asp:Label runat="server" ID="LBL_Tel_Prot" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel_Pro" /><br />
+			        <asp:Label runat="server" ID="LBL_GSM_Prot" Text="GSM : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_GSM_Pro" /><br />
+			        <asp:Label runat="server" ID="LBL_Fax_Prot" Text="Fax : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_FAX_Pro" /></p>
+                
+		    </asp:Panel>
+        </asp:Panel>
+		
 		
 		
 	</div>
@@ -212,7 +223,12 @@
     <br />
         <h2>Rotary :</h2>             
             <p><asp:Label ID="lbl_district2" Width="200px" runat="server"  Text="District : " /> <asp:Label ID="lbl_district3" Width="400px" runat="server"   /></p>
-            <p><asp:Label ID="lbl_club2" Width="200px" runat="server"  Text="Club : " /> <asp:Label ID="lbl_club3" Width="400px" runat="server"  /></p>
+            <p><asp:Label ID="lbl_club2" Width="200px" runat="server"  Text="Club : " /> <asp:Label ID="lbl_club3" Width="400px" runat="server"  />
+                <asp:DropDownList ID="ddl_rotaractClubs" runat="server" Visible="false" ></asp:DropDownList> 
+                <asp:Panel ID="pnl_adminRotDis" runat="server"> 
+                    <asp:Button ID="btn_validateClub" CssClass="btn btn-primary" OnClick="btn_validateClub_Click" Text="Changer de club" runat="server" />  
+                </asp:Panel>
+            </p>
             <p><asp:Label ID="lbl_membre_H2" Width="200px" runat="server"  Text="Member d'honneur : " /> <asp:RadioButtonList ID="rbtl_membre_H" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"><asp:ListItem Text="Oui" Value="O" /><asp:ListItem Text="Non" Value="N" /></asp:RadioButtonList></p>
             <p><asp:Label ID="lbl_membre_A2" Width="200px" runat="server"  Text="Member actif : " /> <asp:RadioButtonList ID="rbtl_membre_A" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"><asp:ListItem Text="Oui" Value="O" /><asp:ListItem Text="Non" Value="N" /></asp:RadioButtonList></p>
             <p><asp:Label ID="lbl_radie" Width="200px" runat="server"  Text="Radié : " /> <asp:RadioButtonList ID="rbtl_radie" Enabled="false" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow"><asp:ListItem Text="Oui" Value="O" /><asp:ListItem Text="Non" Value="N" /></asp:RadioButtonList></p>
@@ -222,6 +238,7 @@
     
 </asp:Panel>
 
+<br />
 <asp:Panel ID="pnl_Bouton" runat="server" Visible="false">
 
     <div class="txtRight">

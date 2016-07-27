@@ -79,19 +79,27 @@
     <asp:BoundField DataField="amount" HeaderText="Montant" SortExpression="amount" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:n}" />
     <asp:TemplateField ItemStyle-Width="150"  HeaderText="Réglée" SortExpression="rule" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
         <ItemTemplate>
-            <asp:RadioButtonList ID="RB_Regle" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="true" OnSelectedIndexChanged="RB_Regle_SelectedIndexChanged">
+            <asp:Label ID="lbl_paid" runat="server"></asp:Label>
+            <%-- <asp:RadioButtonList ID="RB_Regle" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="true" OnSelectedIndexChanged="RB_Regle_SelectedIndexChanged">
                 <asp:ListItem Text="Oui" Value="O"></asp:ListItem>
                 <asp:ListItem Text="Non" Value="N"></asp:ListItem>
-            </asp:RadioButtonList>
+            </asp:RadioButtonList> --%>
         </ItemTemplate>
     </asp:TemplateField>
     <asp:BoundField DataField="rule_type" HeaderText="Type"  />
     <asp:BoundField DataField="rule_par" HeaderText="Par"  />
+    <asp:BoundField DataField="rule_info" HeaderText="Description" />
+    <asp:TemplateField>
+        <ItemTemplate>
+            <asp:Button ID="btn_edit" runat="server" CommandName="Editer" CommandArgument='<%# Eval("id") %>' CssClass="btn btn-primary" Text="Modifier" />
+        </ItemTemplate>
+    </asp:TemplateField>
     <asp:TemplateField>
         <ItemTemplate>
             <asp:HyperLink runat="server" ID="HL_Detail" Text="Détail" Target="_blank"></asp:HyperLink>
         </ItemTemplate>
     </asp:TemplateField>
+
     
 </Columns>    
     <EmptyDataTemplate>
@@ -107,3 +115,39 @@
 
 <asp:GridView ID="GridViewExport" runat="server" Visible="false">
 </asp:GridView>
+
+
+<asp:Panel Visible="false" ID="pnl_modif" runat="server">
+    <asp:HiddenField ID="hfd_id" runat="server" />
+    <h3><asp:Label runat="server" ID="lbl_Titre"></asp:Label></h3>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            Réglé par : 
+        </div>
+        <div class="col-md-10">
+            <asp:RadioButtonList ID="rbl_type" RepeatDirection="Horizontal" runat="server">
+                <asp:ListItem Text="Chèque" Value="cheque"></asp:ListItem>
+                <asp:ListItem Text="Virement" Value="virement"></asp:ListItem>
+            </asp:RadioButtonList>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            et par : 
+        </div>
+        <div class="col-md-10">
+            <asp:DropDownList ID="ddl_members" runat="server"></asp:DropDownList>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            Description : 
+        </div>
+        <div class="col-md-10">
+            <asp:TextBox TextMode="MultiLine" ID="tbx_info" runat="server" Width="300" Height="200"></asp:TextBox>
+        </div>
+    </div>
+    <asp:Button ID="btn_validate" runat="server" Text="Régler" CssClass="btn btn-primary"  OnClick="btn_validate_Click"/>
+    <asp:Button ID="btn_cancel" runat="server" Text="Annuler" CssClass="btn btn-default" OnClick="btn_cancel_Click" />
+</asp:Panel>

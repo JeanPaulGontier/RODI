@@ -13,7 +13,15 @@
     </tr>
     <tr>
         <td><asp:Label ID="TXT_Categorie" runat="server" Text="Catégorie :"></asp:Label></td>
-        <td><asp:RadioButtonList ID="RB_Categorie" runat="server" RepeatDirection="Horizontal"><asp:ListItem Text="District" Value="District"></asp:ListItem><asp:ListItem Text="Clubs" Value="Clubs"></asp:ListItem><asp:ListItem Text="Courrier district" Value="courrierdistrict"></asp:ListItem></asp:RadioButtonList></td>
+        <td><asp:RadioButtonList ID="RB_Categorie" runat="server" RepeatDirection="Horizontal">
+            <%--POUR ROTARY --%>
+            <asp:ListItem Text="District" Value="District"></asp:ListItem>
+            <asp:ListItem Text="Clubs" Value="Clubs"></asp:ListItem>
+            <asp:ListItem Text="Courrier district" Value="courrierdistrict"></asp:ListItem> 
+            <%-- POUR RODIPROJECT
+            <asp:ListItem Text="Rodi News EN" Value="rodinewsEN"></asp:ListItem>
+            <asp:ListItem Text="Rodi News FR" Value="rodinewsFR"></asp:ListItem> --%>
+        </asp:RadioButtonList></td>
     </tr>
     <tr>
         <td><asp:Label runat="server" Text="Nombre de news :"></asp:Label></td>

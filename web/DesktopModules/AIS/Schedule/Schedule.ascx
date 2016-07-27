@@ -12,12 +12,18 @@
 <asp:GridView ID="GridView1" runat="server" CssClass="table table-striped"  
     AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" 
     OnPageIndexChanging="GridView1_PageIndexChanging" 
-    AutoGenerateColumns="False" OnSorting="GridView1_Sorting"  >
+    AutoGenerateColumns="False" OnSorting="GridView1_Sorting"
+    OnRowDataBound="GridView1_RowDataBound"  >
     <Columns>
         <asp:BoundField DataField="start" HeaderText="Date" SortExpression="start"  DataFormatString="{0:d}"/>
-        <asp:BoundField DataField="topic" HeaderText="Evènement" SortExpression="topic"  />
+        <asp:BoundField DataField="topic" HeaderText="Évènement" SortExpression="topic"  />
         <asp:BoundField DataField="description" HeaderText="Description"  />
-    </Columns>    
+        <asp:TemplateField>
+            <ItemTemplate>
+                <asp:HyperLink ID="lbt_more" Text="En savoir plus..." runat="server"></asp:HyperLink>
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
    <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
 </asp:GridView>
 

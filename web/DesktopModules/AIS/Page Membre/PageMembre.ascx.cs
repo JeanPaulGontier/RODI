@@ -85,7 +85,7 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
     Affectation affectation;
     AIS.Content content;
 
-    DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    ModuleController objModules = new ModuleController();
     int PresentationEdittabid
     {
         get
@@ -96,15 +96,32 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
         }
     }
 
+    string type
+    {
+        get
+        {
+            return "" + objModules.GetModuleSettings(ModuleId)["type"];
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        int.TryParse("" + Request.QueryString["UserId"], out UserIdQuery);
+        if(type=="mypage")
+            UserIdQuery = UserId;
+        else
+            int.TryParse("" + Request.QueryString["UserId"], out UserIdQuery);
+
+        string modif = Request.QueryString["modif"];
+
+        pnl_modif.Visible = modif!=null;
 
         if (UserInfo.IsSuperUser && UserIdQuery <= 0)
         {
             UserIdQuery = UserInfo.UserID;
         }
 
+
+        
         if (UserIdQuery > 0)
         {
             if (UserIdQuery == UserInfo.UserID)
@@ -119,8 +136,7 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
             if (DataMapping.Sub_Active(UserIdQuery, "PagePro") == true || UserInfo.IsSuperUser || UserInfo.UserID == UserIdQuery) //La page est accessible par superuser, par le membre propriétaire même si l'abonnement est inactif
             {
                 membre = DataMapping.GetMemberByUserID(UserIdQuery);
-
-                if (membre != null && membre.id != null && membre.id > 0 && membre.nim > 0)
+                if (membre != null && membre.id > 0 && membre.nim > 0)
                 {
                     affectation = DataMapping.GetAffectation(membre.nim, DateTime.Now.Year);
                     content = DataMapping.GetContentPagePro(UserIdQuery);
@@ -169,15 +185,19 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
                 }
             }
         }
-        
-    }
+        HLK_URL2.Visible = content!=null && content.url != "";
 
-    
+
+    }
 
     protected void Binding_Panel2()
     {
+        if (type != "mypage" && Request.QueryString["UserId"] != null)
+            content = DataMapping.GetContentPagePro(int.Parse(Request.QueryString["UserId"]));
+        else if (type == "mypage")
+            content = DataMapping.GetContentPagePro(UserId);
         string nom = "";
-        if (membre != null && membre.id != null && membre.id > 0)
+        if (membre != null && membre.id > 0)
         {
             nom = nom + membre.name + "  " + membre.surname;
         }
@@ -192,7 +212,7 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
                 LBL_Nom_Prenom2.Visible = false;
         }
 
-        if (membre != null && membre.id != null && membre.id > 0 && !string.IsNullOrEmpty(membre.industry))
+        if (membre != null && membre.id > 0 && !string.IsNullOrEmpty(membre.industry))
         {
             LBL_Classification2.Text = "" + membre.industry;
         }
@@ -202,7 +222,7 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
                 LBL_Classification2.Visible = false;
         }
 
-        if (membre != null && membre.id != null && membre.id > 0)
+        if (membre != null && membre.id > 0)
         {
             IMG_Photo2.ImageUrl = membre.GetPhoto();
         }
@@ -274,10 +294,36 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
                 if (!UserInfo.IsSuperUser) 
                     HLK_URL2.Visible = false;
             }
+
+            if(content.mode=="Simple")
+            {
+                pnl_advanced.Visible = false;
+                pnl_simple.Visible = true;
+
+                List<News.Bloc> b = new List<News.Bloc>();
+                b = (List<News.Bloc>)Functions.Deserialize(content.text, b.GetType());
+
+                LI_Blocs.DataSource = b;
+                LI_Blocs.DataBind();
+            }
+            else
+            {
+                pnl_advanced.Visible = true;
+                pnl_simple.Visible = false;
+            }
+
+
         }
         else
         {
-            if (!UserInfo.IsSuperUser)
+            if((membre != null && membre.id >0)|| UserInfo.IsSuperUser)
+            {
+                pnl_content.Visible = false;
+                pnl_noContent.Visible = true;
+                BTN_Edit.Visible = false;
+                pnl_membre.Visible = false;
+            }
+            else if (!UserInfo.IsSuperUser)
             {
                 LTL_Texte2.Visible = false;
                 LBL_Titre2.Visible = false;
@@ -286,7 +332,7 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
             }
         }
 
-        if (membre != null && membre.id != null && membre.id > 0 )
+        if (membre != null && membre.id > 0 )
         {
              PortalSettings ps = PortalController.GetCurrentPortalSettings();
              if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
@@ -309,5 +355,34 @@ public partial class DesktopModules_AIS_Page_Member_PageMember : PortalModuleBas
     protected void BTN_Edit_Click(object sender, EventArgs e)
     {
         Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(PresentationEdittabid), "UserId", "" + UserInfo.UserID));        
+    }
+
+    protected void btn_create_Click(object sender, EventArgs e)
+    {
+        Response.Redirect(Functions.UrlAddParam(Globals.NavigateURL(PresentationEdittabid),"UserId",""+ UserId));
+    }
+
+    protected void LI_Blocs_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        News.Bloc bloc = (News.Bloc)e.Item.DataItem;
+        if (bloc == null)
+            return;
+
+
+        System.Web.UI.WebControls.Image Image1 = (System.Web.UI.WebControls.Image)e.Item.FindControl("Image1");
+        if (bloc.photo != null)
+            Image1.ImageUrl = bloc.photo;
+
+        if(bloc.type.Contains("Video"))
+        {
+            Video vid = new Video();
+            vid = (Video)Functions.Deserialize(bloc.content, vid.GetType());
+            Label Texte1 = (Label)e.Item.FindControl("Texte1");
+            Texte1.Text = vid.getLink();
+            Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+            pnl_content.CssClass += " videoContainer";
+
+
+        }
     }
 }

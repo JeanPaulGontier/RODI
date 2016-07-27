@@ -11,4 +11,10 @@
 <asp:DropDownList ID="Tab" runat="server">
 </asp:DropDownList>
 <br />
+Type de page : 
+<asp:RadioButtonList ID="type" runat="server" RepeatDirection="Horizontal">
+    <asp:ListItem Text="Ma page" Value="mypage"></asp:ListItem>
+    <asp:ListItem Text="N'importe quelle page" Value="anypage"></asp:ListItem>
+</asp:RadioButtonList>
+<br />
 

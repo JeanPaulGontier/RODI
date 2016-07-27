@@ -1,12 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web", "web\", "{41C9F45A-0598-46FF-8497-407E7B4923DE}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		ProjectReferences = "{84a16679-0f39-477b-8415-64ae86276c41}|AIS.dll;"
+		ProjectReferences = "{84a16679-0f39-477b-8415-64ae86276c41}|AIS.dll;{4e551c63-2742-4972-9f4c-2b0332b20c8f}|SmarterMailSchedule.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/web"
 		Debug.AspNetCompiler.PhysicalPath = "web\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\web\"
@@ -21,10 +19,13 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "web", "web\", "{41C9F45A-05
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "62717"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIS", "ais\AIS.csproj", "{84A16679-0F39-477B-8415-64AE86276C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmarterMailSchedule", "..\..\SmarterMailSchedule\SmarterMailSchedule\SmarterMailSchedule.csproj", "{4E551C63-2742-4972-9F4C-2B0332B20C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRODI", "UnitTestRODI\UnitTestRODI.csproj", "{E84DA3BA-C034-4253-8E10-45FF68D1BE46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +46,18 @@ Global
 		{84A16679-0F39-477B-8415-64AE86276C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A16679-0F39-477B-8415-64AE86276C41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84A16679-0F39-477B-8415-64AE86276C41}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E551C63-2742-4972-9F4C-2B0332B20C8F}.Release|x86.ActiveCfg = Release|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E84DA3BA-C034-4253-8E10-45FF68D1BE46}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

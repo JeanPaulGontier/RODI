@@ -151,6 +151,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             BT_Carte_Member_Recto_Docx.Visible = true;
             BT_Carte_Member_Verso_Docx.Visible = true;
 
+
         }
 
         if (!string.IsNullOrEmpty(HF_Cric.Value) && HF_Cric.Value != "0")
@@ -210,6 +211,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             pnl_exports.Visible = false;
         else
             pnl_exports.Visible = true;
+
+
+        pnl_adminRotDis.Visible = UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsSuperUser;
+
         
 
 
@@ -230,6 +235,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             case "detail":
                 try
                 {
+                    
                     GridView gv = sender as GridView;
                     int index = (gv.PageIndex * gv.PageSize) + Convert.ToInt32(e.CommandArgument);
                     List<Member> membres = gv.DataSource as List<Member>;
@@ -237,6 +243,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     Member membre = membres[index];
                     HF_id.Value = "" + membre.id;
 
+                    
                     RotarienBinding(membre);
                     RotaractBinding(membre);
                     Club c = DataMapping.GetClub(membre.cric);
@@ -281,11 +288,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         pnl_Rotaract.Visible = false;
                         BT_Supprimer.Visible = false;
                     }
-
-
+                    
                     BT_CreateDNNUser.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
                     btn_suppMember.Visible = UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
-                    
+                    BindDDL();
                 }
                 catch( Exception ee)
                 {
@@ -725,7 +731,18 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
         if (hf_type_club.Value != null && hf_type_club.Value == Const.Club_Rotaract)
         {
-            Member m = Get_Rotaract();
+            Member m = new Member();
+            if (ddl_rotaractClubs.SelectedValue == ""+ Get_Rotaract().cric)
+                m = Get_Rotaract();
+            else
+            {
+                m = DataMapping.GetMember(int.Parse(HF_id.Value));
+                m.cric = int.Parse(ddl_rotaractClubs.SelectedValue);
+                m.club_name = DataMapping.GetClub(m.cric).name;
+                ddl_rotaractClubs.Visible = false;
+                lbl_club3.Visible = true;
+            }
+                
             if(m != null)
             {
                 m.base_dtupdate = DateTime.Now;
@@ -791,7 +808,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
             PhotoMember pm = DataMapping.GetPhotoMember(membre.nim);
 
-            if (pm.visible != null && pm.visible == Const.YES)
+            if (pm!=null && pm.visible != null && pm.visible == Const.YES)
             {
                 RB_Autoriser_Publication.SelectedValue = Const.YES;
             }
@@ -1026,6 +1043,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             {
                 membre.visible = Const.NO;
             }
+            
 
         }
         catch (Exception ee)
@@ -1401,4 +1419,29 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
     }
+
+    protected void btn_validateClub_Click(object sender, EventArgs e)
+    {
+        ddl_rotaractClubs.Visible = true;
+        lbl_club3.Visible = false;
+        Panel1.Visible = false;
+    }
+
+    public void BindDDL()
+    {
+        ddl_rotaractClubs.Items.Clear();
+        List<Club> clubRotaract = DataMapping.ListClubs(club_type: "rotaract");
+
+        foreach(Club c in clubRotaract)
+        {
+            ddl_rotaractClubs.Items.Add(new ListItem(c.name, ""+c.cric));
+        }
+
+        foreach(ListItem li in ddl_rotaractClubs.Items)
+        {
+            if (li.Text == lbl_club3.Text)
+                li.Selected = true;
+        }
+    }
+
 }

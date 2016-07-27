@@ -28,7 +28,7 @@
             <asp:TemplateField HeaderText="Titre" >
                 <ItemTemplate>
                     <asp:HyperLink ID="HLK_Titre" runat="server"  >
-                        <%# Eval("titre") %>
+                        <%# Eval("title") %>
                     </asp:HyperLink>
                 </ItemTemplate>
             </asp:TemplateField>
@@ -126,9 +126,9 @@
             DataKeyNames="id"  
             AutoGenerateSelectButton="false">
             <Columns> 
-                <asp:BoundField DataField="dt_debut" HeaderText="Date de début" dataformatstring="{0:dd/MM/yyyy}" />
+                <asp:BoundField DataField="dt_beginning" HeaderText="Date de début" dataformatstring="{0:dd/MM/yyyy}" />
 
-                <asp:BoundField DataField="dt_fin" HeaderText="Date de fin" dataformatstring="{0:dd/MM/yyyy}"  />
+                <asp:BoundField DataField="dt_end" HeaderText="Date de fin" dataformatstring="{0:dd/MM/yyyy}"  />
 
                 <asp:TemplateField HeaderText="Actif" >
                     <ItemTemplate>

@@ -103,6 +103,8 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
         int cric=-1;
         var news = new List<News>();
 
+        DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        
         if (categorie == "clubCourant")
         {
             string seo = Request.QueryString["sn"];
@@ -132,7 +134,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
 
         }
         else
-            news = DataMapping.ListNews_EN(cric: 0, onlyvisible: true, category: categorie, tri: "dt asc", where: "dt>getdate()", tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
+            news = DataMapping.ListNews_EN(cric: 0, onlyvisible: true, category: categorie, tri: "dt asc", where: "dt>='"+today+"'", tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
 
         
         

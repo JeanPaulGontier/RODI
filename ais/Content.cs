@@ -86,6 +86,7 @@ namespace AIS
         public string file { get; set; }
         public string textFile { get; set; }
         public string published { get; set; }
+        public string mode { get; set; }
 
         public string GetPresentationPhoto()
         {

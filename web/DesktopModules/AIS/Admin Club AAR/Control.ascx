@@ -14,3 +14,5 @@
 <asp:Button ID="BT_Valider" runat="server" Text="Valider" CssClass="btn btn-primary right" OnClientClick="javascript: return confirm('Valider les changements ?');" OnClick="BT_Valider_Click" />
 <asp:HiddenField ID="HF_Cric" runat="server" /><script type="text/javascript">function AfficheValider() { obj=document.getElementById("<%=BT_Valider.ClientID%>").style;obj.visibility='visible';}</script>
 <asp:Label ID="lbl_choisirClub" runat="server" Text="Choisissez un club" />
+
+<asp:Label ID="TXT_Result" runat="server"></asp:Label>
