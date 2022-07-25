@@ -1,0 +1,23 @@
+﻿Pour installer le module, il faut : 
+	dans APP_CODE/AIS : 
+		SliderShow.cs
+		FilesManagerCore.cs
+	dans AIS : 
+		Le dossier FilesManager 
+	Créer 2 modules : 
+		Admin SliderShow
+		SliderShow
+	Créer une page avec le module Admin SliderShow
+	Définir dans les settings du module SliderShow la page où se trouve le module Admin SliderShow
+
+	A faire : 
+		définir le(s) rôle(s) pouvant administrer le slidershow. Pour le moment seul les superUsers peuvent le faire
+
+	A savoir : 
+		Les images sont uploadées dans le dossier Images/N°Module/N°Club/*.*
+		On peut uploader plusieurs images à la fois
+		Les choix sont sauvegardés en JSON sous forme de liste d'objet "SliderShow" par club dans les settings du module sous le libellé : "SliderSerialized_" + idClub
+		Il faut passer le paramètre idClub pour identifier le club ou le district
+			Le slider district est lui affiché sous le numéro de club : 0
+			S'il n'y a pas d'idClub de donné, c'est le club : 0 (district) qui va s'afficher
+		Si une photo est supprimée depuis la photothèque, son pendant dans la configuration du slider est automatiquement supprimé

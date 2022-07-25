@@ -1,0 +1,73 @@
+﻿<script type="text/x-template" id="blockraw-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <span class="bc-label">Contenu HTML :</span>
+            <textarea v-model="e.Html" rows="4" class="md-textarea form-control" style="resize: vertical;" ></textarea>
+            
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing">
+            <div v-html="c.Html"></div>
+            
+        </div>
+    </div>
+</script>
+<script>
+    let BlockRaw =  {
+        template: '#blockraw-template',
+        name: 'BlockRaw',
+        props: [
+            'content'
+        ],
+        emits: [
+            'changed',
+            'cancel'
+        ],
+        data() {
+            return {
+                editing: false,
+                c: {
+                   
+                },
+                fichiers: [],
+                e: {
+                  
+                },
+         
+
+              
+            }
+        },
+        components: {           
+            
+        },
+        methods: {
+            edit() {
+                this.editing = true;
+                this.e = JSON.parse(JSON.stringify(this.c));
+            },
+            validate() {
+                this.c = JSON.parse(JSON.stringify(this.e));
+                this.editing = false;
+                this.onChange();
+            },
+            cancel() {
+                this.editing = false;
+                this.$emit('cancel');
+            },
+            onChange() {
+                this.$emit('changed', this.c);
+            },
+
+           
+        },
+        mounted() {
+            this.c = this.content;
+        }
+     }
+
+
+</script>

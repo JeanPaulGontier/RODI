@@ -1,0 +1,126 @@
+<!--[if mso]>
+        <table border="0" cellpadding="0" cellspacing="0" width="600" align="center" style="width:600px;"><tr><td>
+        <![endif]-->
+            <div style="margin: 0px auto; max-width: 600px;">
+            <table cellspacing="0" cellpadding="0" border="0" align="center" style="font-size: 0px; width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0px; padding: 0px;">
+                        <!--[if mso]>
+                            <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
+                            <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-100" aria-labelledby="mj-column-per-100">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 0px; padding: 0px 25px;">
+                                    <p style="font-size: 1px; margin: 0px auto; border-top: 20px solid #e7e7e8; width: 100%;">&nbsp;</p>
+                                    <!--[if mso]><table align="center" border="0" cellpadding="0" cellspacing="0" style="font-size:1px;margin:0 auto;border-top:20px solid #e7e7e8;width:100%;" width="600"><tr><td> </td></tr></table><![endif]--></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td></tr></table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+            <!--[if mso]>
+        <table border="0" cellpadding="0" cellspacing="0" width="600" align="center" style="width:600px;"><tr><td>
+        <![endif]-->
+            <div style="margin: 0px auto; max-width: 600px; background: #ffffff none repeat scroll 0% 0%;">
+            <table cellspacing="0" cellpadding="0" border="0" align="center" style="font-size: 0px; width: 100%; background: #ffffff none repeat scroll 0% 0%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0px; padding: 0px;">
+                        <!--[if mso]>
+                            <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:300px;">
+                            <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-50" aria-labelledby="mj-column-per-50">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td align="center" style="font-size: 0px; padding: 10px 25px;">
+                                    <table cellspacing="0" cellpadding="0" border="0" align="center" style="border-collapse: collapse; border-spacing: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 200px;"><a target="_blank" href="https://www.facebook.com/groups/Rotary1730/?fref=ts"><img width="200" height="auto" style="border: medium none; display: block; outline: medium none; text-decoration: none; width: 100%; height: auto;" src="http://www.rotary1730.org/Portals/0/images/facebook.jpg" alt="Suivez nous sur Facebook" /></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td><td style="vertical-align:top;width:300px;">
+                              <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-50" aria-labelledby="mj-column-per-50">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td align="center" style="font-size: 0px; padding: 10px 25px;">
+                                    <table cellspacing="0" cellpadding="0" border="0" align="center" style="border-collapse: collapse; border-spacing: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 200px;"><a target="_blank" href="https://twitter.com/rotary1730"><img width="200" height="auto" style="border: medium none; display: block; outline: medium none; text-decoration: none; width: 100%; height: auto;" src="http://www.rotary1730.org/Portals/0/images/twitter.jpg" alt="Suivez nous sur Twitter" /></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td></tr></table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+            <!--[if mso]>
+        <table border="0" cellpadding="0" cellspacing="0" width="600" align="center" style="width:600px;"><tr><td>
+        <![endif]-->
+            <div style="margin: 0px auto; max-width: 600px;">
+            <table cellspacing="0" cellpadding="0" border="0" align="center" style="font-size: 0px; width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0px; padding: 20px 0px;">
+                        <!--[if mso]>
+                            <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:middle;width:600px;">
+                            <![endif]-->
+                        <div style="vertical-align: middle; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-100" aria-labelledby="mj-column-per-100">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0" style="vertical-align: middle;">
+                            <tbody>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td></tr></table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+            </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br /><br />

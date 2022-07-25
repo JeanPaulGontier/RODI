@@ -1,0 +1,116 @@
+﻿/*
+ * CSS For DotNetNuke Skin by bestdnnskins.com
+ * Copyright 2014 By BESTDNNSKINS.COM
+ */
+/*-------- for all containers --------*/
+.c_icon, .c_title{ float:left;margin:5px 0;}
+.c_content_style { display:inline-block; width:100%;}
+.clearafter:after{ clear:both; content:"."; height:0px; font-size:0px; visibility:hidden; display:block; }
+.clearafter{ display:inline-block; }
+.clearafter{ display:block; }
+h2.c_title { margin:0; padding:0; line-height:1em;}
+h2.c_title span { vertical-align:middle; }
+
+/*-------- containers title --------*/
+.c_title_footer{ font-size:18px; color:#f0f0f0; font-weight:bold;font-family:Georgia, "Times New Roman", Arial, serif; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.c_title_black { font-size:18px; color:#555555; font-weight:bold;font-family:Georgia, "Times New Roman", Arial, serif; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.c_title_white { font-size:1.1em; color:#FFFFFF;padding-bottom:1em;transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.c_title_RoyalBlue{ font-size:1.1em;color:#00246c; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+
+/*-------- BlackTitle Container 01 --------*/
+.Bt1_style { min-width:150px; margin-bottom:14px;}
+.Bt1_style:hover .c_title_black{ color:#5c85e2; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.Bt1_top {margin:0; padding:5px 3px 1px;}
+.Bt1_content { padding:10px 3px;}
+
+/*-------- BlackTitle Container 02 --------*/
+.Bt2_style { min-width:150px; margin-bottom:14px;}
+.Bt2_style:hover .c_title_black{ color:#5c85e2; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.Bt2_top { border-bottom:4px double #e6e6e6;padding:5px 3px 10px; } 
+.Bt2_content { padding:10px 3px;}
+
+/*-------- BlackTitle Container 03 --------*/
+.Bt3_RoyalBlue { min-width:150px; margin-bottom:14px;}
+.Bt3_RoyalBlue:hover .c_title_black{ color:#5c85e2; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.Bt3_top { border-bottom:1px solid #dddddd; position:relative; }
+.Bt3_RoyalBlue .c_title { border-bottom:2px solid #5c85e2; margin-bottom:-1px; padding:7px 0;}
+.Bt3_content { padding:10px 3px;}
+
+/*-------- BlackTitle Container 04 --------*/
+.Bt4_style { min-width:150px; margin-bottom:14px;}
+.Bt4_style:hover .c_title_black{ color:#5c85e2; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.Bt4_top { border-bottom:1px dashed #dedede; padding:5px 3px 10px;}
+.Bt4_content { padding:10px 3px;}
+
+/*-------- RoyalBlue Color Title 01 --------*/
+.RoyalBlue_ct1_style { min-width:150px; margin-bottom:14px;}
+.RoyalBlue_ct1_top { padding:5px 3px 1px;}
+.RoyalBlue_ct1_content { padding:10px 0;}
+
+/*-------- RoyalBlue Color Title 02 --------*/
+.RoyalBlue_ct2_style { min-width:150px; margin:10px 0; background:#ffffff;border:1px solid #DBDBDC; padding:10px;}
+.DnnModule-AISNewsPanel .RoyalBlue_ct2_top {margin-bottom:20px;}
+.RoyalBlue_ct2_content {padding-top:10px;}
+
+/*-------- RoyalBlue Color Header 01 --------*/
+.RoyalBlue_ch1_style { min-width:150px; margin-bottom:14px;}
+.RoyalBlue_ch1_top { min-height:15px;background:#5c85e2;padding:7px 10px;border-radius:5px; }
+.RoyalBlue_ch1_content { padding:10px 3px 13px; }
+
+/*-------- RoyalBlue Color Header 02 --------*/
+.RoyalBlue_ch2_style {
+    margin: 10px 0;
+    min-width: 150px;
+    background: #ffffff;
+    border: 1px solid #DBDBDC;
+    
+}
+.RoyalBlue_ch2_top { min-height: 15px;background: #0070c0;padding: 7px 10px 7px;position: relative;}
+.RoyalBlue_ch2_top:before { content: ' '; background: #00246c; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; max-height: 4px; z-index: 9; }
+.RoyalBlue_ch2_content {
+    padding: 10px;
+}
+
+
+/*-------- RoyalBlue Header Box 01 --------*/
+.RoyalBlue_hb1_style{ min-width:150px;border:solid 1px #5c85e2; margin-bottom:15px;}
+.RoyalBlue_hb1_top {min-height:15px; background:#5c85e2; padding:7px 10px;}
+.RoyalBlue_hb1_content { padding:10px 12px 10px;transition: all 0.5s ease 0s;-webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+
+/*-------- RoyalBlue Color Box--------*/
+.RoyalBlue_cb_style { min-width:150px;margin-bottom:15px;position:relative;background:#00246c;padding:12px 5px 12px 25px;}
+.RoyalBlue_cb_content *{color:#fff; font-size:1.1em;}
+.RoyalBlue_cb_content a{color: #febd11;cursor: pointer;font-size:1.15em;text-transform: uppercase;font-family:Frutiger, sans-serif;}
+
+/*-------- RoyalBlue Header Box 02 --------*/
+.RoyalBlue_hb2_style {min-width:150px; margin-bottom:15px;}
+.RoyalBlue_hb2_top {z-index:99;position:relative;background:#5c85e2;height:38px;padding:7px 12px 7px 15px;}
+.RoyalBlue_shadow_l { background:url(images/container_left.png) no-repeat left top; margin-top:0; margin-left:0; margin-right:0; position:relative; z-index:1; }
+.RoyalBlue_shadow_r{ background:url(images/container_right.png) no-repeat right top;}
+.RoyalBlue_shadow_c{ background:url(images/container_center.png) repeat-x left top;height:8px; margin:0 121px; }
+.RoyalBlue_hb2_content{padding:7px 12px 7px;background:#e4e4e4;}
+
+/*-------- RoyalBlue Gray Box -------*/
+.RoyalBlue_gb_style { min-width:150px; border:1px solid #e9e9e9; margin-bottom:15px;}
+.RoyalBlue_gb_style:hover .c_title_black{ color:#5c85e2; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.RoyalBlue_gb_top { min-height:25px; background: #e9e9e9; padding:4px 10px 7px 12px;}
+.RoyalBlue_gb_content { padding:10px 12px;}
+
+/*-------- Footer Contaienr 01 --------*/
+.Footer01_style { min-width:160px;}
+.Footer01_top_bg { padding:15px 3px; margin:0;}
+.Footer01_border{background:#333;}
+.Footer01_style .Footer01_top_border{ background:#5c85e2; height:2px; width:60px; -webkit-transition: all 0.2s ease-in 0s; -moz-transition: all 0.2s ease-in 0s; transition: all 0.2s ease-in 0s;}
+.Footer01_style:hover .Footer01_top_border{ width:120px;-webkit-transition: all 0.4s ease-in 0s; -moz-transition: all 0.4s ease-in 0s; transition: all 0.4s ease-in 0s;}
+.Footer01_content { padding:25px 3px 8px 3px;}
+
+/*-------- Footer Contaienr 02 --------*/
+.Footer02_style { min-width:160px;}
+.Footer02_top_bg { padding:15px 3px; margin:0;}
+.Footer02_border{background:#333;}
+.Footer02_style .Footer02_top_border{ background:#5c85e2; height:2px; width:60px; -webkit-transition: all 0.2s ease-in 0s; -moz-transition: all 0.2s ease-in 0s; transition: all 0.2s ease-in 0s;}
+.Footer02_style:hover .Footer02_top_border{ width:120px;-webkit-transition: all 0.4s ease-in 0s; -moz-transition: all 0.4s ease-in 0s; transition: all 0.4s ease-in 0s;}
+.Footer02_content { padding:25px 3px 8px 3px;}
+
+/*-------- notitle --------*/
+.notitle_container { }

@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Reçu</title>
+<style type="text/css">
+	body{margin:10px;}
+	h1{font-size:120%;margin:0; padding:0;font-weight:bold;}
+	.text-center{text-align: center;}
+	.text-right{text-align:right;}
+	.corps{margin:10%;}
+	table {border:1px solid #cccccc;}
+    table td {border-bottom: 1px solid #cccccc;}
+	.marges{margin:20px;}
+</style>
+</head>
+
+<body>
+    <div class="text-center">
+        <img src="/Portals/0/logo.png" />
+        <p>ROTARY DISTRICT 1700 DU ROTARY INTERNATIONAL</p>
+    </div>
+    <div>
+        <h1>Reçu</h1>
+        pour votre commande n°#reference#<br />
+        passée le #date#<br />
+        Billetterie : <strong>#ticketing#</strong>
+    </div>
+    <div class="text-right">
+        <strong>#customername#</strong><br />
+        #customerclubname#
+    </div>
+    <div class="corps">
+        <table width="100%" cellpadding="20" cellspacing="0" border="0">
+            <tr>
+                <td width="90%">Libellé</td>
+                <td class="text-center">Qté</td>
+                <td class="text-center" style="white-space:nowrap">P.U.</td>
+                <td class="text-right" style="white-space:nowrap">Montant</td>
+            </tr>
+            #detail#
+            <tr>
+                <td>#itemname#</td>
+                <td class="text-center">#itemqte#</td>
+                <td class="text-center" style="white-space:nowrap">#itemprice#</td>
+                <td class="text-right" style="white-space:nowrap">#itemamount#</td>
+            </tr>
+            #enddetail#
+
+        </table>
+        <div class="text-right marges">
+            <strong>TOTAL : #amount#</strong>
+        </div>
+    </div>
+    <div class="marges">
+        Moyen de paiement : #paymentmethod#<br />
+        Commande <strong>#paid#</strong>#paymentdetail#
+    </div>
+    <div style="text-align:center"><em><small>Billetterie propulsée par <a href="https://rodi-platform.org">RODI-Platform.org</a></small></em></div>
+</body>
+
+</html>

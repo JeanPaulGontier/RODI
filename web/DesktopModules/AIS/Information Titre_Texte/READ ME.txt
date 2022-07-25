@@ -1,0 +1,9 @@
+﻿Pour installer le module Information Titre_Text , il faut : 
+	
+	Créer 2 modules : 
+		Admin Information Titre_Texte
+		Information Titre_Texte
+	Créer une page PORTANT LE NOM "Admin Information Titre_Texte" avec le module Admin Information Titre_Texte
+
+	Si c'est pas déjà fait,
+	Il faut aussi importer le fichier C:\Dossiers\RODI\src\web\Portals\_default\Skins\Rodi2017\popUpSkin.ascx (pour le jquery fonctionne)

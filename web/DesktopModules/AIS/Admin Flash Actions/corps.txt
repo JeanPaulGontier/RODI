@@ -1,0 +1,95 @@
+            <!--[if mso]>
+        <table border="0" cellpadding="0" cellspacing="0" width="600" align="center" style="width:600px;"><tr><td>
+        <![endif]-->
+            <div style="margin: 0px auto; max-width: 600px; background: #ffffff none repeat scroll 0% 0%;">
+            <table cellspacing="0" cellpadding="0" border="0" align="center" style="font-size: 0px; width: 100%; background: #ffffff none repeat scroll 0% 0%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0px; padding: 0px;">
+                        <!--[if mso]>
+                            <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:600px;">
+                            <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-100" aria-labelledby="mj-column-per-100">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td align="center" style="font-size: 0px; padding: 0px 25px;">
+                                    <table cellspacing="0" cellpadding="0" border="0" align="center" style="border-collapse: collapse; border-spacing: 0px;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 550px;"><a target="_blank" href="@link@"><img width="550" height="auto" style="border: medium none; display: block; outline: medium none; text-decoration: none; width: 100%; height: auto;" src="@img@" alt="@title@" /></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td></tr></table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+
+
+
+  <!--[if mso]>
+        <table border="0" cellpadding="0" cellspacing="0" width="600" align="center" style="width:600px;"><tr><td>
+        <![endif]-->
+            <div style="margin: 0px auto; max-width: 600px; background: #ffffff none repeat scroll 0% 0%;">
+            <table cellspacing="0" cellpadding="0" border="0" align="center" style="font-size: 0px; width: 100%; background: #ffffff none repeat scroll 0% 0%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align: center; vertical-align: top; font-size: 0px; padding: 0px;">
+                        <!--[if mso]>
+                            <table border="0" cellpadding="0" cellspacing="0"><tr><td style="vertical-align:top;width:396px;">
+                            <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-66" aria-labelledby="mj-column-per-66">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="font-size: 0px; padding: 0px 25px;">
+                                    <div style="cursor: auto; color: #000000; font-family: Ubuntu,Helvetica,Arial,sans-serif; font-size: 13px; line-height: 22px;">
+                                    <h2><span style="font-family: roboto,helvetica,arial,sans-serif; color: #00246c;">@title@</span></h2>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td><td style="vertical-align:top;width:198px;">
+                              <![endif]-->
+                        <div style="vertical-align: top; display: inline-block; font-size: 13px; text-align: left; width: 100%;" class="mj-column-per-33" aria-labelledby="mj-column-per-33">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td align="right" style="font-size: 0px; padding: 0px 25px;">
+                                    <div style="cursor: auto; color: #000000; font-family: Ubuntu,Helvetica,Arial,sans-serif; font-size: 13px; line-height: 22px;">
+                                    <p><span style="font-size: 17px; font-family: georgia,helvetica,arial,sans-serif; color: #74585a;">@date@</span></p>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <!--[if mso]>
+                            </td></tr></table>
+                            <![endif]-->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+<br />
+

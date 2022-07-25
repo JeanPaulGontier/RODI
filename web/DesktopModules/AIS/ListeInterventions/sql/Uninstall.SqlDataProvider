@@ -1,0 +1,6 @@
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ais_drya]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}ais_drya]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}ais_rya]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}ais_rya]
+GO

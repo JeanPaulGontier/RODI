@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oukikan</title>
+  <script src="/desktopmodules/ais/oukikan/js/vue.3.2.31/vue.js"></script>
+  <script src="/desktopmodules/ais/oukikan/js/router.4.0.13/Router.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div id="app" class="appli">
+    <div class="logo"><img src="images/logo_RCSA.png"></div>
+    <!--MEETINGS LIST -->
+    <div id="meetingsList" v-if="meetingsList">
+      <div class="newMeetingBt"><button @click="createMeeting()">Créer une réunion</button></div>
+      <div class="meeting">
+        <h1>Liste des réunions en cours</h1>
+
+        <table id="meetingTable">
+          <tr>
+            <th>Nom</th>
+            <th>Lien</th>
+            <th>Participants actuels</th>
+          </tr>
+          <tr class="trLink" @click="viewCurrentMeeting(meeting)" v-for="(meeting, index) in meetings" :key="index">
+            <td class="meetingTableOptions"><span>{{meeting.name}}</span></td>
+            <td class="meetingTableOptions"><span @click="viewCurrentMeeting(meeting)">{{meeting.link}}</span></td>
+            <td class="meetingTableOptions">{{meeting.users.length}}</td>
+            <td>
+              <!-- ajouter un v-if pour le current user-->
+              <div class="edit" style="z-index:150;" @click.stop="editCurrentMeeting(meeting)"><i
+                  class="fas fa-edit"></i>edit</div>
+            </td>
+          </tr>
+
+        </table>
+
+      </div>
+    </div>
+
+    <!--VIEW MEETING -->
+    <div id="viewMeeting" v-if="viewMeeting">
+      <div class="newMeetingBt"><button @click="currentMeeting = null, viewMeeting = false, meetingsList= true">Retour à
+          la liste des réunions</button> </div>
+      <div class="meeting">
+        <h1>{{ currentMeeting.name }} - {{ currentMeeting.lieu }}</h1>
+        <div class="meetingDescription">{{ currentMeeting.description }}<br />
+          <span v-if="currentMeeting.videoConfLink">Pour suivre la réunion en visio voici le lien : <a
+              href="currentMeeting.videoConfLink">{{currentMeeting.videoConfLink}}</a></span>
+        </div>
+
+        <table id="meetingTable">
+          <tr>
+            <th>NOM</th>
+            <th>PRENOM</th>
+            <th v-for="(opt, index2) in currentMeeting.options" :key="index2">Option {{index2+1}}</th>
+
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td class="meetingTableOptions" v-for="(option, index3) in currentMeeting.options" :key="index3">
+              {{option.date}}<br> {{option.heure}}<br> </td>
+          </tr>
+          <tr v-for="(user, index4) in currentMeeting.users" :key="index4">
+            <td><input type="text" v-model="user.name" ref="meetingUser"
+                @blur="user.name ? '' : user.name='Entrez un nom !'"></td>
+            <td><input type="text" v-model="user.surname" @blur="user.surname ? '' : user.surname='Entrez un prénom !'">
+            </td>
+            <td v-for="(meetingoption, index5) in currentMeeting.options" :key="index5">
+              <label class="container">
+                <input type="checkbox" :value="meetingoption.Guid" v-model="user.options">
+                <span class="checkmark"></span>
+              </label>
+
+            </td>
+
+          </tr>
+        </table>
+        <button @click="addNewUser()">Ajouter un participant</button>
+
+      </div>
+
+    </div>
+
+    <!-- EDIT MEETING-->
+    <div id="editMeeting" v-if="editMeeting">
+      <div class="newMeetingBt"><button @click="backToMeetingList(currentMeeting.Guid)">Retour à
+          la liste des réunions</button> </div>
+      <div class="meetingEdit">
+        <div class="meetingEditSection">
+          <label class="editLabel">Nom de la réunion</label>
+          <input type="text" class="inputWithBorder" v-model="currentMeeting.name">
+        </div>
+        <div class="meetingEditSection">
+          <label class="editLabel">Description</label>
+          <input type="text" class="inputWithBorder" v-model="currentMeeting.description">
+        </div>
+        <div class="meetingEditSection">
+          <label class="editLabel">Lieu de réunion</label>
+          <input type="text" class="inputWithBorder" v-model="currentMeeting.lieu">
+        </div>
+        <div class="meetingEditSection">
+          <label class="editLabel">Lien zoom ou autre visio</label>
+          <input type="text" class="inputWithBorder" v-model="currentMeeting.videoConfLink">
+        </div>
+        <div class="meetingEditSection">
+          <label class="editLabel">Options</label>
+
+          <table id="meetingTable">
+            <tr>
+              <th></th>
+              <th>DATE</th>
+              <th>HEURE</th>
+
+
+            </tr>
+            <tr v-for="(option, index6) in currentMeeting.options" :key="index6">
+              <td class="trashCol edit" @click="delConfirm = !delConfirm, delSelect = index6"><i class="fas fa-trash-can"></i>
+              </td>
+
+              <td class="datetimeCol">
+                <input type="date" v-model="option.date" ref="meetingOption"
+                  @blur="option.date ? '' : option.date= whatIsToday"></td>
+              <td class="datetimeCol">
+                <input type="time" v-model="option.heure" ref="meetingOption">
+               </td>
+            </tr>
+          </table>
+          <!-- MODAL -->
+          <div class="modalContainer" v-if="delConfirm">
+            <div class="modal">
+              <div><button @click="deleteOption(delSelect)">Confirmer</button><button
+                  @click="delConfirm = !delConfirm">Annuler</button></div>
+            </div>
+          </div>
+          <button @click="addNewOption()">Ajouter des options</button>
+
+        </div>
+      </div>
+    </div>
+
+ <!-- NEW MEETING-->
+ <div id="newMeeting" v-if="newMeeting">
+  <div class="newMeetingBt"><button @click="backToMeetingList(currentMeeting.Guid)">Retour à
+      la liste des réunions</button> </div>
+  <div class="meetingEdit">
+    <div class="meetingEditSection">
+      <label class="editLabel">Nom de la réunion</label>
+      <input type="text" class="inputWithBorder" v-model="currentMeeting.name">
+    </div>
+    <div class="meetingEditSection">
+      <label class="editLabel">Description</label>
+      <input type="text" class="inputWithBorder" v-model="currentMeeting.description">
+    </div>
+    <div class="meetingEditSection">
+      <label class="editLabel">Lieu de réunion</label>
+      <input type="text" class="inputWithBorder" v-model="currentMeeting.lieu">
+    </div>
+    <div class="meetingEditSection">
+      <label class="editLabel">Lien zoom ou autre visio</label>
+      <input type="text" class="inputWithBorder" v-model="currentMeeting.videoConfLink">
+    </div>
+    <div class="meetingEditSection">
+      <label class="editLabel">Options</label>
+
+      <table id="meetingTable">
+        <tr>
+          <th></th>
+          <th>DATE</th>
+          <th>HEURE</th>
+
+
+        </tr>
+        <tr v-for="(option, index6) in currentMeeting.options" :key="index6">
+          <td class="trashCol edit" @click="delConfirm = !delConfirm, delSelect = index6"><i class="fas fa-trash-can"></i>
+          </td>
+
+          <td class="datetimeCol">
+            <input type="date" v-model="option.date" ref="meetingOption"
+              @blur="option.date ? '' : option.date= whatIsToday"></td>
+          <td class="datetimeCol">
+            <input type="time" v-model="option.heure" ref="meetingOption">
+           </td>
+        </tr>
+      </table>
+      <!-- MODAL -->
+      <div class="modalContainer" v-if="delConfirm">
+        <div class="modal">
+          <div><button @click="deleteOption(delSelect)">Confirmer</button><button
+              @click="delConfirm = !delConfirm">Annuler</button></div>
+        </div>
+      </div>
+      <button @click="addNewOption()">Ajouter des options</button>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+  </div>
+  <script src="oukikanApp.js"></script>
+</body>
+
+</html>

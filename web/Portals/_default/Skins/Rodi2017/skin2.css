@@ -1,0 +1,6 @@
+﻿.pcr_section1 {
+    height: 950px !important;
+}
+.fixed_bg {
+    background: center center repeat url(images/fixed_bg2.jpg) fixed;
+}

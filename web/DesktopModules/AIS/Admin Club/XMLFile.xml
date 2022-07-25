@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <tools>
+    <tool name="FontName"/>
+    <tool name="FontSize"/>
+    <tool name="ForeColor"/>
+    <tool name="Bold"/>
+    <tool name="Italic"/>
+    <tool name="Underline"/>
+    <tool name="BackColor"/>
+    <tool name="Copy"/>
+    <tool name="Cut"/>
+    <tool name="Paste"/>
+    <tool name="PasteFromWord"/>
+    <tool name="Redo"/>
+    <tool name="Undo"/>
+    <tool name="Print"/>
+    <tool name="FindAndReplace"/>
+    <tool name="Outdent"/>  
+    <tool name="Indent"/>
+    <tool name="JustifyCenter"/>
+    <tool name="JustifyFull"/>
+    <tool name="JustifyLeft"/>
+    <tool name="JustifyRight"/>
+
+  </tools>
+  
+</root>

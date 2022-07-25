@@ -1,0 +1,326 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using AIS;
+using DotNetNuke.Entities.Modules;
+using System.IO;
+using System.Drawing;
+using Telerik.Web.UI;
+
+public partial class DesktopModules_AIS_Admin_News_Liste_Control : PortalModuleBase
+{
+   
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if ("" + Functions.CurrentCric != HF_Cric.Value)
+        {
+            HF_Cric.Value = "" + Functions.CurrentCric;
+            GridView1.PageIndex = 0;
+            Panel1.Visible = true;
+            Panel2.Visible = false;
+        }
+        RefreshGrid();
+
+        BT_Ajouter_Nouvelle.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+             
+    }
+
+    
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case "Sort":
+
+                break;
+            case "detail":
+                GridView gv = sender as GridView;
+                int index = (gv.PageIndex * gv.PageSize) + Convert.ToInt32(e.CommandArgument);
+                List<Nouvelle> news = gv.DataSource as List<Nouvelle>;
+
+                Nouvelle n = news[index];
+                HF_id.Value = "" + n.id;
+                RB_Visible.SelectedValue = n.visible;
+                DL_Sujet.SelectedValue = n.tag1;
+                PanelSujet.Visible = Functions.CurrentCric > 0;
+                TXT_Titre.Text = "" + n.titre;
+                TXT_Dt.SelectedDate = n.dt;
+                TXT_Texte.Text = n.texte;
+                
+                IMG_Photo.ImageUrl = n.GetPhoto();
+                HF_Photo.Value = n.photo;
+                BT_Effacer_Photo.Visible = (n.photo != "") && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+                BT_Upload_Photo.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+
+                HL_Url.Text = n.url;
+                TXT_Url_Texte.Text = n.url_texte;
+                HL_Url.NavigateUrl = n.GetUrl();
+
+                BT_Upload_Fichier.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+                BT_Effacer_Fichier.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+
+                BT_Supprimer.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+                BT_Valider.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+                RB_Visible.Enabled = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+
+                BT_Creer_Vignette.Visible = false;
+
+                Panel1.Visible = false;
+                Panel2.Visible = true;
+                break;
+        }
+    }
+
+    protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+    {
+        tri.Value = "" + e.SortExpression;
+        sens.Value = sens.Value == "ASC" ? sens.Value = "DESC" : sens.Value = "ASC";
+        RefreshGrid();
+    }
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        if (GridView1.PageIndex == e.NewPageIndex)
+        {
+            e.Cancel = true;
+            return;
+        }
+        GridView1.PageIndex = e.NewPageIndex;
+        RefreshGrid();
+    }
+    void RefreshGrid()
+    {
+        List<Nouvelle> news = DataMapping.ListeNews(categorie: (Functions.CurrentCric == 0 ? "District" : "Clubs"), cric: Functions.CurrentCric, index: GridView1.PageIndex, max: GridView1.PageSize);
+        GridView1.DataSource = news;
+        GridView1.DataBind();
+    }
+
+
+    protected void BT_Annuler_Click(object sender, EventArgs e)
+    {
+        RefreshGrid();
+        Panel1.Visible = true;
+        Panel2.Visible = false;
+    }
+    protected void BT_Valider_Click(object sender, EventArgs e)
+    {
+        Nouvelle nouvelle = new Nouvelle();
+        if (HF_id.Value!="")
+        {
+            nouvelle = DataMapping.GetNews(HF_id.Value);    
+        }
+        nouvelle.categorie = Functions.CurrentCric > 0 ? "Clubs" : "District";
+        nouvelle.cric = Functions.CurrentCric;
+        nouvelle.dt = TXT_Dt.SelectedDate!=null?(DateTime)TXT_Dt.SelectedDate:DateTime.Now;
+        nouvelle.nom_club = Functions.CurrentClub != null ? Functions.CurrentClub.nom : "";
+        nouvelle.photo = HF_Photo.Value;
+        nouvelle.tag1 = DL_Sujet.SelectedValue;
+        nouvelle.tag2 = "";
+        nouvelle.texte = TXT_Texte.Text;
+        nouvelle.titre = TXT_Titre.Text;
+        nouvelle.visible = RB_Visible.SelectedValue == Const.YES?Const.YES:Const.NO;
+        nouvelle.url = HL_Url.Text;
+        nouvelle.url_texte = TXT_Url_Texte.Text;
+        if (!DataMapping.UpdateNews(nouvelle))
+            return;
+        if (Session[HF_Photo.Value] != null)
+        {
+            if(Functions.CurrentCric == 0)
+                File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.DISTRICT_PREFIX+Const.IMG_PREFIX + HF_Photo.Value), ((Media)Session[HF_Photo.Value]).content);
+            else
+                File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.CLUBS_PREFIX + nouvelle.nom_club.Replace(" ", "-").Replace("'", "-").ToLower() + "/"  + Const.IMG_PREFIX + HF_Photo.Value), ((Media)Session[HF_Photo.Value]).content);
+            
+            Session[HF_Photo.Value] = null;
+        }
+        if (Session[HL_Url.Text] != null)
+        {
+            if (Functions.CurrentCric == 0)
+                File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.DISTRICT_PREFIX + Const.DOCUMENT_PREFIX + HL_Url.Text), ((Media)Session[HL_Url.Text]).content);
+            else
+                File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.CLUBS_PREFIX + nouvelle.nom_club.Replace(" ", "-").Replace("'", "-").ToLower() + "/" + Const.DOCUMENT_PREFIX + HL_Url.Text), ((Media)Session[HL_Url.Text]).content);
+
+            Session[HL_Url.Text] = null;
+        }
+        
+        RefreshGrid();
+        Panel1.Visible = true;
+        Panel2.Visible = false;
+    }
+   
+    protected void BT_Upload_Photo_Click(object sender, EventArgs e)
+    {
+        if (FU_Photo.UploadedFiles.Count > 0)
+        {
+            UploadedFile file = FU_Photo.UploadedFiles[0];
+            string guid = HF_id.Value;
+            if (guid == "")
+                guid = Guid.NewGuid().ToString();
+            string filename = Functions.ClearFileName("news_"+guid + ".jpg");
+
+            Bitmap bmp = new Bitmap(file.InputStream);
+            bmp = Functions.ThumbByWidth(bmp, Const.NEWS_PHOTOS_WIDTH);
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            HF_Photo.Value = filename;
+
+            Media media = new Media();
+            media.content = ms.GetBuffer();
+            media.content_size = media.content.Length;
+            media.dt = DateTime.Now;
+            media.w = bmp.Width;
+            media.h = bmp.Height;
+            media.name = filename;
+            media.content_type = "image/jpeg";
+            Session[HF_Photo.Value] = media;
+
+            IMG_Photo.ImageUrl = Const.MEDIA_VIEW_URL + "?id=" + filename;
+            BT_Effacer_Photo.Visible = true;
+        }
+    }
+    protected void BT_Effacer_Photo_Click(object sender, EventArgs e)
+    {
+        BT_Effacer_Photo.Visible = false;
+        Session[HF_Photo.Value] = null;
+        HF_Photo.Value = "";
+        IMG_Photo.ImageUrl = Const.no_image;       
+    }
+
+    protected void BT_Ajouter_Nouvelle_Click(object sender, EventArgs e)
+    {
+
+        HF_id.Value = "";
+        RB_Visible.SelectedValue = Const.NO;
+        DL_Sujet.SelectedValue = "";
+        PanelSujet.Visible = Functions.CurrentCric > 0;
+        TXT_Titre.Text = "";
+        TXT_Dt.SelectedDate = DateTime.Now;
+        TXT_Texte.Text = "";
+
+        IMG_Photo.ImageUrl = Const.no_image;
+        HF_Photo.Value = "";
+        BT_Effacer_Photo.Visible = false;
+
+        HL_Url.NavigateUrl = "";
+        HL_Url.Text = "";
+        TXT_Url_Texte.Text = "";
+
+        BT_Supprimer.Visible = false;
+        BT_Creer_Vignette.Visible = false;
+
+        Panel2.Visible = true;
+        Panel1.Visible = false;
+
+    }
+    protected void BT_Upload_Fichier_Click(object sender, EventArgs e)
+    {
+        if (FU_Url.UploadedFiles.Count > 0)
+        {
+            UploadedFile file = FU_Url.UploadedFiles[0];
+            string guid = HF_id.Value;
+            if (guid == "")
+                guid = Guid.NewGuid().ToString();
+            string filename = Functions.ClearFileName("news_" + guid + file.GetExtension());
+            TXT_Url_Texte.Text = file.FileName.Substring(0,file.FileName.Length-file.GetExtension().Length);
+            HL_Url.Text = filename;
+
+            MemoryStream ms = new MemoryStream();
+            file.InputStream.CopyTo(ms,(int)file.InputStream.Length);
+            Media media = new Media();
+            media.content = ms.GetBuffer();
+            media.content_size = media.content.Length;
+            media.dt = DateTime.Now;
+            media.w = 0;
+            media.h = 0;
+            media.name = filename;
+            media.content_type = file.ContentType;
+            Session[HL_Url.Text] = media;
+
+            HL_Url.NavigateUrl = Const.MEDIA_DOWNLOAD_URL + "?id=" + filename;
+            BT_Effacer_Fichier.Visible = true;
+
+            if (file.ContentType.Equals("application/pdf"))
+            {
+                BT_Creer_Vignette.Visible = true;
+            }
+        }
+    }
+    protected void BT_Effacer_Fichier_Click(object sender, EventArgs e)
+    {
+        BT_Effacer_Fichier.Visible = false;
+        Session[HL_Url.Text] = null;
+        HL_Url.Text = "";
+        HL_Url.NavigateUrl = "";
+        TXT_Url_Texte.Text = "";        
+    }
+    protected void BT_Supprimer_Click(object sender, EventArgs e)
+    {
+        if (!DataMapping.DeleteNews(HF_id.Value))
+        {
+            return;
+        }
+        if (HF_Photo.Value != "")
+            try
+            {
+                if (Functions.CurrentCric == 0)
+                    File.Delete(Server.MapPath(PortalSettings.HomeDirectory + Const.DISTRICT_PREFIX + Const.IMG_PREFIX + HF_Photo.Value));
+                else
+                    File.Delete(Server.MapPath(PortalSettings.HomeDirectory + Const.CLUBS_PREFIX + Functions.CurrentClub.nom.Replace(" ", "-").Replace("'", "-").ToLower() + "/" + Const.IMG_PREFIX + HF_Photo.Value));
+            
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+        if (HL_Url.Text != "")
+            try
+            {
+                if (Functions.CurrentCric == 0)
+                    File.Delete(Server.MapPath(PortalSettings.HomeDirectory + Const.DISTRICT_PREFIX + Const.DOCUMENT_PREFIX + HL_Url.Text));
+                else
+                    File.Delete(Server.MapPath(PortalSettings.HomeDirectory + Const.CLUBS_PREFIX + Functions.CurrentClub.nom.Replace(" ", "-").Replace("'", "-").ToLower() + "/" + Const.DOCUMENT_PREFIX + HL_Url.Text));
+
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+
+        RefreshGrid();
+        Panel1.Visible = true;
+        Panel2.Visible = false;
+    }
+
+    protected void BT_Creer_Vignette_Click(object sender, EventArgs e)
+    {
+        if (Session[HL_Url.Text] == null)
+            return;
+
+        Media media = Session[HL_Url.Text] as Media;
+
+        string guid = HF_id.Value;
+        if (guid == "")
+            guid = Guid.NewGuid().ToString();
+        string filename = Functions.ClearFileName("news_" + guid + ".jpg");
+
+        Bitmap bmp = Functions.GetBitmapFromMedia(media);
+        bmp = Functions.ThumbByWidth(bmp, Const.NEWS_PHOTOS_WIDTH);
+        MemoryStream ms = new MemoryStream();
+        bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+        HF_Photo.Value = filename;
+
+        media = new Media();
+        media.content = ms.GetBuffer();
+        media.content_size = media.content.Length;
+        media.dt = DateTime.Now;
+        media.w = bmp.Width;
+        media.h = bmp.Height;
+        media.name = filename;
+        media.content_type = "image/jpeg";
+        Session[HF_Photo.Value] = media;
+
+        IMG_Photo.ImageUrl = Const.MEDIA_VIEW_URL + "?id=" + filename;
+        BT_Effacer_Photo.Visible = true;
+    }
+}

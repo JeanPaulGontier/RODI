@@ -1,0 +1,122 @@
+﻿<script type="text/x-template" id="blockimagecollection-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <div>
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
+                <div v-if="e.Images" v-for="(i,index) in e.Images">
+                    <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" width="100%" />
+                    Nom de la photo : <input type="text" v-model="i.Name" />
+                    <br />
+                    <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
+                </div>
+                <br />
+                <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
+                <em class="stxt">Le fichier doit être une photo et ne doit pas dépasser 5 Mo</em><br />
+            </div>
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing">
+            <h2>{{c.Title}}</h2>
+            <div v-if="c.Images" v-for="i in c.Images"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" style="width:100%" :title="i.Name" /></div>
+          
+
+        </div>
+    </div>
+</script>
+<script>
+    let BlockImageCollection = {
+        template: '#blockimagecollection-template',
+        name: 'BlockImageCollection',
+        props: [
+            'content','moduleid'
+        ],
+        emits: [
+            'changed',
+            'cancel'
+        ],
+        data() {
+            return {
+                editing: false,
+                c: {},
+                fichiers: [],
+                e: {
+                   Images:[]
+                },
+            }
+        },
+        methods: {
+            edit() {
+                this.editing = true;
+                this.e = JSON.parse(JSON.stringify(this.c));
+            },
+            validate() {
+                this.c = JSON.parse(JSON.stringify(this.e));
+                this.editing = false;
+                this.onChange();
+            },
+            cancel() {
+                this.editing = false;
+                this.$emit('cancel');
+            },
+            onChange() {
+                this.$emit('changed', this.c);
+            },
+            deleteImage(i) {
+                this.e.Images.splice(i, 1);
+            },
+            addDocument(event) {
+                event.preventDefault();
+                this.$refs.document.click();
+            },
+            onChangeDocumentUpload() {
+                if (this.$refs.document.files.length == 0)
+                    return;
+                this.fichiers.push({
+                    file: this.$refs.document.files[0],
+                    uploaded: false
+                });
+                this.uploadMedia({
+                    type: 'photo'
+                }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+            },
+            onDocumentUploaded(r) {
+
+                console.log('onDocumentUploaded', r);
+                const image = r.data;
+                image.Name = image.Filename;
+                this.e.Images.push(image);
+                this.fichiers = [];
+            },
+            uploadMedia(meta, callbackok, callbackerror) {
+                let fichier = this.fichiers[this.fichiers.length - 1];
+                if (fichier.file.size > 5 * 1024 * 1024) {
+                    alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                    this.fichiers = [];
+                    return;
+                }
+                let formData = new FormData();
+                formData.append('file', fichier.file);
+                if (meta) {
+                    for (let p in meta) {
+                        formData.append(p, meta[p]);
+                    }
+                }
+                _yemon[this.moduleid].service.postFile('/setMedia',
+                    formData,
+                    (r) => callbackok(r),
+                    (r) => callbackerror(r)
+                );
+
+            },
+        },
+        mounted() {
+            this.c = this.content;
+        }
+    }
+
+</script>

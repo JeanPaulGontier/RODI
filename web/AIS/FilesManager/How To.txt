@@ -1,0 +1,102 @@
+﻿Le controle utilisateur permet de :
+	- Visualiser en liste (avec possibilité de thumb pour les images) les fichiers (filtrés ou non) d'un répertoire défini
+	- Visualiser un fichier sélectionné dans un nouvel onglet
+	- Télécharger un (ou plusieurs fichiers) dans le répertoire défini
+	- Supprimer un fichier du répertoire défini
+
+
+Dans le dossier App_Code ajouter : 
+	- FilesManagerCore.cs
+	- Fonctions.cs
+
+Dans le dossier JS ajouter : 
+	- le dossier JQuery UI et ses éléments
+	- le fichier jquery-1.12.0.js
+
+ATTENTION : Le controle doit être impérativement dans une balise FORM (un module créé automatique une balise form)
+
+Pour utiliser le controle : 
+	Mettre dans ASCX :
+		En entête : 
+			<%@ Register TagPrefix="AIS" TagName="FileManager" Src="~/AIS/FilesManager/FileManagerControl.ascx" %>
+		A l'endroit où l'on veut le voir apparaitre : 
+			 <AIS:FileManager runat="server" ID="Filesmanage"   />
+
+	Définir les différentes propriétés suivants les désidérata : 
+		PathFile :		fct : Indiquer le chemin relatif du repertoire (s'il n'existe pas, le controle le créé)
+						attendu : String
+						default : vide
+						ex : PathFile="Images/Upload2"
+
+		Multiple :		fct : Permet ou pas de sélectionner plusieurs fichiers à uploader
+							ATTENTION : Si FALSE => le bouton d'upload n'apparaitra plus s'il y a déjà un fichier d'uploader (dans le répertoire du control)
+						attendu : bool
+						default : false
+						ex : Multiple="false"
+
+		ThumbImage :	fct : Permet d'avoir un thumb sur les images
+						attendu : bool
+						default : false
+						ex : ThumbImage="true"
+
+		TypeFilter :	fct : Lorsque le controle utilisateur affiche les fichiers présent dans le dossier défini, cela permet de filtrer, par type, l'affichage 
+							ATTENTION : il faut séparer les types par une vigule et sans espace
+						attendu : string
+						default : vide
+						ex : TypeFilter="image,text"
+
+		ExtFilter :		fct : Lorsque le controle utilisateur affiche les fichiers présent dans le dossier défini, cela permet de filtrer par extension l'affichage
+							ATTENTION : il faut séparer les types par une vigule et sans espace
+						attendu : string
+						default : vide
+						ex : ExtFilter="jpeg,jpeg"
+
+		ExtAuthorised :	fct : Permet d'appliquer un filtre lors de la sélection des fichiers à uploader
+						attendu : string
+						default : vide => TOUS
+						ex : ExtAuthorised="audio/*,video/*,image/*" ou  ExtAuthorised=".gif, .jpg, .png, .doc"
+
+		ReadOnly :		fct : Permet de n'avoir que le visu d'un répertoire (pas d'upload ni de delete)
+						attendu : bool
+						default : false
+						ex : ReadOnly="true"
+
+		NameHide :		fct : Permet de n'avoir que le visu d'un répertoire (utile pour les images avec un thumb (pas de label du nom du fichier ni d'upload ni de delete)
+						attendu : bool
+						default : false
+						ex : NameHide="true"
+
+		CssBtnDelete :	fct : Permet d'appliquer une CSS au bouton supprimé
+						attendu : string
+						default : vide
+						ex : CssBtnDelete="btn btn-warning"
+
+		CssLink :		fct : Permet d'appliquer une CSS au lien du fichier
+						attendu : string
+						default : vide
+						ex : CssLink="btn btn-link"		
+						
+		CssThumbImage :	fct : Permet d'appliquer une CSS au ThumbImage
+						attendu : string
+						default : vide
+						ex : CssThumbImage="img-circle"	
+
+		WidthThumbImage :	fct : Permet de définir une largeur au ThumbImage
+						attendu : string
+						default : 100
+						ex : WidthThumbImage="200"	
+
+		HeightThumbImage :	fct : Permet de définir une hauteur au ThumbImage
+						attendu : string
+						default : 100
+						ex : HeightThumbImage="200"	
+
+		CssUL :			fct : Permet de définir une CSS au UL
+						attendu : string
+						default : vide
+						ex : CssUL="list-group"	
+
+		CssLI :			fct : Permet de définir une CSS au LI
+						attendu : string
+						default : vide
+						ex : CssLI="list-group-item"	

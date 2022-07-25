@@ -1,0 +1,15 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Settings.ascx.cs" Inherits="DesktopModules_AIS_Agenda_Gouverneur_Settings" %>
+<fieldset>
+    <div class="dnnFormItem">
+        <div class="dnnLabel">Serveur mail : </div>
+        <asp:TextBox runat="server" ID="host"></asp:TextBox>
+    </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel">Username : </div>
+        <asp:TextBox runat="server" ID="username"></asp:TextBox>
+    </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel">Password : </div>
+        <asp:TextBox runat="server" ID="password" TextMode="Password"></asp:TextBox>
+    </div>
+</fieldset>

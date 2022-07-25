@@ -1,0 +1,62 @@
+﻿20180222
+	Fonctions
+		Gestion billetterie publique avec payement paypal uniquement
+		Gestion retour ipn paypal completed et refunded
+		Gestion du ticket avec QRCode vers url guichet, pour l'instant non fonctionnel et affiche guichet fermé
+		Gestion du panneau settings qui stocke les settings dans les parametres du module avec guid
+		
+
+	Dépendances
+			App_Code/AIS/Ticketing.cs
+			App_Code/AIS/Datamapping.cs
+				ListClub
+			AIS/PaypalIPB
+
+	Creation Handler QR.ashx pour générer un qrcode
+		usage /AIS/QR.ashx?s=<chaine à encoder>
+		retourne une image
+
+	ATTENTION : si usage paypal, l'url ipn ne doit pas contenir de caracteres accentués
+	donc il faut créer une page ipn publique dans laquelle on met le module 
+
+
+20180307
+	Stockage dans la base de données des settings
+	Gestion du role admin billetterie avec panneau spécifique
+	Export fichiers
+		Listes des commandes excel
+	Gestion des urls issues des parametres
+	Gestion paiement par virement 
+	Gestion paiement par chèque
+
+
+20180311
+	Gestion du code de promotion article
+
+20180401
+	Gestion template recu
+	Panneau de gestion des options
+
+20180429
+	Gestion template ticket
+	Panneau de gestion des champs supplémentaires
+
+A développer
+	
+	Améliorer le payement paypal pour empecher la fraude
+	Implémenter stripe
+
+	Panneau de gestion des commandes 
+	Validation des paiements par virement et cheques avec génération des tickets
+
+	
+	
+	Mettre les styles DNN dans le panneau settings
+	Gestion du role admin lecture seule avec panneau spécifique pour les adg
+	
+	Gestion template email
+
+
+	Module d'assistant de création d'une nouvelle billetterie
+
+	

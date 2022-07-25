@@ -1,0 +1,38 @@
+@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using AIS;
+@{
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
+    PageData["HTML"] = Html;
+    PageData["blocksSuffix"] = Dnn.Module.ModuleID;
+
+    ModuleController moduleController = new ModuleController();
+    var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
+    bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo);
+    PageData["editable"] = editable;
+
+    if (editable)
+    {
+        @RenderPage("BlocksContent/Editor.cshtml")
+    }
+    else
+    {
+        @RenderPage("BlocksContent/View.cshtml")
+    }
+}
+
+

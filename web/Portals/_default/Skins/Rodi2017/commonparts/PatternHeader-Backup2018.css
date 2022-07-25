@@ -1,0 +1,347 @@
+﻿
+/*-------- Pattern Header Design Style --------*/
+.pattern_header { background: #ffffff; position: relative; z-index: 1000; color: white; }
+.logo_style { float: left; padding: 20px 15px; display: flex; align-items: center; }
+    .logo_style img { max-height: 55px; }
+.headerpane_style { float: right; margin: 20px; }
+a.btn-connexion { position: absolute; top: 0; right: 0; display: inline-block; background: #fcd578; padding: 5px 18px 5px 18px; margin: -20px 5px 5px 0; border-radius: 0 0 8px 8px; color: #00246c !important; }
+    a.btn-connexion:hover { text-decoration: none !important; color: #000000; background: #febd11; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; }
+
+a.btn-logoff { background: url('../images/logoff.svg') no-repeat; background-size: contain; background-position-x: right; padding-right: 25px; margin-right: 15px; }
+    a.btn-logoff:hover { background: url('../images/logoff.svg') no-repeat; background-size: contain; opacity: 0.5; background-position-x: right; text-decoration: none !important; -webkit-transition: all 0.9s ease-in; -moz-transition: all 0.9s ease-in; -ms-transition: all 0.9s ease-in; -o-transition: all 0.9s ease-in; transition: all 0.9s ease-in; }
+a.btn-profil { background: url('../images/user.svg') no-repeat; background-size: contain; margin-left: 15px; padding-left: 20px; }
+    a.btn-profil:hover { background: url('../images/user.svg') no-repeat; background-size: contain; opacity: 0.5; text-decoration: none !important; -webkit-transition: all 0.9s ease-in; -moz-transition: all 0.9s ease-in; -ms-transition: all 0.9s ease-in; -o-transition: all 0.9s ease-in; transition: all 0.9s ease-in; }
+#Login { color: #bbbbbb; margin-right: 10px; }
+
+.icons_menu { float: right; margin: 20px 7px 0 0; position: relative; z-index: 1000; font-size: 0.8em; }
+.icon_user { position: relative; cursor: pointer; }
+.icon_user_hover { display: none; width: 160px; position: absolute; right: -60px; top: 49px; padding: 0; background: #fff; background: rgba(245,245,245,.9); border: none; webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+    .icon_user_hover:before { width: 0; height: 0; position: absolute; left: 72px; top: -5px; border-bottom: 5px solid #fff; border-bottom: 5px solid rgba(245,245,245,.9); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: none; content: ""; }
+.icon_user > .HeadUser { font-size: 110%; }
+.icon_login { float: left; }
+
+/*.icon_lang { display: none; background: url("../../Rodi2017/images/icon_lang.png") no-repeat center center #5c85e2; width: 40px; height: 40px; float: left; position: relative; cursor: pointer; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; margin-right: 5px; border: solid 4px #fff; border: solid 4px rgba(255,255,255,0.5); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; padding: 18px; }
+    .icon_lang:hover { border: solid 4px rgba(255,255,255,0.8); }
+.icon_lang_style { display: none; width: 60px; position: absolute; left: -11px; top: 45px; padding: 0 0 15px; background: #fff; background: rgba(245,245,245,.9); border: none; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+    .icon_lang_style:before { width: 0; height: 0; position: absolute; left: 24px; top: -5px; border-bottom: 5px solid #fff; border-bottom: 5px solid rgba(245,245,245,.9); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: none; content: ""; }
+*/
+#skin_menu { margin: 0 0 50px 0; }
+.menu_bar { background-color: #f8f9fa; background: -webkit-linear-gradient(top,#e8ebee 1px,#fff 0,#fff 2px,#f8f9fa 0); background: linear-gradient(180deg,#e8ebee 1px,#fff 0,#fff 2px,#f8f9fa 0); box-shadow: 0 0 18px rgba(0,0,0,.3); min-height: 50px; position: absolute; left: 0; right: 0; z-index: 100; }
+
+.icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active { text-decoration: none; font-size: 100%; margin-bottom: 10px; display: inline-block; color: #aaaaaa; padding: 0 5px; }
+A.Breadcrumb:hover { color: #aaaaaa; text-decoration: none; }
+
+
+/*---- Header Membre ----*/
+.Membre.pattern_header { background: #1e3c64; position: relative; z-index: 1000; color: white; }
+.menu_bar_membre { background-color: #f8f9fa; background: -webkit-linear-gradient(180deg,#18365d 3.125rem,#18365d 0,#fff 0); background: linear-gradient(180deg,#18365d 3.125rem,#18365d 0,#fff 0); box-shadow: 0 0 18px rgba(0,0,0,.3); min-height: 50px; position: relative; }
+.membre.icon_user a.Breadcrumb, .membre.icon_user .Breadcrumb { color: #bbbbbb; }
+
+.Membre a.btn-logoff { background: url('../images/logoff-blanc.svg') no-repeat; background-size: contain; background-position-x: right; }
+    .Membre a.btn-logoff:hover { background: url('../images/logoff-blanc.svg') no-repeat; background-size: contain; opacity: 0.5; background-position-x: right; }
+.Membre a.btn-profil { background: url('../images/user-blanc.svg') no-repeat; background-size: contain; }
+    .Membre a.btn-profil:hover { background: url('../images/user-blanc.svg') no-repeat; background-size: contain; opacity: 0.5; }
+
+
+/*---- Header Club ----*/
+.Club .logo_style h1 { margin: 0 0 0 10px; border-left: solid 1px #bbbbbb; padding-left: 12px; font-family: 'Open Sans', sans-serif; font-weight: 700; font-size: 20px; }
+
+
+
+/*Scroll To Fixed Fixed*/
+.scroll-to-fixed-fixed#skin_menu { margin: 0; background: #5c85e2; }
+    .scroll-to-fixed-fixed#skin_menu .menu_shadow { display: none; }
+
+/*leftsidebar layout*/
+.LM_position { float: left; width: 22%; padding: 0; }
+.LM_skin_content { float: left; min-height: 350px; width: 78%; padding: 0 0 0 25px; }
+.LM_main_content { padding: 30px 20px 20px 10px; }
+.leftside_style { padding: 0; }
+
+/*page name*/
+.page_name { background: url("../../Rodi2017/images/page_name.jpg") center top; position: relative; min-height: 100px; text-align: center; border-bottom: 1px solid #ccc; }
+.pagename_style { background: none; }
+    .pagename_style h1 { color: #333; font-size: 25px; font-weight: normal; line-height: 60px; position: relative; z-index: 9; margin: 0; padding: 0; }
+.breadcrumb_style { text-align: center; color: #fff; background: rgba(0,0,0,.3); display: inline; padding: 6px 15px; }
+
+
+/*------------- MENU AIS ---------------*/
+/*commun*/
+.Menu { z-index: 9999; font-family: Frutiger, sans-serif; padding: 0 0 0 12px; }
+    .Menu ul, .Menu ul li { list-style: none; }
+
+.MNV1 { margin: 0 0 0 -23px; display: table; width: 100%; padding: 0; }
+    .MNV1 > li { display: table-cell; padding: 0; margin: 0; }
+        .MNV1 > li > a { display: block; padding: 0 20px; height: 50px; line-height: 50px; font-size: 0.95em; white-space: nowrap; }
+
+.MNV2 > li > a { color: #39424a; font-size: 1rem; background: url("../images/arrow1.png") no-repeat -12px center; display: block; float: none; padding: 0 10px 0 27px; font-family: "Open Sans",Helvetica,Arial,"Lucida Grande",sans-serif; }
+.MNV2 > li:hover > a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+.MNV3, .MNV4 { display: block; font-family: "Open Sans",Helvetica,Arial,"Lucida Grande",sans-serif; padding: 10px 0 0 0; font-size: 0.9em; margin: 0; }
+    .MNV3 > li > a { padding: 5px 27px; background: url("../images/arrow1.png") no-repeat -12px center; display: block; float: none; color: #39424a; }
+    .MNV3 > li:hover > a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+.MNV4 { padding-top: 0; }
+    .MNV4 li a { margin-left: 10px; padding: 2px 30px; display: block; float: none; color: #39424a; background: url("../images/arrow1.png") no-repeat -12px center; }
+    .MNV4 li:hover a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+.Public .MNV1 > li:hover > a, .Membre .MNV1 > li:hover > a,
+.Public .MNV2 > li:hover > a, .Membre .MNV2 > li:hover > a,
+.Public .MNV3 > li:hover > a, .Membre .MNV3 > li:hover > a,
+.Public .MNV4 li:hover a, .Membre .MNV4 > li:hover a { color: #0197c1; }
+
+/*public*/
+.Public .MNV1 > li { min-width: 16.666666% }
+    .Public .MNV1 > li > a { color: #5e717d; background: transparent url('../images/arrow1.png') no-repeat -12px center; }
+    .Public .MNV1 > li:hover > a { background-position: 10px center; -webkit-transition: all 0.9s ease-in; -moz-transition: all 0.9s ease-in; -ms-transition: all 0.9s ease-in; -o-transition: all 0.9s ease-in; transition: all 0.9s ease-in; }
+
+.Public .MNV2 { max-height: 0; visibility: hidden; margin: 0; padding: 0; opacity: 0 }
+.Public .MNV1:hover .MNV2 { max-height: 25em; visibility: visible; opacity: 1; -webkit-transition: max-height .3s ease-out .2s,opacity .3s ease-out .2s,visibility 0s linear .5s; -webkit-transition-property: max-height, opacity, visibility; -webkit-transition-duration: 0.3s, 0.3s, 0.3s; -webkit-transition-timing-function: ease-out, ease-out, linear; -webkit-transition-delay: 0.2s, 0.2s, 0.5s; transition: max-height .3s ease-out .2s,opacity .3s ease-out .2s,visibility 0s linear .5s; transition-property: max-height, opacity, visibility; transition-duration: 0.3s, 0.3s, 0.3s; transition-timing-function: ease-out, ease-out, linear; transition-delay: 0.2s, 0.2s, 0.5s; overflow: hidden; }
+.Public .MNV2 > li { padding: 10px 0 0 0; border-left: #e8ebee 1px solid; }
+    .Public .MNV2 > li:first-child { padding: 0; }
+    .Public .MNV2 > li:last-child { padding-bottom: 15px; }
+.Public .MNV3, .Public .MNV4 { padding: 0 0 0 5px; font-size: 0.8em; }
+    .Public .MNV3 > li > a { padding: 2px 0 2px 27px; line-height: 1em; }
+
+/*membre*/
+.skin_width.Membre { position: static; }
+.Membre .MNV1 > li > a { color: #ffffff; background: transparent url('../images/menu.png') no-repeat center 80px; display: table-cell; }
+.Membre .MNV1 > li:hover > a { background-position: center 40px; -webkit-transition: background-position .3s ease-out .2s; -webkit-transition-property: background-position; -webkit-transition-duration: 0.3s; -webkit-transition-timing-function: ease-out; -webkit-transition-delay: 0.5s; transition: background-position .3s ease-out .2s; transition-property: background-position; transition-duration: 0.3s; transition-timing-function: ease-out; transition-delay: 0.5s; }
+
+.Membre .MNV2 { max-height: 0; visibility: hidden; position: absolute; width: 100%; z-index: 3; top: 50px; left: 0; right: 0; background: #ffffff; box-shadow: 0 5px 5px 0 rgba(0,0,0,.1); padding: 25px 0; opacity: 0; margin: 0; }
+.Membre .MNV1 > li:hover .MNV2 { max-height: 15rem; visibility: visible; display: block; opacity: 1; -webkit-transition: max-height .3s ease-out .2s,opacity .3s ease-out .2s,visibility 0s linear .5s; -webkit-transition-property: max-height, opacity, visibility; -webkit-transition-duration: 0.3s, 0.3s, 0.3s; -webkit-transition-timing-function: ease-out, ease-out, linear; -webkit-transition-delay: 0.2s, 0.2s, 0.5s; transition: max-height .3s ease-out .2s,opacity .3s ease-out .2s,visibility 0s linear .5s; transition-property: max-height, opacity, visibility; transition-duration: 0.3s, 0.3s, 0.3s; transition-timing-function: ease-out, ease-out, linear; transition-delay: 0.2s, 0.2s, 0.5s; }
+.Membre .MNV2 > li { display: inline-block; padding: 0 15px; border-left: #e8ebee 1px solid; vertical-align: top; }
+    .Membre .MNV2 > li > a { font-family: Frutiger, sans-serif; }
+.Membre .MNV3 li { display: block; }
+
+
+
+
+
+/*--------- User Profile Style ----------*/
+.user_profile { cursor: pointer; display: block; }
+    .user_profile ul { margin: 0; padding: 5px 0; border: none; }
+    .user_profile .registerGroup, .user_profile .registerGroup * { display: block; }
+    .user_profile .registerGroup { float: left; padding: 0; margin: 0; }
+
+        /* Register Group Styles */
+        .user_profile .registerGroup li { width: 160px; margin: 0; padding: 5px; border: none; border-bottom: 1px solid #ddd; }
+            .user_profile .registerGroup li:first-child { border-top: none; }
+            .user_profile .registerGroup li:last-child { border-bottom: none; }
+        .user_profile .registerGroup .buttonGroup { margin-right: 0; z-index: 99; }
+        .user_profile .registerGroup a { position: relative; display: block; padding: 0 9px; min-width: 15px; font-weight: normal; font-size: 12px; vertical-align: middle; color: #333 !important; height: 28px; vertical-align: middle; line-height: 28px; }
+            .user_profile .registerGroup a:hover { color: #444 !important; text-decoration: none; }
+            .user_profile .registerGroup a:active { color: #444; padding: 0 9px; }
+            .user_profile .registerGroup a strong { position: absolute; left: 0; top: 0; padding-left: 30px; height: 100%; display: block; font-size: 12px; font-weight: normal; overflow: hidden; }
+.registerGroup .userMessages, .registerGroup .userNotifications { background: none; }
+    .registerGroup .userMessages strong, .registerGroup .userNotifications strong { background: url("images/userLoginSprite.png") no-repeat 9px 10px; }
+    .registerGroup .userNotifications strong { background-position: -91px 7px; }
+    .registerGroup .userMessages strong:hover { background-position: 9px -41px; }
+    .registerGroup .userNotifications strong:hover { background-position: -91px -44px; }
+    .registerGroup .userMessages strong:active { background-position: 9px 11px; }
+    .registerGroup .userNotifications strong:active { background-position: -91px 8px; }
+.user_profile .registerGroup a span { position: absolute; right: 5px; top: 2px; display: inline-block; padding: 2px 4px; line-height: 14px; min-width: 7px; text-align: center; margin-right: 3px; background: rgb(31,152,241); font-size: 12px; color: #fff; text-shadow: 0px 1px 0px #333333; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.user_profile .registerGroup li.userDisplayName { border-bottom: none; padding-top: 10px; }
+    .user_profile .registerGroup li.userDisplayName a { padding-left: 32px; }
+.user_profile .registerGroup li.userProfileImg { border-top: none; margin-top: -38px; }
+.user_profile .registerGroup .userProfileImg a { padding: 0; background: none; min-width: 25px; }
+.user_profile .registerGroup a img { border: none; height: 28px; width: 28px; background: #ccc; }
+
+/*--------- Login & Icon Style ----------
+.login_style { float: left; }
+    .login_style .login-button { display: block; cursor: pointer; }
+    .login_style .logout-button { display: block; cursor: pointer; }
+    .login_style .login-button span { position: relative; background: url("images/icon_login.png") no-repeat center center #5c85e2; display: block; height: 40px; width: 40px; overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; border: solid 4px #fff; border: solid 4px rgba(255,255,255,0.5); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; margin: 0 10px; padding: 18px; }
+    .login_style .logout-button span { position: relative; background: url("images/icon_logout.png") no-repeat center center #5c85e2; display: block; height: 40px; width: 40px; overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; border: solid 4px #fff; border: solid 4px rgba(255,255,255,0.5); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; margin: 0 10px; padding: 18px; }
+        .login_style .login-button span:hover, .login_style .logout-button span:hover { border: solid 4px rgba(255,255,255,0.8); }
+        .login_style .login-button span a, .login_style .logout-button span a { position: absolute; top: 0; left: 0; filter: alpha(opacity=0); moz-opacity: 0; -khtml-opacity: 0; opacity: 0; background: #000; padding: 15px; }
+.user_login { display: none; }*/
+
+/*--------- User & Icon Style ----------*/
+.icon_user { color: #e8ebee; padding-top: 30px; }
+    .icon_user.connected { padding-top: 0; }
+    .icon_user a, .icon_user span { color: #019fcb; }
+        .icon_user a:hover { color: #019fcb; text-decoration: underline; }
+/*    .icon_user .MonRotary { background: url('../images/IconUser.png') no-repeat left -22px; padding-left: 20px; margin-left: 8px; }
+        .icon_user .MonRotary:hover { background-position: left -2px; }
+    .icon_user .Localiser { background: url('../images/IconUser.png') no-repeat left -77px; padding-left: 20px; margin-left: 8px; }
+        .icon_user .Localiser:hover { background-position: left -56px; }*/
+.HeadUser { padding: 0 15px; line-height: 2em; }
+
+.membre.icon_user { color: #3465a5; }
+    .membre.icon_user a, .membre.icon_user span { color: #ffffff; }
+        .membre.icon_user a:hover { color: #ffffff; text-decoration: underline; }
+/*    .membre.icon_user .MonRotary { background: url('../images/IconUser2.png') no-repeat left -1px; }
+        .membre.icon_user .MonRotary:hover { background-position: left -1px; }
+.membre .Localiser { background: url('../images/IconUser2.png') no-repeat left -20px; }
+.membre.icon_user .Localiser:hover { background-position: left -20px; }*/
+
+
+/*--------- Language Style ----------*/
+.language-object { text-align: center; display: block; margin: 0; }
+    .language-object span { display: block; width: 100%; }
+    .language-object .Language { margin: 0; }
+    .language-object span img { height: 18px; width: 27px; opacity: 0.9; margin: 10px 0 0 0; }
+    .language-object span:hover img { opacity: 1; }
+    .language-object .Language.selected img { opacity: 1; border-color: #555; border-color: rgba(0,0,0,.1); -webkit-border-radius: 2px; border-radius: 2px; }
+#Language { float: right; display: inline-block; display: block\9; filter: alpha(opacity=0); moz-opacity: 0; -khtml-opacity: 0; opacity: 0; height: 0; max-width: 3px; }
+
+/*--------- Tipsy Style ----------*/
+.tipsy { display: block; float: left; padding: 5px 2px; font-size: 12px; background-repeat: no-repeat; background-image: url("../../Rodi2017/images/tipsy.png"); }
+.tipsy-inner { padding: 6px 8px; background: rgba(245,245,245,.9); color: #555; max-width: 200px; text-align: center; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.tipsy-up { background-position: top center; }
+
+/*--------- Search Style ----------*/
+#Search { position: absolute; top: 10px; right: 18px; }
+.searchcss, a.searchcss:link, a.searchcss:active, a.searchcss:visited { color: #ffffff; text-decoration: none; font-weight: normal; font-size: 12px; display: block; position: absolute; width: 30px; height: 30px; right: 2px; top: 4px; text-indent: -99999px; overflow: hidden; }
+.searchSite { text-indent: -99999px; }
+a.searchcss:hover { color: #000000; text-decoration: none; font-weight: normal; font-size: 12px; }
+#Search input[type=text] { background: #fff; background: rgba(255,255,255,.9); border: none; font-size: 12px; color: #888888; width: 130px; padding: 7px 40px 7px 12px; -webkit-transition: all 0.7s ease 0s; -moz-transition: all 0.7s ease 0s; transition: all 0.7s ease 0s; outline: none; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; }
+    #Search input[type=text]:active, #Search input[type=text]:focus { width: 160px; background: #fff; }
+#Search a { display: block; position: absolute; right: 0; top: 0; height: 38px; width: 25px; padding: 0; border: none; box-shadow: none; webkit-box-shadow: none; overflow: hidden; text-indent: -99999px; background: url("../../Rodi2017/images/icon_search.png") no-repeat 2px 8px; z-index: 1; cursor: pointer; color: #333; }
+ul.searchSkinObjectPreview { z-index: 999 !important; }
+#Search .searchInputContainer a.dnnSearchBoxClearText { right: 25px !important; top: 2px; }
+
+/*--------- CSS Reset for Tablet ----------*/
+@media handheld, only screen and (min-width: 1024px) and (max-width: 1140px) {
+    .MNV2 > li > a { font-size: 0.9rem; }
+}
+
+@media handheld, only screen and (max-width: 1140px) {
+    .menu_box { display: none; float: none; padding: 10px 0 0 0; }
+    .menu_shadow { display: none; }
+}
+
+/*--------- CSS Reset for Mobile ----------*/
+@media handheld, only screen and (max-width: 1024px) {
+    #skin_menu { position: inherit !important; margin: 0; }
+    .logo_style { float: none; padding: 8px 15px; line-height: normal; justify-content: center; }
+    .icons_menu { position: absolute; top: 0; right: 0; height: 60px; font-size: 0; }
+    .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active { margin-bottom: 0; padding: 0 15px; }
+
+    .Club .logo_style h1 { font-size: 18px; }
+
+    a.btn-connexion { display: block; background: url('../images/login.svg') no-repeat; background-size: contain; margin: 0; position: absolute; top: 0; right: 0; height: 27px; }
+        a.btn-connexion:hover { background: url('../images/login.svg') no-repeat; background-size: contain; opacity: 0.5; }
+    a.btn-logoff { display: block; background: url('../images/logoff.svg') no-repeat; background-size: contain; margin: 0; position: absolute; top: 0; right: 0; height: 27px; }
+        a.btn-logoff:hover { background: url('../images/logoff.svg') no-repeat; background-size: contain; opacity: 0.5; }
+    a.btn-profil { display: block; background: url('../images/user.svg') no-repeat; background-size: contain; margin: 0; position: absolute; top: 0; right: 32px; height: 26px; padding-right: 25px; }
+        a.btn-profil:hover { background: url('../images/user.svg') no-repeat; background-size: contain; opacity: 0.5; }
+
+    .headerpane_style { float: none; margin: 0; }
+    .icon_user, .icon_login, .icon_lang { float: none; display: inline-block !important; }
+    .logo_style img { max-height: 40px; }
+    .mobile_nav { display: block; position: relative; }
+
+    .pattern_header { position: fixed !important; top: 0; right: 0; left: 0; }
+
+    .showControlBar .pattern_header { top: 53px; }
+
+    .menuclick { position: fixed; z-index: 1000; height: 60px; width: 60px; border-right: 1px solid #e8ebee; padding: 0; display: block; text-decoration: none; background: #ffffff; }
+    .Membre .menuclick { background: transparent; border-right: 1px solid #3465a5; }
+
+    .click_img { padding: 15px; }
+    .MenuMob { position: fixed; background: rgba(0,0,0,0.4); left: 0px; width: 100%; bottom: 0; top: 60px; z-index: 100; visibility: hidden; }
+    .menu_bar { position: relative; z-index: auto; }
+    .Menu { z-index: 1; }
+        .Menu ul, .Menu ul li { list-style: none; }
+
+    .MNV1 { margin: 0; display: block; width: 100%; padding: 0; }
+
+        .MNV1 > li { display: block; padding: 0; margin: 0; width: auto; }
+
+            .MNV1 > li > a { display: block; padding: 0 27px; height: 50px; line-height: 50px; font-size: 1em; white-space: nowrap; }
+
+    .MNV2 > li > a { color: #39424a; font-size: 1rem; background: url("../images/arrow1.png") no-repeat -12px center; display: block; float: none; padding: 0 27px; }
+
+    .MNV2 > li:hover > a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+    .MNV3, .MNV4 { display: block; font-family: "Open Sans",Helvetica,Arial,"Lucida Grande",sans-serif; padding: 10px 0 0 0; font-size: 0.9em; margin: 0; }
+
+        .MNV3 > li > a { padding: 5px 37px; background: url("../images/arrow1.png") no-repeat -12px center; display: block; float: none; color: #39424a; }
+
+        .MNV3 > li:hover > a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+    .MNV4 { padding-top: 0; }
+
+        .MNV4 li a { margin-left: 10px; padding: 2px 30px; display: block; float: none; color: #39424a; background: url("../images/arrow1.png") no-repeat -12px center; }
+
+        .MNV4 li:hover a { background-position: 10px center; cursor: pointer; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+
+    /*public*/
+    .Public.pattern_header { box-shadow: 0 5px 5px 0 rgba(0,0,0,.1) }
+
+    .Public .MNV1 { position: fixed; left: -800px; width: 65%; bottom: 0; top: 60px; z-index: 100; overflow-y: auto; background: #ffffff; }
+
+    .showControlBar .Public .MNV1 { top: 113px; }
+
+    .Public .MNV1 > li { float: none; width: 100%; }
+
+        .Public .MNV1 > li > a { color: #39424a; background: transparent url('../images/arrow1.png') no-repeat -12px center; }
+
+        .Public .MNV1 > li:hover > a { background-position: 10px center; width: auto; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+    .Public .MNV1:hover .MNV2 { padding-bottom: 0; }
+
+    .Public .MNV2 { max-height: 100%; visibility: visible; z-index: 100; opacity: 1; margin: 0 0 0 15px; padding: 0; width: auto; background: #ffffff; }
+
+    .Public .MNV1:hover .MNV2 { max-height: 100%; visibility: visible; display: block; }
+
+    .Public .MNV3, .Public .MNV4 { padding: 5px 0 0 10px; font-size: 0.9em; }
+
+        .Public .MNV3 > li > a { padding: 2px 0 5px 27px; line-height: 1em; }
+
+
+    /*membre*/
+    .Membre.pattern_header { box-shadow: 0 5px 5px 0 rgba(0,0,0,.1) }
+
+    .Membre .MNV1 { position: fixed; left: -800px; width: 65%; bottom: 0; top: 60px; z-index: 100; overflow-y: auto; background-color: #1e3c64; }
+
+    .showControlBar .Membre .MNV1 { top: 113px; }
+
+    .Membre .MNV1 > li { float: none; width: 100%; }
+
+        .Membre .MNV1 > li > a { color: #ffffff; background: transparent url('../images/arrow1.png') no-repeat -12px center; display: block; }
+
+        .Membre .MNV1 > li:hover > a { background-position: 10px center; width: auto; -webkit-transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in; -ms-transition: all 0.3s ease-in; -o-transition: all 0.3s ease-in; transition: all 0.3s ease-in; }
+
+    .Membre .MNV1:hover .MNV2 { padding-bottom: 0; }
+
+    .Membre .MNV2 { max-height: 100%; visibility: visible; z-index: 100; opacity: 1; margin: 0 0 0 15px; padding: 0; width: auto; position: relative; top: 0; background-color: #1e3c64; box-shadow: none; }
+
+        .Membre .MNV2 > li { border-left: 1px solid #3465a5; display: block; padding: 0; }
+
+            .Membre .MNV2 > li > a { color: #ffffff; font-family: "Open Sans",Helvetica,Arial,"Lucida Grande",sans-serif; padding: 7px 27px; }
+
+    .Membre .MNV1:hover .MNV2 { max-height: 100%; visibility: visible; display: block; }
+
+    .Membre .MNV3, .Membre .MNV4 { padding: 0 0 0 15px; }
+
+        .Membre .MNV3 a, .Membre .MNV4 a { color: #ffffff; }
+
+    .page_name { min-height: 80px; }
+
+    .pagename_style h1 { font-size: 20px; line-height: 45px; }
+}
+
+@media handheld, only screen and (max-width:640px) {
+    .Club .logo_style h1 { font-size: 14px; max-width: 200px; line-height: 1em; padding-left: 5px; margin-left: 4px; }
+    .logo_style { height: 60px; }
+    .Club .logo_style img { max-height: 30px; }
+}
+
+@media handheld, only screen and (max-width:480px) {
+    .Club .logo_style h1 { max-width: 130px; font-size: 12px }
+    .logo_style::after { padding: 5px; }
+}
+
+
+/*--------- Retina Styles ----------*/
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2) {
+    .menuclick { background-image: url("../../Rodi2017/images/retina/btn_menu@2x.png"); -webkit-background-size: 29px 19px; -moz-background-size: 29px 19px; background-size: 29px 19px; }
+    #standardMenu .rootMenu a span .navarrow, #standardMenu .rootMenu a span .navarrow2 { background-image: url("../../Rodi2017/images/retina/mobile_navarrow@2x.png"); -webkit-background-size: 17px 80px; -moz-background-size: 17px 80px; background-size: 17px 80px; }
+    .login_style .login-button span { background-image: url("../../Rodi2017/images/retina/icon_login@2x.png"); -webkit-background-size: 40px 40px; -moz-background-size: 40px 40px; background-size: 40px 40px; }
+    .icon_lang { background-image: url("../../Rodi2017/images/retina/icon_lang@2x.png"); -webkit-background-size: 40px 40px; -moz-background-size: 40px 40px; background-size: 40px 40px; }
+    .icon_user .user-back span, .icon_user .user-back span { background-image: url("../../Rodi2017/images/retina/icon_user@2x.png"); -webkit-background-size: 40px 40px; -moz-background-size: 40px 40px; background-size: 40px 40px; }
+}

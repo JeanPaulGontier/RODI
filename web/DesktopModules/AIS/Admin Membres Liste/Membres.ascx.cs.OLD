@@ -1,0 +1,884 @@
+﻿using DotNetNuke.Entities.Modules;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using AIS;
+using Telerik.Web.UI;
+using System.Drawing;
+using System.IO;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+
+public partial class DesktopModules_AIS_Admin_Membres_Liste : PortalModuleBase
+{
+    DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
+    int presentationtabid
+    {
+        get
+        {
+            int t = 0;
+            int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["presentationtabid"], out t);
+            return t;
+        }
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if ("" + Functions.CurrentCric != HF_Cric.Value)
+        {
+            HF_Cric.Value = "" + Functions.CurrentCric;
+            GridView1.PageIndex = 0;
+            Panel1.Visible = true;
+            Panel2.Visible = false;
+            pnl_Rotaract.Visible = false;
+            pnl_Bouton.Visible = false;
+            
+        }
+        RefreshGrid();
+        
+        BT_Upload_Photo.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Effacer_Photo.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        RB_Autoriser_Publication.Enabled = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Export_CSV.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Export_XLS.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Valider.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Recto.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Verso.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Recto_DOC.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Verso_DOC.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Recto_Docx.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+        BT_Carte_Membre_Verso_Docx.Visible = Functions.CurrentCric != 0 && (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+
+        
+        if(Functions.CurrentCric != 0 &&  (UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsSuperUser))
+        {
+            BT_Upload_Photo2.Visible = true;
+            BT_Effacer_Photo2.Visible = true;
+            RB_Autoriser_Publication.Visible = true;
+            BT_Valider.Visible = true;
+
+            BT_Export_CSV.Visible = true;
+            BT_Export_XLS.Visible = true;            
+            BT_Carte_Membre_Recto.Visible = true;
+            BT_Carte_Membre_Verso.Visible = true;
+            BT_Carte_Membre_Recto_DOC.Visible = true;
+            BT_Carte_Membre_Verso_DOC.Visible = true;
+            BT_Carte_Membre_Recto_Docx.Visible = true;
+            BT_Carte_Membre_Verso_Docx.Visible = true;
+
+        }
+
+        if (!string.IsNullOrEmpty(HF_Cric.Value) && HF_Cric.Value != "0")
+        {
+            Club c = DataMapping.GetClub(int.Parse(HF_Cric.Value));
+            if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsSuperUser) && c.type_club == Const.Club_Rotaract)
+            {
+                btn_Ajout.Visible = true;                
+            }
+            else
+            {
+                btn_Ajout.Visible = false;
+            }
+        }
+        else
+        {
+            btn_Ajout.Visible = false;
+        }
+
+        if(!string.IsNullOrEmpty(hf_Ajout.Value) && hf_Ajout.Value == "o")
+        {
+            Panel1.Visible = false;
+            Panel2.Visible = false;
+            pnl_Rotaract.Visible = true;
+            pnl_Bouton.Visible = true;
+            BT_VCF.Visible = false;
+            BT_CreateDNNUser.Visible = false;
+            BT_Supprimer.Visible = false;
+            BT_Valider.Visible = false;
+            BT_Ajouter.Visible = true;
+        }
+
+        if (!string.IsNullOrEmpty(hf_Supp.Value) && hf_Supp.Value == "o")
+        {
+            Panel1.Visible = false;
+            pnl_Bouton.Visible = true;
+            BT_Ajouter.Visible = false;
+            Panel2.Visible = false;
+            pnl_Rotaract.Visible = true;
+            BT_Supprimer.Visible = true;
+            rbtl_radie.Enabled = true;
+        }
+
+    }
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        switch (e.CommandName)
+        {
+            case "Sort":
+                
+                break;
+            case "detail":
+                GridView gv = sender as GridView;
+                int index =  (gv.PageIndex*gv.PageSize) + Convert.ToInt32(e.CommandArgument);
+                List<Membre> membres = gv.DataSource as List<Membre>;
+
+                Membre membre = membres[index];
+                HF_id.Value = ""+membre.id;
+
+                RotarienBinding(membre);
+                RotaractBinding(membre);
+                Club c = DataMapping.GetClub(membre.cric);
+                hf_type_club.Value = c.type_club;
+
+                Panel1.Visible = false;
+                pnl_Bouton.Visible = true;
+                BT_Ajouter.Visible = false;
+
+                if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsSuperUser) && c.type_club == Const.Club_Rotaract)
+                {
+                    Panel2.Visible = false;
+                    pnl_Rotaract.Visible = true;
+                    BT_Supprimer.Visible = true;
+                    hf_Supp.Value = "o";
+                    rbtl_radie.Enabled = true;
+                }
+                else if ((membre.userid == UserInfo.UserID || UserInfo.IsSuperUser) && c.type_club == Const.Club_Rotaract) //Cas où le membre loggué va sur sa fiche et que c'est un ROTARACT
+                {
+                    Panel2.Visible = false;
+                    pnl_Rotaract.Visible = true;
+                    BT_Supprimer.Visible = false;
+                    BT_Valider.Visible = true;
+                    RB_Autoriser_Publication.Visible = true;
+                    rbtl_radie.Enabled = false;
+                }
+                else
+                {
+                    Panel2.Visible = true;
+                    pnl_Rotaract.Visible = false;
+                    BT_Supprimer.Visible = false;
+                }
+                
+
+                BT_CreateDNNUser.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+
+                break;
+        }
+    }
+    
+    protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+    {
+        tri.Value = ""+e.SortExpression;
+        sens.Value= sens.Value=="ASC"?sens.Value="DESC":sens.Value="ASC";
+        RefreshGrid();
+    }
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        if (GridView1.PageIndex == e.NewPageIndex)
+        {
+            e.Cancel = true;
+            return;
+        }
+        GridView1.PageIndex = e.NewPageIndex;
+        RefreshGrid();        
+    }
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.DataItem == null)
+            return;        
+
+        HyperLink hlk = (HyperLink)e.Row.FindControl("HLK_Presentation");
+        if (((Membre)e.Row.DataItem).presentation == true)
+        {
+            e.Row.Font.Bold = true;
+            hlk.NavigateUrl = Functions.UrlAddParam(Globals.NavigateURL(presentationtabid), "UserId", "" + ((Membre)e.Row.DataItem).userid);
+        }
+        else
+        {
+            hlk.Visible = false;
+        }
+    }
+
+
+    void RefreshGrid()
+    {
+        List<Membre> membres = null;
+        if (tri.Value != "presentation")
+        {
+            membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: tri.Value + " " + sens.Value, index: GridView1.PageIndex, max: GridView1.PageSize, critere: TXT_Critere.Text);
+        }
+        else
+        {
+            membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: " nom ASC ", index: GridView1.PageIndex, max: GridView1.PageSize, critere: TXT_Critere.Text);
+        }
+
+        List<int> lesPresentations = DataMapping.Get_List_Presentation_Actif();
+
+        if (lesPresentations != null && membres != null)
+        {
+            foreach (int i in lesPresentations)
+            {
+                Membre lemembre = membres.Find(m => m.userid == i);
+                if (lemembre != null)
+                {
+                    lemembre.presentation = true;   
+                }
+            }
+        }
+
+        if (tri.Value == "presentation")
+        {
+           
+            if (sens.Value == "ASC")
+            {
+                membres.OrderBy(x => x.presentation);
+            }
+            else
+            {
+                membres.OrderByDescending(x => x.presentation);
+            }
+        }
+
+        GridView1.DataSource = membres;
+        GridView1.DataBind();
+        string s = membres.Count > 1 ? "s" : "";
+        LBL_Nb.Text = membres.Count + " membre" + s ;
+    }
+    string GetNomClub()
+    {
+        if (Functions.CurrentClub != null)
+            return "du club "+Functions.CurrentClub.nom;
+        return "";
+    }
+    protected void BT_Export_XLS_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue,critere:TXT_Critere.Text);
+        GridViewExport.DataSource = membres;
+        GridViewExport.DataBind();
+
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres"+GetNomClub()+".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Export_CSV_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        GridViewExport.DataSource = membres;
+        GridViewExport.DataBind();
+
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".csv", Aspose.Cells.SaveFormat.CSV);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+
+    protected void BT_Annuler_Click(object sender, EventArgs e)
+    {
+        RefreshGrid();
+        Panel1.Visible = true;
+        Panel2.Visible = false;
+        pnl_Rotaract.Visible = false;
+        pnl_Bouton.Visible = false;
+        hf_Ajout.Value = "";
+        hf_Supp.Value = "";
+
+    }
+
+    protected void BT_Valider_Click(object sender, EventArgs e)
+    {
+        if (hf_type_club.Value != null && hf_type_club.Value == Const.Club_Rotaract)
+        {
+            Membre m = Get_Rotaract();
+            if(m != null)
+            {
+                if (!DataMapping.UpdateMembre(m))
+                {
+                    return;
+                }
+
+                if (Session[HF_Photo2.Value] != null)
+                {
+                    File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBRES_PHOTOS_PREFIX + HF_Photo2.Value), ((Media)Session[HF_Photo2.Value]).content);
+                    Session[HF_Photo2.Value] = null;
+                }
+            }
+        }
+        else
+        {
+            if (!DataMapping.UpdateMembre(int.Parse(HF_id.Value), HF_Photo.Value, RB_Autoriser_Publication.SelectedValue == Const.YES))
+            {
+                return;
+            }
+
+            if (Session[HF_Photo.Value] != null)
+            {
+                File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBRES_PHOTOS_PREFIX + HF_Photo.Value), ((Media)Session[HF_Photo.Value]).content);
+                Session[HF_Photo.Value] = null;
+            }
+        }
+
+        RefreshGrid();
+        Panel1.Visible = true;
+        Panel2.Visible = false;
+        pnl_Rotaract.Visible = false;
+        pnl_Bouton.Visible = false;
+    }
+
+    #region ROTARIEN
+    protected void RotarienBinding(Membre membre)
+    {
+        try
+        {
+            LBL_NIM.Text = "" + membre.nim;
+            LBL_Nom.Text = membre.prenom + " " + membre.nom;
+            //LBL_Civilite.Text = membre.civilite;
+
+            LBL_Fonction_Metier.Text = membre.fonction_metier;
+            LBL_Branche_Activite.Text = membre.branche_activite;
+
+            LBL_Membre_Honneur.Text = membre.membre_honneur == Const.YES ? "Membre d'honneur" : "";
+            string compl = membre.membre_honneur == "" ? "&nbsp;|&nbsp;" : "";
+            if (membre.civilite == "M")
+                LBL_Retraite.Text = membre.retraite == Const.YES ? "&nbsp;| Retraité" + compl : "&nbsp;| En activité" + compl;
+            else
+                LBL_Retraite.Text = membre.retraite == Const.YES ? "&nbsp;| Retraitée" + compl : "&nbsp;| En activité" + compl;
+            LBL_DT_Entree_Rotary.Text = membre.annee_adhesion_rotary != null ? "" + ((DateTime)membre.annee_adhesion_rotary).Year : "inconnue";
+            LBL_DT_Naissance.Text = membre.annee_naissance != null ? "" + ((DateTime)membre.annee_naissance).Year + " (" + ((int)((DateTime.Now - (DateTime)membre.annee_naissance).TotalDays / 365.25)) + " ans)" : "inconnue";
+
+            IMG_Photo.ImageUrl = membre.GetPhoto();
+            HF_Photo.Value = membre.photo;
+            BT_Effacer_Photo.Visible = membre.photo != "";
+
+            RB_Autoriser_Publication.SelectedValue = membre.visible;
+
+            LBL_Adresse.Text = membre.adresse_1;
+            if (membre.adresse_2 != "")
+                LBL_Adresse.Text += "<br/>" + membre.adresse_2;
+            if (membre.adresse_3 != "")
+                LBL_Adresse.Text += "<br/>" + membre.adresse_3;
+            LBL_Adresse.Text += "<br/>" + membre.code_postal + " " + membre.ville;
+            LBL_Email.Text = membre.email;
+            LBL_Emailt.Visible = membre.email != "";
+            LBL_Tel.Text = membre.telephone;
+            LBL_Telt.Visible = membre.telephone != "";
+            LBL_Gsm.Text = membre.gsm;
+            LBL_GSMt.Visible = membre.gsm != "";
+            LBL_Fax.Text = membre.fax;
+            LBL_Faxt.Visible = membre.fax != "";
+
+            Panel_Coord_Pro.Visible = (membre.adresse_professionnelle + membre.code_postal_professionnel + membre.ville_professionnel + membre.tel_professionnel + membre.fax_professionnel + membre.portable_professionnel).Trim() != "";
+            LBL_Adresse_Pro.Text = membre.adresse_professionnelle;
+            LBL_Adresse_Pro.Text += "<br/>" + membre.code_postal_professionnel + " " + membre.ville_professionnel;
+            LBL_Email_Pro.Text = membre.email_professionnel;
+            LBL_Email_Prot.Visible = membre.email_professionnel != "";
+            LBL_Tel_Pro.Text = membre.tel_professionnel;
+            LBL_Tel_Prot.Visible = membre.tel_professionnel != "";
+            LBL_FAX_Pro.Text = membre.fax_professionnel;
+            LBL_Fax_Prot.Visible = membre.fax_professionnel != "";
+            LBL_GSM_Pro.Text = membre.portable_professionnel;
+            LBL_GSM_Prot.Visible = membre.portable_professionnel != "";
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+        }
+    }
+    protected void BT_Upload_Photo_Click(object sender, EventArgs e)
+    {
+        if (FU_Photo.UploadedFiles.Count > 0)
+        {
+            UploadedFile file = FU_Photo.UploadedFiles[0];
+            string filename = Functions.ClearFileName(LBL_Nom.Text+".jpg");
+
+            Bitmap bmp = new Bitmap(file.InputStream);
+            bmp = Functions.ThumbByWidth(bmp, Const.MEMBRES_PHOTOS_WIDTH);
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            HF_Photo.Value = filename;
+            
+            Media media = new Media();
+            media.content = ms.GetBuffer();
+            media.content_size = media.content.Length;
+            media.dt = DateTime.Now;
+            media.w = bmp.Width;
+            media.h = bmp.Height;
+            media.name = filename;
+            media.content_type = "image/jpeg";
+            Session[HF_Photo.Value] = media;
+            
+            IMG_Photo.ImageUrl = Const.MEDIA_VIEW_URL+"?id="+filename;
+            BT_Effacer_Photo.Visible = true;
+        }
+    }
+    protected void BT_Effacer_Photo_Click(object sender, EventArgs e)
+    {
+        BT_Effacer_Photo.Visible = false;
+        Session[HF_Photo.Value] = null;
+        HF_Photo.Value = "";
+        if (LBL_Civilite.Text == "M")
+            IMG_Photo.ImageUrl = Const.MEMBRES_NOPHOTO_H;
+        else
+            IMG_Photo.ImageUrl = Const.MEMBRES_NOPHOTO_F;
+    }
+    #endregion ROTARIEN
+
+    #region ROTARACT
+    protected void BT_Effacer_Photo2_Click(object sender, EventArgs e)
+    {
+        BT_Effacer_Photo2.Visible = false;
+        Session[HF_Photo2.Value] = null;
+        HF_Photo2.Value = "";
+        if (LBL_Civilite.Text == "M")
+            IMG_Photo2.ImageUrl = Const.MEMBRES_NOPHOTO_H;
+        else
+            IMG_Photo2.ImageUrl = Const.MEMBRES_NOPHOTO_F;
+    }
+
+    protected void BT_Upload_Photo2_Click(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(tbx_nom.Text))
+        {
+            if (FU_Photo2.UploadedFiles.Count > 0)
+            {
+                UploadedFile file = FU_Photo2.UploadedFiles[0];
+                string filename = Functions.ClearFileName(tbx_nom.Text + ".jpg");
+
+                Bitmap bmp = new Bitmap(file.InputStream);
+                bmp = Functions.ThumbByWidth(bmp, Const.MEMBRES_PHOTOS_WIDTH);
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                HF_Photo2.Value = filename;
+
+                Media media = new Media();
+                media.content = ms.GetBuffer();
+                media.content_size = media.content.Length;
+                media.dt = DateTime.Now;
+                media.w = bmp.Width;
+                media.h = bmp.Height;
+                media.name = filename;
+                media.content_type = "image/jpeg";
+                Session[HF_Photo2.Value] = media;
+
+                IMG_Photo2.ImageUrl = Const.MEDIA_VIEW_URL + "?id=" + filename;
+                BT_Effacer_Photo2.Visible = true;
+            }
+        }
+        else
+        {
+            BT_Effacer_Photo2.Visible = false;
+            Response.Write("<script LANGUAGE='JavaScript' >alert('Vous devez saisir le nom du membre avant!');</script>");            
+        }
+    }
+
+    protected void RotaractBinding(Membre membre)
+    {
+        try
+        {
+            IMG_Photo2.ImageUrl = membre.GetPhoto();
+            HF_Photo2.Value = membre.photo;
+            BT_Effacer_Photo2.Visible = membre.photo != "";
+
+            if (membre.civilite == "M")
+            {
+                rbtl_civilite.SelectedValue = "M";
+            }
+            else
+            {
+                rbtl_civilite.SelectedValue = "Mme";
+            }
+
+            tbx_titre.Text = "" + membre.titre;
+            tbx_nom.Text = "" + membre.nom;
+            tbx_prenom.Text = "" + membre.prenom;
+            if (membre.annee_naissance != null)
+            {
+                dpk_ann_Naiss.SelectedDate = membre.annee_naissance;
+            }
+            tbx_nom_JF.Text = "" + membre.nom_jeune_fille;
+            tbx_prenom_Conjoint.Text = "" + membre.prenom_conjoint;
+            tbx_bio.Text = "" + membre.biographie;
+
+            tbx_adresse1.Text = "" + membre.adresse_1;
+            tbx_adresse2.Text = "" + membre.adresse_2;
+            tbx_adresse3.Text = "" + membre.adresse_3;
+            tbx_cp.Text = "" + membre.code_postal;
+            tbx_ville.Text = "" + membre.ville;
+            tbx_pays.Text = "" + membre.pays;
+            tbx_email.Text = "" + membre.email;
+            tbx_telephone.Text = "" + membre.telephone;
+            tbx_fax.Text = "" + membre.fax;
+            tbx_gsm.Text = "" + membre.gsm;
+
+            tbx_fct_metier.Text = "" + membre.fonction_metier;
+            tbx_branche.Text = "" + membre.branche_activite;
+            if (membre.retraite == Const.YES)
+            {
+                rbtl_retraite.SelectedValue = "O";
+            }
+            else
+            {
+                rbtl_retraite.SelectedValue = "N";
+            }
+
+            tbx_adresse_pro.Text    = "" + membre.adresse_professionnelle;
+            tbx_cp_pro.Text         = "" + membre.code_postal_professionnel;
+            tbx_ville_pro.Text      = "" + membre.ville_professionnel;
+            tbx_email_pro.Text      = "" + membre.email_professionnel;
+            tbx_tel_pro.Text        = "" +  membre.tel_professionnel;
+            tbx_fax_pro.Text        = "" +  membre.fax_professionnel;
+            tbx_gsm_pro.Text        = "" +  membre.portable_professionnel;
+
+            lbl_district3.Text = "" + membre.district_id;
+            lbl_club3.Text = "" + membre.nom_club;
+            if (membre.membre_honneur == Const.YES)
+            {
+                rbtl_membre_H.SelectedValue = "O";
+            }
+            else
+            {
+                rbtl_membre_H.SelectedValue = "N";
+            }
+
+            if (membre.membre_actif == Const.YES)
+            {
+                rbtl_membre_A.SelectedValue = "O";
+            }
+            else
+            {
+                rbtl_membre_A.SelectedValue = "N";
+            }
+
+            if (membre.annee_adhesion_rotary != null)
+            {
+                dpk_ann__adh_Rot.SelectedDate = membre.annee_adhesion_rotary;
+            }
+
+            if (membre.radie == Const.YES)
+            {
+                rbtl_radie.SelectedValue = "O";
+            }
+            else
+            {
+                rbtl_radie.SelectedValue = "N";
+            }
+
+            RB_Autoriser_Publication.SelectedValue = membre.visible;
+
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+        }
+    }
+
+    protected Membre Get_Rotaract()
+    {
+        try
+        {
+            Membre membre = new Membre();
+
+            if (!string.IsNullOrEmpty(HF_id.Value))
+            {
+                membre.id = int.Parse(HF_id.Value);
+            }
+
+            if (!string.IsNullOrEmpty(LBL_NIM.Text))
+            {
+                membre.nim = int.Parse(LBL_NIM.Text);
+            }
+            membre.cric = int.Parse(HF_Cric.Value);
+            membre.photo = "" + HF_Photo2.Value;
+            
+            membre.civilite = rbtl_civilite.SelectedValue;
+
+            membre.titre = "" + tbx_titre.Text;
+            membre.nom = "" + tbx_nom.Text;
+            membre.prenom = "" + tbx_prenom.Text;
+            if(dpk_ann_Naiss.SelectedDate != null && dpk_ann_Naiss.SelectedDate > DateTime.MinValue)
+            {
+                membre.annee_naissance = dpk_ann_Naiss.SelectedDate;
+            }
+            membre.nom_jeune_fille = "" + tbx_nom_JF.Text;
+            membre.prenom_conjoint = "" + tbx_prenom_Conjoint.Text;
+            membre.biographie = "" + tbx_bio.Text;
+            membre.adresse_1 = "" + tbx_adresse1.Text;
+            membre.adresse_2 = "" + tbx_adresse2.Text;
+            membre.adresse_3 = "" + tbx_adresse3.Text;
+            membre.code_postal = "" + tbx_cp.Text;
+            membre.ville = "" + tbx_ville.Text;
+            membre.pays = "" + tbx_pays.Text;
+            membre.email = "" + tbx_email.Text;
+            membre.telephone = "" + tbx_telephone.Text;
+            membre.fax = "" +   tbx_fax.Text;
+            membre.gsm = "" + tbx_gsm.Text;
+            membre.fonction_metier = "" + tbx_fct_metier.Text;
+            membre.branche_activite = "" + tbx_branche.Text;
+            membre.retraite = rbtl_retraite.SelectedValue;
+            membre.adresse_professionnelle     = "" + tbx_adresse_pro.Text;
+            membre.code_postal_professionnel   = "" + tbx_cp_pro.Text     ;
+            membre.ville_professionnel         = "" + tbx_ville_pro.Text  ;
+            membre.email_professionnel         = "" + tbx_email_pro.Text  ;
+            membre.tel_professionnel           = "" + tbx_tel_pro.Text    ;
+            membre.fax_professionnel           = "" + tbx_fax_pro.Text    ;
+            membre.portable_professionnel      = "" + tbx_gsm_pro.Text    ;
+            membre.district_id = int.Parse(lbl_district3.Text);
+            membre.nom_club = "" + lbl_club3.Text;
+            membre.membre_honneur = rbtl_membre_H.SelectedValue;
+            membre.membre_actif = "" + rbtl_membre_A.SelectedValue;
+            if (dpk_ann__adh_Rot.SelectedDate != null && dpk_ann__adh_Rot.SelectedDate > DateTime.MinValue)
+            {
+                membre.annee_adhesion_rotary = dpk_ann__adh_Rot.SelectedDate;
+            }
+            membre.visible = RB_Autoriser_Publication.SelectedValue;
+            membre.radie = rbtl_radie.SelectedValue;
+
+            membre.datemaj_base = DateTime.Now;
+
+            return membre;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+
+    protected void BT_Supprimer_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (!DataMapping.DeleteMembre(int.Parse(HF_id.Value)))
+            {
+                return;
+            }
+
+            RefreshGrid();
+            Panel1.Visible = true;
+            Panel2.Visible = false;
+            pnl_Rotaract.Visible = false;
+            pnl_Bouton.Visible = false;
+            CleartextBoxes(pnl_Rotaract);
+            hf_Ajout.Value = "";
+            hf_Supp.Value = "";
+        }
+        catch(Exception ee)
+        {
+            Functions.Error(ee);
+        }
+    }
+
+    protected void btn_Ajout_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsSuperUser)
+            {
+                Panel1.Visible = false;
+                Panel2.Visible = false;
+                pnl_Rotaract.Visible = true;
+                pnl_Bouton.Visible = true;
+
+                CleartextBoxes(pnl_Rotaract);
+                
+
+                BT_VCF.Visible = false;                
+                BT_CreateDNNUser.Visible = false;
+                BT_Supprimer.Visible = false;
+                BT_Valider.Visible = false;
+                BT_Ajouter.Visible = true;
+                hf_Ajout.Value = "o";
+            }
+        }
+        catch(Exception ee)
+        {
+            Functions.Error(ee);
+        }
+    }
+
+    protected void BT_Ajouter_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            Membre m = Get_Rotaract();
+            if(m != null)
+            {
+                if (!DataMapping.InsertMembre(m))
+                {
+                    return;
+                }
+
+                if (Session[HF_Photo2.Value] != null)
+                {
+                    File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBRES_PHOTOS_PREFIX + HF_Photo2.Value), ((Media)Session[HF_Photo2.Value]).content);
+                    Session[HF_Photo2.Value] = null;
+                }
+
+                CleartextBoxes(pnl_Rotaract);
+                hf_Ajout.Value = "";
+                hf_Supp.Value = "";
+            }
+
+            RefreshGrid();
+            Panel1.Visible = true;
+            Panel2.Visible = false;
+            pnl_Rotaract.Visible = false;
+            pnl_Bouton.Visible = false;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+        }
+    }
+
+    public void CleartextBoxes(Control parent)
+    {
+        BT_Effacer_Photo2.Visible = false;
+        IMG_Photo2.ImageUrl = Const.MEMBRES_NOPHOTO_F;
+        rbtl_civilite.SelectedValue = "M";
+        rbtl_retraite.SelectedValue = "N";
+        rbtl_membre_H.SelectedValue = "N";
+        rbtl_membre_A.SelectedValue = "O";
+        rbtl_radie.SelectedValue = "N";
+        RB_Autoriser_Publication.SelectedValue = "O";
+        rbtl_radie.Enabled = true;
+        lbl_district3.Text = "" + Const.DISTRICT_ID;
+        lbl_club3.Text = Functions.CurrentClub.nom;        
+        dpk_ann_Naiss.SelectedDate = null;
+        HF_Photo2.Value = "";
+        dpk_ann__adh_Rot.SelectedDate = null;
+
+        foreach (Control c in parent.Controls)
+        {
+            if ((c.GetType() == typeof(TextBox)))
+            {
+
+                ((TextBox)(c)).Text = "";
+            }
+            
+            //else if ((c.GetType() == typeof(RadioButton)))
+            //{
+
+            //    ((RadioButton)(c)).Checked = false;
+            //}
+
+            if (c.HasControls())
+            {
+                CleartextBoxes(c);
+            }
+        }
+    } 
+    #endregion ROTARACT
+
+    protected void TXT_Critere_TextChanged(object sender, EventArgs e)
+    {
+        GridView1.PageIndex = 0;
+        RefreshGrid();
+    }
+    protected void BT_Carte_Membre_Recto_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.pdf");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Carte_Membre_Verso_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_VERSO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".verso.pdf");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Carte_Membre_Recto_DOC_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.doc", typemime: "application/msword");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Carte_Membre_Verso_DOC_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_VERSO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".verso.doc", typemime: "application/msword");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Carte_Membre_Recto_DOCX_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.docx", typemime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Carte_Membre_Verso_DOCX_Click(object sender, EventArgs e)
+    {
+        List<Membre> membres = DataMapping.ListeMembres(cric: Functions.CurrentCric, tri: "nom asc", max: int.MaxValue, critere: TXT_Critere.Text);
+        List<Affectation> affectations = DataMapping.ListeAffectationAR(Functions.CurrentCric, Functions.GetAnneeRotarienne());
+        Media media = DataMapping.ProductionDocument(Const.MEMBRES_CARTES_VERSO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".verso.docx", typemime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_CreateDNNUser_Click(object sender, EventArgs e)
+    {
+        BT_CreateDNNUser.Visible = !DataMapping.UpdateOrCreateUser(int.Parse(HF_id.Value),LBL_Email.Text);
+    }
+    public string FormatText(string ch)
+    {
+        return ch.Replace("<br/>", ";").Replace(Environment.NewLine, ";").Replace("é", "e").Replace("è", "e").Replace("à", "a").Replace("ù", "u");;
+    }
+    protected void BT_VCF_Click(object sender, EventArgs e)
+    {
+        int nim = 0;
+        int.TryParse(LBL_NIM.Text,out nim);
+        Membre membre = DataMapping.GetMembreByNim(nim);
+        if (membre == null)
+            return;
+        string vcard = "BEGIN:VCARD" + Environment.NewLine + 
+            "VERSION:3.0" + Environment.NewLine + 
+            "KIND:individual" + Environment.NewLine + "FN:" + LBL_Nom.Text + Environment.NewLine +
+            "PHOTO;VALUE=URL:http://www.rotary1730.org" + IMG_Photo.ImageUrl + Environment.NewLine +
+            "ADR;TYPE=PREF,HOME:;;" + FormatText(LBL_Adresse.Text) + Environment.NewLine +
+            "LABEL;TYPE=HOME:" + FormatText(LBL_Adresse_Pro.Text) + Environment.NewLine +
+            "ADR;TYPE=WORK:;;" + FormatText(LBL_Adresse_Pro.Text) + Environment.NewLine +
+            "LABEL;TYPE=WORK:" + FormatText(LBL_Adresse_Pro.Text) + Environment.NewLine +
+            "TEL;TYPE=HOME,VOICE:" + LBL_Tel.Text + Environment.NewLine +
+            "TEL;TYPE=HOME,VOICE:" + LBL_Gsm.Text + Environment.NewLine +
+            "TEL;TYPE=WORK,VOICE:" + LBL_Tel_Pro.Text + Environment.NewLine +
+            "TEL;TYPE=WORK,VOICE:" + LBL_GSM_Pro.Text + Environment.NewLine +
+            "EMAIL;TYPE=PREF,INTERNET:" + LBL_Email.Text + Environment.NewLine +
+            "ORG:RC " + membre.nom_club + Environment.NewLine + 
+            "END:VCARD";
+        
+        Media media = new Media();
+        media.name = LBL_Nom.Text + ".vcf";
+        media.content_type = "text/x-vcard";
+        //media.name = LBL_Nom.Text + ".txt";
+        //media.content_type = "text/plain";
+        media.dt = DateTime.Now;
+        media.content = Functions.StringToBytes(vcard);
+        media.content_size = media.content.Length;
+
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+
+
+
+    
+}

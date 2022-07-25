@@ -1,0 +1,211 @@
+
+/*////////////////////////////////////////////////
+BASES
+//////////////////////////////////////////////*/
+.appli {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--white);
+    overflow: auto;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+a {
+    color: var(--blue);
+}
+.lien {
+    cursor: pointer;
+    text-decoration: none;
+}
+.lien:hover {
+    color: var(--blue);
+    text-decoration: underline;
+}
+/*////////////////////////////////////////////////
+MEETING
+//////////////////////////////////////////////*/
+.meeting {
+    width: 90%;
+    margin: auto;
+}
+.meetingEdit {
+    margin: auto;
+    width: 90%;
+}
+.meetingEditSection {
+    padding: 2rem;
+}
+
+
+.trLink {
+    cursor: pointer;
+}
+.trLink:hover {
+    color: var(--blue);
+}
+
+.trashCol {
+    width: 3rem;
+}
+
+.datetimeCol {
+    text-align: center;
+}
+.newMeetingBt {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+.edit {
+    color: var(--mediumblue);
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+.edit:hover {
+    color: var(--lightblue);
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+.meetingDescription {
+    margin: 1.5rem;
+}
+
+/*////////////////////////////////////////////////
+CHECKBOXES
+//////////////////////////////////////////////*/
+/* The container */
+.container {
+    text-align: center;
+    position: relative;
+    margin-left: 45%;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2rem;
+    width: 2rem;
+    background-color: rgb(207, 207, 207);
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: var(--blue);
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: var(--mediumblue);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 0.8rem;
+    top: 0.25rem;
+    width: 0.5rem;
+    height: 1.3rem;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/*////////////////////////////////////////////////
+INPUT
+//////////////////////////////////////////////*/
+
+input {
+    outline: none !important;
+    border: 0px solid transparent;
+    background-color: transparent;
+    padding: 1rem;
+    transition: all;
+    width: min-content;
+    color: var(--mediumblue);
+}
+
+input:focus {
+    background-color: var(--lightblue);
+    color: white;
+}
+
+.inputWithBorder {
+    background-color: var(--beige);
+    width: 100%;
+}
+
+label.editLabel {
+    display: block;
+    font-size: 1.6rem;
+    background-color: var(--mediumblue);
+    color: white;
+    height: 3rem;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+}
+
+input[type="date"] {
+    font-size: 1.6rem;
+    
+}
+
+input[type="time"] {
+    font-size: 1.6rem;
+}
+/*////////////////////////////////////////////////
+MODAL
+//////////////////////////////////////////////*/
+.modalContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(15, 15, 15, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all;
+}
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25rem;
+    height: 10rem;
+    background-color: var(--beige);
+    box-shadow: 0rem 0.5rem 1rem #888888;
+    z-index: 50;
+}

@@ -1,0 +1,360 @@
+﻿<script type="text/x-template" id="meetingedit-template">
+    <div>
+        <div class="row">
+
+            <div class="col-sm-3 ">
+                <button type="button" @click="cancel()" class="btn btn-default">Retour</button>&nbsp;
+                <button type="button" v-if="isValid()" @click="saveMeeting()" class="btn btn-primary">Valider</button>
+            </div>
+            <div class="col-sm-7 ">
+            </div>
+
+            <div class="col-sm-2">
+                <button type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
+            </div>
+        </div>
+
+        
+        <div>
+            <div class="pe-spacer size20" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="active">Active</label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="radio-inline"><input type="radio" name="active" value="O" v-model="meeting.active">Oui</label>
+                    <label class="radio-inline"><input type="radio" name="active" value="N" v-model="meeting.active">Non</label>
+                </div>
+            </div>
+            <div class="pe-spacer size10" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="type">Type</label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="radio-inline"><input type="radio" name="type" value="unitary" v-model="meeting.type" :disabled="nouveau==false">Unique</label>
+                    <label class="radio-inline"><input type="radio" name="type" value="periodic" v-model="meeting.type" :disabled="nouveau==false">Périodique</label>
+                </div>
+                
+            </div>
+            <div class="pe-spacer size10" />
+
+            <div v-if="meeting.type=='unitary'">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="dtstart">Début</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="dtstart" class="form-control" type="datetime-local" v-model="meeting.dtstart">
+                    </div>
+                </div>
+                <div class="pe-spacer size10" />
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="dtend">Fin</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input id="dtend" class="form-control" type="datetime-local" v-model="meeting.dtend">
+                        <em v-if="dateEndNotValid()" class="text-danger">La date de fin doit être postérieure à la date de début</em>
+                    </div>
+                    <div class="col-sm-3">
+                        <span v-if="meeting.dtstart!=''">
+                            <button type="button" class="btn btn-default" v-on:click="setEnd(1)">+1H</button>&nbsp;
+                            <button type="button" class="btn btn-default" v-on:click="setEnd(2)">+2H</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="pe-spacer size10"></div>
+            </div>
+            <div v-if="meeting.type=='periodic'">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>P&eacute;riodes :</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        <button v-if="meeting.periods.length==0" type="button" class="btn btn-default" v-on:click="addPeriod()">Ajouter une p&eacute;riode</button>
+
+                        <table v-if="meeting.periods.length>0" class="table">
+                            <tr>
+                                <td width="100">Semaine</td>
+                                <td v-for="p in meeting.periods" width="100">
+                                    <select v-model="p.num" class="form-control">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </td>
+                                <td rowspan="5">
+                                    <button v-if="meeting.periods.length<6" type="button" class="btn btn-primary" v-on:click="addPeriod()" title="Ajouter une période"><i class="fa fa-plus"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jour</td>
+                                <td v-for="p in meeting.periods">
+                                    <select v-model="p.day" class="form-control">
+                                        <option>Lundi</option>
+                                        <option>Mardi</option>
+                                        <option>Mercredi</option>
+                                        <option>Jeudi</option>
+                                        <option>Vendredi</option>
+                                        <option>Samedi</option>
+                                        <option>Dimanche</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Début</td>
+                                <td v-for="p in meeting.periods">
+                                    <input id="dtstart" class="form-control" type="time" v-model="p.start" v-on:change="p.end=p.start">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Fin</td>
+                                <td v-for="p in meeting.periods">
+                                    <input id="dtend" class="form-control" type="time" v-model="p.end">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td v-for="(p,index) in meeting.periods">
+                                    <button type="button" v-on:click="this.meeting.periods.splice(index,1)" class="btn btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <em>
+                        Le r&eacute;union p&eacute;riodique va cr&eacute;er automatiquement des r&eacute;unions unitaires &agrave; J+7 selon les jours de la semaine d&eacute;finis dans les p&eacute;riodes
+                    </em>
+                </div>
+                <div class="pe-spacer size10" />
+            </div>
+              
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="name">Nom de la réunion</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input id="name" class="form-control" type="text" v-model="meeting.name" size="255">
+                    </div>
+                </div>
+                <div class="pe-spacer size10" />
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="statutory">Réunion statutaire</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="radio-inline"><input type="radio" name="statutory" value="O" v-model="meeting.statutory">Oui</label>
+                        <label class="radio-inline"><input type="radio" name="statutory" value="N" v-model="meeting.statutory">Non</label>
+                    </div>
+                </div>
+                <div class="pe-spacer size10" />
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label for="mustnotify">Notification aux membres du club</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="radio-inline"><input type="radio" name="mustnotify" value="O" v-model="meeting.mustnotify">Oui</label>
+                        <label class="radio-inline"><input type="radio" name="mustnotify" value="N" v-model="meeting.mustnotify">Non</label>
+                    </div>
+                    <div class="col-sm-6" v-if="meeting.mustnotify=='O' && meeting.notif1done=='O'"><p>notifiée aux membres le {{date(meeting.dtnotif1)}} à {{heure(meeting.dtnotif1)}}</p><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Renvoyer la notification</button></div>
+                </div>
+                <div class="pe-spacer size10"></div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Contenu détaillé</h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+                    </div>
+                </div>
+               
+            </div>
+    </div>
+</script>
+<script>
+    const MeetingEdit = {
+        template: '#meetingedit-template',
+        name: 'MeetingEdit',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean
+        },
+        data: function () {
+            return {
+                blocks: [],
+                meeting: {
+                    periods: []
+                },
+                blocks: [],
+               
+                nouveau:false,
+                users: [],
+                meetingsList: true,
+                meetingParticipants: 0,
+                currentMeeting: [],
+                lastRef: '',
+                delConfirm: false,
+                delSelect: '',
+                whatIsToday: new Date().toISOString().slice(0, 10),
+                interval: null
+            }
+        },
+        filters: {
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            dateEndNotValid() {
+                let dtstart = new Date(this.meeting.dtstart);
+                let dtend = new Date(this.meeting.dtend);
+                return dtend <= dtstart;
+            },
+            addPeriod() {
+                this.meeting.periods.push({
+                    num: 0,
+                    day: '',
+                    start: '',
+                    end:''
+                })
+            },
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            heure: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            },
+            setEnd(n) {
+                let d = new Date(this.meeting.dtstart);
+                d.setHours(d.getHours() + n);
+                this.meeting.dtend = d.localeFormat('yyyy-MM-ddTHH:mm');
+            },
+            clearNotif1() {
+                delete this.meeting.dtnotif1;
+                delete this.meeting.notif1done;
+            },
+            cancel() {
+                this.$router.push("/");
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data);
+                })
+            },
+            getMeeting() {
+                this.meeting = {};
+
+                _yemon[this.moduleid].service.getData('/GetMeeting',
+                    {
+                        context: this.context.context,
+                        guid: this.id
+                    },
+                    (r) => {
+                        this.meeting = r.data;
+                        this.meeting.dtstart = this.meeting.dtstart.substring(0,16);
+                        this.meeting.dtend = this.meeting.dtend.substring(0, 16);
+                        this.meeting.periods = JSON.parse(this.meeting.periods);
+                        
+                        if (!this.meeting.periods)
+                            this.meeting.periods = [];
+                        this.getBlocks();
+                    });
+
+            },
+            deleteMeeting() {
+                if (confirm("Supprimer la réunion ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteMeeting", {
+                        guid: this.meeting.guid
+                    }, (r) => {
+                        this.$router.push("/");
+
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data);
+                    })
+
+
+                }
+            },
+            isValid() {
+                if (this.meeting.type == 'unitary')
+                    return this.meeting.name != '' && !this.dateEndNotValid();
+                else
+                    return this.meeting.name != '';
+            },
+            saveMeeting() {
+                let b = JSON.parse(JSON.stringify(this.blocks));
+                for (let i = 0; i < b.length; i++)
+                    b[i].Content = JSON.stringify(b[i].Content);
+
+                let m = JSON.parse(JSON.stringify(this.meeting));
+                m.periods = JSON.stringify(m.periods);
+
+                _yemon[this.moduleid].service.postData("/SetMeeting", {
+                    context: this.context.context,
+                    meeting: JSON.stringify(m),
+                    blocks: JSON.stringify(b)
+                }, (r) => {
+                    this.$router.push("/");
+
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data);
+                })
+            }
+        },
+        mounted() {
+            
+            if (!this.editable) {
+                this.$router.push("/");
+                return;
+            };
+
+
+            if (this.id == 'new') {
+                this.nouveau = true;
+                this.meeting = {
+                    guid: _yemon[this.moduleid].service.guid(),
+                    active: 'O',
+                    type: 'unitary',
+                    statutory: 'O',
+                    name: '',
+                    mustnotify: 'O',
+                    periods:[]
+                };
+            } else {
+                this.getMeeting();
+            }
+
+        }
+    };
+</script>

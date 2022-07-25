@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using AIS;
+using DotNetNuke.Entities.Modules;
+using Aspose;
+using System.Data;
+
+public partial class DesktopModules_AIS_Admin_Statistiques_Control : PortalModuleBase
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+    protected void BT_Export_XLS_Click(object sender, EventArgs e)
+    {
+        Media media = DataMapping.ExportDataGridToXLS(GridView1, "Statistiques.xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    protected void BT_Export_CSV_Click(object sender, EventArgs e)
+    {
+        Media media = DataMapping.ExportDataGridToXLS(GridView1, "Statistiques.csv", Aspose.Cells.SaveFormat.CSV);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+}

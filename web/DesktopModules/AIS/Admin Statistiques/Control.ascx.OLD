@@ -1,0 +1,14 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Statistiques_Control" %>
+<asp:GridView ID="GridView1" runat="server" CssClass="tableDefault spacingBottom"  GridLines="None" PageSize="100" DataSourceID="SqlDataSource1" AutoGenerateColumns="False" AllowSorting="True">
+    <Columns>
+        <asp:BoundField DataField="Club" HeaderText="Club" SortExpression="Club" />
+        <asp:BoundField DataField="Nb" HeaderText="Nb" ReadOnly="True" SortExpression="Nb" />
+        <asp:BoundField DataField="Erreur NIM" HeaderText="Erreur NIM" ReadOnly="True" SortExpression="Erreur NIM" />
+        <asp:BoundField DataField="Moyenne Age" HeaderText="Moyenne Age" ReadOnly="True" SortExpression="Moyenne Age" />
+        <asp:BoundField DataField="% Hommes" HeaderText="% Hommes" ReadOnly="True" SortExpression="% Hommes" />
+        <asp:BoundField DataField="% Femmes" HeaderText="% Femmes" ReadOnly="True" SortExpression="% Femmes" />
+    </Columns>
+</asp:GridView>
+<asp:Button runat="server" ID="BT_Export_XLS" Text="Export Excel" OnClick="BT_Export_XLS_Click" />
+<asp:Button runat="server" ID="BT_Export_CSV" Text="Export CSV" OnClick="BT_Export_CSV_Click" />
+<asp:SqlDataSource runat="server" ID="SqlDataSource1" SelectCommand="select distinct nom_club as 'Club',(select count(*) from ais_membres M where M.nom_club = A.nom_club) as 'Nb',(select count(*) from ais_membres n where n.nim=0 AND n.nom_club = A.nom_club) as 'Erreur NIM',(select (sum(2013-year(annee_naissance))/count(*)) from ais_membres o where o.nom_club = A.nom_club) as 'Moyenne Age',((select count(*) from ais_membres M where M.nom_club = A.nom_club and M.civilite='M')*100/(select count(*) from ais_membres M where M.nom_club = A.nom_club)) as '% Hommes',Round(100-(100*(select count(*) from ais_membres M where M.nom_club = A.nom_club and M.civilite='M')/(select count(*) from ais_membres M where M.nom_club = A.nom_club)),0) as '% Femmes' from ais_membres A order by Nb desc" ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>"></asp:SqlDataSource>

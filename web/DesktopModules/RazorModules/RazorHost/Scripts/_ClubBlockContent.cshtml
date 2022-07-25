@@ -1,0 +1,57 @@
+@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using AIS;
+@{
+    string seo = Request.QueryString["sn"];
+    int cric = 0;
+    if (seo != null && seo != "")
+    {
+        Club club = DataMapping.GetClubBySeo(seo);
+        if (club == null)
+        {
+            return;
+        }
+        cric = club.cric;
+    }
+
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID ;
+    PageData["HTML"] = Html;
+    PageData["blocksSuffix"] = Dnn.Module.ModuleID+":"+cric;
+    ModuleController moduleController = new ModuleController();
+    var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
+    bool editable = false;
+    Member m = Functions.GetCurrentMember();
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+    if (userInfo.IsSuperUser || userInfo.IsInRole("Administrators") || (userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric))
+    {
+        editable = true;
+    }
+    PageData["editable"] = editable;
+
+
+    if (editable)
+    {
+        @RenderPage("BlocksContent/Editor.cshtml")
+    }
+    else
+    {
+        @RenderPage("BlocksContent/View.cshtml")
+    }
+}
+
+
+

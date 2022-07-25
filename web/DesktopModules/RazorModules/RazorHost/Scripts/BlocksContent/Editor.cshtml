@@ -1,0 +1,69 @@
+﻿@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using Yemon.dnn.BlocksContent;
+@{
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+    var appID = PageData["appID"];
+    var moduleID = PageData["moduleID"];
+    var blocksSuffix = PageData["blocksSuffix"];
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+    var portalId = PageData["PortalId"];
+    var Html = PageData["HTML"];
+    bool editable = PageData["editable"];
+}
+<script src="@(libPath)tinymce/tinymce.min.js"></script>
+<script src="@(libPath)vue/3.2.23/vue.js"></script>
+<script src="@(libPath)vue-router/4.0.12/vue-router.js"></script>
+<script src="@(libPath)axios/0.24.0/axios.min.js"></script>
+<script src="@(libPath)toastr/toastr.min.js"></script>
+<link href="@(libPath)toastr/toastr.min.css" rel="stylesheet" />
+<script src="@(libPath)vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
+
+<link href="~/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css" rel="stylesheet" />
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+@RenderPage("BlockImageText.cshtml")
+@RenderPage("BlockImageCollection.cshtml")
+@RenderPage("BlockFileCollection.cshtml")
+@RenderPage("BlockRaw.cshtml")
+@RenderPage("BlockVideo.cshtml")
+@RenderPage("BlockEditor.cshtml")
+<div class="admin" id='@appID' v-cloak>
+    <blocks-editor v-on:changed="changed" :blocks="blocks" :moduleID="@moduleID" :editable="editable"></blocks-editor>
+</div>
+
+<script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
+<script src="~/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.js"></script>
+<script>
+
+    $(document).ready(function () {
+        if (typeof _yemon =='undefined')
+            _yemon = [];
+        _yemon[@moduleID] = new Yemon(@moduleID, '/Desktopmodules/BlocksContent/API/Blocks');
+
+
+        //Yemon = new Yemon(@moduleID, '/DesktopModules/Yemon/API/Services');
+        InitApp('@appID',@moduleID,'@blocksSuffix',@editable.ToString().ToLower());
+        });
+        //$("form").keypress(function (e) {
+        ////Enter key
+        //if (e.which == 13) {
+        //return false;
+        //}
+  //  });
+</script>
