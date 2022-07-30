@@ -370,12 +370,13 @@ namespace AIS.controller
                 row["firstname"] = user.firstname;
                 row["lastname"] = user.lastname;
                 row["comment"] = user.comment;
+                row["presence"] = user.presence;
                 row["dtlastupdate"] = DateTime.Now;
                 var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_meetings_users", "id", row);
                 if (result.Key == "error")
                     throw new Exception("Erreur d'ajout d'utilisateur");
 
-                sql = new SqlCommand("UPDATE ais_meetings SET nbusers=(select count(*) FROM ais_meetings_users WHERE meetingguid = ais_meetings.guid)");
+                sql = new SqlCommand("UPDATE ais_meetings SET nbusers=(select count(*) FROM ais_meetings_users WHERE meetingguid = ais_meetings.guid AND presence='Y')");
                 Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
 
@@ -418,7 +419,7 @@ namespace AIS.controller
                 sql.Parameters.AddWithValue("meetingguid", meetingguid);
                 Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
-                sql = new SqlCommand("UPDATE ais_meetings SET nbusers=(select count(*) FROM ais_meetings_users WHERE meetingguid = ais_meetings.guid)");
+                sql = new SqlCommand("UPDATE ais_meetings SET nbusers=(select count(*) FROM ais_meetings_users WHERE meetingguid = ais_meetings.guid AND presence='Y')");
                 Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
 

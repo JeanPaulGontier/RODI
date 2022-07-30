@@ -1,0 +1,21 @@
+@using AIS;
+@{
+    string url = "" + Request["url"];
+    url = Functions.UrlAddParam(url, "popup", "true");
+}
+<iframe id="iframe" style="overflow: visible; width: 100%; border: 3px; padding: 0;" src="@url"></iframe>
+<script>
+    var iframe = document.getElementById("iframe");
+
+    iframe.onload = function ()
+    {
+        iframe.style.height = (iframe.contentWindow.document.body.scrollHeight + 100) + 'px';
+        iframe.style.width = iframe.contentWindow.document.body.scrollWidth + 'px';
+
+        iframe.focus();
+        iframe.contentWindow.print();
+    }
+
+    
+</script>
+

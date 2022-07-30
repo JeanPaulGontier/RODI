@@ -76,10 +76,16 @@ using System.Web.UI.WebControls;
 
 public partial class DesktopModules_Control_View : PortalModuleBase
 {
-
+    public int index;
     public int rotary_year;
     List<Affectation> affectations = new List<Affectation>();
-
+    public string clubname
+    {
+        get
+        {
+            return Functions.CurrentClub.name;
+        }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         if (IsPostBack)
@@ -104,6 +110,52 @@ public partial class DesktopModules_Control_View : PortalModuleBase
         dataList_Members.DataBind();
     }
 
+    public class Me
+    {
+        public string Image { get; set; }
+        public string Nom { get; set; }
+        public string Email { get; set; }
+        public string Affectation { get; set; }
+        public string Lien { get; set; }
+        public string LienLabel { get; set; }
+
+
+    }
+
+    public List<Me> MemberList()
+    {
+        List<Me> liste = new List<Me>();
+        List<Member> members = DataMapping.ListMembers(Functions.CurrentCric, "", "", "surname", 0, 100, false, false);
+        PortalSettings ps = PortalController.GetCurrentPortalSettings();
+        foreach (Member member in members)
+        {
+            Me m = new Me();
+            m.Email = member.email;
+            m.Nom = member.name + " " + member.surname;
+            m.Image = member.GetPhoto();            
+            m.Affectation = "";
+            foreach (Affectation a in affectations)
+                if (a.nim == member.nim)
+                    m.Affectation += a.function + "<br/>";
+            if (member.IsWoman())
+                m.LienLabel = "La contacter";
+            else
+                m.LienLabel = "Le contacter";
+            
+            if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
+            {
+                m.Lien = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,850,false);";
+            }
+            else
+            {
+                m.Lien = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,500,false);";
+            }
+
+
+            liste.Add(m);
+        }
+        return liste;
+    }
     
 
     protected void dataList_Members_ItemDataBound(object sender, RepeaterItemEventArgs e)

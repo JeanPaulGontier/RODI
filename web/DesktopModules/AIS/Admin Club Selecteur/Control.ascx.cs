@@ -159,6 +159,13 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
                             if (("" + uri.RoleID).Equals(c.roles) )
                                 {
                                     clubs.Add(c);
+                                    if(Functions.CurrentClub==null)
+                                    {
+                                        if(curmem.cric== c.cric)
+                                        {
+                                            Functions.CurrentClub = c;
+                                        }
+                                    }
                                     break;
                                 }
                             }

@@ -1381,11 +1381,11 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         int r = 9;
         while (w.Cells[r,1].Value!=null)
         {
-            if ((""+w.Cells[r,16].Value).Trim().Equals("Member"))
-            { 
+            //if ((""+w.Cells[r,16].Value).Trim().Equals("Member"))
+            //{ 
                 Member m = new Member();
                 m.active_member = Const.YES;
-                m.honorary_member = Const.NO;
+                m.honorary_member = ("" + w.Cells[r, 16].Value).Trim().Equals("Member")?Const.NO:Const.YES;
                 m.nim = int.Parse(""+w.Cells[r, 0].Value);
                 m.district_id = Const.DISTRICT_ID;
                 m.cric = Functions.CurrentCric;
@@ -1399,7 +1399,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.biography = "";
                 m.industry = "";
                 m.maiden_name = "";
-                m.photo = "";
+                
                 m.presentation = false ;
                 m.retired = Const.NO;
                 m.spouse_name = "";
@@ -1421,6 +1421,16 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     m.name = Functions.ToTitleCase(names[1].Trim());
                 else
                     m.name = "";
+
+                string filename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower(); ;
+                if (File.Exists(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename)))
+                {
+                    m.photo = filename;
+                }
+                else
+                {
+                    m.photo = "";
+                }
 
                 m.professionnal_adress = "" + w.Cells[r, 3].Value;              
                 m.professionnal_town = "" + w.Cells[r, 4].Value;
@@ -1446,7 +1456,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 }
 
                 members.Add(m);
-            }
+            //}
             r++;
         }
         return members;
@@ -1516,7 +1526,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     Member mm = DataMapping.GetMemberByNim(m.nim);
                     mm.email = m.email;
                     mm.name = m.name;
-                    mm.surname = m.surname;
+                    mm.surname = m.surname;                   
                     mm.professionnal_adress = m.professionnal_adress;                    
                     mm.professionnal_town = m.professionnal_town;
                     mm.professionnal_zip_code = m.professionnal_zip_code;

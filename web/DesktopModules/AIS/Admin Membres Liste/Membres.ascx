@@ -175,17 +175,20 @@
     <asp:HiddenField runat="server" ID="hf_CRIC2" />
     <asp:HiddenField runat="server" ID="hf_NIM2" />
     <asp:HiddenField runat="server" ID="hf_userid" />
+    <p>
+        <i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i> cet icône après un champ, indique qu'il sera remplacé par le champ issu du Rotary International (<a href="rotary.org" target="_blank">rotary.org</a>) lors de la prochaine synchronisation. Il faut aussi modifier les champs correspondants sur my Rotary.
 
+    </p>
 
     <h2>Civilités :</h2>
     <p>
         <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " /><asp:RadioButtonList ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Text="Madame" Value="Mme" />
             <asp:ListItem Text="Monsieur" Value="M" />
-        </asp:RadioButtonList></p>
+        </asp:RadioButtonList>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
     <p><asp:Label ID="lbl_titre2" Width="200px" runat="server" Text="Titre : " /><asp:TextBox runat="server" ID="tbx_titre" Width="400px" MaxLength="255" onchange='javascript: this.value = toTitleCase(this);' /></p>
-    <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom * : " /><asp:TextBox runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator></p>
-    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p>
+    <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom * : " /><asp:TextBox runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
     <table><tr>
         <td><p><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Année de naissance : " /></p></td>
         <td><telerik:RadDatePicker runat="server" Height="30px" ID="dpk_ann_Naiss" MinDate="01/01/1901" /></td>
@@ -209,16 +212,17 @@
 
     <br />
     <h2>Coordonnées personnelles :</h2>
-    <p><asp:Label ID="lbl_adresse1_2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse1" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_adresse2_2" Width="200px" runat="server" Text="Complément 1 : " /><asp:TextBox runat="server" ID="tbx_adresse2" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_adresse3_2" Width="200px" runat="server" Text="Complément 2 : " /><asp:TextBox runat="server" ID="tbx_adresse3" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_cp2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_ville2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_pays2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox runat="server" ID="tbx_pays" Width="400px" MaxLength="50"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_email2" Width="200px" runat="server" Text="Email : " /><asp:TextBox runat="server" ID="tbx_email" Width="400px" MaxLength="255"   onchange='javascript: this.value = this.value.toLowerCase();' /></p>
-    <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone : " /><asp:TextBox runat="server" ID="tbx_telephone" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax : " /><asp:TextBox runat="server" ID="tbx_fax" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile : " /><asp:TextBox runat="server" ID="tbx_gsm" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_adresse1_2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse1" Width="400px" MaxLength="255" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_adresse2_2" Width="200px" runat="server" Text="Complément 1 : " /><asp:TextBox runat="server" ID="tbx_adresse2" Width="400px" MaxLength="255" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_adresse3_2" Width="200px" runat="server" Text="Complément 2 : " /><asp:TextBox runat="server" ID="tbx_adresse3" Width="400px" MaxLength="255" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_cp2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_ville2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_pays2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox runat="server" ID="tbx_pays" Width="400px" MaxLength="50"  onchange='javascript: this.value = this.value.toUpperCase();'  />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_email2" Width="200px" runat="server" Text="Email : " /><asp:TextBox runat="server" ID="tbx_email" Width="400px" MaxLength="255"   onchange='javascript: this.value = this.value.toLowerCase();' />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><em>ATTENTION : l'email est utilisé comme identifiant pour accéder à l'espace membre, le changement d'email implique la recréation de l'identifiant et donc la génération d'un nouveau mot de passe, qu'il faudra réinitialiser lors de la prochaine connexion</em></p>
+    <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone : " /><asp:TextBox runat="server" ID="tbx_telephone" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax : " /><asp:TextBox runat="server" ID="tbx_fax" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile : " /><asp:TextBox runat="server" ID="tbx_gsm" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
 
     <br />
     <h2>Profession :</h2>
@@ -232,12 +236,12 @@
 
     <br />
     <h2>Coordonnées professionnelles :</h2>
-    <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email : " /><asp:TextBox runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
-    <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email : " /><asp:TextBox runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="400px" MaxLength="50" />&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
     <p><asp:Label ID="lbl_gsm_pro2" Width="200px" runat="server" Text="Mobile : " /><asp:TextBox runat="server" ID="tbx_gsm_pro" Width="400px" MaxLength="50" /></p>
 
     <br />
@@ -276,6 +280,7 @@
                     <asp:ListItem Text="Oui" Value="O" />
                     <asp:ListItem Text="Non" Value="N" />
                 </asp:RadioButtonList>
+                &nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i>
             </p>
             <p>
                 <asp:Label ID="lbl_membre_A2" runat="server" Text="Membre actif : " Width="200px" />
@@ -296,7 +301,8 @@
         <table>
             <tr>
                 <td><p><asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Année adhésion Rotary : " Width="200px" /><asp:Label ID="lbl_ann_adh_rotaract" runat="server" Text="Année adhésion Rotaract : " Width="200px" /></p></td>
-                <td><telerik:RadDatePicker ID="dpk_ann__adh" runat="server" Height="30px" MinDate="01/01/1901" /></td>
+                <td><telerik:RadDatePicker ID="dpk_ann__adh" runat="server" Height="30px" MinDate="01/01/1901" />
+                    &nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></td>
             </tr>
         </table>
        
@@ -321,6 +327,7 @@
             <asp:ListItem Selected="true" Text="Oui" Value="O" />
             <asp:ListItem Text="Non" Value="N" />
         </asp:RadioButtonList>
+       
     </div>
 
     <div class="row">
