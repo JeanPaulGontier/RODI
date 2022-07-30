@@ -8,4 +8,4 @@
 - ajout de la possibilité d'imprimer le trombinoscope club 
 	il faut créer une page print a la racine et insérer le script razor print.cshtml
 - lorsqu'un adg se loggue, son club est automatiquement sélectionné
-- ajout de la possibilité d'indique qu'on est absent a une réunion
+- ajout de la possibilité d'indiquer qu'on est absent a une réunion
