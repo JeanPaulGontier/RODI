@@ -120,7 +120,7 @@ public partial class DesktopModules_AIS_Création_Courrier_CreationCourrier : Po
         try
         {
             String pageName = ddl_month.SelectedValue + " " + ddl_year.SelectedValue;
-            String url = ddl_month.SelectedValue + "-" + ddl_year.SelectedValue;
+            String url = ddl_month.SelectedValue.Replace("é", "e").Replace("û", "u") + "-" + ddl_year.SelectedValue;
             RoleController rc = new RoleController();
             RoleInfo ri = rc.GetRoleByName(PortalId, role);
             RoleInfo ri_readonly = rc.GetRoleByName(PortalId, role_readonly);
