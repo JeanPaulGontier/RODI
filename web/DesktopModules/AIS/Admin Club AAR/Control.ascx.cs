@@ -176,6 +176,11 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
             Label lb = new Label() { Text = fonction + " : " };
             lb.CssClass = "dnnLabel";
+            if("Président,Secrétaire,Secrétaire Adjoint,Webmaster,Webmaster Adjoint".IndexOf(fonction)>-1)
+            {
+                lb.Style.Add(HtmlTextWriterStyle.FontWeight, "bold");
+                lb.Text = lb.Text.Replace(" : ", "* : ");
+            }
             Panel1.Controls.Add(lb);
             
             DropDownList dl = new DropDownList();
@@ -354,7 +359,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                 }
             }
 
-            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE cric='"+Functions.CurrentCric+"' AND rotary_year IN (";
+            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ('Président','Secrétaire','Secrétaire Adjoint','Webmaster','Webmaster Adjoint') AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
 
             if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
                 query += annee + "," + (annee + 1);
