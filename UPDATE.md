@@ -1,3 +1,7 @@
+###### 17/08/2022
+
+- ajout du nom du club dans le titre des pages des sites de clubs
+
 ###### 16/08/2022
 
 - ajout d'un provider qui ajoute les urls des clubs dans le sitemap du site
