@@ -1,3 +1,7 @@
+###### 22/08/2022
+
+- correction selection de l'action par défaut du site de club (rubrique nos actions)
+
 ###### 17/08/2022
 
 - ajout du nom du club dans le titre des pages des sites de clubs

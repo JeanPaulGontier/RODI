@@ -127,7 +127,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             
 
 
-            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, category: "Clubs", tri: "dt desc");
+            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, tags_included: "Actions", category: "Clubs", tri: "dt desc");
 
 
         
