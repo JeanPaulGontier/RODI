@@ -149,6 +149,7 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
                 //{
                     var rc = new RoleController();
                     IList<UserRoleInfo> roles = rc.GetUserRoles(UserInfo, true);
+                    Member me = DataMapping.GetMemberByUserID(UserId);
                     
                     foreach (Club c in DataMapping.ListClubs(sort: "name asc"))
                     {
@@ -156,15 +157,28 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
                         {
                             foreach(UserRoleInfo uri in roles)
                             {
-                            if (("" + uri.RoleID).Equals(c.roles) )
+                                if (("" + uri.RoleID).Equals(c.roles) )
+                                    {
+                                        clubs.Add(c);
+                                        if(Functions.CurrentClub==null)
+                                        {
+                                            if(curmem.cric== c.cric)
+                                            {
+                                                Functions.CurrentClub = c;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                else if (me!=null && me.cric==c.cric)
                                 {
                                     clubs.Add(c);
-                                    if(Functions.CurrentClub==null)
+                                    if (Functions.CurrentClub == null)
                                     {
-                                        if(curmem.cric== c.cric)
+                                        if (curmem.cric == c.cric)
                                         {
                                             Functions.CurrentClub = c;
                                         }
+                                        
                                     }
                                     break;
                                 }
