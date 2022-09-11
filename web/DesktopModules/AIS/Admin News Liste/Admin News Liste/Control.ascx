@@ -226,6 +226,3 @@
 </asp:Panel>--%>
 
 
-<asp:Panel runat="server" ID="p_convert" Visible="false">
-    <asp:Button runat="server" ID="convert" Text="Convertir" OnClick="convert_Click" />
-</asp:Panel>

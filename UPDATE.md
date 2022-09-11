@@ -1,3 +1,8 @@
+###### 11/09/2022
+
+- modification de l'url du service blockcontent
+- ajout d'une fonctionnalité de conversion des nouvelles de l'ancien vers le nouveau format
+
 ###### 10/09/2022
 
 - modification du module de sélection de club pour les ADG, maintenant quand un ADG n'est pas dans le groupe de club qu'il gère le nom de son club apparait dans la liste de sélection

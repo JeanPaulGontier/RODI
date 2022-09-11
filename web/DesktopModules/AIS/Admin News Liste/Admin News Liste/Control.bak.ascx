@@ -1,73 +1,15 @@
 ﻿<!--**********************************************************************************-->
-<!-- RODI - https://rodi-platform.org                                                 -->
-<!-- Copyright (c) 2012-2022                                                          -->
+<!-- RODI - http://rodi.aisdev.net                                                    -->
+<!-- Copyright (c) 2012-2016                                                          -->
 <!-- by SAS AIS : http://www.aisdev.net                                               -->
 <!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
 <!--**********************************************************************************-->
 
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_News_List_Control" %>
-<% 
-    string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
-    string appID = "app" + ModuleId;
-
-%>
-<asp:HiddenField ID="ContextGuid" runat="server" />
-<script src="<%=libPath %>tinymce/tinymce.min.js"></script>
-<script src="<%=libPath %>vue/3.2.23/vue.js"></script>
-<script src="<%=libPath %>vue-router/4.0.12/vue-router.js"></script>
-<script src="<%=libPath %>axios/0.24.0/axios.min.js"></script>
-<script src="<%=libPath %>toastr/toastr.min.js"></script>
-<link href="<%=libPath %>toastr/toastr.min.css" rel="stylesheet" />
-<script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockFileCollection.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageCollection.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageText.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockRaw.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockVideo.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockEditor.cshtml" -->
-<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css" rel="stylesheet" />
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.bak.ascx.cs" Inherits="DesktopModules_AIS_Admin_News_List_Control" %>
+<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 
 
-<style>
-    [v-cloak] {
-        display: none;
-    }
-</style>
-
-<div class="admin" id='<%=appID %>' v-cloak>
-     <router-view :moduleid="moduleid" :context="context" :editable="editable"></router-view> 
-</div>
-<script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
-<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/News.html" -->
-<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsEdit.html" -->
-<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsView.html" -->
-<script src="/DesktopModules/AIS/Admin News Liste/app.js"></script>
-<script>
-
-    $(document).ready(function () {
-
-        if (typeof _yemon == 'undefined')
-            _yemon = [];
-        _yemon[<%=ModuleId%>] = new Yemon(<%=ModuleId%>, '/Desktopmodules/AIS/API/News');
-
-
-    //Yemon = new Yemon(@moduleID, '/DesktopModules/Yemon/API/Services');
-        InitApp('<%=appID %>',<%=ModuleId%>, '<%=context%>',<%=cric%>,'<%=mode%>',<%=editable.ToString().ToLower()%>);
-        });
-        //$("form").keypress(function (e) {
-        ////Enter key
-        //if (e.which == 13) {
-        //return false;
-        //}
-  //  });
-</script>
-
-
-
-
-
-
-<%--<asp:Label ID="test" runat="server" />
+<asp:Label ID="test" runat="server" />
 
 <asp:Panel ID="Panel1" runat="server">
 <asp:Button runat="server" Text="Ajouter une nouvelle" ID="BT_Ajouter_News" OnClick="BT_Ajouter_News_Click" CssClass="btn btn-primary" />
@@ -223,9 +165,6 @@
 	<asp:Button runat="server" ID="BT_Valider" Text="Valider" OnClick="BT_Valider_Click" CssClass="btn btn-primary" />&nbsp;<asp:Button runat="server" ID="BT_Annuler" Text="Retour" OnClick="BT_Annuler_Click" CausesValidation="false" CssClass="btn btn-default" />
     </div>
 </div>
-</asp:Panel>--%>
-
-
-<asp:Panel runat="server" ID="p_convert" Visible="false">
-    <asp:Button runat="server" ID="convert" Text="Convertir" OnClick="convert_Click" />
 </asp:Panel>
+
+

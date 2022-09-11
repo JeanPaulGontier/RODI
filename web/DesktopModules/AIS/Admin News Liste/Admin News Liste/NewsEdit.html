@@ -92,7 +92,7 @@
 
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
                 <div v-if="news.photo">
-                    <div class="bc-photo"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+news.photo" /></div>
+                    <div class="bc-photo"><img :src="'/DesktopModules/Services/API/Blocks/getMedia?guid='+news.photo" /></div>
 
                     <br />
                     <button type="button" v-on:click="news.photo=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
