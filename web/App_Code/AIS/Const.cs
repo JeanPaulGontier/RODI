@@ -80,7 +80,7 @@ namespace AIS
         public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
         public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
 
-        public const string GoogleMapsKey = "";
+        public const string GoogleMapsKey = "AIzaSyBdbBwqDZJ2_E0UZ3m84pIgWd9Q4LXwQjU";
         public const string ZOOM = "7";
         public const string Coord_Centre_carte = "42.871938,7.002869";
         public static string MARQUEUR = System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
@@ -118,7 +118,7 @@ namespace AIS
         public static string ORDER_MODELE = "/modeles/Commande.docx";
 
 
-        public static string MEDIA_URL = "/DesktopModules/Services/API/Blocks/getMedia?guid=";
+        public static string MEDIA_URL = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
 
         public static string MEMBERS_PHOTOS_PREFIX = "membres/photos/";
         public static int MEMBERS_PHOTOS_WIDTH = 200;
