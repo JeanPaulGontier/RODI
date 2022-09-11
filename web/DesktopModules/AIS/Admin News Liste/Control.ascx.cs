@@ -179,7 +179,7 @@ public partial class DesktopModules_AIS_Admin_News_List_Control : PortalModuleBa
 
 
 
-        p_convert.Visible = UserInfo.IsSuperUser;
+      //  p_convert.Visible = UserInfo.IsSuperUser;
         
          
     }
