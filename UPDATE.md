@@ -1,3 +1,8 @@
+###### 12/09/2022
+
+- correction pb de changement ordre des affectations dans l'organigrame district et augmentation de la zone de fonction
+- modification importation des affectations rotarienne du RI (secretaire executif -> administration)
+
 ###### 11/09/2022
 
 - modification de l'url du service blockcontent

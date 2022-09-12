@@ -186,7 +186,7 @@
                     <asp:TextBox runat="server" ID="tbx_desc2" TextMode="MultiLine" Width="100%" Height="200"></asp:TextBox>
                 </div>
             </div>
-             <div class="row">
+             <div class="row" style="display:none">
                 <div class="col-sm-2">
                     <strong>Rang</strong> : 
                 </div>

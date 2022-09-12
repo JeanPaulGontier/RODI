@@ -200,7 +200,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
         c.Add("Rotaract President", "Président");
         //c.Add("", "Président élu");
         //c.Add("", "Protocole");
-        c.Add("Club Executive Secretary/Director (Facultatif)", "Secrétaire adjoint");
+        c.Add("Club Executive Secretary/Director (Facultatif)", "Administration");
         c.Add("Club Secretary", "Secrétaire");
         c.Add("Rotaract Secretary", "Secrétaire");
         c.Add("", "Secrétaire Adjoint");

@@ -248,36 +248,16 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         }
         if(e.CommandName=="Up")
         {
-            List<DRYA> list = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
-            DRYA d = DataMapping.GetListDRYA("id = " + e.CommandArgument).First();
-            foreach (DRYA drya in list)
-            {
-                if(drya.rank == d.rank-1)
-                {
-                    drya.rank++;
-                    d.rank--;
-                    DataMapping.InsertDRYA(drya);
-                    DataMapping.InsertDRYA(d);
-                    break;
-                }
-            }
+
+            DataMapping.UpdateDRYAPosition(rotary_year, section, int.Parse("" + e.CommandArgument), true);
+            
             RefreshList_Grid();
         }
         if (e.CommandName == "Down")
         {
-            List<DRYA> list = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
-            DRYA d = DataMapping.GetListDRYA("id = " + e.CommandArgument).First();
-            foreach (DRYA drya in list)
-            {
-                if (drya.rank == d.rank + 1)
-                {
-                    drya.rank--;
-                    d.rank++;
-                    DataMapping.InsertDRYA(drya);
-                    DataMapping.InsertDRYA(d);
-                    break;
-                }
-            }
+            DataMapping.UpdateDRYAPosition(rotary_year, section, int.Parse(""+e.CommandArgument), false);
+
+           
             RefreshList_Grid();
         }
     }
@@ -289,6 +269,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         drya.description = tbx_desc.Text.Trim();
         int rank = 0;
         int.TryParse("" + tbx_rank.Text,out rank);
+        rank = int.MaxValue;
         drya.rank = rank;
         DataMapping.InsertDRYA(drya);
         RefreshList_Grid();

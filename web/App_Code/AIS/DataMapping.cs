@@ -1,5 +1,4 @@
 ﻿
-
 #region Copyrights
 
 //
@@ -7678,6 +7677,10 @@ namespace AIS
                 }
 
                 trans.Commit();
+
+
+                UpdateDRYARank(drya.rotary_year, drya.section);
+
                 return id;
 
             }
@@ -7756,6 +7759,95 @@ namespace AIS
                 conn.Close();
             }
             return architecture;
+        }
+
+        public static bool UpdateDRYAPosition(int year, string section, int id, bool up)
+        {
+           
+
+            try
+            {
+                DataSet ds = ExecSql("SELECT * FROM " + Const.TABLE_PREFIX + "drya WHERE rotary_year=" + year + " AND section='" + section + "' ORDER BY rank");
+                
+                for(int i=0;i<ds.Tables[0].Rows.Count;i++)
+                {
+                    DataRow row = ds.Tables[0].Rows[i];
+                    if ((int)row["id"] == id)
+                    {
+                        if (up)
+                        {
+                            if(i==0)
+                            {
+                                return true;
+                            }
+
+                            DataRow row1 = ds.Tables[0].Rows[i - 1];
+
+                            ExecSql("UPDATE " + Const.TABLE_PREFIX + "drya SET rank=" + row["rank"] + " WHERE id=" + row1["id"]);
+                            ExecSql("UPDATE " + Const.TABLE_PREFIX + "drya SET rank=" + row1["rank"] + " WHERE id=" + id);
+                        }
+                        else
+                        {
+                            if (i == ds.Tables[0].Rows.Count - 1)
+                            { 
+                                return true;
+                            }
+
+                            DataRow row1 = ds.Tables[0].Rows[i + 1];
+                            ExecSql("UPDATE " + Const.TABLE_PREFIX + "drya SET rank=" + row["rank"] + " WHERE id=" + row1["id"]);
+                            ExecSql("UPDATE " + Const.TABLE_PREFIX + "drya SET rank=" + row1["rank"] + " WHERE id=" + id);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            finally
+            {
+             
+            }
+            return false;
+        }
+
+        public static bool UpdateDRYARank(int year, string section)
+        {
+            SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+            SqlTransaction trans = null;
+
+            try
+            {
+                DataSet ds = ExecSql("SELECT id FROM " + Const.TABLE_PREFIX + "drya WHERE rotary_year=" + year + " AND section='" + section + "' ORDER BY rank");
+                conn.Open();
+                trans = conn.BeginTransaction();
+                int i = 1;
+                foreach(DataRow row in ds.Tables[0].Rows)
+                {
+                    SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "drya SET rank=" + i + " WHERE id=" + row["id"], conn, trans);
+                    sql.ExecuteNonQuery();
+                    i++;
+                }
+                trans.Commit();
+                return true;
+            }
+            catch (Exception ee)
+            {
+                if (trans != null)
+                    try
+                    {
+                        trans.Rollback();
+                    }
+                    catch { }
+                Functions.Error(ee);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return false;
         }
 
         /// <summary>
