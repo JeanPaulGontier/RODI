@@ -7,7 +7,7 @@
 
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_News_Detail_Control" %>
 
-<asp:Image ID="Image1" runat="server" />
+<%--<asp:Image ID="Image1" runat="server" />--%>
 
 <h1><asp:Label ID="LBL_Titre" runat="server" Text="" /></h1>
 
@@ -21,7 +21,7 @@
 	<asp:Literal ID="LBL_Detail" runat="server" Text="" ></asp:Literal>
 </p>
 
-<asp:Label ID="LBL_Url" runat="server" Text="Document à télécharger : " CssClass="Normal"></asp:Label>
+<%--<asp:Label ID="LBL_Url" runat="server" Text="Document à télécharger : " CssClass="Normal"></asp:Label>
 <asp:HyperLink ID="HL_Url" runat="server" Target="_blank" CssClass="Normal"></asp:HyperLink>
 
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
@@ -34,4 +34,4 @@
     <a class='st_googleplus_large' displayText='Google +'></a>
     <a class='st_linkedin_large' displayText='LinkedIn'></a>
     <a class='st_viadeo_large' displayText='Viadeo'></a>
-</div>
+</div>--%>

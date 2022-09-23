@@ -62,19 +62,19 @@
                     this.blocks = [];
                 switch (type) {
                     case 'ImageText':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: 'Image & Texte', Position: 'H' } });
+                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Position: 'H' } });
                         break
                     case 'FileCollection':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: 'Liste de documents', Files: [] } });
+                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Files: [] } });
                         break;
                     case 'ImageCollection':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: 'Liste d\'images', Images: [] } });
+                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Images: [] } });
                         break;
                     case 'Raw':
                         this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Html: '' } });
                         break;
                     case 'Video':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: 'Vidéo', Type: 'youtube', Url: '' } });
+                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Type: 'youtube', Url: '' } });
                         break;
 
 

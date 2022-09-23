@@ -1,3 +1,8 @@
+###### 23/09/2022
+
+- mise à jour des modules de visu des nouvelles club et district pour supporter le nouveau format de nouvelles
+- modification de l'éditeur de blocks qui ne met plus de titre par défaut ('image & texte', etc.) car les utilisateurs ne pensaient pas forcément a remplacer le texte par un vrai titre
+
 ###### 12/09/2022
 
 - correction pb de changement ordre des affectations dans l'organigrame district et augmentation de la zone de fonction

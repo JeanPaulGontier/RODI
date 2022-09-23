@@ -71,6 +71,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
+using Yemon.dnn.BlocksContent;
+using System.Text;
+
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -83,55 +86,183 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
         {
             LBL_Titre.Text = news.title;
 
-            string texte = news.text;
-            texte = texte.Replace(Environment.NewLine, "<br />");
-            if(texte.IndexOf("http")>-1)
+            //string texte = news.text;
+            //texte = texte.Replace(Environment.NewLine, "<br />");
+            //if(texte.IndexOf("http")>-1)
+            //{
+            //    int st = 0;
+            //    int index = texte.IndexOf("http");
+            //    while (st <= texte.Length && index > -1)
+            //    {
+            //        index = texte.IndexOf("http",index);
+            //        int index1 = texte.IndexOf("<", index);
+            //        if (index1>index)
+            //        {
+            //            string url = texte.Substring(index, index1 - index);
+
+            //            url = "<a href=\""+url+"\" target=\"_blank\">" + url + "</a>";
+            //            texte = texte.Substring(0, index) + url + texte.Substring(index1);
+
+            //            st = texte.Substring(0, index).Length + url.Length;                    
+            //        }
+            //        else
+            //        {
+            //            int index2 = texte.IndexOf("<", index);
+            //            if (index2 > index)
+            //            {
+            //                string url = texte.Substring(index, index2 - index);
+
+            //                url = "<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>";
+            //                texte = texte.Substring(0, index) + url + texte.Substring(index2);
+
+            //                st = texte.Substring(0, index).Length + url.Length;
+            //            }
+            //            else
+            //            { 
+            //                st = index + 6;
+            //            }
+            //        }
+            //        index = texte.IndexOf("http",st);
+            //    }
+            //}
+
+            //LBL_Detail.Text = texte;
+
+            string o = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
+            if(o!="")
             {
-                int st = 0;
-                int index = texte.IndexOf("http");
-                while (st <= texte.Length && index > -1)
+                List<Block> blocks = (List<Yemon.dnn.BlocksContent.Block>)Yemon.dnn.Functions.Deserialize(o, typeof(List<Block>));
+                StringBuilder sb = new StringBuilder();
+                foreach(Block block in blocks)
                 {
-                    index = texte.IndexOf("http",index);
-                    int index1 = texte.IndexOf("<", index);
-                    if (index1>index)
+                    switch (block.Type)
                     {
-                        string url = texte.Substring(index, index1 - index);
+                        case "ImageText":
+                            Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                            switch (p.Position)
+                            {
+                                case "G":
+                                    sb.Append("<div class='row'>");
+                                    if (p.Title != null)
+                                        sb.Append("<h2 class='col-sm-12'>"+p.Title+"</h2>");
+                                    if(p.Image!=null)
+                                    {
+                                        sb.Append("<div class='col-sm-6'>");
+                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid="+p.Image.GUID+"' title='"+p.Image.Name+"' />");
+                                        sb.Append("</div>");
+                                    }
+                                    if(p.Html!=null)
+                                        sb.Append("<div class='col-sm-6'>"+p.Html+"</div>");
+                                    sb.Append("</div>");
+                                    break;
+                                case "D":
+                                    sb.Append("<div class='row'>");
+                                    if (p.Title != null)
+                                        sb.Append("<h2 class='col-sm-12'>" + p.Title + "</h2>");
+                                    if (p.Html != null)
+                                        sb.Append("<div class='col-sm-6'>" + p.Html + "</div>");
+                                    if (p.Image != null)
+                                    {
+                                        sb.Append("<div class='col-sm-6'>");
+                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                        sb.Append("</div>");
+                                    }
+                                    sb.Append("</div>");
+                                    break;
+                                default:
+                                    sb.Append("<div class='row'>");
+                                    if (p.Title != null)
+                                        sb.Append("<h2>" + p.Title + "</h2>");
+                                    if (p.Image != null)
+                                    {
+                                        sb.Append("<div>");
+                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                        sb.Append("</div>");
+                                    }
+                                    if (p.Html != null)
+                                        sb.Append("<div>" + p.Html + "</div>");
+                                    sb.Append("</div>");                                    
+                                    break;
+                            }
+                            break;
+                        case "FileCollection":
+                            Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                            if (fc.Title != null)
+                            {
+                                sb.Append("<h2>"+fc.Title+"</h2>");
+                            }
+                            if (fc.Files.Count > 0)
+                            {
+                                sb.Append("<ul>");
+                                    foreach (var f in fc.Files)
+                                    {
+                                        sb.Append("<li><a href='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid="+f.GUID+"' class='btn btn-link'>"+f.Name+"</a></li>");
+                                    }
+                                sb.Append("</ul>");
+                            }
+                            break;
+                        case "ImageCollection":
+                            Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+                            if (ic.Title != null)
+                            {
+                                sb.Append("<h2>" + ic.Title + "</h2>");                                
+                            }
+                            if (ic.Images.Count > 0)
+                            {
+                                foreach (var i in ic.Images)
+                                {
+                                    sb.Append("<span>");
+                                    sb.Append("<img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + i.GUID + "' width='100%' title='" + i.Name + "' />");
+                                    sb.Append("</span>");
+                                }
+                            }
+                            break;
+                        case "Raw":
+                            Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
+                            sb.Append("<div>"+r.Html+"</div>");
+                            break;
+                        case "Video":
+                            Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
+                            if (v.Title != null)
+                            {
+                                sb.Append("<h2>" + v.Title + "</h2>");
+                            }
+                            sb.Append("<div id='container" + block.Guid + "'>");
+                            sb.Append("    <iframe width='100%' id='video" + block.Guid + "' class='video' src='" + v.Url + "' allowfullscreen=''></iframe>");
+                            sb.Append("</div>");
+                            sb.Append("<script>");
+                            sb.Append(
+                                "if (!resize) {" +
+                                "var resize = [];" +
+                                "}" +
+                                    "resize['@block.Guid'] = function() {" +
 
-                        url = "<a href=\""+url+"\" target=\"_blank\">" + url + "</a>";
-                        texte = texte.Substring(0, index) + url + texte.Substring(index1);
 
-                        st = texte.Substring(0, index).Length + url.Length;                    
-                    }
-                    else
-                    {
-                        int index2 = texte.IndexOf("<", index);
-                        if (index2 > index)
-                        {
-                            string url = texte.Substring(index, index2 - index);
-
-                            url = "<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>";
-                            texte = texte.Substring(0, index) + url + texte.Substring(index2);
-
-                            st = texte.Substring(0, index).Length + url.Length;
-                        }
-                        else
-                        { 
-                            st = index + 6;
-                        }
-                    }
-                    index = texte.IndexOf("http",st);
+                                "var ratio = 16 / 9;" +
+                                "const videoIFrame = document.getElementById('video@(block.Guid)');" +
+                                "const videoContainer = document.getElementById('container@(block.Guid)');" +
+                                "var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);" +
+                                "videoIFrame.style.height = Math.ceil(width / ratio) + 'px';" +
+                                "videoContainer.style.height = (width / ratio) + 'px';" +
+                                "}" +
+                                "$(window).resize(resize['@block.Guid']);" +
+                                "$(document).ready(function () {" +
+                                    "resize['@block.Guid']();" +
+                                "});" +
+                                "</script>");
+                            break;
+                                                }
                 }
+                LBL_Detail.Text = sb.ToString();
             }
-
-            LBL_Detail.Text = texte;
-
+            
             LBL_Date.Text = news.dt.ToShortDateString();
-            Image1.ImageUrl = news.GetPhoto();
-            Image1.Visible = Image1.ImageUrl != "";
-            HL_Url.NavigateUrl = news.GetUrl();
-            HL_Url.Text = news.url_text;
-            HL_Url.Visible = news.url.Trim() != "";
-            LBL_Url.Visible = HL_Url.Visible;
+            //Image1.ImageUrl = news.GetPhoto();
+            //Image1.Visible = Image1.ImageUrl != "";
+            //HL_Url.NavigateUrl = news.GetUrl();
+            //HL_Url.Text = news.url_text;
+            //HL_Url.Visible = news.url.Trim() != "";
+            //LBL_Url.Visible = HL_Url.Visible;
 
             Club c = DataMapping.GetClub(news.cric);
             if(c != null)
