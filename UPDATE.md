@@ -1,3 +1,7 @@
+###### 03/10/2022
+
+- ajout d'informations complémentaires dans l'export excel des factures district
+
 ###### 23/09/2022
 
 - mise à jour des modules de visu des nouvelles club et district pour supporter le nouveau format de nouvelles

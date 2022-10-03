@@ -551,7 +551,11 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     /// <param name="e"></param>
     protected void BT_Export_Orders_Click(object sender, EventArgs e)
     {
-        DataSet ds = DataMapping.ExecSql("SELECT club,amount,[rule],info_rule,type_rule,par_rule,dt_rule,dt,transaction_id  FROM [ais_orders] where id_payment='" + HF_id.Value + "' order by club");
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'n° commande',amount as 'montant',type_rule as 'type règlement',par_rule as 'par qui',dt,dt_rule as 'date règlement',[rule] as 'reglé',info_rule as 'commentaire'," +
+            "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
+            "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg,"+
+            "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
+            "FROM [ais_orders] O  where id_payment='" + HF_id.Value + "' order by club");
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
