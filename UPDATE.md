@@ -1,3 +1,8 @@
+###### 04/10/2022
+
+- correction pb d'affichage en tete espace membre sur mobile suite a modification des informations affichées
+- correction du positionnement du menu en version mobile quand la barre d'admin dnn est affichée
+
 ###### 03/10/2022
 
 - ajout d'informations complémentaires dans l'export excel des factures district

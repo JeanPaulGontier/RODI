@@ -1,10 +1,10 @@
 ﻿<!--start skin header-->
 <header class="pattern_header Membre">
-  <div class="skin_width clearafter">
+  <div class="clearafter">
     <div class="logo_style">
         <a href="/">
-            <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-blanc.svg" />
-            <span class="districtNum">District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId")%></span>
+            <div><img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-blanc.svg" />
+            <span class="districtNum">District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId")%></span></div>
             <div><span>Espace Membre</span>
             <%If AIS.Functions.CurrentCric > 0 Then %>
             <span><%= AIS.Functions.CurrentClub.name %></span>
@@ -63,7 +63,8 @@
                         $('.MNV1').css('opacity', '1.0');
                         
                         $('.MenuMob').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.6 },200, 'linear');
-                        $('.MNV1').animate({ left: '0' },500, 'linear');
+                        $('.MNV1').animate({
+                            left: (document.getElementsByClassName('personabar-visible').length>0)?'80px':'0px' },500, 'linear');
                         
                     }
                     else {

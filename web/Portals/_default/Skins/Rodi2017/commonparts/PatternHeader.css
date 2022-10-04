@@ -17,7 +17,7 @@
 }
 
     .logo_style img {
-        max-height: 55px;
+        height: 41px;
     }
     .logo_style a, .Public.pattern_header .logo_style{
         color:white;
@@ -27,14 +27,13 @@
         column-gap:1em;
     }
     .logo_style .districtNum{
-        position:absolute;
-        left:0;
-        bottom:0;
-        font-size:0.9em;
+        margin-top:-8px;
+        margin-left:-1px;
+        font-size:0.72em;
         line-height:0.7em;
     }
     .logo_style div span{
-        display:inline-block;
+        display:block;
         white-space:nowrap;
     }
     .logo_style div span + span{
@@ -204,13 +203,15 @@ A.Breadcrumb:hover {
     z-index: 1000;
     color: white;
 }
-
+.Membre .logo_style a{
+    justify-content: center;
+}
 .menu_bar_membre {
     background-color: #f8f9fa;
     background: -webkit-linear-gradient(180deg,#18365d 3.125rem,#18365d 0,#fff 0);
     background: linear-gradient(180deg,#18365d 3.125rem,#18365d 0,#fff 0);
     box-shadow: 0 0 18px rgba(0,0,0,.3);
-    min-height: 50px;
+    /*min-height: 50px;*/
     position: relative;
 }
 
@@ -997,7 +998,9 @@ ul.searchSkinObjectPreview {
         position: inherit !important;
         margin: 0;
     }
-
+    .skin_main{
+        margin-top:60px;
+    }
     .logo_style {
         float: none;
         padding: 10px 15px;
@@ -1085,17 +1088,13 @@ ul.searchSkinObjectPreview {
         display: inline-block !important;
     }
 
-    .logo_style img {
-        max-height: 40px;
-    }
-
     .mobile_nav {
         display: block;
-        position: relative;
+        position: absolute;
     }
 
-    .pattern_header {
-        position: fixed !important;
+    .pattern_header, .Membre.pattern_header {
+        position:fixed;
         top: 0;
         right: 0;
         left: 0;
@@ -1335,7 +1334,7 @@ ul.searchSkinObjectPreview {
 
     /*membre*/
     .Membre.pattern_header {
-        box-shadow: 0 5px 5px 0 rgba(0,0,0,.1)
+        box-shadow: 0 5px 5px 0 rgba(0,0,0,.1);
     }
     
     .Membre .MNV1, .Membre .MNV1 > li:hover .MNV2{display:block; }
@@ -1460,6 +1459,11 @@ ul.searchSkinObjectPreview {
     .logo_style::after {
         padding: 5px;
     }
+    .logo_style > a > div + div{display:none;}
+    .personabar-visible .Membre .logo_style a {
+        margin-left: 80px;
+    }
+    a.btn-profil{right:15px;}
 }
 
 

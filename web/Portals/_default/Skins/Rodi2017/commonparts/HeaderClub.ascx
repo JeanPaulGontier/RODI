@@ -62,8 +62,8 @@
 
                         
                         $('.MenuMob').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.6 },200, 'linear');
-                        $('.MNV1').animate({ left: '0' },500, 'linear');
-                        $('.more-links').animate({ left: '0' },500, 'linear');
+                        $('.MNV1').animate({ left: (document.getElementsByClassName('personabar-visible').length > 0) ? '80px' : '0px' },500, 'linear');
+                        $('.more-links').animate({ left: (document.getElementsByClassName('personabar-visible').length > 0) ? '80px' : '0px' },500, 'linear');
                         
                     
                     }

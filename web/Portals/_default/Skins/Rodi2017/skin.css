@@ -582,7 +582,7 @@ ul#myTab {
 .skin_wrapper {
     width: 100%;
     margin: 0 auto;
-    position: inherit !important;
+    position: relative; /*inherit !important*/
     z-index: 1;
     padding: 0; /*background:#fff;*/
 }
@@ -590,7 +590,7 @@ ul#myTab {
 .skin_width {
     width: 100%;
     max-width: 1140px;
-    min-width: 767px;
+    /*min-width: 767px;*/
     margin: 0 auto;
     position: relative;
 }
@@ -1672,11 +1672,6 @@ h1DetailedArticle a:hover {
         min-width: 300px;
     }
 
-    .skin_width, body {
-        width: 100%;
-        min-width: 0;
-    }
-
     .floatl, .floatr {
         float: none;
     }
@@ -1961,7 +1956,6 @@ h1DetailedArticle a:hover {
         width: auto;
     }
 }
-
 
 /*--------- pagination gridview  ----------*/
 .GVPager > td > table {

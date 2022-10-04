@@ -3,9 +3,9 @@
   <div class="skin_width clearafter">
       <div class="logo_style">
           <a href="/">
-          <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-logo-text.svg" />
+            <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-logo-text.svg" />
             <h1>District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></h1>
-              </a>
+          </a>
       </div>
     <!--start user icons-->
       <div class="icons_menu clearafter">
@@ -62,7 +62,7 @@
                         $('.MNV1').css('opacity', '1.0');
 
                         $('.MenuMob').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.6 },200, 'linear');
-                        $('.MNV1').animate({ left: '0' },500, 'linear');
+                        $('.MNV1').animate({ left: (document.getElementsByClassName('personabar-visible').length > 0) ? '80px' : '0px' },500, 'linear');
                         
                     }
                     else {
