@@ -19,7 +19,7 @@
             <div class="pe-spacer size20" />
             <div class="row">
                 <div class="col-sm-3">
-                    <label for="active">Active</label>
+                    <label for="active">Inscription active</label>
                 </div>
                 <div class="col-sm-8">
                     <label class="radio-inline"><input type="radio" name="active" value="O" v-model="meeting.active">Oui</label>
@@ -109,7 +109,7 @@
                             <tr>
                                 <td>Début</td>
                                 <td v-for="p in meeting.periods">
-                                    <input id="dtstart" class="form-control" type="time" v-model="p.start" v-on:change="p.end=p.start">
+                                    <input id="dtstart" class="form-control" type="time" v-model="p.start" v-on:change="p.end=addHour(p.start,1)">
                                 </td>
                             </tr>
                             <tr>
@@ -156,13 +156,14 @@
                 <div class="pe-spacer size10" />
                 <div class="row">
                     <div class="col-sm-3">
-                        <label for="mustnotify">Notification aux membres du club</label>
+                        <label for="mustnotify">Notification automatique aux membres du club</label>
                     </div>
                     <div class="col-sm-2">
                         <label class="radio-inline"><input type="radio" name="mustnotify" value="O" v-model="meeting.mustnotify">Oui</label>
                         <label class="radio-inline"><input type="radio" name="mustnotify" value="N" v-model="meeting.mustnotify">Non</label>
                     </div>
-                    <div class="col-sm-6" v-if="meeting.mustnotify=='O' && meeting.notif1done=='O'"><p>notifiée aux membres le {{date(meeting.dtnotif1)}} à {{heure(meeting.dtnotif1)}}</p><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Renvoyer la notification</button></div>
+                    <div class="col-sm-6" v-if="meeting.mustnotify=='O' && meeting.notif1done=='O'"><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Renvoyer la notification</button>{{messageNotified()}}</div>
+                    <div class="col-sm-6" v-if="meeting.mustnotify=='N'"><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Envoyer la notification maintenant</button></div>
                 </div>
                 <div class="pe-spacer size10"></div>
 
@@ -220,6 +221,11 @@
             BlocksEditor
         },
         methods: {
+            messageNotified() {
+                if (this.meeting.dtnotif1 == '0001-01-01T00:00:00')
+                    return "";
+                return "notifiée aux membres le " + this.date(this.meeting.dtnotif1) + " à " + this.heure(this.meeting.dtnotif1);
+            },
             dateEndNotValid() {
                 let dtstart = new Date(this.meeting.dtstart);
                 let dtend = new Date(this.meeting.dtend);
@@ -234,9 +240,12 @@
                 })
             },
             date: function (d) {
+               
                 if (!d)
                     return '';
                 let dd = new Date(d);
+                alert(d);
+                alert(dd);
                 return dd.toLocaleDateString();
             },
             heure: function (d) {
@@ -249,6 +258,11 @@
                 let d = new Date(this.meeting.dtstart);
                 d.setHours(d.getHours() + n);
                 this.meeting.dtend = d.localeFormat('yyyy-MM-ddTHH:mm');
+            },
+            addHour(h,n) {
+                let d = new Date('0000-01-01 '+h);
+                d.setHours(d.getHours() + n);
+                return d.localeFormat('HH:mm');
             },
             clearNotif1() {
                 delete this.meeting.dtnotif1;
@@ -348,7 +362,7 @@
                     type: 'unitary',
                     statutory: 'O',
                     name: '',
-                    mustnotify: 'O',
+                    mustnotify: 'N',
                     periods:[]
                 };
             } else {

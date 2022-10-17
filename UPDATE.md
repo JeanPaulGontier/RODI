@@ -1,3 +1,13 @@
+###### 17/10/2022
+
+- modification des libellés dans l'édition de réunion
+- active signifie inscription active
+- ajout d'une désactivation automatique de l'inscription quand la date de fin est passée
+- ajout d'un bouton de notification pour le cas ou la notification automatique n'est pas activée
+- une nouvelle réunion est positionné sur ne pas notifier automatiquement 
+- ajout de la mise à jour automatique de l'heure +1 pour l'heure de fin dans la gestion des périodes
+- la visu publique de la réunion a été modifiée afin de laisser apparaitre la réunion meme si l'inscription n'est plus active
+
 ###### 04/10/2022
 
 - correction pb d'affichage en tete espace membre sur mobile suite a modification des informations affichées
