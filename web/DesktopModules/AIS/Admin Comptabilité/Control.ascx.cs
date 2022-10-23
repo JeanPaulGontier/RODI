@@ -85,6 +85,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (TXT_Email_Sender.Text.Trim().Equals("")){
+            TXT_Email_Sender.Text = UserInfo.Email;
+        }
         if ("" + Functions.CurrentCric != HF_Cric.Value)
         {
             HF_Cric.Value = "" + Functions.CurrentCric;
@@ -170,6 +173,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         Order o = DataMapping.GetOrder(hfd_id.Value);
         lbl_Titre.Text = "Taxe per capita du club " + o.club;
         BindDDL(o.cric);
+        ddl_members.Items.Insert(0, "");
         if(o.rule_par!=null && o.rule_par!="")
         {
             foreach(ListItem li in ddl_members.Items)
@@ -180,7 +184,11 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         }
         if (o.rule_type != null && o.rule_type != "")
             rbl_type.SelectedValue = o.rule_type;
+        tbx_info.Text = ""+o.rule_info;
         btn_validate.CommandArgument = ""+o.id;
+        if (o.rule_dt == Const.NO_DATE)
+            o.rule_dt = DateTime.Now;
+        tbx_date.Text = ""+ o.rule_dt.ToString("yyyy-MM-dd");
     }
 
     private void BindDDL(int cric)
@@ -551,7 +559,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     /// <param name="e"></param>
     protected void BT_Export_Orders_Click(object sender, EventArgs e)
     {
-        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'n° commande',amount as 'montant',type_rule as 'type règlement',par_rule as 'par qui',dt,dt_rule as 'date règlement',[rule] as 'reglé',info_rule as 'commentaire'," +
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
             "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
             "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg,"+
             "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
@@ -559,7 +567,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "List des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -607,8 +615,11 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         o.rule_type = rbl_type.SelectedValue;
         o.rule_par = ddl_members.SelectedItem.Text;
         o.rule_info = tbx_info.Text;
+        DateTime dt = DateTime.Now;
+        DateTime.TryParse("" + tbx_date.Text, out dt);
+        o.rule_dt = dt;
         o.rule = "O";
-        o.rule_dt = DateTime.Now;
+       // o.rule_dt = DateTime.Now;
 
         DataMapping.UpdateOrder(o);
         RefreshGridOrders();
@@ -671,5 +682,12 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 break;
         }
         Functions.SendMail(TXT_Email_Sender.Text, "Rapport envoi emails : " + TXT_Titre.Text, TXT_Result_Mails.Text);
+    }
+
+    public string ShowDate(DateTime d)
+    {
+        if (d == Const.NO_DATE)
+            return "";
+        return d.ToString("dd/MM/yyyy");
     }
 }

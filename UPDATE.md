@@ -1,3 +1,11 @@
+###### 23/10/2022
+
+- modification de la liste des rôles rotariens pour l'administration des clubs, chaque district peut maintenant définir quels rôles sont des admins de clubs, avant la liste était commune aux districts (par exemple le protocole peut maintenant organiser les réunions)
+
+- modification du module d'administration des appels de cotisations district, renommage des libellés pour être plus conforme aux usages
+
+
+
 ###### 17/10/2022
 
 - modification des libellés dans l'édition de réunion

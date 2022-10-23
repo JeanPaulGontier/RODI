@@ -79,6 +79,9 @@ namespace AIS
         public static DateTime NO_DATE = new DateTime(1900, 1, 1);
         public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
         public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
+        public static int MENU_CLUB_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuClubRootTabId"]);
+        public static int MENU_MEMBER_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuMemberRootTabId"]);
+
 
         public const string GoogleMapsKey = "AIzaSyBdbBwqDZJ2_E0UZ3m84pIgWd9Q4LXwQjU";
         public const string ZOOM = "7";
@@ -90,6 +93,7 @@ namespace AIS
         public const string ROLE_ADMIN_DISTRICT = "Administrateur District";
         public const string ROLE_ADMIN_CLUB = "Administrateur Club";
         public const string ROLE_ADMIN_ROTARACT = "Administrateur Rotaract";
+        public static string AFFECTATIONS_ADMIN_CLUB = ""+System.Configuration.ConfigurationManager.AppSettings["AffectationsAdminClub"];
 
         public const string no_image = "/images/1x1.gif";
         public const string TABLE_PREFIX = "ais_";

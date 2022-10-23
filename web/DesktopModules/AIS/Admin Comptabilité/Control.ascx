@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 
 <asp:Panel ID="Panel1" runat="server">
-<asp:Button runat="server" Text="Ajouter un règlement" CssClass="btn btn-primary" ID="BT_Ajouter" OnClick="BT_Ajouter_Click" />
+<asp:Button runat="server" Text="Ajouter un appel" CssClass="btn btn-primary" ID="BT_Ajouter" OnClick="BT_Ajouter_Click" />
 <asp:GridView ID="GridView1" runat="server" CssClass="table table-striped"  AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting">
 <Columns>
     <asp:BoundField DataField="dt" HeaderText="Date" SortExpression="dt" DataFormatString="{0:d}" />
@@ -24,7 +24,7 @@
 <asp:HiddenField runat="server" ID="HF_id" />
 
 <div class="Marron">
-	<h2><span class="Head">Détail du règlement</span></h2>
+	<h2><span class="Head">Détail de l'appel</span></h2>
 </div>
 
 <div>
@@ -71,16 +71,16 @@
     <div class="pe-spacer size20"></div>
 
 <asp:Panel runat="server" ID="P_GenerateOrders" >
-<div>Génération des commandes :</div>
+<div>Génération des factures :</div>
     <asp:Literal runat="server" ID="Lit_Info_Generation_Commandes"><blockquote class="blockquote">
         <p class="text-info">
-            Pour générer les commandes, il faut au préalable valider le formulaire. Le bouton de génération apparaitra alors. Attention de bien s'assurer de l'effectif après import du fichier des membres venant du RI.        
+            Pour générer les factures, il faut au préalable valider le formulaire. Le bouton de génération apparaitra alors. Attention de bien s'assurer de l'effectif après import du fichier des membres venant du RI.        
         </p>
     </blockquote>
     </asp:Literal>
     <div class="txtCenter">
 
-    <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Generer_Orders" Text="Générer les commandes" OnClick="BT_Generer_Orders_Click" />
+    <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Generer_Orders" Text="Générer les factures" OnClick="BT_Generer_Orders_Click" />
     <div>
     <asp:Literal runat="server" ID="TXT_Result"></asp:Literal>
     </div>
@@ -108,7 +108,7 @@
 
     <div class="pe-spacer size20"></div>
 
-<div>Liste des commandes :</div>
+<div>Liste des factures :</div>
 <asp:GridView ID="GridView2" runat="server" CssClass="table table-stripped"  AllowSorting="True"  GridLines="None" OnRowCommand="GridView2_RowCommand" AutoGenerateColumns="False" OnSorting="GridView2_Sorting" OnRowDataBound="GridView2_RowDataBound">
 <Columns>
     
@@ -125,12 +125,18 @@
             </asp:RadioButtonList> --%>
         </ItemTemplate>
     </asp:TemplateField>
-    <asp:BoundField DataField="rule_type" HeaderText="Type"  />
-    <asp:BoundField DataField="rule_par" HeaderText="Par"  />
+    <asp:BoundField DataField="rule_type" HeaderText="Moyen"  />
+    <asp:BoundField DataField="rule_par" HeaderText="Par qui"  />
+    <asp:TemplateField HeaderText="Quand">
+        <ItemTemplate>
+            <asp:Label runat="server" Text='<%# ShowDate((DateTime)Eval("rule_dt")) %>'></asp:Label>
+        </ItemTemplate>
+    </asp:TemplateField>
+     
     <asp:BoundField DataField="rule_info" HeaderText="Description" />
     <asp:TemplateField>
         <ItemTemplate>
-            <asp:Button ID="btn_edit" runat="server" CommandName="Editer" CommandArgument='<%# Eval("id") %>' CssClass="btn btn-primary" Text="Modifier" />
+            <asp:Button ID="btn_edit" runat="server" CommandName="Editer" CommandArgument='<%# Eval("id") %>' CssClass="btn btn-primary" Text="Règlement" />
         </ItemTemplate>
     </asp:TemplateField>
     <asp:TemplateField>
@@ -142,12 +148,12 @@
     
 </Columns>    
     <EmptyDataTemplate>
-        <div>Aucune commande de club pour le moment ...</div>
+        <div>Aucune facture de club pour le moment ...</div>
     </EmptyDataTemplate>
    <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
 </asp:GridView>
     <asp:HiddenField ID="tri2" Value="club" runat="server"/><asp:HiddenField ID="sens2" Value="ASC" runat="server"/>
-    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les commandes" OnClick="BT_Export_Orders_Click"  />&nbsp;<asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
+    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les factures" OnClick="BT_Export_Orders_Click"  />&nbsp;<asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
 </div>
 
 </asp:Panel>
@@ -160,7 +166,7 @@
     <asp:HiddenField ID="hfd_id" runat="server" />
     <h3><asp:Label runat="server" ID="lbl_Titre"></asp:Label></h3>
     <br />
-    <div class="row">
+    <p class="row">
         <div class="col-md-2">
             Réglé par : 
         </div>
@@ -170,23 +176,31 @@
                 <asp:ListItem Text="Virement" Value="virement"></asp:ListItem>
             </asp:RadioButtonList>
         </div>
-    </div>
-    <div class="row">
+    </p>
+    <p class="row">
         <div class="col-md-2">
-            et par : 
+            Date : 
         </div>
         <div class="col-md-10">
-            <asp:DropDownList ID="ddl_members" runat="server"></asp:DropDownList>
+            <asp:TextBox TextMode="Date" ID="tbx_date" runat="server" CssClass="form-control" Width="200"></asp:TextBox>
         </div>
-    </div>
-    <div class="row">
+    </p>
+    <p class="row">
+        <div class="col-md-2">
+            Par qui : 
+        </div>
+        <div class="col-md-10">
+            <asp:DropDownList ID="ddl_members" runat="server" CssClass="form-control input-sm"></asp:DropDownList>
+        </div>
+    </p>
+    <p class="row">
         <div class="col-md-2">
             Description : 
         </div>
         <div class="col-md-10">
-            <asp:TextBox TextMode="MultiLine" ID="tbx_info" runat="server" Width="300" Height="200"></asp:TextBox>
+            <asp:TextBox TextMode="MultiLine" ID="tbx_info" runat="server" CssClass="form-control" Height="200"></asp:TextBox>
         </div>
-    </div>
-    <asp:Button ID="btn_validate" runat="server" Text="Régler" CssClass="btn btn-primary"  OnClick="btn_validate_Click"/>
+    </p>
+    <asp:Button ID="btn_validate" runat="server" Text="Valider le règlement" CssClass="btn btn-primary"  OnClick="btn_validate_Click"/>
     <asp:Button ID="btn_cancel" runat="server" Text="Annuler" CssClass="btn btn-default" OnClick="btn_cancel_Click" />
 </asp:Panel>

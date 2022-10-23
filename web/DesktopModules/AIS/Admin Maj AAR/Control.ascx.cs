@@ -232,7 +232,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
             }
             
 
-            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ('Président','Secrétaire','Secrétaire Adjoint','Webmaster','Webmaster Adjoint') AND  rotary_year IN (";
+            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND  rotary_year IN (";
 
             if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
                 query += annee + "," + (annee + 1);

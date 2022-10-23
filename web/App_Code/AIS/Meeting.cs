@@ -56,6 +56,7 @@ public class Meeting
         public Guid guid { get; set; }
         public Guid meetingguid { get; set; }
         public string useridguid { get; set; }
+        public string presence { get; set; }
         public DateTime dtlastupdate { get; set; }
     }
 
@@ -94,8 +95,12 @@ public class Meeting
 
             try
             {
+                // desactivation de l'inscription sur une réunion passée
+                DataMapping.ExecSql("UPDATE [ais_meetings] SET active='N' WHERE dtend<getdate() and dtend is not null and type='unitary'");
+
+
                 SqlCommand sql = new SqlCommand("SELECT * FROM [ais_meetings] WHERE " +
-                        "active='O' AND " +
+                        //"active='O' AND " +
                         "type='periodic' " +
                         "ORDER BY dtrevision");
                 List<Meeting> meetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(sql);
@@ -224,7 +229,7 @@ public class Meeting
             {
                 SqlCommand sql = new SqlCommand("SELECT * FROM [ais_meetings] WHERE " +
                     "dtrevision < getdate() AND " +
-                    "active='O' AND " +
+                    //"active='O' AND " +
                     "type='unitary' AND " +
                     "mustnotify='O' AND " +
                     "notif1done IS null " +
@@ -265,11 +270,12 @@ public class Meeting
                                     body = body.Replace("#meeting.dtend#", meeting.dtend.ToString("dd/MM/yyyy - HH:mm"));
                                     body = body.Replace("#meeting.name#", meeting.name);
                                     body = body.Replace("#meeting.link#", Const.DISTRICT_URL + "/m-" + meeting.link + "?useridguid=" + useridguid);
-                                    //body += "<div>" + m.email + "</div>";
-                                    Yemon.dnn.Functions.SendMail(club.email, m.email, "[" + club.name + "] Notification de réunion", body);
+                                //body += "<div>" + m.email + "</div>";
+                                Yemon.dnn.Functions.SendMail(club.email, m.email, "[" + club.name + "] Notification de réunion", body);
+//                                Yemon.dnn.Functions.SendMail(club.email, "polo@pololand.com", "[" + club.name + "] Notification de réunion", body);
 
-                                }
-                                catch(Exception ee)
+                            }
+                            catch (Exception ee)
                                 {
                                     Functions.Error(ee);
                                 }
