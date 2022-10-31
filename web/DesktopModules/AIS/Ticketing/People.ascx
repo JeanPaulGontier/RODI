@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="People.ascx.cs" Inherits="AIS.Ticketing_People" %>
 <h3><asp:Label runat="server"  ID="L_Name"/></h3>
 <asp:HiddenField runat="server" ID="H_GUID" />
+
 <div class="form-group">
     <asp:Label runat="server" Text="Prénom :" CssClass="control-label col-sm-3"></asp:Label>
     <div class="col-sm-9">

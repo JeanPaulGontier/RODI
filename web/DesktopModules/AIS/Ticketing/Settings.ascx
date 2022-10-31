@@ -31,13 +31,13 @@
     </div>
 </div>
 <div class="form-group">
-    <asp:Label runat="server" Text="Date de début : " CssClass="control-label col-sm-3" />
+    <asp:Label runat="server" Text="Date d'ouverture : " CssClass="control-label col-sm-3" />
     <div class="col-sm-9">
         <asp:TextBox runat="server" ID="TXT_EVENTSTARTDATE" class="form-control" Width="200"></asp:TextBox>
     </div>
 </div>
 <div class="form-group">
-    <asp:Label runat="server" Text="Date de fin : " CssClass="control-label col-sm-3" />
+    <asp:Label runat="server" Text="Date de fermeture : " CssClass="control-label col-sm-3" />
     <div class="col-sm-9">
         <asp:TextBox runat="server" ID="TXT_EVENTENDDATE" class="form-control" Width="200"></asp:TextBox>
     </div>
@@ -212,18 +212,18 @@
 
 <h2 class="dnnformsectionhead">Technique</h2>
 
-<table style="width:90%">
+<table style="width:90%" class="table  table-borderless borderless">
     <tr>
         <td><asp:Label runat="server" Text="GUID Billeterie"></asp:Label></td>
-        <td style="width:60%"><asp:TextBox runat="server" ID="TXT_GUID" Width="100%"></asp:TextBox></td>
+        <td style="width:60%"><asp:TextBox runat="server" ID="TXT_GUID" Width="100%" ReadOnly="true"></asp:TextBox></td>
     </tr>
     <tr>
         <td><asp:Label runat="server" Text="Rôle Administrateur Billetterie : " /></td>
-        <td><asp:TextBox runat="server" ID="TXT_ADMINROLE" Width="100%"></asp:TextBox></td>
+        <td><asp:DropDownList runat="server" ID="L_ADMINROLE" CssClass="form-control"></asp:DropDownList></td>
     </tr>
     <tr>
         <td><asp:Label runat="server" Text="Rôle Lecture seule Billetterie : " /></td>
-        <td><asp:TextBox runat="server" ID="TXT_READONLYROLE" Width="100%"></asp:TextBox></td>
+        <td><asp:DropDownList runat="server" ID="L_READONLYROLE" CssClass="form-control"></asp:DropDownList></td>
     </tr>
     <tr>
         <td><asp:Label runat="server" Text="URL Billetterie : " ToolTip="En général la même que la page de la billetterie" ID="Label2" /></td>

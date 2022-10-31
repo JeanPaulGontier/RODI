@@ -64,8 +64,10 @@
 using AIS;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security.Roles;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -84,17 +86,40 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
     //    ClientResourceManager.RegisterScript(Parent.Page, "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js");
     //    base.OnInit(e);
     //}
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+
+        RoleController roleController = new RoleController();
+        var roles = roleController.GetRoles(PortalId);
+        L_READONLYROLE.Items.Clear();
+        L_READONLYROLE.Items.Add("");
+        L_ADMINROLE.Items.Clear();
+        L_ADMINROLE.Items.Add("");
+
+        foreach (RoleInfo role in roles)
+        {
+            L_ADMINROLE.Items.Add(role.RoleName);
+            L_READONLYROLE.Items.Add(role.RoleName);
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.IsPostBack)
             return;
-
+       
         if (!Settings.Contains("guid"))
         {
             Default_Settings();           
         }
+        else
+        {
+            Init_Fields(Settings);
 
-        Init_Fields();
+        }
+
 
 
     }
@@ -117,13 +142,24 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
         }
         ticketing.name = "Ma billeterie";
         ticketing.description = "Description de la billeterie";
-
+        ticketing.eventstartdate = DateTime.Now;
+        ticketing.eventenddate = DateTime.Now;
+        string url = Functions.GetCurrentUrlWithoutParms();
+        url = url.IndexOf("/ctl/module") > -1 ? url.Substring(0, url.IndexOf("/ctl/module")) : url;
+        ticketing.receipturl = url;
+        ticketing.ticketurl = url;
+        ticketing.eventurl = url;
 
         string ts = Functions.Serialize(ticketing);
         objModules.UpdateModuleSetting(ModuleId, "ticketing", ts);
+
+        Hashtable settings = new Hashtable();
+        settings["guid"] = ticketing.guid;
+        settings["ticketing"] = ts;
+        Init_Fields(settings);
     }
 
-    void Init_Fields()
+    void Init_Fields(Hashtable Settings)
     {
         try { 
             TXT_GUID.Text = "" + Settings["guid"];
@@ -155,8 +191,8 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
                 #endregion
 
                 #region technical fields
-                TXT_ADMINROLE.Text = ticketing.adminrole;
-                TXT_READONLYROLE.Text = ticketing.readonlyrole;
+                L_ADMINROLE.SelectedValue = ticketing.adminrole;
+                L_READONLYROLE.SelectedValue = ticketing.readonlyrole;
                 TXT_EVENTURL.Text = ticketing.eventurl;
                 TXT_TICKETURL.Text = ticketing.ticketurl;
                 TXT_RECEIPTURL.Text = ticketing.receipturl;
@@ -239,8 +275,8 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
         #endregion
 
         #region technical fields
-        ticketing.adminrole = TXT_ADMINROLE.Text;
-        ticketing.readonlyrole = TXT_READONLYROLE.Text;
+        ticketing.adminrole = L_ADMINROLE.SelectedValue;
+        ticketing.readonlyrole = L_READONLYROLE.SelectedValue;
         ticketing.eventurl = TXT_EVENTURL.Text;
         ticketing.ticketurl = TXT_TICKETURL.Text;
         ticketing.receipturl = TXT_RECEIPTURL.Text;
@@ -281,7 +317,6 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
     protected void BT_Default_Click(object sender, EventArgs e)
     {
         Default_Settings();
-        Init_Fields();
     }
 
     protected void BT_Import_Click(object sender, EventArgs e)
@@ -301,7 +336,10 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
 
             Store_To_DB(ticketimport.guid, ticketimport.name, TXT_TICKETING.Text);
 
-            Init_Fields();
+            Hashtable settings = new Hashtable();
+            settings["guid"] = ticketing.guid;
+            settings["ticketing"] = ts;
+            Init_Fields(settings);
         }
         catch(Exception ee)
         {

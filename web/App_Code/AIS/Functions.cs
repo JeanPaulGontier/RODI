@@ -93,6 +93,8 @@ using System.Globalization;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Data;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Web.Http;
 
 namespace AIS
 {
@@ -427,7 +429,18 @@ namespace AIS
             url = url.ToLower();
             if (url.StartsWith("http://"))
                 return url;
-            return "http://" + url;
+            if (url.StartsWith("https://"))
+                return url;
+            return "https://" + url;
+        }
+
+        public static string GetCurrentUrlWithoutParms()
+        {
+            var httpContext = System.Web.HttpContext.Current;
+            string url = httpContext.Request.RawUrl.IndexOf("?")>-1? httpContext.Request.RawUrl.Substring(0, httpContext.Request.RawUrl.IndexOf("?")) : httpContext.Request.RawUrl;
+            string host = httpContext.Request.Url.AbsoluteUri.Replace(httpContext.Request.Url.PathAndQuery, "");
+            return host+url;
+            
         }
         /// <summary>
         /// Send exception detail into DNN's event log

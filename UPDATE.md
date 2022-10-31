@@ -1,3 +1,16 @@
+###### 31/10/2022
+
+Mise a jour module billetterie district :
+- Certains libellés ont été changés pour éviter les confusions : début et fin d’ouverture, validation au lieu de paiement
+- Quand l’inscription est gratuite le reçu n’est plus visible
+- Les informations sont automatiquement saisies avec le profil de l’utilisateur actuellement identifié afin de faciliter l’inscription
+- Le rôle lecture seule fonctionnement maintenant comme prévu : export des commandes et inscrits sans possibilité de modifier les paramètres de la billetterie
+- Panneau de paramétrage de la billetterie
+o Correction d’un pb de valeurs initiales quand on ajoute le module
+o Des listes déroulantes permettent de choisir les rôles admin et lecture seule 
+o Les url billetterie, ticket et reçu se remplissent automatiquement
+
+
 ###### 23/10/2022
 
 - modification de la liste des rôles rotariens pour l'administration des clubs, chaque district peut maintenant définir quels rôles sont des admins de clubs, avant la liste était commune aux districts (par exemple le protocole peut maintenant organiser les réunions)

@@ -85,6 +85,8 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.Framework;
 using Stripe.Checkout;
 using Stripe;
+using System.Web.UI.WebControls.WebParts;
+
 
 /// <summary>
 /// URL Validation payment paypal
@@ -329,14 +331,16 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
             if (Session[TXT_GUID.Value] != null)
             {
                 order = (Ticketing.Order)Session[TXT_GUID.Value];
-           
 
+                Member member = DataMapping.GetMemberByUserID(UserId);
                 P_People.Controls.Clear();
                 foreach (Ticketing.Order.Item item in order.items)
                 {
                     Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
                     p.ticketing = ticketing;
                     p.item = item;
+                    if (member != null)
+                        p.member = member;
                     P_People.Controls.Add(p);
                 }
             }
@@ -350,13 +354,21 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                 UserInfo ui = UserController.GetUserById(PortalId, UserId);
                 if (ui != null)
                 {
-                    PAdmin.Visible = ui.IsSuperUser;
+                    PAdmin.Visible = ui.IsSuperUser || ui.IsInRole("Administrators");
                     P_SuperAdmin.Visible = ui.IsSuperUser;
+
+                    if (!string.IsNullOrEmpty(ticketing.readonlyrole))
+                    {
+                        PAdminExport.Visible = ui.IsInRole(ticketing.readonlyrole);
+                       
+                    }
                     if (!string.IsNullOrEmpty(ticketing.adminrole))
                     {
-                        PAdmin.Visible = ui.IsInRole(ticketing.adminrole) || PAdmin.Visible;                       
+                        PAdmin.Visible = ui.IsInRole(ticketing.adminrole) || PAdmin.Visible;
+                        PAdminExport.Visible = PAdmin.Visible || PAdminExport.Visible;
                     }
 
+                    
                 }
 
                 L_Name.Text = ticketing.name;
@@ -510,7 +522,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
     {
         P0.Visible = CurrentStep == 0;
         P1.Visible = CurrentStep == 1;
-        P2.Visible = CurrentStep == 2;
+        P2.Visible = CurrentStep == 2;       
         P3.Visible = CurrentStep == 3;
         P4.Visible = CurrentStep == 4;
     }
@@ -574,7 +586,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                         LBLReponse.Text = "Le paiement a été accepté";
                     BT_ShowTickets.Visible = true;
                     BT_ShowTickets.NavigateUrl = URL + "?order_guid=" + guid;
-                    BT_ShowReceipt.Visible = true;
+                    BT_ShowReceipt.Visible = true && order.amount>0;
                     BT_ShowReceipt.NavigateUrl = URL + "?receipt=" + guid;
 
                 }
@@ -702,7 +714,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
     protected void BT_Book_Click(object sender, EventArgs e)
     {
-
+        Member member = AIS.DataMapping.GetMemberByUserID(UserInfo.UserID);
         Ticketing.Order order;
         
         if(Session[TXT_GUID.Value]!=null)
@@ -712,6 +724,17 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         else
         {
             order = new Ticketing.Order();
+
+
+           
+            if(member!=null)
+            {
+                order.customerfirstname = member.name;
+                order.customerlastname = member.surname;
+                order.customeremail = member.email;
+                order.customerphone = member.telephone;
+                order.clubname = member.club_name;
+            }
         }
 
         order.basket.Clear();
@@ -747,6 +770,12 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                     item.guid = Guid.NewGuid().ToString();
                     item.option_guid = guid.Value;
                     item.name = name.Text + " - Personne n°"+i;
+                    if(i==1 && member!=null)
+                    { 
+                        item.firstname = member.name;
+                        item.lastname = member.surname;
+                        item.email = member.email;
+                    }
                     order.items.Add(item);
                 }
 
@@ -765,12 +794,12 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         order.amount = total;
 
         P_People.Controls.Clear();
+
         foreach(Ticketing.Order.Item item in order.items)
         {
             Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
             p.ticketing = ticketing;
-            p.item = item;
-          
+            p.item = item;            
             P_People.Controls.Add(p);
         }
         //L_People.DataSource = order.items;
@@ -1436,7 +1465,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                     LBLReponse2.Text = "";
                     BT_ShowTickets.Visible = true;
                     BT_ShowTickets.NavigateUrl = t.eventurl + "?order_guid=" + order_guid;
-                    BT_ShowReceipt.Visible = true;
+                    BT_ShowReceipt.Visible = true && order.amount>0;
                     BT_ShowReceipt.NavigateUrl = t.eventurl + "?receipt=" + order_guid;
 
                     if (!already_paid)
@@ -2193,4 +2222,6 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
 
 
+
+   
 }

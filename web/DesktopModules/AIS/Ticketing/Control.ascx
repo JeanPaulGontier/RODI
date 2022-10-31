@@ -11,13 +11,14 @@
         <asp:Label runat="server" ID="L_Description" Visible="false"></asp:Label>
         <asp:HiddenField runat="server" ID="H_Step" />
         <asp:HiddenField runat="server" ID="TXT_GUID" />
- 
+        <asp:Panel runat="server" ID="PAdminExport" Visible="false">
+            <asp:Button runat="server" ID="BT_Export_Attendees" OnClick="BT_Export_Attendees_Click" Text="Exporter la liste des participants" CssClass="btn btn-default" />
+            <asp:Button runat="server" ID="BT_Export_Reservations"  OnClick="BT_Export_Reservations_Click" Text="Exporter la liste des réservations" CssClass="btn btn-default" />
+        </asp:Panel>
         <asp:Panel runat="server" ID="PAdmin" Visible="false">
             <asp:Button runat="server" ID="BT_Export_Orders_Paid" OnClick="BT_Export_Orders_Paid_Click" Text="Exporter les commandes Payées" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Orders_Unpaid" OnClick="BT_Export_Orders_Unpaid_Click" Text="Exporter les commandes non Payées" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Orders_Refunded" OnClick="BT_Export_Orders_Refunded_Click" Text="Exporter les commandes remboursées" CssClass="btn btn-default" />
-            <asp:Button runat="server" ID="BT_Export_Attendees" OnClick="BT_Export_Attendees_Click" Text="Exporter la liste des participants" CssClass="btn btn-default" />
-            <asp:Button runat="server" ID="BT_Export_Reservations"  OnClick="BT_Export_Reservations_Click" Text="Exporter la liste des réservations" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Vouchers" OnClick="BT_Export_Vouchers_Click" Text="Exporter les invitations" CssClass="btn btn-default" />
             <div><h2>Gestion des commandes</h2></div>
             <div>Référence commande : <asp:TextBox runat="server" ID="TXT_Reference" ></asp:TextBox></div>
@@ -45,7 +46,7 @@
             <div class="small btn-group btn-group-justified">
                 <span class="btn btn-info">1. Panier</span>                       
                 <span class="btn btn-default">2. Coordonnées</span>                   
-                <span class="btn btn-default">3. Paiement</span>                    
+                <span class="btn btn-default">3. Validation</span>                    
                 <span class="btn btn-default">4. Confirmation</span>                                    
             </div>
             <div class="pe-spacer size30"></div>
@@ -94,12 +95,13 @@
             <div class="small btn-group btn-group-justified">
                 <span class="btn btn-default">1. Panier</span>                       
                 <span class="btn btn-info">2. Coordonnées</span>                   
-                <span class="btn btn-default">3. Paiement</span>                    
+                <span class="btn btn-default">3. Validation</span>                    
                 <span class="btn btn-default">4. Confirmation</span>                                    
             </div>
             <div class="pe-spacer size30"></div>
 
             <h3><asp:Label runat="server" Text="Vos informations"/></h3>
+          
             <div class="form-group">
                 <asp:Label runat="server" Text="Prénom :" CssClass="control-label col-sm-3"></asp:Label>
                 <div class="col-sm-9">
@@ -184,7 +186,7 @@
             <div class="small btn-group btn-group-justified">
                 <span class="btn btn-default">1. Panier</span>                       
                 <span class="btn btn-default">2. Coordonnées</span>                   
-                <span class="btn btn-info">3. Paiement</span>                    
+                <span class="btn btn-info">3. Validation</span>                    
                 <span class="btn btn-default">4. Confirmation</span>                                    
             </div>
 
@@ -237,7 +239,7 @@
             <div class="small btn-group btn-group-justified">
                 <span class="btn btn-default">1. Panier</span>                       
                 <span class="btn btn-default">2. Coordonnées</span>                   
-                <span class="btn btn-default">3. Paiement</span>                    
+                <span class="btn btn-default">3. Validation</span>                    
                 <span class="btn btn-info">4. Confirmation</span>                                    
             </div>
              <div class="pe-spacer size30"></div>

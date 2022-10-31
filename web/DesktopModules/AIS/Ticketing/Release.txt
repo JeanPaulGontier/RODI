@@ -41,6 +41,15 @@
 	Gestion template ticket
 	Panneau de gestion des champs supplémentaires
 
+20221027
+	Gestion du role lecture seule 
+
+20221031
+	Saisie automatique de l'utilisateur courant
+
+	Panneau de paramétrages plus pratique
+
+
 A développer
 	
 	Améliorer le payement paypal pour empecher la fraude
