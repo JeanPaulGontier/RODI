@@ -133,7 +133,7 @@
                 </th>
             </tr>
             <tr v-for="u in users">
-                <td>{{u.firstname}} {{u.lastname}}</td>
+                <td>{{u.lastname}} {{u.firstname}}</td>
                 <td>{{u.presence=='N'?'Non':'Oui'}}</td>
                 <td><p v-if="u.comment"><em>{{u.comment}}</em></p></td>
                 <td><button v-if="isCurrentUser(u)" v-on:click="editUser(u)" type="button" class="btn btn-default">Modifier</button></td>
@@ -161,8 +161,8 @@
                 Inscription
             </div>
             <div class="panel-body">
-                <label>Pr&eacute;nom</label> <input class="form-control" type="text" v-model="user.firstname" />
                 <label>Nom</label> <input class="form-control" type="text" v-model="user.lastname" />
+                <label>Pr&eacute;nom</label> <input class="form-control" type="text" v-model="user.firstname" />
                 <label>Pr&eacute;sent(e)</label> <div class="checkbox-inline"><label class="checkbox-inline"><input type="radio" value="Y" v-model="user.presence" /> Oui</label><label class="checkbox-inline"><input type="radio" value="N" v-model="user.presence" /> Non</label></div><br /><br />
                 <label>Commentaire</label> <input class="form-control" type="text" v-model="user.comment" />
                 <button type="button" class="btn btn-default" v-on:click="this.user=null">Annuler</button>&nbsp;

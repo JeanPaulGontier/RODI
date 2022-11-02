@@ -82,12 +82,12 @@
                 <a href="#" class="menuclick" id="MENUTOGGLE" ><img alt="Menu" class="click_img" src="<%=SkinPath %>images/burger-menu-blanc.svg"  /></a>
                 <div class="MenuMob"></div>
                 <div ID="MENUMOB" class="Menu">
-                     <ais:MENU runat="server"  />
+                     <ais:MENU runat="server" RootTabID='<%# AIS.Const.MENU_MEMBER_ROOT_TABID %>'  />
                 </div>
             </nav>
       </div>
       <nav class="Menu">
-          <ais:MENU runat="server" ID="MENU1" RootTabID="114" />
+          <ais:MENU runat="server" ID="MENU1" RootTabID='<%# AIS.Const.MENU_MEMBER_ROOT_TABID %>' />
       </nav>
     </div>
   </div>

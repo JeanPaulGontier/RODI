@@ -237,6 +237,15 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         RB_Membre_d_Honneur.SelectedValue = Const.NO;
                     }
 
+                    if (string.IsNullOrEmpty(membre.satellite_member) || membre.satellite_member == Const.NO)
+                    {
+                        RB_Membre_satellite.SelectedValue = Const.NO;
+                    }
+                    else
+                    {
+                        RB_Membre_satellite.SelectedValue = Const.YES;
+                    }
+
                     LBL_Adresse.Text = membre.adress_1;
                     if (membre.adress_2 != "")
                         LBL_Adresse.Text += "<br/>" + membre.adress_2;
@@ -297,6 +306,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     RB_Autoriser_Publication.Enabled = false;
                     RB_Membre_d_Honneur.Visible = true;
                     RB_Membre_d_Honneur.Enabled = false;
+                    RB_Membre_satellite.Visible = true;
+                    RB_Membre_satellite.Enabled = false;
                     BT_Supprimer.Visible = false;
 
                     if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
@@ -783,7 +794,14 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             {
                 membre.honorary_member = Const.NO;
             }
-
+            if (RB_Membre_satellite.SelectedValue == Const.YES)
+            {
+                membre.satellite_member = Const.YES;
+            }
+            else
+            {
+                membre.satellite_member = Const.NO;
+            }
             //ddlClubs.Items.Clear();
             //List<Club> clubRot = DataMapping.ListClubs();
 
@@ -824,7 +842,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             BT_Valider.Visible = true;
             RB_Autoriser_Publication.Enabled = true;
             RB_Membre_d_Honneur.Enabled = true;
-
+            RB_Membre_satellite.Enabled = true;
         }
         catch (Exception ee)
         {
@@ -904,6 +922,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             membre.visible = RB_Autoriser_Publication.SelectedValue;
             membre.honorary_member = RB_Membre_d_Honneur.SelectedValue;
             membre.removed = rbtl_radie.SelectedValue;
+            membre.satellite_member = RB_Membre_satellite.SelectedValue;
 
             membre.base_dtupdate = DateTime.Now;
 

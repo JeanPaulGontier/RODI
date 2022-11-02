@@ -140,8 +140,8 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <strong>Site web  : </strong>
-            <em>(incluant http:// ou https://)</em>
+            <strong>Site web : </strong>
+            <em>(incluant https://)</em>
         </div>
         <div class="col-sm-8">
             <asp:TextBox ID="tbx_web" Width="500" runat="server"></asp:TextBox>
@@ -154,14 +154,14 @@
         <div class="col-sm-8">
             <asp:RadioButtonList runat="server" ID="SEO_MODE" RepeatDirection="Horizontal">
                 <asp:ListItem Text="Carte de visite" Value=""></asp:ListItem>
-                <asp:ListItem Text="Mini site" Value="m"></asp:ListItem>
-                <asp:ListItem Text="Mini site avec domaine" Value="d"></asp:ListItem>
+                <asp:ListItem Text="Site" Value="m"></asp:ListItem>
+                <asp:ListItem Text="Site avec domaine" Value="d"></asp:ListItem>
             </asp:RadioButtonList>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <strong>Nom domaine mini site :</strong>
+            <strong>Nom de domaine site :</strong>
         </div>
         <div class="col-sm-8">
             <asp:TextBox ID="tbx_domaine" Width="500" runat="server"></asp:TextBox>

@@ -127,7 +127,11 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
         try
         {
             Member m = Functions.GetCurrentMember();
-            if (UserInfo.IsSuperUser || (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric))
+            if (UserInfo.IsSuperUser ||
+                 (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric) ||
+                 UserInfo.IsInRole("Administrators") ||
+                 UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)
+                 )
             {
                 isAuthorised = true;
             }

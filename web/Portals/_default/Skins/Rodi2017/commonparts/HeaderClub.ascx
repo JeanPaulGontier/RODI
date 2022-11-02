@@ -83,7 +83,7 @@
                 <a href="#" class="menuclick" id="MENUTOGGLE" ><img alt="Menu" class="click_img" src="<%=SkinPath %>images/burger-menu.svg"  /></a>
                 <div class="MenuMob"></div>
                 <div ID="MENUMOB" class="Menu">
-					<ais:MENU runat="server"  RootTabID="602"  />
+					<ais:MENU runat="server"  RootTabID='<%# AIS.Const.MENU_CLUB_ROOT_TABID %>' />
 					<div class="more-links">
 						<a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
 						<a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
@@ -92,7 +92,7 @@
             </nav>
       </div>
         <nav class="Menu skin_width pc_display">
-          <ais:MENU runat="server" ID="MENU1" RootTabID="602" />
+          <ais:MENU runat="server" ID="MENU1" RootTabID='<%# AIS.Const.MENU_CLUB_ROOT_TABID %>' />
       </nav>
     </div>
   </div>

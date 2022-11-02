@@ -55,6 +55,7 @@ namespace AIS
         public string fonction_rotarienne { get; set; }
 
 
+
         public string GetPhoto()
         {
             string chemin = PortalSettings.Current.HomeDirectory;

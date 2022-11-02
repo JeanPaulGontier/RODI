@@ -118,8 +118,9 @@ namespace AIS
         public string visible { get; set; }
         public bool presentation { get; set; }
         public string fonction_rotarienne { get; set; }
-        
-        
+        public string satellite_member { get; set; }
+
+
         public string GetPhoto()
         {
             string chemin = PortalSettings.Current.HomeDirectory;

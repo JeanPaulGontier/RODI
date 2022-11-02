@@ -1,3 +1,13 @@
+###### 02/11/2022
+
+- on peut maintenant spécifier manuellement si un membre est dans un club satellite ou pas
+- dans la liste des membres un icone apparait sur chaque membre faisant partie d'un club satellite
+- modification taille des titres (ex: nom du district a coté du logo)
+- la mention mini a été retirée de la rubrique mini site dans la gestion des clubs, car il ne s'agit plus de mini sites mais de sites complets pour les clubs hébergés par le district
+- dans l'affichage des réunions, le nom apparait maintenant avant le prénom
+- les administrateurs et administrateurs district peuvent maintenant gérer les nouvelles des clubs
+
+
 ###### 31/10/2022
 
 Mise a jour module billetterie district :

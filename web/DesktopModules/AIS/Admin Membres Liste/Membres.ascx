@@ -37,7 +37,7 @@
     <asp:TemplateField ItemStyle-Width="32"> 
         <ItemTemplate>
             <%# DataBinder.Eval(Container.DataItem, "honorary_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/honor.png' Width=16 title='Honoraire' />":"" %>
-                    
+            <%# DataBinder.Eval(Container.DataItem, "satellite_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/satellite.png' Width=16 title='Membre club satellite' />":"" %>
         </ItemTemplate>
     </asp:TemplateField>
     <asp:BoundField DataField="surname" HeaderText="Nom" SortExpression="surname"  />
@@ -74,7 +74,7 @@
     <asp:BoundField DataField="email" HeaderText="Email" />
     <asp:BoundField DataField="club_name" HeaderText="Club" />  
     <asp:BoundField DataField="cric" HeaderText="CRIC" />
-    <asp:BoundField DataField="honorary_member" HeaderText="Member d'honneur" />
+    <asp:BoundField DataField="honorary_member" HeaderText="Membre d'honneur" />
     <asp:BoundField DataField="maiden_name" HeaderText="Nom jeune fille" />
     <asp:BoundField DataField="spouse_name" HeaderText="Prénom conjoint" />
     <asp:BoundField DataField="title" HeaderText="Titre" />
@@ -101,6 +101,7 @@
     <asp:BoundField DataField="professionnal_mobile" HeaderText="Portable Prof." />
     <asp:BoundField DataField="professionnal_email" HeaderText="Email Prof." />
     <asp:BoundField DataField="retired" HeaderText="Retraité(e)" />
+    <asp:BoundField DataField="satellite_member" HeaderText="Membre club satellite" />
 </Columns>    
 </asp:GridView>
 </asp:Panel>
@@ -326,6 +327,14 @@
         <asp:RadioButtonList ID="RB_Membre_d_Honneur" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Selected="true" Text="Oui" Value="O" />
             <asp:ListItem Text="Non" Value="N" />
+        </asp:RadioButtonList>
+       
+    </div>
+     <div class="txtRight">
+        Membre club satellite : 
+        <asp:RadioButtonList ID="RB_Membre_satellite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+            <asp:ListItem Text="Oui" Value="O" />
+            <asp:ListItem Selected="true" Text="Non" Value="N" />
         </asp:RadioButtonList>
        
     </div>

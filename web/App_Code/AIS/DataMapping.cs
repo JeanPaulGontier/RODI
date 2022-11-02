@@ -2222,6 +2222,7 @@ namespace AIS
             if (rd["userid"] == DBNull.Value) obj.userid = 0; else obj.userid = (int)rd["userid"];
             obj.photo = "" + rd["photo"];
             obj.visible = "" + rd["visible"];
+            obj.satellite_member = "" + rd["satellite_member"];
 
             return obj;
         }
@@ -2367,7 +2368,7 @@ namespace AIS
                 int NIM = 0;
 
 
-                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible]) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible)", conn, trans);
+                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member]) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member)", conn, trans);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
                 sql.Parameters.AddWithValue("@surname", m.surname);
@@ -2423,6 +2424,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@club_name", m.club_name);
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
+                sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
 
 
                 if (sql.ExecuteNonQuery() == 0)
@@ -2511,7 +2513,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid, [photo]=@photo,[visible]=@visible WHERE [id]=@id", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid, [photo]=@photo,[visible]=@visible,[satellite_member]=@satellite_member WHERE [id]=@id", conn, trans);
                 sql.Parameters.AddWithValue("@id", m.id);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
@@ -2569,6 +2571,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@userid", m.userid);
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
+                sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);
@@ -2764,7 +2767,7 @@ namespace AIS
                 }
                 else
                 {
-                    query = "SELECT " + top + " id, surname, name, cric, civility, job, industry, base_dtupdate, retired, district_id, club_name, userid FROM " + Const.TABLE_PREFIX + "members " + where + (sort != "" ? "ORDER BY " + sort : "");
+                    query = "SELECT " + top + " id, surname, name, cric, civility, job, industry, base_dtupdate, retired, district_id, club_name, userid,satellite_member FROM " + Const.TABLE_PREFIX + "members " + where + (sort != "" ? "ORDER BY " + sort : "");
                 }
 
 
@@ -2816,7 +2819,7 @@ namespace AIS
                             if (rd["district_id"] == DBNull.Value) obj.district_id = Const.DISTRICT_ID; else obj.district_id = (int)rd["district_id"];
                             obj.club_name = "" + rd["club_name"];
                             if (rd["userid"] == DBNull.Value) obj.userid = 0; else obj.userid = (int)rd["userid"];
-
+                            obj.satellite_member = "" + rd["satellite_member"];
 
 
                             list.Add(obj);
@@ -2843,134 +2846,7 @@ namespace AIS
             return list;
         }
 
-        //public static bool InsertPhotoMember(PhotoMember pm)
-        //{
-        //    SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        //    SqlTransaction trans = null;
-        //    try
-        //    {
-        //        conn.Open();
-        //        trans = conn.BeginTransaction();
-        //        SqlCommand sql;
-
-        //        if (pm.id != 0)
-        //        {
-        //            sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "member_photo SET [nim]=@nim, [photo]=@photo, [visible]=@visible WHERE [id]=@id", conn, trans);
-        //            sql.Parameters.AddWithValue("@id", pm.id);
-
-        //        }
-        //        else
-        //        {
-        //            sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "member_photo ([nim],[photo],[visible]) VALUES (@nim,@photo,@visible)", conn, trans);
-        //        }
-
-        //        sql.Parameters.AddWithValue("@nim", pm.nim);
-        //        sql.Parameters.AddWithValue("@photo", pm.photo);
-        //        sql.Parameters.AddWithValue("@visible", pm.visible);
-
-
-
-        //        if (sql.ExecuteNonQuery() == 0)
-        //            throw new Exception("Error Insert member_photo : ");
-
-
-        //        ClearMemberCache();
-
-        //        trans.Commit();
-        //        return true;
-
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        if (trans != null)
-        //            try
-        //            {
-        //                trans.Rollback();
-        //            }
-        //            catch { }
-        //        Functions.Error(ee);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return false;
-        //}
-        //public static bool DeletePhotoMember(int nim)
-        //{
-        //    SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        //    SqlTransaction trans = null;
-        //    try
-        //    {
-        //        conn.Open();
-        //        trans = conn.BeginTransaction();
-        //        SqlCommand sql;
-
-
-
-        //        sql = new SqlCommand("DELETE " + Const.TABLE_PREFIX + "member_photo WHERE  [nim]=@nim", conn, trans);
-        //        sql.Parameters.AddWithValue("@nim", nim);
-
-        //        sql.ExecuteNonQuery();
-
-
-        //        ClearMemberCache();
-
-        //        trans.Commit();
-        //        return true;
-
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        if (trans != null)
-        //            try
-        //            {
-        //                trans.Rollback();
-        //            }
-        //            catch { }
-        //        Functions.Error(ee);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return false;
-        //}
-        //public static PhotoMember GetPhotoMember(int nim)
-        //{
-        //    SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        //    try
-        //    {
-        //        conn.Open();
-        //        SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "member_photo WHERE nim=@nim", conn);
-        //        sql.Parameters.AddWithValue("nim", nim);
-        //        SqlDataAdapter da = new SqlDataAdapter(sql);
-        //        DataSet ds = new DataSet();
-        //        da.Fill(ds);
-        //        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-        //        {
-        //            return GetPhotoMemberByRD(ds.Tables[0].Rows[0]);
-        //        }
-        //    }
-        //    catch (Exception ee)
-        //    {
-        //        Functions.Error(ee);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //    return null;
-        //}
-        //static PhotoMember GetPhotoMemberByRD(DataRow rd)
-        //{
-        //    PhotoMember obj = new PhotoMember();
-        //    if (rd["id"] == DBNull.Value) obj.id = 0; else obj.id = (int)rd["id"];
-        //    if (rd["nim"] == DBNull.Value) obj.nim = 0; else obj.nim = (int)rd["nim"];
-        //    obj.photo = "" + rd["photo"];
-        //    obj.visible = "" + rd["visible"];
-        //    return obj;
-        //}
+       
 
         public static bool findMemberInList(Member m, List<Member> listMember)
         {
@@ -2995,11 +2871,11 @@ namespace AIS
 
                 if (m.id == 0 || !findMemberInList(m, DataMapping.GetListRotaryImport("", max: 3000)))
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rotary_import ([honorary_member],[nim],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name]) VALUES (@honorary_member, @nim, @name,@name,@cric,@active_member,@civility,@maiden_name,@spouse_name,@title,@birth_year,@year_membership_rotary,@email,@adress_1,@adress_2,@adress_3,@zip_code,@town,@telephone,@fax,@gsm,@country,@job,@industry,@biography,@base_dtupdate,@professionnal_adress,@professionnal_zip_code,@professionnal_town,@professionnal_tel,@professionnal_fax,@professionnal_mobile,@professionnal_email,@retired,@removed,@district_id,@club_name)", conn, trans);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rotary_import ([honorary_member],[nim],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[satellite_member]) VALUES (@honorary_member, @nim, @name,@name,@cric,@active_member,@civility,@maiden_name,@spouse_name,@title,@birth_year,@year_membership_rotary,@email,@adress_1,@adress_2,@adress_3,@zip_code,@town,@telephone,@fax,@gsm,@country,@job,@industry,@biography,@base_dtupdate,@professionnal_adress,@professionnal_zip_code,@professionnal_town,@professionnal_tel,@professionnal_fax,@professionnal_mobile,@professionnal_email,@retired,@removed,@district_id,@club_name,@satellite_member)", conn, trans);
                 }
                 else
                 {
-                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "rotary_import SET [honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name WHERE [nim]=@nim", conn, trans);
+                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "rotary_import SET [honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name,[satellite_member]=@satellite_member WHERE [nim]=@nim", conn, trans);
                 }
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
@@ -3040,6 +2916,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@club_name", m.club_name);
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
+                sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
 
                 if (sql.ExecuteNonQuery() == 0 && m.id != 0)
                     throw new Exception("Error Update Rotary Import : ");
@@ -3138,6 +3015,7 @@ namespace AIS
                             obj.club_name = "" + rd["club_name"];
                             obj.photo = "" + rd["photo"];
                             obj.visible = "" + rd["visible"];
+                            obj.satellite_member = "" + rd["satellite_member"];
 
                             members.Add(obj);
 
