@@ -1,6 +1,5 @@
 ﻿
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="Membres.ascx.cs" Inherits="DesktopModules_AIS_Admin_Members_Liste" %>
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
  <style>
     input[type=file]::-webkit-file-upload-button {
         color: #ffffff;
@@ -190,10 +189,12 @@
     <p><asp:Label ID="lbl_titre2" Width="200px" runat="server" Text="Titre : " /><asp:TextBox runat="server" ID="tbx_titre" Width="400px" MaxLength="255" onchange='javascript: this.value = toTitleCase(this);' /></p>
     <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom * : " /><asp:TextBox runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
     <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></p>
+    <p>
     <table><tr>
         <td><p><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Année de naissance : " /></p></td>
-        <td><telerik:RadDatePicker runat="server" Height="30px" ID="dpk_ann_Naiss" MinDate="01/01/1901" /></td>
+        <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
     </tr></table>
+        </p>
     <p><asp:Label ID="lbl_nom_JF2" Width="200px" runat="server" Text="Nom de jeune fille : " /><asp:TextBox runat="server" ID="tbx_nom_JF" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
     <p><asp:Label ID="lbl_prenom_Conjoint2" Width="200px" runat="server" Text="Prénom conjoint : " /><asp:TextBox runat="server" ID="tbx_prenom_Conjoint" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /></p>
     <p><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
@@ -266,7 +267,7 @@
         <asp:Label ID="lbl_club2" runat="server" Text="Club : " Width="200px" />
         <asp:Label ID="lbl_club3" runat="server" Width="400px" />
         <asp:Panel runat="server" ID="PChangerClub" Visible="false">
-            <asp:DropDownList ID="ddlClubs" runat="server" >
+            <asp:DropDownList ID="ddlClubs" runat="server" CssClass="form-control" Width="50%">
             </asp:DropDownList>
             <asp:Panel ID="pnl_adminRotDis" runat="server" >
                 <asp:Button ID="btn_validateClub" runat="server" CssClass="btn btn-primary" Text="Changer de club" OnClick="btn_validateClub_Click" />
@@ -298,15 +299,15 @@
                 </asp:RadioButtonList>
             </p>
         </asp:Panel>
-        
+        <p>
         <table>
             <tr>
                 <td><p><asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Année adhésion Rotary : " Width="200px" /><asp:Label ID="lbl_ann_adh_rotaract" runat="server" Text="Année adhésion Rotaract : " Width="200px" /></p></td>
-                <td><telerik:RadDatePicker ID="dpk_ann__adh" runat="server" Height="30px" MinDate="01/01/1901" />
-                    &nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></td>
+                <td><asp:TextBox runat="server" TextMode="Date" ID="dpk_ann__adh" CssClass="form-control" Height="30px"></asp:TextBox></td>                    
+                <td>&nbsp;<i class="glyphicon glyphicon-cloud-download" title="champ remplacé lors de l'import de my Rotary"></i></td>
             </tr>
         </table>
-       
+       </p>
                    
         
     </p>

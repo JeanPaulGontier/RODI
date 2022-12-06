@@ -238,6 +238,9 @@ namespace AIS.controller
                 if (meeting == null)
                     return Request.CreateResponse(HttpStatusCode.NotFound);
 
+         
+
+
                 return Request.CreateResponse(HttpStatusCode.OK,meeting);
             }catch(Exception ee)
             {
@@ -289,6 +292,7 @@ namespace AIS.controller
                 row["type"] = meeting.type;
                 row["cric"] = meeting.cric;
                 row["active"] = meeting.active;
+                row["doperiodics"] = meeting.doperiodics;
                 row["mustnotify"] = meeting.mustnotify;
                 row["periods"] = meeting.periods;
                 if (meeting.dtstart == DateTime.MinValue)
@@ -298,23 +302,39 @@ namespace AIS.controller
 
                 row["dtstart"] = meeting.dtstart;
                 row["dtend"] = meeting.dtend;
-                row["dtrevision"] = DateTime.Now;
-                row["dtnotif1"] = null;
-                row["dtnotif2"] = null;
+
+                if(meeting.dtrevision<DateTime.Now)
+                    row["dtrevision"]=DateTime.Now;
+                else
+                    row["dtrevision"] = meeting.dtrevision;
+
+                if (meeting.dtnotif1 == DateTime.MinValue)
+                    row["dtnotif1"] = null;
+                else
+                    row["dtnotif1"] = meeting.dtnotif1;
+                if (meeting.dtnotif2 == DateTime.MinValue)
+                    row["dtnotif2"] = null;
+                else
+                    row["dtnotif2"] = meeting.dtnotif2;
+
                 row["notif1done"] = meeting.notif1done;
                 row["notif2done"] = meeting.notif2done;
-                if (meeting.mustnotify==Const.YES)
-                {
-                    if (meeting.notif1done == null)
-                        row["dtrevision"] = DateTime.Now.AddDays(-4);
-                    else if (meeting.notif2done == null)
-                        row["dtrevision"] = DateTime.Now.AddDays(-2);
 
+                if (meeting.mustnotify=="O" && meeting.type=="unitary")
+                {
+                    row["dtnotif1"] =null;
+                    row["dtnotif2"] = null;
+                    row["notif1done"] = null;
+                    row["notif2done"] = null;
                 }
+              
+                
                 
                 row["dtlastupdate"] = DateTime.Now;
                 row["portalid"] = 0;
                 row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
+                row["notificationtype"] = meeting.notificationtype;
+                row["notificationlist"] = meeting.notificationlist;
 
                 var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_meetings", "id", row);
 
@@ -327,6 +347,7 @@ namespace AIS.controller
             }
             catch (Exception ee)
             {
+                Functions.Error(ee);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
             }
         }

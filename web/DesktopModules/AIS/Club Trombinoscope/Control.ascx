@@ -1,5 +1,6 @@
 ﻿
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_Control_View" %>
+
 <asp:Panel runat="server" ID="P_Club">
     Veuillez choisir un club ...
 </asp:Panel>
@@ -14,8 +15,15 @@
                 <%if ((Request["popup"] + "") != "") { }
                     else
                     { %>
-                <a href="/print?popup=true&url=<%= HttpUtility.UrlEncode(Request.RawUrl) %>" target="_blank" class="fa fa-print" title="Imprimer"></a>
-                <%} %>
+
+                 <script>
+                    function print() {
+                        document.getElementById('printIframe').src = '/print?popup=true&url=<%=HttpUtility.UrlEncode(Request.RawUrl)%>';
+                    }
+                 </script>
+                   <a href="#" onclick="print()" class="btn btn-link" title="Imprimer"><i class="fa fa-print"></i> Imprimer</a>
+
+                 <%} %>
             </td>
         </tr>
         <tr>
@@ -84,3 +92,4 @@
 
 </asp:Panel>
 
+<iframe id="printIframe" style="display:none"></iframe>

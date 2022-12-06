@@ -42,7 +42,7 @@
                                     au {{date(m.dtend)}} - {{heure(m.dtend)}}
                                 </div>
                                 <div v-if="date(m.dtstart)==date(m.dtend)">
-                                    le {{date(m.dtstart)}} de {{heure(m.dtstart)}} à {{heure(m.dtend)}}
+                                    {{date(m.dtstart)}} de {{heure(m.dtstart)}} à {{heure(m.dtend)}} {{duree(m.dtstart,m.dtend)}}
                                 </div>
                             </td>
                             <td v-if="m.type=='periodic'">
@@ -99,13 +99,20 @@
                 if (!d)
                     return '';
                 let dd = new Date(d);
-                return dd.toLocaleDateString();
+                var days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+                return days[dd.getDay()]+ " "+ dd.toLocaleDateString();
             },
             heure: function (d) {
                 if (!d)
                     return '';
                 let dd = new Date(d);
                 return dd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            },
+            duree: function (d, f) {
+                if (!d || !f)
+                    return '';
+                var dd = (f.getTime() - d.getTime()) / 1000 / 60;
+                return '- ' + dd + ' min';
             },
             getMeetings() {
                 this.meetings = [];

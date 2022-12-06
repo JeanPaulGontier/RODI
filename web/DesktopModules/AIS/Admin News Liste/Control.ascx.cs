@@ -73,7 +73,7 @@ using AIS;
 using DotNetNuke.Entities.Modules;
 using System.IO;
 using System.Drawing;
-using Telerik.Web.UI;
+
 using DotNetNuke.Services.FileSystem;
 using FileInfo = System.IO.FileInfo;
 using DotNetNuke.Framework;

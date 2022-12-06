@@ -6,7 +6,6 @@
     <add key="AffectationsAdminClub" value="'Président','Secrétaire','Secrétaire Adjoint','Webmaster','Webmaster Adjoint','Protocole'"/>
     <add key="MenuClubRootTabId" value="##tabid##" />
     <add key="MenuMemberRootTabId" value="##tabid##" />
-    <add key="NotificationsDebugDest" value="" />
     <add key="DistrictId" value="##districtnumber##" />
     <add key="DistrictUrl" value="##urldistrict##" />
     <add key="Telerik.Upload.AllowedCustomMetaDataTypes" value="Telerik.Web.UI.AsyncUploadConfiguration" />

@@ -137,7 +137,7 @@ public class ClubRewriter : IHttpModule
             if (url.StartsWith("/m-"))
             {
                 string link = url.Substring(3);
-                context.Server.TransferRequest("/oukikan?m=" + link+"&useridguid="+request["useridguid"],true);
+                context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"],true);
                 return;
             }
             if (url.StartsWith("/ais"))

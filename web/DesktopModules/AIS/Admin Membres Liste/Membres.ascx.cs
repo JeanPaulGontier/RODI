@@ -70,7 +70,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
-using Telerik.Web.UI;
+
 using System.Drawing;
 using System.IO;
 using DotNetNuke.Entities.Users;
@@ -698,11 +698,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             tbx_titre.Text = "" + membre.title;
             tbx_nom.Text = "" + membre.surname;
             tbx_prenom.Text = "" + membre.name;
+            dpk_ann_Naiss.Text = "";
             if (membre.birth_year != null)
             {
                 try
                 {
-                    dpk_ann_Naiss.SelectedDate = membre.birth_year;
+                    dpk_ann_Naiss.Text = ""+((DateTime)membre.birth_year).ToString("yyyy-MM-dd");
                 }
                 catch { }
             }
@@ -759,11 +760,11 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             {
                 rbtl_membre_A.SelectedValue = "N";
             }
-
+            dpk_ann__adh.Text = "";
             if (membre.year_membership_rotary != null)
             {
                 try { 
-                    dpk_ann__adh.SelectedDate = membre.year_membership_rotary;
+                    dpk_ann__adh.Text = ""+ ((DateTime)membre.year_membership_rotary).ToString("yyyy-MM-dd"); 
                 }
                 catch { }
             }
@@ -884,9 +885,16 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             membre.title = ("" + tbx_titre.Text).Trim();
             membre.surname = ("" + tbx_nom.Text).Trim();
             membre.name = ("" + tbx_prenom.Text).Trim();
-            if (dpk_ann_Naiss.SelectedDate != null && dpk_ann_Naiss.SelectedDate > DateTime.MinValue)
+            DateTime dtan = DateTime.MinValue;
+            DateTime.TryParse("" + dpk_ann_Naiss.Text, out dtan);
+
+            if (dtan != DateTime.MinValue && dtan > DateTime.MinValue)
             {
-                membre.birth_year = dpk_ann_Naiss.SelectedDate;
+                membre.birth_year = dtan;
+            }
+            else
+            {
+                membre.birth_year = null; 
             }
             membre.maiden_name = ("" + tbx_nom_JF.Text).Trim();
             membre.spouse_name = ("" + tbx_prenom_Conjoint.Text).Trim();
@@ -915,9 +923,17 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             membre.club_name = "" + lbl_club3.Text;
             membre.honorary_member = rbtl_membre_H.SelectedValue;
             membre.active_member = "" + rbtl_membre_A.SelectedValue;
-            if (dpk_ann__adh.SelectedDate != null && dpk_ann__adh.SelectedDate > DateTime.MinValue)
+
+            DateTime dta = DateTime.MinValue;
+            DateTime.TryParse("" + dpk_ann__adh.Text, out dta);
+
+            if (dta > DateTime.MinValue)
             {
-                membre.year_membership_rotary = dpk_ann__adh.SelectedDate;
+                membre.year_membership_rotary =dta;
+            }
+            else
+            {
+                membre.year_membership_rotary = null;
             }
             membre.visible = RB_Autoriser_Publication.SelectedValue;
             membre.honorary_member = RB_Membre_d_Honneur.SelectedValue;
@@ -1228,9 +1244,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 PChangerClub.Visible = false;
                 //ddlClubs.Items.Clear();
 
-                dpk_ann_Naiss.SelectedDate = null;
+                dpk_ann_Naiss.Text = "";
                 HF_Photo2.Value = "";
-                dpk_ann__adh.SelectedDate = null;
+                dpk_ann__adh.Text = "";
 
                 CleartextBoxes(pnl_Saisie);
 
@@ -1430,6 +1446,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.professionnal_mobile = "";
                
                 m.base_dtupdate = DateTime.Now;
+                m.satellite_member = Const.NO;
                 
                 string[] names = ("" + w.Cells[r, 1].Value).Split(',');
                 if (names.Length > 0)

@@ -69,7 +69,7 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using System.IO;
 using System.Drawing;
-using Telerik.Web.UI;
+
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Entities.Users;
 using AIS;

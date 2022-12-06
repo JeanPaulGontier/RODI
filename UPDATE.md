@@ -1,3 +1,21 @@
+###### 06/12/2022
+
+- mise a jour de DNN version 9.9.1 -> 9.10.2
+- preparation suppression d'anciennes dépendences (ex: Telerik)
+- séparation de la tache plannifiée de génération des réunions auto et de l'envoi des notifications :
+o MeetingScheduler	ne gere plus que la programmation des réunions auto
+o MeetingNotifications	nouvelle tache programmable pour l'envoi des notifications aux membres (va être interfacée avec le système de notifications prochainement), tient compte du nouveau paramètre NOTIFICATIONS_DEBUG_DEST qui permet de spécifier un mail de bypass pour tester les notifs
+- le texte de notification de réunion a été complété d'un lien partageable à un tiers 
+- les notifications ne se font plus pour des réunions inactives 
+- la gestion des notifications de réunion à changé et permet maintenant de différer une notification et de choisir les destinataires (membre satellite ou pas)
+- on peut maintenant désactiver la génération automatique de réunion périodiques, les notifications auto des notifications périodiques ont été supprimées
+- l'écran de saisie de réunion a été réorganisé pour plus de clarté
+- les administrateurs de clubs peuvent maintenant inscrire et désinscrires des participants aux réunions
+- on peut imprimer la liste des participants à une réunion
+- l'impression du trombinoscope n'ouvre plus de fenetre
+- retrait de la temporisation dans les menus déroulants
+
+
 ###### 02/11/2022
 
 - on peut maintenant spécifier manuellement si un membre est dans un club satellite ou pas

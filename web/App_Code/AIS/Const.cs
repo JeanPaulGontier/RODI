@@ -82,6 +82,7 @@ namespace AIS
         public static int MENU_CLUB_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuClubRootTabId"]);
         public static int MENU_MEMBER_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuMemberRootTabId"]);
 
+        public static string NOTIFICATIONS_DEBUG_DEST = "" + System.Configuration.ConfigurationManager.AppSettings["NotificationsDebugDest"];
 
         public const string GoogleMapsKey = "AIzaSyBdbBwqDZJ2_E0UZ3m84pIgWd9Q4LXwQjU";
         public const string ZOOM = "7";

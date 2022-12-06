@@ -16,6 +16,8 @@
 @using AIS;
 @{
 
+    bool print = !("" + Request["print"]).Equals("");
+
     string link = "" + Request["m"];
     if (link == "")
     {
@@ -28,8 +30,8 @@
     {
         return;
     }
-  
-    
+
+
     Club club = DataMapping.GetClub(meeting.cric);
     if (club == null)
     {
@@ -52,11 +54,11 @@
     var userInfo = UserController.Instance.GetCurrentUserInfo();
 
     var useridguid = "" + Request["useridguid"];
-    if(useridguid=="")
+    if (useridguid == "")
     {
-        if(userInfo.UserID>0)
+        if (userInfo.UserID > 0)
         {
-            useridguid = Yemon.dnn.Functions.CalculateMD5Hash(""+userInfo.UserID);
+            useridguid = Yemon.dnn.Functions.CalculateMD5Hash("" + userInfo.UserID);
         }
         else
         {
@@ -79,12 +81,12 @@
 
     </div>
     <div class="col-sm-6 text-right">
+
         <img src="/DesktopModules/AIS/API/Meeting/getqr?link=@meeting.link" />
     </div>
 </div>
-
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-10">
         @{
             if (meeting.dtstart.ToShortDateString() != meeting.dtend.ToShortDateString())
             {
@@ -100,203 +102,242 @@
             }
         }
     </div>
+    <div class="col-sm-2 text-right">
+        @if ((Request["popup"] + "") != "")
+        {
+        }
+        else
+        {
+            <script>
+                function print() {
+                    document.getElementById('printIframe').src = "/print?popup=true&url=@HttpUtility.UrlEncode(Functions.UrlAddParam(Request.RawUrl,"print","true"))";
+                }
+            </script>
+            <a href="#" onclick="print()" class="btn btn-link" title="Imprimer"><i class="fa fa-print"></i> Imprimer</a>
+        }
+    </div>
 
 </div>
-@RenderPage("BlocksContent/View.cshtml")
-
-<style>
-    [v-cloak] {
-        display: none;
-    }
-</style>
-<div id='@PageData["appID"]' v-cloak>
-    <div>
-        <h3>Inscriptions</h3>
-    </div>
-    <table class="table table-stripped">
-        <tbody>
-            <tr>
-                <th>
-                    <span v-if="users.length>0">{{nbparticipants()}} participant<span v-if="nbparticipants()>1">s</span> </span>
-                    <span v-if="users.length==0">Aucun inscrit</span>
-                </th>
-                <th>
-                    pr&eacute;sence
-                </th>
-                <th>
-                    <span v-if="users.length>0">Commentaire</span>
-                </th>
-                <th>
-                </th>
-                <th>
-
-                </th>
-            </tr>
-            <tr v-for="u in users">
-                <td>{{u.lastname}} {{u.firstname}}</td>
-                <td>{{u.presence=='N'?'Non':'Oui'}}</td>
-                <td><p v-if="u.comment"><em>{{u.comment}}</em></p></td>
-                <td><button v-if="isCurrentUser(u)" v-on:click="editUser(u)" type="button" class="btn btn-default">Modifier</button></td>
-                <td><button v-if="isCurrentUser(u)" v-on:click="deleteUser(u)" type="button" class="btn btn-danger">Retirer</button></td>
-            </tr>
-        </tbody>
-    </table>
+@if (!print)
+{
+    @RenderPage("BlocksContent/View.cshtml")
 
 
 
-    @if (meeting.active == Const.YES)
-    {
-
-
-    <div v-if="!user">
-        <button v-if="isLoggedUser()" type="button" class="btn btn-success" v-on:click="addLoggedUser(true)">Je m'inscris</button>&nbsp;
-        <button v-if="isLoggedUser()" type="button" class="btn btn-danger" v-on:click="addLoggedUser(false)">J'indique mon absence</button>&nbsp;
-        <button type="button" class="btn btn-info" v-on:click="addNewUser()">Inscrire un participant</button>
-    </div>
-
-    }
-    <div v-if="user" class="panel-group">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Inscription
-            </div>
-            <div class="panel-body">
-                <label>Nom</label> <input class="form-control" type="text" v-model="user.lastname" />
-                <label>Pr&eacute;nom</label> <input class="form-control" type="text" v-model="user.firstname" />
-                <label>Pr&eacute;sent(e)</label> <div class="checkbox-inline"><label class="checkbox-inline"><input type="radio" value="Y" v-model="user.presence" /> Oui</label><label class="checkbox-inline"><input type="radio" value="N" v-model="user.presence" /> Non</label></div><br /><br />
-                <label>Commentaire</label> <input class="form-control" type="text" v-model="user.comment" />
-                <button type="button" class="btn btn-default" v-on:click="this.user=null">Annuler</button>&nbsp;
-                <button v-if="isValid()" type="button" class="btn btn-primary" v-on:click="validNewUser()">Valider</button>
-            </div>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <div id='@PageData["appID"]' v-cloak>
+        <div>
+            <h3>Inscriptions</h3>
         </div>
-
-    </div>
-    <script>
-        function InitApp(appid, MODULEID, GUID, USERIDGUID) {
-            const app = Vue.createApp({
-                data() {
-                    return {
-                        moduleid: MODULEID,
-                        meetingguid: GUID,
-                        useridguid: USERIDGUID,
-                        users: [],
-                        user: null,
-                        loggeduser: null
+        <table class="table table-stripped">
+            <tbody>
+                <tr>
+                    <th>
+                        <span v-if="users.length>0">{{nbparticipants()}} participant<span v-if="nbparticipants()>1">s</span> </span>
+                        <span v-if="users.length==0">Aucun inscrit</span>
+                    </th>
+                    <th>
+                        pr&eacute;sence
+                    </th>
+                    <th>
+                        <span v-if="users.length>0">Commentaire</span>
+                    </th>
+                    @if (!print)
+                    {
+                        <th>
+                        </th>
+                        <th>
+                        </th>
                     }
-                },
-                components: {
+                </tr>
+                <tr v-for="u in users">
+                    <td>{{u.lastname}} {{u.firstname}}</td>
+                    <td>{{u.presence=='N'?'Non':'Oui'}}</td>
+                    <td><p v-if="u.comment"><em>{{u.comment}}</em></p></td>
+                    @if (!print)
+                    {
+                        <td><button v-if="isCurrentUser(u) || isAdmin()" v-on:click="editUser(u)" type="button" class="btn btn-default">Modifier</button></td>
+                        <td><button v-if="isCurrentUser(u) || isAdmin()" v-on:click="deleteUser(u)" type="button" class="btn btn-danger">Retirer</button></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
 
-                },
-                methods: {
-                    nbparticipants() {
-                        var nb = 0;
-                        this.users.forEach(u => { if (u.presence == 'Y') nb++ });
-                        return nb;
-                    },
 
-                    isValid() {
-                        return this.user.firstname.trim() != '' && this.user.lastname.trim() != '';
-                    },
-                    getLoggedUser() {
-                        _yemon[this.moduleid].service.getData('/GetLoggedUser',
-                            {
-                                useridguid: this.useridguid
-                            },
-                            (r) => {
-                                if (r.data) {
-                                    this.loggeduser = r.data;
-                                }
-                            });
 
-                    },
-                    getUsers() {
-                        _yemon[this.moduleid].service.getData('/GetUsers',
-                            {
-                                guid: this.meetingguid
-                            },
-                            (r) => {
-                                this.users = r.data;
-                            });
+        @if (meeting.active == Const.YES)
+        {
 
-                    },
-                    validNewUser() {
-                        _yemon[this.moduleid].service.postData('/SetUser',
-                            {
-                                user: JSON.stringify(this.user)
-                            },
-                            (r) => {
-                                this.getUsers();
-                                this.user = null;
-                            });
-                    },
-                    addNewUser() {
-                        this.user = {
-                            guid: _yemon[this.moduleid].service.guid(),
-                            meetingguid: this.meetingguid,
-                            useridguid: this.useridguid,
-                            firstname: '',
-                            lastname: '',
-                            comment: '',
-                            presence: 'Y'
 
+            <div v-if="!user">
+                <button v-if="isLoggedUser()" type="button" class="btn btn-success" v-on:click="addLoggedUser(true)">Je m'inscris</button>&nbsp;
+                <button v-if="isLoggedUser()" type="button" class="btn btn-danger" v-on:click="addLoggedUser(false)">J'indique mon absence</button>&nbsp;
+                <button type="button" class="btn btn-info" v-on:click="addNewUser()">Inscrire un participant</button>
+            </div>
+
+        }
+
+
+        <div v-if="user" class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Inscription
+                </div>
+                <div class="panel-body">
+                    <label>Nom</label> <input class="form-control" type="text" v-model="user.lastname" />
+                    <label>Pr&eacute;nom</label> <input class="form-control" type="text" v-model="user.firstname" />
+                    <label>Pr&eacute;sent(e)</label> <div class="checkbox-inline"><label class="checkbox-inline"><input type="radio" value="Y" v-model="user.presence" /> Oui</label><label class="checkbox-inline"><input type="radio" value="N" v-model="user.presence" /> Non</label></div><br /><br />
+                    <label>Commentaire</label> <input class="form-control" type="text" v-model="user.comment" />
+                    <button type="button" class="btn btn-default" v-on:click="this.user=null">Annuler</button>&nbsp;
+                    <button v-if="isValid()" type="button" class="btn btn-primary" v-on:click="validNewUser()">Valider</button>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            function InitApp(appid, MODULEID, GUID, USERIDGUID) {
+                const app = Vue.createApp({
+                    data() {
+                        return {
+                            moduleid: MODULEID,
+                            meetingguid: GUID,
+                            useridguid: USERIDGUID,
+                            users: [],
+                            user: null,
+                            loggeduser: null
                         }
+                    },
+                    components: {
 
                     },
-                    isCurrentUser(u) {
-                        if (this.useridguid == u.useridguid)
-                            return true;
-                        return false;
-                    },
-                    editUser(u) {
-                        this.user = JSON.parse(JSON.stringify(u));
+                    methods: {
+                        nbparticipants() {
+                            var nb = 0;
+                            this.users.forEach(u => { if (u.presence == 'Y') nb++ });
+                            return nb;
+                        },
 
-                    },
-                    addLoggedUser(presence) {
-                        this.user = JSON.parse(JSON.stringify(this.loggeduser));
-                        this.user.guid = _yemon[this.moduleid].service.guid();
-                        this.user.meetingguid = this.meetingguid;
-                        this.user.useridguid = this.useridguid;
-                        this.user.presence = presence ? "Y" : "N";
-
-                    },
-                    isLoggedUser() {
-                        let ok = this.loggeduser;
-                        if (ok) {
-
-
-                            for (let i = 0; i < this.users.length; i++) {
-                                if (this.users[i].useridguid == this.useridguid) {
-                                    return false;
-                                }
-                            }
-                        }
-                        return ok;
-                    },
-                    deleteUser(u) {
-                        if (confirm("Retirer l'inscription ?")) {
-                            _yemon[this.moduleid].service.getData('/DeleteUser',
+                        isValid() {
+                            return this.user.firstname.trim() != '' && this.user.lastname.trim() != '';
+                        },
+                        getLoggedUser() {
+                            _yemon[this.moduleid].service.getData('/GetLoggedUser',
                                 {
-                                    guid: u.guid,
-                                    meetingguid: u.meetingguid
+                                    useridguid: this.useridguid
+                                },
+                                (r) => {
+                                    if (r.data) {
+                                        this.loggeduser = r.data;
+                                    }
+                                });
+
+                        },
+                        getUsers() {
+                            _yemon[this.moduleid].service.getData('/GetUsers',
+                                {
+                                    guid: this.meetingguid
+                                },
+                                (r) => {
+                                    this.users = r.data;
+                                });
+
+                        },
+                        validNewUser() {
+                            _yemon[this.moduleid].service.postData('/SetUser',
+                                {
+                                    user: JSON.stringify(this.user)
                                 },
                                 (r) => {
                                     this.getUsers();
+                                    this.user = null;
                                 });
+                        },
+                        addNewUser() {
+                            this.user = {
+                                guid: _yemon[this.moduleid].service.guid(),
+                                meetingguid: this.meetingguid,
+                                useridguid: this.useridguid,
+                                firstname: '',
+                                lastname: '',
+                                comment: '',
+                                presence: 'Y'
 
+                            }
+
+                        },
+                        isCurrentUser(u) {
+                            if (this.useridguid == u.useridguid)
+                                return true;
+                            return false;
+                        },
+                        isAdmin() {
+                             @{
+                                 if (userInfo.IsSuperUser ||
+                                      userInfo.IsInRole(Const.ADMIN_ROLE) ||
+                                      (userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) &&
+                                      meeting.cric == Functions.CurrentCric))
+                                 {
+                                     @Html.Raw("return true");
+                                 }  
+                             }
+
+                        },
+                        editUser(u) {
+                            this.user = JSON.parse(JSON.stringify(u));
+
+                        },
+                        addLoggedUser(presence) {
+                            this.user = JSON.parse(JSON.stringify(this.loggeduser));
+                            this.user.guid = _yemon[this.moduleid].service.guid();
+                            this.user.meetingguid = this.meetingguid;
+                            this.user.useridguid = this.useridguid;
+                            this.user.presence = presence ? "Y" : "N";
+
+                        },
+                        isLoggedUser() {
+                            let ok = this.loggeduser;
+                            if (ok) {
+
+
+                                for (let i = 0; i < this.users.length; i++) {
+                                    if (this.users[i].useridguid == this.useridguid) {
+                                        return false;
+                                    }
+                                }
+                            }
+                            return ok;
+                        },
+                        deleteUser(u) {
+                            if (confirm("Retirer l'inscription ?")) {
+                                _yemon[this.moduleid].service.getData('/DeleteUser',
+                                    {
+                                        guid: u.guid,
+                                        meetingguid: u.meetingguid
+                                    },
+                                    (r) => {
+                                        this.getUsers();
+                                    });
+
+                            }
                         }
+                    },
+                    mounted() {
+                        this.getUsers();
+                        this.getLoggedUser();
+                        setInterval(() => {
+                            this.getUsers()
+                        }, 10000);
                     }
-                },
-                mounted() {
-                    this.getUsers();
-                    this.getLoggedUser();
-                    setInterval(() => {
-                        this.getUsers()
-                    }, 10000);
-                }
-            });
-            app.mount('#' + appid);
-        }
-    </script>
+                });
+                app.mount('#' + appid);
+            }
+        </script>
+    </div>
+
 
     <script src="@(libPath)vue/3.2.23/vue.js"></script>
     <script src="@(libPath)axios/0.24.0/axios.min.js"></script>
@@ -304,12 +345,63 @@
     <link href="@(libPath)toastr/toastr.min.css" rel="stylesheet" />
     <script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
     <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
 
-        if (typeof _yemon == 'undefined')
-            _yemon = [];
-        _yemon[@PageData["moduleID"]] = new Yemon(@PageData["moduleID"], '/Desktopmodules/AIS/API/Meeting');
-        InitApp('@PageData["appID"]',@PageData["moduleID"],'@meeting.guid','@useridguid');
-    });
+    if (typeof _yemon == 'undefined')
+        _yemon = [];
+    _yemon[@PageData["moduleID"]] = new Yemon(@PageData["moduleID"], '/Desktopmodules/AIS/API/Meeting');
+    InitApp('@PageData["appID"]',@PageData["moduleID"],'@meeting.guid','@useridguid');
+});
     </script>
+
+}
+else
+{
+    List<Meeting.User> users = Yemon.dnn.DataMapping.ExecSql<Meeting.User>(new SqlCommand("SELECT * FROM ais_meetings_users WHERE meetingguid='"+meeting.guid+ "' ORDER BY dtlastupdate"));
+    int nbparticipants = users.Where(u =>  u.presence=="Y").Count();
+    <div id='@PageData["appID"]' v-cloak>
+        <div>
+            <h3>Inscriptions</h3>
+        </div>
+        <table class="table table-stripped">
+            <tbody>
+                <tr>
+                    <th>
+                        @if(nbparticipants > 0)
+                        {
+                        <span>@nbparticipants participant@(nbparticipants > 1?"s":"")</span>
+                        }
+                        else
+                        { 
+                        <span>Aucun inscrit</span>
+                        }
+                    </th>
+                    <th>
+                        pr&eacute;sence
+                    </th>
+                    <th>
+                        @if (nbparticipants > 0)
+                        {
+                            <span>Commentaire</span>
+                        }
+                    </th>
+                </tr>
+                @foreach (var user in users)
+                {
+                    <tr>
+                        <td>@user.lastname @user.firstname</td>
+                        <td>@(user.presence=="N"?"Non":"Oui")</td>
+                        <td>
+                            @if (user.comment != "")
+                            {
+                                <p><em>@user.comment</em></p>
+                            }
+                        </td>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+<iframe id="printIframe" style="display:none"></iframe>

@@ -17,16 +17,8 @@
         
         <div>
             <div class="pe-spacer size20" />
-            <div class="row">
-                <div class="col-sm-3">
-                    <label for="active">Inscription active</label>
-                </div>
-                <div class="col-sm-8">
-                    <label class="radio-inline"><input type="radio" name="active" value="O" v-model="meeting.active">Oui</label>
-                    <label class="radio-inline"><input type="radio" name="active" value="N" v-model="meeting.active">Non</label>
-                </div>
-            </div>
-            <div class="pe-spacer size10" />
+
+
             <div class="row">
                 <div class="col-sm-3">
                     <label for="type">Type</label>
@@ -35,7 +27,7 @@
                     <label class="radio-inline"><input type="radio" name="type" value="unitary" v-model="meeting.type" :disabled="nouveau==false">Unique</label>
                     <label class="radio-inline"><input type="radio" name="type" value="periodic" v-model="meeting.type" :disabled="nouveau==false">Périodique</label>
                 </div>
-                
+
             </div>
             <div class="pe-spacer size10" />
 
@@ -66,10 +58,26 @@
                 </div>
                 <div class="pe-spacer size10"></div>
             </div>
+
+            <div class="row" v-if="meeting.type=='periodic'">
+                <div class="col-sm-3">
+                    <label for="periodics">Programmation active</label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="radio-inline"><input type="radio" name="periodics" value="O" v-model="meeting.doperiodics">Oui</label>
+                    <label class="radio-inline"><input type="radio" name="periodics" value="N" v-model="meeting.doperiodics">Non</label>
+                </div>
+                <div class="col-sm-12">
+                    <em>
+                        La programmation va cr&eacute;er automatiquement des r&eacute;unions unitaires, selon les p&eacute;riodes d&eacute;finies ci-dessous
+                    </em>
+                </div>
+            </div>
+            <div class="pe-spacer size20" />
             <div v-if="meeting.type=='periodic'">
                 <div class="row">
                     <div class="col-sm-12">
-                        <label>P&eacute;riodes :</label>
+                        <label>P&eacute;riodes dans le mois :</label>
                     </div>
                 </div>
                 <div class="row">
@@ -127,56 +135,98 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-sm-12">
+
+                <div class="pe-spacer size10" />
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="name">Nom de la réunion</label>
+                </div>
+                <div class="col-sm-8">
+                    <input id="name" class="form-control" type="text" v-model="meeting.name" size="255">
+                </div>
+            </div>
+            <div class="pe-spacer size10" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="statutory">Réunion statutaire</label>
+                </div>
+                <div class="col-sm-8">
+                    <label class="radio-inline"><input type="radio" name="statutory" value="O" v-model="meeting.statutory">Oui</label>
+                    <label class="radio-inline"><input type="radio" name="statutory" value="N" v-model="meeting.statutory">Non</label>
+                </div>
+            </div>
+
+            <div class="pe-spacer size10" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label for="active">Inscription active</label>
+                </div>
+                <div class="col-sm-3">
+                    <label class="radio-inline"><input type="radio" name="active" value="O" v-model="meeting.active">Oui</label>
+                    <label class="radio-inline"><input type="radio" name="active" value="N" v-model="meeting.active">Non</label>
+                </div>
+                <div class="col-sm-6" v-if="meeting.active=='N'">
                     <em>
-                        Le r&eacute;union p&eacute;riodique va cr&eacute;er automatiquement des r&eacute;unions unitaires &agrave; J+7 selon les jours de la semaine d&eacute;finis dans les p&eacute;riodes
+                        La notifications n&#39;est possible que lorsque l&#39;inscription est active
                     </em>
                 </div>
-                <div class="pe-spacer size10" />
             </div>
-              
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label for="name">Nom de la réunion</label>
-                    </div>
-                    <div class="col-sm-8">
-                        <input id="name" class="form-control" type="text" v-model="meeting.name" size="255">
-                    </div>
-                </div>
-                <div class="pe-spacer size10" />
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label for="statutory">Réunion statutaire</label>
-                    </div>
-                    <div class="col-sm-8">
-                        <label class="radio-inline"><input type="radio" name="statutory" value="O" v-model="meeting.statutory">Oui</label>
-                        <label class="radio-inline"><input type="radio" name="statutory" value="N" v-model="meeting.statutory">Non</label>
-                    </div>
-                </div>
-                <div class="pe-spacer size10" />
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label for="mustnotify">Notification automatique aux membres du club</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label class="radio-inline"><input type="radio" name="mustnotify" value="O" v-model="meeting.mustnotify">Oui</label>
-                        <label class="radio-inline"><input type="radio" name="mustnotify" value="N" v-model="meeting.mustnotify">Non</label>
-                    </div>
-                    <div class="col-sm-6" v-if="meeting.mustnotify=='O' && meeting.notif1done=='O'"><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Renvoyer la notification</button>{{messageNotified()}}</div>
-                    <div class="col-sm-6" v-if="meeting.mustnotify=='N'"><button type="button" v-on:click="clearNotif1()" class="btn btn-default">Envoyer la notification maintenant</button></div>
-                </div>
-                <div class="pe-spacer size10"></div>
+            <div class="pe-spacer size10" />
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4>Contenu détaillé</h4>
-                    </div>
-                    <div class="col-sm-12">
-                        <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
-                    </div>
+            <div class="row" v-if="meeting.type=='unitary' && meeting.active=='O'">
+                <div class="col-sm-3">
+                    <label for="mustnotify">Notification aux destinataires</label>
                 </div>
-               
+                <div class="col-sm-4">
+                    <label class="radio"><input type="radio" name="mustnotify" value="O" v-model="meeting.mustnotify" v-on:click="setQuand()">Oui</label>
+                    <label class="radio"><input type="radio" name="mustnotify" value="N" v-model="meeting.mustnotify">Non</label>
+                </div>
+                <div class="col-sm-5" v-if="meeting.notif1done=='O'">
+                    <div>{{messageNotified()}}</div>
+                </div>
+
             </div>
+            <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O' && quand  && meeting.active=='O'">
+                <div class="col-sm-3">
+                    <label for="notifywhen">Quand ?</label>
+                </div>
+                <div class="col-sm-9">
+                    <label class="radio"><input type="radio" name="notifywhen" value="now" v-model="quand" v-on:click="setQuand()">Maintenant</label>
+                    <label class="radio"><input type="radio" name="notifywhen" value="later" v-model="quand">Plus tard</label>
+                </div>
+                <div class="col-sm-3" v-if="quand=='later'">
+
+                </div>
+                <div class="col-sm-3" v-if="quand=='later'">
+                    <input id="dtrevision" class="form-control" type="datetime-local" v-model="meeting.dtrevision">
+                </div>
+            </div>
+            <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O'  && meeting.active=='O'">
+                <div class="col-sm-3">
+                    <label for="notificationtype">Destinataires</label>
+                </div>
+                <div class="col-sm-9">
+                    <label class="radio"><input type="radio" name="notificationtype" value="A" v-model="meeting.notificationtype">Tous les membres</label>
+                    <label class="radio"><input type="radio" name="notificationtype" value="M" v-model="meeting.notificationtype">Membres hors club satellite</label>
+                    <label class="radio"><input type="radio" name="notificationtype" value="S" v-model="meeting.notificationtype">Membres club satellite seulement</label>
+                    <!--<label class="radio"><input type="radio" name="notificationtype" value="C" v-model="meeting.notificationtype">Membres du bureau</label>-->
+                </div>
+
+            </div>
+            <div class="pe-spacer size10" v-if="meeting.type=='unitary' && meeting.active=='O'"></div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Contenu détaillé</h4>
+                </div>
+                <div class="col-sm-12">
+                    <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+                </div>
+            </div>
+
+        </div>
     </div>
 </script>
 <script>
@@ -196,7 +246,7 @@
                     periods: []
                 },
                 blocks: [],
-               
+                quand:'now',
                 nouveau:false,
                 users: [],
                 meetingsList: true,
@@ -230,6 +280,10 @@
                 let dtstart = new Date(this.meeting.dtstart);
                 let dtend = new Date(this.meeting.dtend);
                 return dtend <= dtstart;
+            },
+            setQuand() {
+                this.quand = 'now';
+                this.meeting.dtrevision = (new Date()).localeFormat('yyyy-MM-ddTHH:mm');
             },
             addPeriod() {
                 this.meeting.periods.push({
@@ -296,10 +350,25 @@
                         this.meeting = r.data;
                         this.meeting.dtstart = this.meeting.dtstart.substring(0,16);
                         this.meeting.dtend = this.meeting.dtend.substring(0, 16);
+                        this.meeting.dtrevision = this.meeting.dtrevision.substring(0, 16);
                         this.meeting.periods = JSON.parse(this.meeting.periods);
                         
                         if (!this.meeting.periods)
                             this.meeting.periods = [];
+                        if (!this.meeting.notificationtype || this.meeting.notificationtype == '')
+                            this.meeting.notificationtype = 'A';
+                        if (this.meeting.type == "unitary" && this.meeting.mustnotify == 'O') {
+                            
+                            var d = new Date(this.meeting.dtrevision);
+                            var n = new Date();
+                            if (d.getTime() > n.getTime()) {
+                                this.quand = 'later';
+                            }
+                            else {
+                                this.setQuand();
+                            }
+                        }
+
                         this.getBlocks();
                     });
 
@@ -356,11 +425,13 @@
                 this.nouveau = true;
                 this.meeting = {
                     guid: _yemon[this.moduleid].service.guid(),
+                    doperiodics:'O',
                     active: 'O',
                     type: 'unitary',
                     statutory: 'O',
                     name: '',
                     mustnotify: 'N',
+
                     periods:[]
                 };
             } else {

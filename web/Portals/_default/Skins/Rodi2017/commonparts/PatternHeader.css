@@ -368,10 +368,6 @@ A.Breadcrumb:hover {
 .MNV2 > li:hover > a {
     background-position: 10px center;
     cursor: pointer;
-    -webkit-transition: all 0.3s ease-in;
-    -moz-transition: all 0.3s ease-in;
-    -ms-transition: all 0.3s ease-in;
-    -o-transition: all 0.3s ease-in;
     transition: all 0.3s ease-in;
 }
 
@@ -393,10 +389,6 @@ A.Breadcrumb:hover {
     .MNV3 > li:hover > a {
         background-position: 10px center;
         cursor: pointer;
-        -webkit-transition: all 0.3s ease-in;
-        -moz-transition: all 0.3s ease-in;
-        -ms-transition: all 0.3s ease-in;
-        -o-transition: all 0.3s ease-in;
         transition: all 0.3s ease-in;
     }
 
@@ -416,10 +408,6 @@ A.Breadcrumb:hover {
     .MNV4 li:hover a {
         background-position: 10px center;
         cursor: pointer;
-        -webkit-transition: all 0.3s ease-in;
-        -moz-transition: all 0.3s ease-in;
-        -ms-transition: all 0.3s ease-in;
-        -o-transition: all 0.3s ease-in;
         transition: all 0.3s ease-in;
     }
 
@@ -474,11 +462,7 @@ A.Breadcrumb:hover {
 
             .Public .MNV1 > li > a:hover {
                 background-position: 5px center;
-                -webkit-transition: all 0.9s ease-in-out;
-                -moz-transition: all 0.9s ease-in-out;
-                -ms-transition: all 0.9s ease-in-out;
-                -o-transition: all 0.9s ease-in-out;
-                transition: all 0.9s ease-in-out;
+                transition: all 0.3s ease-in-out;
             }
 
 .Public .MNV2 {
@@ -493,14 +477,10 @@ A.Breadcrumb:hover {
     height: 29em;
     visibility: visible;
     opacity: 1;
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
+   
     transition: all 0.3s ease-out;
 
-    -webkit-transition-delay: 0.7s;
-    transition-delay: 0.7s;
+   
 }
 
 .Public .MNV2 > li {
@@ -544,16 +524,8 @@ A.Breadcrumb:hover {
 
 .Membre .MNV1 > li:hover > a {
     background-position: center 40px;
-    -webkit-transition: background-position .3s ease-out .2s;
-    -webkit-transition-property: background-position;
-    -webkit-transition-duration: 0.3s;
-    -webkit-transition-timing-function: ease-out;
-    -webkit-transition-delay: 0.5s;
     transition: background-position .3s ease-out .2s;
-    transition-property: background-position;
-    transition-duration: 0.3s;
-    transition-timing-function: ease-out;
-    transition-delay: 0.5s;
+
 }
 
 .Membre .MNV2 {
@@ -576,14 +548,7 @@ A.Breadcrumb:hover {
     display: flex;
     justify-content: center;
     opacity: 1;
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
     transition: all 0.3s ease-out;
-    
-    -webkit-transition-delay: 0.7s;
-    transition-delay: 0.7s;
 }
 
 .Membre .MNV2 > li {
@@ -604,9 +569,6 @@ A.Breadcrumb:hover {
 .Membre .MNV3 li {
     display: block;
 }
-
-
-
 
 
 /*--------- User Profile Style ----------*/
@@ -763,17 +725,6 @@ A.Breadcrumb:hover {
     background: #ccc;
 }
 
-/*--------- Login & Icon Style ----------
-.login_style { float: left; }
-    .login_style .login-button { display: block; cursor: pointer; }
-    .login_style .logout-button { display: block; cursor: pointer; }
-    .login_style .login-button span { position: relative; background: url("images/icon_login.png") no-repeat center center #5c85e2; display: block; height: 40px; width: 40px; overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; border: solid 4px #fff; border: solid 4px rgba(255,255,255,0.5); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; margin: 0 10px; padding: 18px; }
-    .login_style .logout-button span { position: relative; background: url("images/icon_logout.png") no-repeat center center #5c85e2; display: block; height: 40px; width: 40px; overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; -moz-transition: all 0.4s ease 0s; border: solid 4px #fff; border: solid 4px rgba(255,255,255,0.5); border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; margin: 0 10px; padding: 18px; }
-        .login_style .login-button span:hover, .login_style .logout-button span:hover { border: solid 4px rgba(255,255,255,0.8); }
-        .login_style .login-button span a, .login_style .logout-button span a { position: absolute; top: 0; left: 0; filter: alpha(opacity=0); moz-opacity: 0; -khtml-opacity: 0; opacity: 0; background: #000; padding: 15px; }
-.user_login { display: none; }*/
-
-/*--------- User & Icon Style ----------*/
 .icon_user {
     color: #e8ebee;
     padding-top: 30px;
@@ -791,10 +742,7 @@ A.Breadcrumb:hover {
             color: #019fcb;
             text-decoration: underline;
         }
-/*    .icon_user .MonRotary { background: url('../images/IconUser.png') no-repeat left -22px; padding-left: 20px; margin-left: 8px; }
-        .icon_user .MonRotary:hover { background-position: left -2px; }
-    .icon_user .Localiser { background: url('../images/IconUser.png') no-repeat left -77px; padding-left: 20px; margin-left: 8px; }
-        .icon_user .Localiser:hover { background-position: left -56px; }*/
+
 .HeadUser {
     padding: 0 15px;
     line-height: 2em;
@@ -812,11 +760,6 @@ A.Breadcrumb:hover {
             color: #ffffff;
             text-decoration: underline;
         }
-/*    .membre.icon_user .MonRotary { background: url('../images/IconUser2.png') no-repeat left -1px; }
-        .membre.icon_user .MonRotary:hover { background-position: left -1px; }
-.membre .Localiser { background: url('../images/IconUser2.png') no-repeat left -20px; }
-.membre.icon_user .Localiser:hover { background-position: left -20px; }*/
-
 
 /*--------- Language Style ----------*/
 .language-object {
@@ -1194,10 +1137,6 @@ ul.searchSkinObjectPreview {
     .MNV2 > li:hover > a {
         background-position: 10px center;
         cursor: pointer;
-        -webkit-transition: all 0.3s ease-in;
-        -moz-transition: all 0.3s ease-in;
-        -ms-transition: all 0.3s ease-in;
-        -o-transition: all 0.3s ease-in;
         transition: all 0.3s ease-in;
     }
 
@@ -1219,10 +1158,6 @@ ul.searchSkinObjectPreview {
         .MNV3 > li:hover > a {
             background-position: 10px center;
             cursor: pointer;
-            -webkit-transition: all 0.3s ease-in;
-            -moz-transition: all 0.3s ease-in;
-            -ms-transition: all 0.3s ease-in;
-            -o-transition: all 0.3s ease-in;
             transition: all 0.3s ease-in;
         }
 
@@ -1242,10 +1177,6 @@ ul.searchSkinObjectPreview {
         .MNV4 li:hover a {
             background-position: 10px center;
             cursor: pointer;
-            -webkit-transition: all 0.3s ease-in;
-            -moz-transition: all 0.3s ease-in;
-            -ms-transition: all 0.3s ease-in;
-            -o-transition: all 0.3s ease-in;
             transition: all 0.3s ease-in;
         }
 
@@ -1283,10 +1214,6 @@ ul.searchSkinObjectPreview {
         .Public .MNV1 > li:hover > a {
             background-position: 10px center;
             width: auto;
-            -webkit-transition: all 0.3s ease-in;
-            -moz-transition: all 0.3s ease-in;
-            -ms-transition: all 0.3s ease-in;
-            -o-transition: all 0.3s ease-in;
             transition: all 0.3s ease-in;
         }
 
@@ -1375,19 +1302,12 @@ ul.searchSkinObjectPreview {
         background-color: #1e3c64;
         position: unset;
         box-shadow: none;
-        -webkit-transition-delay: 2s;
-        -moz-transition-delay: 2s;
-        -o-transition-delay: 2s;
-        transition-delay: 2s;
+        transition-delay: 0.3s;
     }
 
         .Membre .MNV1 > li:hover > a {
             background-position: 10px center;
             width: auto;
-            -webkit-transition: all 0.3s ease-in;
-            -moz-transition: all 0.3s ease-in;
-            -ms-transition: all 0.3s ease-in;
-            -o-transition: all 0.3s ease-in;
             transition: all 0.3s ease-in;
         }
 
