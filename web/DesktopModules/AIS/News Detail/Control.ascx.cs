@@ -129,7 +129,20 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
             //LBL_Detail.Text = texte;
 
             string o = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
-            if(o!="")
+            
+            if (o == "[]" || o == "")
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("<div class='row'>");
+                if (news.photo != "")
+                {
+                    sb.Append("<div  class='col-sm-12'>");
+                    sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title='" + news.title + "' />");
+                    sb.Append("</div>");               }              
+                sb.Append("</div>");
+                LBL_Detail.Text = sb.ToString();
+
+            } else
             {
                 List<Block> blocks = (List<Yemon.dnn.BlocksContent.Block>)Yemon.dnn.Functions.Deserialize(o, typeof(List<Block>));
                 StringBuilder sb = new StringBuilder();

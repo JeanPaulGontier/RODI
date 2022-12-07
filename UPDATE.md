@@ -1,3 +1,6 @@
+###### 07/12/2022
+- changement de comportement pour les nouvelles club et district, maintenant quand on publie une nouvelle dans contenu détaillé, c'est l'image d'accroche qui est affichée dans le détail de la nouvelle (comme avec l'ancien module de nouvelles en fait), ce qui permet de mettre 2 fois la meme image si on a pas de contenu détaillé
+
 ###### 06/12/2022
 
 - mise a jour de DNN version 9.9.1 -> 9.10.2

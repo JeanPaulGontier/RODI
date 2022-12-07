@@ -20,8 +20,11 @@
 
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" v-if="blocks.length>0">
             <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+        </div>
+        <div class="col-sm-12" v-if="blocks.length==0 && news.photo!=''">
+            <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+ news.photo" :title='news.title'/>
         </div>
     </div>
 

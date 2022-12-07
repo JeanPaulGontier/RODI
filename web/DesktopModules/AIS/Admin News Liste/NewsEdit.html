@@ -105,6 +105,10 @@
             <h4>Contenu détaillé</h4>
         </div>
         <div class="col-sm-12">
+            <p><em v-if="this.blocks.length==0">L'image d'accroche est utilis&eacute;e dans le d&eacute;tail de la nouvelle s'il n'a pas de contenu d&eacute;taill&eacute;...</em></p>
+            
+        </div>
+        <div class="col-sm-12">
             <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
         </div>
     </div>

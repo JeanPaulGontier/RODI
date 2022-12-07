@@ -1,5 +1,9 @@
 ##### Modified files per commit
 
+###### 07/12/2022
+- DesktopModules\AIS\Admin News Liste\NewsView.html
+- DesktopModules\AIS\Admin News Liste\NewsEdit.html
+- DesktopModules\AIS\News Detail\Control.ascx.cs
 
 
 ###### 06/12/2022
