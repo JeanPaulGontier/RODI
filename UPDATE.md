@@ -1,3 +1,6 @@
+###### 11/12/2022
+- le controller de nouvelles permet de gérer d'autres modes que district et clubs, ce qui permet de faire des visualisations et administrations de nouvelles personnalisées par District (exemple la minute rotarienne).
+
 ###### 07/12/2022
 - changement de comportement pour les nouvelles club et district, maintenant quand on publie une nouvelle dans contenu détaillé, c'est l'image d'accroche qui est affichée dans le détail de la nouvelle (comme avec l'ancien module de nouvelles en fait), ce qui permet de mettre 2 fois la meme image si on a pas de contenu détaillé
 

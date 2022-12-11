@@ -188,6 +188,10 @@ namespace AIS.controller
             {
                 news = DataMapping.ListNews(0, "District", max: int.MaxValue);
             }
+            else
+            {
+                news = DataMapping.ListNews(0, mode, max: int.MaxValue);
+            }
             if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB))
             {
                 foreach (News n in news)
@@ -230,7 +234,10 @@ namespace AIS.controller
             {
                 news = DataMapping.ListNews(0, "District", max: int.MaxValue);
             }
-
+            else
+            {
+                news = DataMapping.ListNews(0,mode,max: int.MaxValue);
+            }
             if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB))
             {
                 foreach (News n in news)
@@ -276,7 +283,7 @@ namespace AIS.controller
                 News news = (News)Yemon.dnn.Functions.Deserialize("" + param["news"], typeof(News));
                 string blocks = "" + param["blocks"];
                 news.cric = cric;
-                news.category = mode=="clubs"?"Clubs":"District";
+                news.category = mode;
                 if(mode=="clubs")
                 {
                     Club club = DataMapping.GetClub(cric);

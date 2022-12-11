@@ -1,5 +1,8 @@
 ##### Modified files per commit
 
+###### 11/12/2022
+- App_Code\AIS\webapi\news\NewsController.cs
+
 ###### 07/12/2022
 - DesktopModules\AIS\Admin News Liste\NewsView.html
 - DesktopModules\AIS\Admin News Liste\NewsEdit.html
