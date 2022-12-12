@@ -167,9 +167,9 @@
                     <label class="radio-inline"><input type="radio" name="active" value="O" v-model="meeting.active">Oui</label>
                     <label class="radio-inline"><input type="radio" name="active" value="N" v-model="meeting.active">Non</label>
                 </div>
-                <div class="col-sm-6" v-if="meeting.active=='N'">
+                <div class="col-sm-6" v-if="meeting.type=='unitary' && meeting.active=='N'">
                     <em>
-                        La notifications n&#39;est possible que lorsque l&#39;inscription est active
+                        La notification n&#39;est possible que lorsque l&#39;inscription est active
                     </em>
                 </div>
             </div>
