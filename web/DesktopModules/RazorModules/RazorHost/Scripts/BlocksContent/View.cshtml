@@ -131,7 +131,7 @@
                 break;
             case "Raw":
                 Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
-                <div v-html="r.Html"></div>
+                <div>@Html.Raw(r.Html)</div>
                 break;
             case "Video":
                 Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
@@ -163,12 +163,6 @@
 
                 </script>
                 break;
-                @*case "title":
-                    Bloc.Title t = (Bloc.Title)bloc.content;
-                    <h2>@t.title</h2>
-
-
-                    break;*@
         }
     }
 }

@@ -1,3 +1,10 @@
+###### 11/01/2023
+- remise en place d'une temporisation sur les menus pour plus de confort d'utilisation
+- correction bug bloc html dans blockcontent 
+- améliorations sur les thèmes graphiques public, club et membres 
+- ajout de la possibilité de mettre un titre district ainsi qu'un texte a droite du logo district
+- correction du pb d'envoi de mail par le popup membre quand on utilise mailjet
+
 ###### 11/12/2022
 - le controller de nouvelles permet de gérer d'autres modes que district et clubs, ce qui permet de faire des visualisations et administrations de nouvelles personnalisées par District (exemple la minute rotarienne).
 

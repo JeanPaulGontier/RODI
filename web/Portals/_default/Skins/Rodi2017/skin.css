@@ -264,6 +264,7 @@ input[type=text], textarea {
     box-sizing: content-box;
 }
 
+
 [class*="RadAjaxPanel"] *, [class*="Digital"] * {
     font-size: 12px;
     -webkit-box-sizing: content-box;
@@ -683,10 +684,14 @@ ul#myTab {
     }
 
 .fixed_bg {
-    background: center center repeat url("images/fixed_bg.jpg") fixed;
+    background: #0067c8;
 }
+.fixed_bg .cool_content {
+    width: 100%;
+}
+
 .fixed_bg2 {
-    background: center center repeat url("images/fixed_bg2.jpg") fixed;
+    background: #00246c;
 }
 @media screen and (max-width: 768px) {
     .slider_slick_1 .slick-dots {
@@ -715,7 +720,7 @@ ul#myTab {
 }
 
 .footer_top {
-    background: #171717;
+    background: #54565a;
 }
 
 .footerpane_style {
@@ -723,7 +728,7 @@ ul#myTab {
 }
 
 .skin_footer {
-    background: #0c0c0c;
+    background: #00246c;
     padding: 20px 0 20px;
 }
 
@@ -1654,6 +1659,7 @@ h1DetailedArticle a:hover {
 
     .mobile_display {
         display: block;
+        position:relative;
     }
 
     .mobile_nav {

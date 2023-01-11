@@ -40,50 +40,50 @@
     <section class="content_whitebg">
       <div class="skin_width">
         <div class="skin_content">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="ContentPane" class="content_grid12 col-sm-12"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="OneGrid4A" class="one_grid4a col-sm-4"></div>
             <div runat="server" id="OneGrid4B" class="one_grid4b col-sm-4"></div>
             <div runat="server" id="OneGrid4C" class="one_grid4c col-sm-4"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="TwoGrid3A" class="two_grid3a col-sm-3"></div>
             <div runat="server" id="TwoGrid3B" class="two_grid3b col-sm-3"></div>
             <div runat="server" id="TwoGrid3C" class="two_grid3c col-sm-3"></div>
             <div runat="server" id="TwoGrid3D" class="two_grid3d col-sm-3"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="ThreeGrid12" class="three_grid12 col-sm-12"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="FourGrid8" class="four_grid8 col-sm-8"></div>
             <div runat="server" id="FourGrid4" class="four_grid4 col-sm-4"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="FiveGrid4" class="five_grid4 col-sm-4"></div>
             <div runat="server" id="FiveGrid8" class="five_grid8 col-sm-8"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="SixGrid6A" class="six_grid6a col-sm-6"></div>
             <div runat="server" id="SixGrid6B" class="six_grid6b col-sm-6"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="SevenGrid9" class="seven_grid9 col-sm-9"></div>
             <div runat="server" id="SevenGrid3" class="seven_grid3 col-sm-3"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="EightGrid3" class="eight_grid3 col-sm-3"></div>
             <div runat="server" id="EightGrid9" class="eight_grid9 col-sm-9"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="NineGrid3A" class="nine_grid3a col-sm-3"></div>
             <div runat="server" id="NineGrid3B" class="nine_grid3b col-sm-3"></div>
             <div runat="server" id="NineGrid3C" class="nine_grid3c col-sm-3"></div>
             <div runat="server" id="NineGrid3D" class="nine_grid3d col-sm-3"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="TenGrid12" class="ten_grid12 col-sm-12"></div>
           </div>
         </div>
@@ -92,11 +92,11 @@
     <section class="content_graybg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="GrayGrid6A" class="graygrid6a col-sm-6"></div>
             <div runat="server" id="GrayGrid6B" class="graygrid6b col-sm-6"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="GrayGrid12" class="graygrid12 col-sm-12"></div>
           </div>
         </div>
@@ -105,10 +105,10 @@
     <section class="content_whitebg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="MiddlePane" class="middlepane col-sm-12"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="MiddleGrid6A" class="middlegrid6a col-sm-6"></div>
             <div runat="server" id="MiddleGrid6B" class="middlegrid6b col-sm-6"></div>
           </div>
@@ -118,13 +118,13 @@
     <section class="fixed_bg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="FixedBG3A" class="fixedbg3a col-sm-3"></div>
             <div runat="server" id="FixedBG3B" class="fixedbg3b col-sm-3"></div>
             <div runat="server" id="FixedBG3C" class="fixedbg3c col-sm-3"></div>
             <div runat="server" id="FixedBG3D" class="fixedbg3d col-sm-3"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="FixedBG12" class="fixedbg12 col-sm-12"></div>
           </div>
         </div>
@@ -133,19 +133,19 @@
     <section class="content_whitebg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomGrid12A" class="bottomGrid12a col-sm-12"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomGrid6A" class="bottomGrid6a col-sm-6"></div>
             <div runat="server" id="BottomGrid6B" class="bottomGrid6b col-sm-6"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomGrid4A" class="bottomGrid4a col-sm-4"></div>
             <div runat="server" id="BottomGrid4B" class="bottomGrid4b col-sm-4"></div>
             <div runat="server" id="BottomGrid4C" class="bottomGrid4c col-sm-4"></div>
           </div>
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomGrid12B" class="bottomGrid12b col-sm-12"></div>
           </div>
         </div>
@@ -154,7 +154,7 @@
     <section class="content_colorbg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomColorPane" class="bottomcolorpane col-sm-12"></div>
           </div>
         </div>
@@ -163,7 +163,7 @@
     <section class="content_graybg">
       <div class="skin_width">
         <div class="skin_main_padding">
-          <div class="row dnnpane">
+          <div class="row dnnpane pcr_mx_0">
             <div runat="server" id="BottomGrayPane" class="bottomgraypane col-sm-12"></div>
           </div>
         </div>

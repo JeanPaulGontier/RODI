@@ -67,6 +67,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace AIS
 {
@@ -79,6 +80,9 @@ namespace AIS
         public static DateTime NO_DATE = new DateTime(1900, 1, 1);
         public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
         public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
+        public static string DISTRICT_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictTitle"]);
+        public static string DISTRICT_LOGO_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictLogoTitle"]);
+
         public static int MENU_CLUB_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuClubRootTabId"]);
         public static int MENU_MEMBER_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuMemberRootTabId"]);
 

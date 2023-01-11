@@ -477,8 +477,8 @@ public partial class AIS_Contact : System.Web.UI.Page
                     message += "Message : <br/>";
                     message += TXT_Message.Text;
 
-                    Mail.SendEmail( TXT_Email.Text,ps.Email, member.email, "Contact à partir du site du district", message);
-
+                    //Mail.SendEmail( TXT_Email.Text,ps.Email, member.email, "Contact à partir du site du district", message);
+                    Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district "+Const.DISTRICT_ID, message);
 
                     P1.Visible = false;
                     P2.Visible = true;

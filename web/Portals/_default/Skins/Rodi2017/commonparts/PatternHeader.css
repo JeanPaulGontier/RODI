@@ -6,43 +6,32 @@
     z-index: 1000;
     color: white;
 }
+.pattern_header .skin_width{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
 .pattern_header h1{
-    margin:0;
+    margin:0 10px;
+    text-align:center;
+    flex-grow:1;
+}
+.pattern_header .logo_style{
+    display: flex;
+    align-items: center;
+    position:relative;
+}
+.logo_style img {
+    max-height:90px;
+    padding:7px 10px;
 }
 
-.logo_style {
-    float: left;
-    padding: 20px 15px;
-
+.Public.pattern_header .logo_style a {
+    color: #00246c;
 }
 
-    .logo_style img {
-        height: 41px;
-    }
-    .logo_style a, .Public.pattern_header .logo_style{
-        color:white;
-        display: flex;
-        align-items: center;
-        position:relative;
-        column-gap:1em;
-    }
-    .logo_style .districtNum{
-        margin-top:-8px;
-        margin-left:-1px;
-        font-size:0.72em;
-        line-height:0.7em;
-    }
-    .logo_style div span{
-        display:block;
-        white-space:nowrap;
-    }
-    .logo_style div span + span{
-        font-size:0.9em;
-    }
-.headerpane_style {
-    float: right;
-    margin: 20px;
-}
+
 
 a.btn-connexion {
     position: absolute;
@@ -61,8 +50,6 @@ a.btn-connexion {
         color: #000000;
         background: #febd11;
         transition: all 0.4s ease 0s;
-        -webkit-transition: all 0.4s ease 0s;
-        -moz-transition: all 0.4s ease 0s;
     }
 
 a.btn-logoff {
@@ -79,10 +66,6 @@ a.btn-logoff {
         opacity: 0.5;
         background-position-x: right;
         text-decoration: none !important;
-        -webkit-transition: all 0.9s ease-in;
-        -moz-transition: all 0.9s ease-in;
-        -ms-transition: all 0.9s ease-in;
-        -o-transition: all 0.9s ease-in;
         transition: all 0.9s ease-in;
     }
 
@@ -98,21 +81,18 @@ a.btn-profil {
         background-size: contain;
         opacity: 0.5;
         text-decoration: none !important;
-        -webkit-transition: all 0.9s ease-in;
-        -moz-transition: all 0.9s ease-in;
-        -ms-transition: all 0.9s ease-in;
-        -o-transition: all 0.9s ease-in;
         transition: all 0.9s ease-in;
     }
 
 #Login {
     color: #bbbbbb;
     margin-right: 10px;
+    margin-bottom:10px;
 }
 
 .icons_menu {
-    float: right;
-    margin: 20px 7px 0 0;
+    flex-grow:1;
+    margin: 20px 7px 2px 0;
     position: relative;
     z-index: 1000;
     font-size: 0.8em;
@@ -120,7 +100,7 @@ a.btn-profil {
 
 .icon_user {
     position: relative;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
 .icon_user_hover {
@@ -133,8 +113,6 @@ a.btn-profil {
     background: #fff;
     background: rgba(245,245,245,.9);
     border: none;
-    webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
 }
 
@@ -155,6 +133,11 @@ a.btn-profil {
 .icon_user > .HeadUser {
     font-size: 110%;
 }
+.icon_user.connected #Login{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
 .icon_login {
     float: left;
@@ -165,8 +148,11 @@ a.btn-profil {
 .icon_lang_style { display: none; width: 60px; position: absolute; left: -11px; top: 45px; padding: 0 0 15px; background: #fff; background: rgba(245,245,245,.9); border: none; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
     .icon_lang_style:before { width: 0; height: 0; position: absolute; left: 24px; top: -5px; border-bottom: 5px solid #fff; border-bottom: 5px solid rgba(245,245,245,.9); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: none; content: ""; }
 */
-#skin_menu {
+.skin_menu {
     margin: 0 0 50px 0;
+}
+.menu_bar_membre{
+    margin:0 0 20px 0;
 }
 
 .menu_bar {
@@ -184,10 +170,11 @@ a.btn-profil {
 .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active {
     text-decoration: none;
     font-size: 100%;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px;*/
     display: inline-block;
     color: #aaaaaa;
     padding: 0 5px;
+    white-space:nowrap;
 }
 
 A.Breadcrumb:hover {
@@ -199,13 +186,22 @@ A.Breadcrumb:hover {
 /*---- Header Membre ----*/
 .Membre.pattern_header {
     background: #1e3c64;
-    position: relative;
-    z-index: 1000;
-    color: white;
 }
-.Membre .logo_style a{
-    justify-content: center;
+.Membre.pattern_header a.logo_style{
+    color:#fff;
 }
+
+.titres_membre{
+    color:#fff;
+    text-align:center;
+    flex-grow:1;
+}
+.titres_membre p:first-child{
+    font-size:22px;
+}
+    .Membre a.btn-profil {
+        margin-left: 7px;
+    }
 .menu_bar_membre {
     background-color: #f8f9fa;
     background: -webkit-linear-gradient(180deg,#18365d 3.125rem,#18365d 0,#fff 0);
@@ -257,12 +253,12 @@ A.Breadcrumb:hover {
 
 
 /*Scroll To Fixed Fixed*/
-.scroll-to-fixed-fixed#skin_menu {
+.scroll-to-fixed-fixed.skin_menu {
     margin: 0;
     background: #5c85e2;
 }
 
-    .scroll-to-fixed-fixed#skin_menu .menu_shadow {
+    .scroll-to-fixed-fixed.skin_menu .menu_shadow {
         display: none;
     }
 
@@ -333,11 +329,11 @@ A.Breadcrumb:hover {
         list-style: none;
     }
 
-.MNV1 {
-    margin:0;
+.MNV1, #MENUMOB {
+    margin: 0;
     width: 100%;
     padding: 0;
-    position:relative;
+    position: relative;
 }
 
     .MNV1 > li {
@@ -495,12 +491,12 @@ A.Breadcrumb:hover {
     .Public .MNV2 > li > a:hover{background-position:5px center;}
 
     .Public .MNV3, .Public .MNV4 {
-        padding: 0 0 0 5px;
+        padding: 5px 0 0 5px;
         font-size: 0.8em;
     }
 
     .Public .MNV3 > li > a {
-        padding: 2px 0 2px 27px;
+        padding: 4px 0 4px 27px;
         line-height: 1.2em;
     }
 
@@ -727,14 +723,14 @@ A.Breadcrumb:hover {
 
 .icon_user {
     color: #e8ebee;
-    padding-top: 30px;
+    padding-top: 20px;
 }
 
     .icon_user.connected {
         padding-top: 0;
     }
 
-    .icon_user a, .icon_user span {
+    .icon_user a, .icon_user {
         color: #019fcb;
     }
 
@@ -744,13 +740,11 @@ A.Breadcrumb:hover {
         }
 
 .HeadUser {
-    padding: 0 15px;
+    padding: 0 7px;
     line-height: 2em;
 }
 
-.membre.icon_user {
-    color: #3465a5;
-}
+
 
     .membre.icon_user a, .membre.icon_user span {
         color: #ffffff;
@@ -937,29 +931,40 @@ ul.searchSkinObjectPreview {
 
 /*--------- CSS Reset for Mobile ----------*/
 @media handheld, only screen and (max-width: 1024px) {
-    #skin_menu {
+    .skin_menu {
         position: inherit !important;
         margin: 0;
     }
     .skin_main{
         margin-top:60px;
     }
-    .logo_style {
-        float: none;
-        padding: 10px 15px;
-        line-height: normal;
-        justify-content: center;
+    .logo_style img {
         max-height:60px;
     }
-
-    .icons_menu {
-        position: absolute;
-        top: 0;
-        right: 0;
+    .menuclick{
+        display:flex;
+        align-items:center;
+        justify-content:center;
         height: 60px;
-        font-size: 0;
+        width: 60px;
+        border-right: 1px solid #e8ebee;
+        text-decoration: none;
+        background: #ffffff;
     }
+    .menuclick img{width:29px;}
 
+    .pattern_header h1{
+        margin:0 10px;
+        font-size:20px;
+    }
+    .icons_menu {
+        border-bottom: 1px solid #e8ebee;
+        margin:0 10px;
+        padding:10px 0;
+    }
+    .icon_user{
+        padding-top:0;
+    }
     .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active {
         margin-bottom: 0;
         padding: 0 15px;
@@ -970,13 +975,11 @@ ul.searchSkinObjectPreview {
     }
 
     a.btn-connexion {
-        display: block;
         background: url('../images/login.svg') no-repeat;
         background-size: contain;
         margin: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
+        padding: 5px 0 5px 30px;
+        position: relative;
         height: 27px;
     }
 
@@ -986,47 +989,10 @@ ul.searchSkinObjectPreview {
             opacity: 0.5;
         }
 
-    a.btn-logoff {
-        display: block;
-        background: url('../images/logoff.svg') no-repeat;
-        background-size: contain;
-        margin: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 27px;
-    }
 
-        a.btn-logoff:hover {
-            background: url('../images/logoff.svg') no-repeat;
-            background-size: contain;
-            opacity: 0.5;
-        }
 
-    a.btn-profil {
-        display: block;
-        background: url('../images/user.svg') no-repeat;
-        background-size: contain;
-        margin: 0;
-        position: absolute;
-        top: 0;
-        right: 32px;
-        height: 26px;
-        padding-right: 25px;
-    }
 
-        a.btn-profil:hover {
-            background: url('../images/user.svg') no-repeat;
-            background-size: contain;
-            opacity: 0.5;
-        }
-
-    .headerpane_style {
-        float: none;
-        margin: 0;
-    }
-
-    .icon_user, .icon_login, .icon_lang {
+    .icon_login, .icon_lang {
         float: none;
         display: inline-block !important;
     }
@@ -1042,30 +1008,19 @@ ul.searchSkinObjectPreview {
         right: 0;
         left: 0;
     }
+    .personabar-visible .pattern_header{
+        left:80px;
+    }
 
     .showControlBar .pattern_header {
         top: 53px;
     }
 
-    .menuclick {
-        position: fixed;
-        z-index: 1000;
-        height: 60px;
-        width: 60px;
-        border-right: 1px solid #e8ebee;
-        padding: 0;
-        display: block;
-        text-decoration: none;
-        background: #ffffff;
-    }
+
 
     .Membre .menuclick {
         background: transparent;
         border-right: 1px solid #3465a5;
-    }
-
-    .click_img {
-        padding: 15px;
     }
 
     .MenuMob {
@@ -1186,7 +1141,7 @@ ul.searchSkinObjectPreview {
         box-shadow: 0 5px 5px 0 rgba(0,0,0,.1)
     }
 
-    .Public .MNV1 {
+    #MENUMOB {
         position: fixed;
         left: -800px;
         width: 65%;
@@ -1266,7 +1221,7 @@ ul.searchSkinObjectPreview {
     
     .Membre .MNV1, .Membre .MNV1 > li:hover .MNV2{display:block; }
 
-    .Membre .MNV1 {
+    .Membre #MENUMOB {
         position: fixed;
         left: -800px;
         width: 65%;
@@ -1276,7 +1231,9 @@ ul.searchSkinObjectPreview {
         overflow-y: auto;
         background-color: #1e3c64;
     }
-
+    .Membre .icons_menu {
+        border-bottom: 1px solid #3465a5;
+    }
     .showControlBar .Membre .MNV1 {
         top: 113px;
     }
@@ -1367,6 +1324,9 @@ ul.searchSkinObjectPreview {
 
     .Club .logo_style img {
         max-height: 30px;
+    }
+    .pattern_header h1 {
+        font-size: 13px;
     }
 }
 

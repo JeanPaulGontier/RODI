@@ -1,5 +1,19 @@
 ##### Modified files per commit
 
+###### 11/01/2023
+- AIS\contact.aspx.cs
+- DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\view.chtml
+- Portals\_default\Skins\Rodi2017\images\rotary-district####.png
+- Portals\_default\Skins\Rodi2017\images\rotary-district####-blanc.png
+- Portals\_default\Skins\Rodi2017\skin.css
+- Portals\_default\Skins\Rodi2017\Public.ascx
+- Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
+- Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.ascx
+- Portals\_default\Skins\Rodi2017\commonparts\PatternClub.ascx
+- Portals\_default\Skins\Rodi2017\commonparts\HeaderMembre.ascx
+- Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+- App_Code\AIS\Const.cs
+
 ###### 11/12/2022
 - App_Code\AIS\webapi\news\NewsController.cs
 
