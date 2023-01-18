@@ -1,6 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Contact.ascx.cs" Inherits="DesktopModules_Contact" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls" %>
 <div id="Contact"></div>
+<asp:Panel runat="server" ID="P2" Visible="false" CssClass="alert alert-success">
+        Votre message a bien été envoyé...    
+</asp:Panel>
 <asp:Panel ID="pnl_Formulaire" runat="server" CssClass="animated fadeInUp">
     <asp:Panel ID="pnl_Champs" runat="server" CssClass="contact_input_style">
         <asp:Label ID="lbl_nom" runat="server" Text="Veuillez indiquer votre nom" CssClass="Normal"/>
@@ -30,8 +33,6 @@
 		<asp:Button runat="server" ID="btn_Annuler" Text="Annuler" OnClick="btn_Annuler_Click" CausesValidation="false" CssClass="btn btn-default" />
 	</asp:Panel>
 </asp:Panel>
-<asp:Panel runat="server" ID="P2" Visible="false">
-        Votre message a bien été envoyé...    
-</asp:Panel>
+
 
 <div class="clear"></div>

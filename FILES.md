@@ -1,5 +1,17 @@
 ##### Modified files per commit
 
+###### 
+- AIS\contact.aspx
+- AIS\contact.aspx.cs
+- Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+- Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
+- DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+- DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+- DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+- App_Code\AIS\DataMapping.cs
+- App_Code\AIS\Functions.cs
+
+
 ###### 11/01/2023
 - AIS\contact.aspx.cs
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\view.chtml

@@ -1629,7 +1629,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine WHERE cric=@last_cric", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine,type_club=@type_club WHERE cric=@last_cric", conn, trans);
 
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@last_cric", last_cric);
@@ -1659,6 +1659,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@roles", "" + c.roles);
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
+                sql.Parameters.AddWithValue("@type_club", "" + c.club_type);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update club : " + c.cric);

@@ -92,6 +92,7 @@
         <div class="skin_width">
             <a href="/" class="logo_style">
                 <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-district<%= AIS.Const.DISTRICT_ID %>.png" />
+                 <span><%= AIS.Const.DISTRICT_LOGO_TITLE %></span>
             </a>
             <div class="icons_menu">
                 <%If Not Request.IsAuthenticated Then%>

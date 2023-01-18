@@ -78,6 +78,22 @@
 
                         </div>
                         break;
+                    case "B":
+                        if (p.Title != null)
+                        {
+                            <h2>@p.Title</h2>
+                        }
+                        if (p.Html != null)
+                        {
+                            <div>@Html.Raw(p.Html)</div>
+                        }
+                        if (p.Image != null)
+                        {
+                            <div>
+                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                            </div>
+                        }
+                        break;
                     default:
                         if (p.Title != null)
                         {

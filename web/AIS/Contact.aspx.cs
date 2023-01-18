@@ -11,6 +11,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+  
         int id = 0;
         int.TryParse("" + Request.QueryString["id"], out id);
         if (id > 0)
@@ -28,6 +29,7 @@ public partial class AIS_Contact : System.Web.UI.Page
                     Pnl_Coord.Visible = true;
 
                     Table tbC = new Table();
+                
 
                     #region Cartouche
                     //if(!string.IsNullOrEmpty(membre.photo))
@@ -128,6 +130,7 @@ public partial class AIS_Contact : System.Web.UI.Page
                     Pnl_Coord.Controls.Add(tbC);
 
                     Table tb = new Table();
+                  
 
                     #region Coordonnées Pro
                     if (!string.IsNullOrEmpty(member.professionnal_adress) || !string.IsNullOrEmpty(member.professionnal_tel) || !string.IsNullOrEmpty(member.professionnal_fax) || !string.IsNullOrEmpty(member.professionnal_mobile) || !string.IsNullOrEmpty(member.professionnal_email))
@@ -458,6 +461,7 @@ public partial class AIS_Contact : System.Web.UI.Page
     }
     protected void BT_Envoyer_Click(object sender, EventArgs e)
     {
+      
         if (HF_id.Value != "")
         {
             int id = 0;
@@ -471,15 +475,16 @@ public partial class AIS_Contact : System.Web.UI.Page
                     PortalSettings ps = PortalController.GetCurrentPortalSettings();
 
 
-                    string message = "Vous avez un message à partir du site du district<br/>";
-                    message += "Nom & Prenom : " + TXT_Nom.Text + "<br/>";
-                    message += "Email : " + TXT_Email.Text + "<br/>";
-                    message += "Message : <br/>";
-                    message += TXT_Message.Text;
+                    string message =  "<p>Vous avez un message à partir du site du district " + Const.DISTRICT_ID +"</p>";
+                    message += "<p>Nom & Prenom : " + TXT_Nom.Text + "</p>";
+                    message += "<p>Email : " + TXT_Email.Text + "</p>";
+                    message += "<p>Message :</p>";
+                    message += "<p><pre>"+TXT_Message.Text+"</pre></p>";
+                    message +="";
 
                     //Mail.SendEmail( TXT_Email.Text,ps.Email, member.email, "Contact à partir du site du district", message);
-                    Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district "+Const.DISTRICT_ID, message);
-
+                    //Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district "+Const.DISTRICT_ID, message);
+                    Yemon.dnn.Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district " + Const.DISTRICT_ID, message);
                     P1.Visible = false;
                     P2.Visible = true;
                 }

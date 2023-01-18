@@ -6,13 +6,25 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>    
+    <link href="/Portals/_default/Skins/Rodi2017/skin.css" type="text/css" rel="stylesheet"/>
+    <style>
+    th, td { padding: 1px 5px; }
+    table { border-collapse: collapse; border-spacing: 0; }   /* cellspacing="0" */
+    th, td { vertical-align: top; }
+    table { margin: 0 auto; }
+    </style>
 </head>
-<body>
+
+<body style="background:none;background-color: white" >
+
     <form id="form1" runat="server">
 
-<table>
+<table class="table">
     <tr>
         <td style="vertical-align:top">
+            <asp:Panel runat="server" ID="P2" Visible="false" CssClass="alert alert-success"> 
+                 Votre message a bien été envoyé...
+            </asp:Panel>
             <asp:Panel runat="server" ID="P1">
                 <table style="width:400px;">
                     <tr>
@@ -59,6 +71,7 @@
                         </td>
                 
                     </tr>
+                  
                     <tr>
                         <td style="text-align: right" colspan="2">
                             <asp:Button ID="BT_Envoyer" runat="server" Text="Envoyer" OnClick="BT_Envoyer_Click" />
@@ -76,9 +89,8 @@
     </tr>
 </table>
 
-    <asp:Panel runat="server" ID="P2" Visible="false">
-        Votre message a bien été envoyé...
-    </asp:Panel>
+    
     </form>
+    <script type="text/javascript" src="/Portals/_default/Skins/Rodi2017/bootstrap/js/bootstrap.js"></script>
 </body>
 </html>

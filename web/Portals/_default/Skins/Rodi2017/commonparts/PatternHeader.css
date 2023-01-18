@@ -17,10 +17,12 @@
     text-align:center;
     flex-grow:1;
 }
-.pattern_header .logo_style{
+.pattern_header .logo_style {
     display: flex;
     align-items: center;
-    position:relative;
+    position: relative;
+    color: #25488D;
+    font-size:1.1em;
 }
 .logo_style img {
     max-height:90px;
@@ -449,7 +451,7 @@ A.Breadcrumb:hover {
 
         .Public .MNV1:hover > li {
             border-left: #e8ebee 1px solid;
-            margin-bottom:15px;
+            /*margin-bottom:15px;*/
         }
         .Public.Club .MNV1:hover > li {
             border-left: #f8f9fa 1px solid;
@@ -473,10 +475,8 @@ A.Breadcrumb:hover {
     height: 29em;
     visibility: visible;
     opacity: 1;
-   
     transition: all 0.3s ease-out;
-
-   
+    transition-delay:.4s;
 }
 
 .Public .MNV2 > li {
@@ -545,6 +545,7 @@ A.Breadcrumb:hover {
     justify-content: center;
     opacity: 1;
     transition: all 0.3s ease-out;
+    transition-delay:.4s;
 }
 
 .Membre .MNV2 > li {
@@ -1259,7 +1260,7 @@ ul.searchSkinObjectPreview {
         background-color: #1e3c64;
         position: unset;
         box-shadow: none;
-        transition-delay: 0.3s;
+        transition-delay: 0.4s;
     }
 
         .Membre .MNV1 > li:hover > a {

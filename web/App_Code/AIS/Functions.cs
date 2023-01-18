@@ -93,8 +93,11 @@ using System.Globalization;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Data;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Web.Http;
+//using Org.BouncyCastle.Asn1.Ocsp;
+//using System.Web.Http;
+//using System.Activities.Expressions;
+//using System.ServiceModel.Activities;
+//using Microsoft.VisualBasic.Activities;
 
 namespace AIS
 {
@@ -295,34 +298,40 @@ namespace AIS
             }
         }
 
+        public static string RemoveAccents(string c)
+        {
+            return new Regex(@"\p{Mn}", RegexOptions.Compiled).Replace(c.Normalize(NormalizationForm.FormD), String.Empty);
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
         public static string ClearFileName(string filename)
         {
-            filename = filename.Replace(" ", "-");
-            filename = filename.Replace("é", "e");
-            filename = filename.Replace("è", "e");
-            filename = filename.Replace("à", "a");
-            filename = filename.Replace("ù", "u");
-            filename = filename.Replace("û", "u");
-
-            return filename;
+            return GetSEO(filename);
         }
         public static string GetSEO(string nom)
         {
+            nom = RemoveAccents(nom);
             nom = nom.ToLower();
             nom = nom.Replace(" ", "-");
             nom = nom.Replace("'", "-");
+            nom = nom.Replace("?", "");
+            nom = nom.Replace("&", "");
+            nom = nom.Replace("!", "");
+            nom = nom.Replace("*", "");
             nom = nom.Replace(".", "");
-            nom = nom.Replace("é", "e");
-            nom = nom.Replace("è", "e");
-            nom = nom.Replace("à", "a");
-            nom = nom.Replace("û", "u");
-            nom = nom.Replace("ù", "u");
-            nom = nom.Replace("'", "-");
-            nom = nom.Replace("ô", "o");
+            nom = nom.Replace(">", "");
+            nom = nom.Replace("<", "");
+            //nom = nom.Replace("é", "e");
+            //nom = nom.Replace("è", "e");
+            //nom = nom.Replace("à", "a");
+            //nom = nom.Replace("û", "u");
+            //nom = nom.Replace("ù", "u");
+            //nom = nom.Replace("ô", "o");
+            //nom = nom.Replace("'", "-");
+            nom = nom.Replace("\\", "-");
             nom = nom.Replace("/", "sur");
             nom = nom.Replace("\"", "-");
             string[] mots = nom.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);

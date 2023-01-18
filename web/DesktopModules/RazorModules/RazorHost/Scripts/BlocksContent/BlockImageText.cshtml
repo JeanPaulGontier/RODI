@@ -27,6 +27,7 @@
                         <option value="G">à gauche du texte</option>
                         <option value="H">au dessus du texte</option>
                         <option value="D">à droite du texte</option>
+                        <option value="B">en dessous du texte</option>
                     </select>
                     <br />
                     <button type="button" v-on:click="e.Image=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
@@ -39,18 +40,22 @@
         </div>
         <div v-if="!editing && c.Position=='G'" class="row">
             <h2 class="col-sm-12">{{c.Title}}</h2>
-            
-            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
             <div class="col-sm-6" v-html="c.Html"></div>
         </div>
         <div v-if="!editing && c.Position=='D'" class="row">
             <h2 class="col-sm-12">{{c.Title}}</h2>
             <div class="col-sm-6" v-html="c.Html"></div>
-            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
+        </div>
+        <div v-if="!editing && (c.Position=='B')">
+            <h2>{{c.Title}}</h2>
+            <div v-html="c.Html"></div>
+            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
         </div>
         <div v-if="!editing && (c.Position=='H' || c.Position=='' || !c.Position)">
             <h2>{{c.Title}}</h2>
-            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
             <div v-html="c.Html"></div>
         </div>
     </div>

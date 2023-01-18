@@ -1,3 +1,12 @@
+###### 
+- correction d'un pb d'envoi d'email avec le formulaire de contact membre vers google
+- remplacement du libellé nom d'utilisateur par email pour l'ecran d'identification et de réinitialisation du mot de passe afin d'éviter toute ambiguité, le texte de réinitialisation indique plus clairement qu'il s'agit de l'email déclaré au niveau du RI
+- ajout du sous titre logo dans l'entete du club (Exemple : district 1640 Normandie)
+- ajout de l'affichage de l'image d'accroche pour une nouvelle club quand il n'y a pas de contenu détaillé
+- ajout de l'option (image en dessous du texte) dans l'editeur blockcontent
+- ajout de la possibilité de modifier le type de club dans l'admin des clubs district
+- correction des urls de clubs sans accent (exemple : alençon)
+
 ###### 11/01/2023
 - remise en place d'une temporisation sur les menus pour plus de confort d'utilisation
 - correction bug bloc html dans blockcontent 
