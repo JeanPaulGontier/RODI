@@ -309,7 +309,16 @@ namespace AIS
         /// <returns></returns>
         public static string ClearFileName(string filename)
         {
-            return GetSEO(filename);
+            filename = RemoveAccents(filename).ToLower();
+            filename = filename.Replace(" ", "-");
+            filename = filename.Replace("'", "-");
+            filename = filename.Replace("?", "");
+            filename = filename.Replace("&", "");
+            filename = filename.Replace("!", "");
+            filename = filename.Replace("*", "");
+            filename = filename.Replace(">", "");
+            filename = filename.Replace("<", "");
+            return filename;
         }
         public static string GetSEO(string nom)
         {
