@@ -11,6 +11,12 @@
 - App_Code\AIS\DataMapping.cs
 - App_Code\AIS\Functions.cs
 
+nouveau module :
+- DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+- DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+- DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx
+- DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx.cs
+
 
 ###### 11/01/2023
 - AIS\contact.aspx.cs
