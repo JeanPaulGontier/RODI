@@ -3,13 +3,23 @@
 ###### en cours
 - AIS\contact.aspx
 - AIS\contact.aspx.cs
+- App_Code\AIS\DataMapping.cs
+- App_Code\AIS\Functions.cs
+- App_Code\ClubRewriter.cs
 - Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
 - Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
+- DesktopModules\AIS\Admin Information Anime Titre_Texte\EditInformationAnimeTitle_Text.ascx.cs
+- DesktopModules\AIS\Admin Information Titre_Texte\EditInformationTitle_Text.ascx.cs
+- DesktopModules\AIS\Admin SliderShow\EditSliderShow.ascx.cs
+- DesktopModules\AIS\Club Slideshow\Control.ascx.cs
+- DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx
+- DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx.cs
+- DesktopModules\AIS\Information Titre_Texte\Control.ascx.cs
+- DesktopModules\AIS\Slideshow\Control.ascx.cs
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
-- App_Code\AIS\DataMapping.cs
-- App_Code\AIS\Functions.cs
+- Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
 
 nouveau module :
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx

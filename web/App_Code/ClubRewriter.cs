@@ -160,6 +160,8 @@ public class ClubRewriter : IHttpModule
                 return;
             if (url.StartsWith("/resources"))
                 return;
+            if (url.StartsWith("/providers"))
+                return;
             if (url.StartsWith("/desktop"))
                 return;
             if (url.StartsWith("/js"))

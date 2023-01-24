@@ -6,6 +6,11 @@
 - ajout de l'option (image en dessous du texte) dans l'editeur blockcontent
 - ajout de la possibilité de modifier le type de club dans l'admin des clubs district
 - correction des urls de clubs sans accent (exemple : alençon)
+- correction sur site de club avec nom de domaine
+	- Pb de bouton connexion qui ne restait pas sur le site
+	- Pb de redirection des popup d'édition de contenu
+	- Pb de chargement de l'editeur html dans les popup
+	- Pb des liens vers espace membre
 - création d'un nouveau module de gestion des membres pour prendre en compte la nouvelle méthode :
 	- Nous ne pourrons plus ajouter ou supprimer des membres sur le district
 	- Seule la modification des données membres ne venant pas du RI (photo, classification, page personnelle pro, etc.) seront modifiable sur le district

@@ -173,7 +173,7 @@ public partial class DesktopModules_AIS_Information_Anime_Titre_Texte_Control : 
     {
         try
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:dnnModal.show('" + Globals.NavigateURL(Admintabid.TabID) + "?popUp=true&ModuleID=" + ModuleId + "&clubId=" + idClub + "',false,650,400,true);", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:dnnModal.show('" + Globals.NavigateURL(Admintabid.TabID) + "?popUp=true&ModuleID=" + ModuleId + "&clubId=" + idClub +"&redirecturl="+HttpUtility.UrlEncode(Request.RawUrl)+ "',false,650,400,true);", true);
         }
         catch (Exception ee)
         {
@@ -188,7 +188,7 @@ public partial class DesktopModules_AIS_Information_Anime_Titre_Texte_Control : 
         try
         {
             Member m = Functions.GetCurrentMember();
-            if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators") || (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric))
+            if (UserInfo.IsSuperUser || (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric))
             {
                 isAuthorised = true;
             }                    

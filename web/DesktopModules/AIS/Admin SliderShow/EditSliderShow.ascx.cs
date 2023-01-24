@@ -81,6 +81,8 @@ public partial class DesktopModules_AIS_Club_Nouvelles_Control : PortalModuleBas
     protected string SliderSerialized = "";
     protected string idClub = "";
     protected string FolderImages = "";
+    protected string RedirectUrl = "";
+    
     //protected string path = "" ;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -89,8 +91,9 @@ public partial class DesktopModules_AIS_Club_Nouvelles_Control : PortalModuleBas
         {
             int.TryParse("" + Request.QueryString["ModuleID"], out ModID);
             idClub = "" + Request.QueryString["clubId"];
-            FolderImages = "images/" + ModID + "/" + idClub + "/";                
-                
+            FolderImages = "images/" + ModID + "/" + idClub + "/";
+            RedirectUrl = "" + Request.QueryString["redirecturl"];
+
             DirectoryInfo d = new DirectoryInfo(Server.MapPath(FolderImages));
             if (!d.Exists)
             {
@@ -290,16 +293,18 @@ public partial class DesktopModules_AIS_Club_Nouvelles_Control : PortalModuleBas
             DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
             objModules.UpdateModuleSetting(ModID, "SliderSerialized_" + idClub, jsonLstSliderShow);
 
-            int club = 0;
-            int.TryParse(idClub, out club);
-            Club c = DataMapping.GetClub(club);
-            if (c != null)
-            {
-                string url = "/" + c.seo + "/";
+            //int club = 0;
+            //int.TryParse(idClub, out club);
+            //Club c = DataMapping.GetClub(club);
+            //if (c != null)
+            //{
+            //    string url = "/" + c.seo + "/";
 
-                Response.Redirect(url, false);
-                Context.ApplicationInstance.CompleteRequest();
-            }
+            //    Response.Redirect(url, false);
+            //    Context.ApplicationInstance.CompleteRequest();
+            //}
+            Response.Redirect(RedirectUrl, false);
+            Context.ApplicationInstance.CompleteRequest();
         }
         catch (Exception ee)
         {

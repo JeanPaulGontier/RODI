@@ -58,7 +58,11 @@
 						            <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
 						            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
                                     <div class="relative">
-                                        <a href="/Espace-Membre" class="btn-connexion" title="connexion">connexion</a>
+                                        <%If Request.RawUrl = "/" Then %>
+                                        <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode("/.") %>" class="btn-connexion" title="connexion">connexion</a>
+                                        <% Else %>
+                                        <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode(Request.RawUrl) %>" class="btn-connexion" title="connexion">connexion</a>
+                                        <% End If %>
                                     </div>
                                 </div>
                             <% End If%>
@@ -66,11 +70,11 @@
                             <%If Request.IsAuthenticated Then%>
                                 <div class="icon_user connected text-center">
 						            <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-						            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
+						            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %></a>
                                     <p class="HeadUser text-center"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></p>
                                     <div class="relative">
-                                        <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 
-                                        <a href="/Espace-Membre" title="Mon profil" class="HeadUser btn-profil">Espace Membre</a> | 
+                                        <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 
+                                        <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>/Espace-Membre" title="Mon profil" class="HeadUser btn-profil">Espace Membre</a> | 
                                         <dnn:login runat="server" id="LOGIN2" cssclass="HeadUser btn-logoff" />  
                                     </div>
                                 </div>
@@ -99,7 +103,11 @@
 
                     <div class="icon_user text-right">
                         <h1><ais1:NAME runat="server" ></ais1:NAME></h1>
-                        <a href="/Espace-Membre" class="btn-connexion" title="connexion">connexion</a>
+                         <%If Request.RawUrl = "/" Then %>
+                        <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode("/.") %>" class="btn-connexion" title="connexion">connexion</a>
+                        <% Else %>
+                        <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode(Request.RawUrl) %>" class="btn-connexion" title="connexion">connexion</a>
+                        <% End If %>
                         <div class="user_style">
                             <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
 						    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
@@ -115,8 +123,8 @@
 						    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
                         </div>
                         <span class="HeadUser"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></span> | 
-                        <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 
-                        <a href="/Espace-Membre" title="Mon profil" class="HeadUser btn-profil">Espace Membre</a> | 
+                        <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 
+                        <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>/Espace-Membre" title="Mon profil" class="HeadUser btn-profil">Espace Membre</a> | 
                         <dnn:login runat="server" id="LOGIN3" cssclass="HeadUser btn-logoff" />              
                     </div>
                 <% End If%>

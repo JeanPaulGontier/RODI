@@ -151,7 +151,7 @@ public partial class DesktopModules_AIS_Club_Nouvelles_Control : PortalModuleBas
     {
         try
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:dnnModal.show('" + Globals.NavigateURL(SliderShowtabid) + "?popUp=true&ModuleID=" + ModuleId + "&clubId=" + idClub + "',false,600,850,true);", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "script", "javascript:dnnModal.show('" + Globals.NavigateURL(SliderShowtabid) + "?popUp=true&ModuleID=" + ModuleId + "&clubId=" + idClub +"&redirecturl=" + HttpUtility.UrlEncode(Request.RawUrl) + "',false,600,850,true);", true);
         }
         catch(Exception ee)
         {
