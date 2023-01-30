@@ -37,26 +37,14 @@
             <div class="col-sm-3" v-if="context.mode=='clubs'">
                 <p>
                     <select v-model="news.tag1" class="form-control">
-                        <option>Actions</option>
-                        <option>Actualités</option>
-                        <option>Bulletin</option>
-                        <option>Calendrier</option>
-                        <option>Conférence</option>
-                        <option>Divers</option>
-                        <option>Galeries de photos</option>
-                        <option>Lettre du président</option>
-                        <option>in memoriam</option>
+                        <option v-for="c in categories">{{c}}</option>                        
                     </select>
                 </p>
             </div>
             <div class="col-sm-3" v-if="context.mode=='district'">
                 <p>
                     <select v-model="news.tag1" class="form-control">
-                        <option>Actualités</option>
-                        <option>Actions</option>
-                        <option>Galeries de photos</option>
-                        <option>Lettres du gouverneur</option>
-                        <option>in memoriam</option>
+                        <option v-for="c in categories">{{c}}</option>
                     </select>
                 </p>
             </div>
@@ -130,6 +118,7 @@
                 news: {},
                 blocks: [],
                 fichiers: [],
+                categories: CATEGORIES
             }
         },
         filters: {

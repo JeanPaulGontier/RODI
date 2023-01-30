@@ -18,6 +18,7 @@
 	- Le terme « importer les membres » va être remplacé par « mettre a jour les membres » afin d’éviter toute confusion
 	- La page de modification des données des membres, va être scindée en deux avec une partie les infos non modifiables venant du RI (comme l’email, le tel, l’adresse, le n°nim) et un texte d’explication indiquera qu’il faut modifier le RI puis demander a un responsable du club d’appliquer la mise a jour a partir du fichier venant du RI
 	- L’autre partie de l’écran de modification d’un membre continuera de fonctionner comme aujourd’hui
+- possibilité de personnaliser les catégories de nouvelles clubs et districts par le panneau de paramètres
 
 
 ###### 11/01/2023

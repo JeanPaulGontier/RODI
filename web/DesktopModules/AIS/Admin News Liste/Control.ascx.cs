@@ -84,6 +84,14 @@ public partial class DesktopModules_AIS_Admin_News_List_Control : PortalModuleBa
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
 
+    public string[] categories
+    {
+        get
+        {
+            return ("" + Settings["categories"]).Replace("\r", "").Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        }
+    }
+
     public bool editable
     {
         get

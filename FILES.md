@@ -16,6 +16,11 @@
 - DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx.cs
 - DesktopModules\AIS\Information Titre_Texte\Control.ascx.cs
 - DesktopModules\AIS\Slideshow\Control.ascx.cs
+- DesktopModules\AIS\Admin News Liste\Control.ascx
+- DesktopModules\AIS\Admin News Liste\Control.ascx.cs
+- DesktopModules\AIS\Admin News Liste\Settings.ascx
+- DesktopModules\AIS\Admin News Liste\Settings.ascx.cs
+- DesktopModules\AIS\Admin News Liste\NewsEdit.html
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
