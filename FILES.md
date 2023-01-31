@@ -15,6 +15,7 @@
 - DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx
 - DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx.cs
 - DesktopModules\AIS\Information Titre_Texte\Control.ascx.cs
+- DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
 - DesktopModules\AIS\Slideshow\Control.ascx.cs
 - DesktopModules\AIS\Admin News Liste\Control.ascx
 - DesktopModules\AIS\Admin News Liste\Control.ascx.cs

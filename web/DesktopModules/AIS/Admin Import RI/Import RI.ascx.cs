@@ -447,18 +447,18 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
             Worksheet sheet = xls.Worksheets[0];
             int col = 2;
             int row = 6;
-            
 
-            //while (row < 65535)
-            //{
-            //    Cell cell = sheet.Cells[row, col];
-            //    string nim = "" + cell.Value;
-            //    cell = sheet.Cells[row, col+10];
-            //    string value = "" + cell.Value;
-            //    if (value == "Y")
-            //        satellites.Add(nim, value);
-            //    row++;
-            //}
+
+            while (row < 65535)
+            {
+                Cell cell = sheet.Cells[row, col];
+                string nim = "" + cell.Value;
+                cell = sheet.Cells[row, col + 10];
+                string value = "" + cell.Value;
+                if (value == "Y")
+                    satellites.Add(nim, value);
+                row++;
+            }
 
 
 
@@ -520,7 +520,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                         DateTime.TryParse(admission, out ad);
 
                         #region traitement spécifique pour D1770
-                        if (satellite)
+                        if (satellite && Const.DISTRICT_ID==1770)
                         {
                             switch(cric)
                             {
