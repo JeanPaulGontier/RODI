@@ -6,8 +6,8 @@
 - App_Code\AIS\DataMapping.cs
 - App_Code\AIS\Functions.cs
 - App_Code\ClubRewriter.cs
-- Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
-- Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
+- Portals\\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+- Portals\\_default\Skins\Rodi2017\commonparts\PatternHeader.css
 - DesktopModules\AIS\Admin Information Anime Titre_Texte\EditInformationAnimeTitle_Text.ascx.cs
 - DesktopModules\AIS\Admin Information Titre_Texte\EditInformationTitle_Text.ascx.cs
 - DesktopModules\AIS\Admin SliderShow\EditSliderShow.ascx.cs
@@ -24,9 +24,9 @@
 - DesktopModules\AIS\Admin News Liste\NewsEdit.html
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
-- DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
-- Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
-- DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
+- DesktopModules\RazorModules\RazorHost\Scripts\\_ClubNewsDetail.cshtml
+- Portals\\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+- DesktopModules\RazorModules\RazorHost\Scripts\\_oukikan.cshtml
 
 nouveau module :
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
