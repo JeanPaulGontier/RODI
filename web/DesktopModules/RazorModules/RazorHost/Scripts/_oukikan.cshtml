@@ -16,6 +16,11 @@
 @using AIS;
 @{
 
+
+
+
+
+
     bool print = !("" + Request["print"]).Equals("");
 
     string link = "" + Request["m"];
@@ -67,6 +72,25 @@
 
     }
 
+
+
+
+
+    if (("" + Request["export"]) == "true")
+    {
+        DataTable tableexport = Yemon.dnn.DataMapping.ExecSql(new SqlCommand("SELECT firstname AS 'Prenom',lastname as 'Nom',comment as 'Commentaire',presence as 'Presence',dtlastupdate as 'Date' FROM ais_meetings_users WHERE meetingguid='" + meeting.guid + "' ORDER BY dtlastupdate"));
+        List<DataTable> tables = new List<DataTable>();
+        tables.Add(tableexport);
+
+        Media media = DataMapping.ExportDataTablesToXLS(tables, Functions.ClearFileName(meeting.name)+".xlsx", Aspose.Cells.SaveFormat.Xlsx);
+        string guidexport = Guid.NewGuid().ToString();
+        Session[guidexport] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guidexport);
+        return;
+    }
+
+
+
 }
 <div class="row">
     <div class="col-sm-6">
@@ -113,6 +137,7 @@
                     document.getElementById('printIframe').src = "/print?popup=true&url=@HttpUtility.UrlEncode(Functions.UrlAddParam(Request.RawUrl,"print","true"))";
                 }
             </script>
+            <a target="_blank" href="/oukikan?m=@link&export=true" class="btn btn-link" title="Imprimer"><i class="fa fa-table"></i> Export Excel</a>
             <a href="#" onclick="print()" class="btn btn-link" title="Imprimer"><i class="fa fa-print"></i> Imprimer</a>
         }
     </div>
@@ -133,7 +158,7 @@
         <div>
             <h3>Inscriptions</h3>
         </div>
-        <table class="table table-stripped">
+        <table class="table">
             <tbody>
                 <tr>
                     <th>
@@ -154,7 +179,7 @@
                         </th>
                     }
                 </tr>
-                <tr v-for="u in users">
+                <tr v-for="u in users" :class="u.presence=='N'?'active':''">
                     <td>{{u.lastname}} {{u.firstname}}</td>
                     <td>{{u.presence=='N'?'Non':'Oui'}}</td>
                     <td><p v-if="u.comment"><em>{{u.comment}}</em></p></td>
@@ -282,7 +307,7 @@
                                       meeting.cric == Functions.CurrentCric))
                                  {
                                      @Html.Raw("return true");
-                                 }  
+                                 }
                              }
 
                         },
@@ -358,23 +383,23 @@ $(document).ready(function () {
 }
 else
 {
-    List<Meeting.User> users = Yemon.dnn.DataMapping.ExecSql<Meeting.User>(new SqlCommand("SELECT * FROM ais_meetings_users WHERE meetingguid='"+meeting.guid+ "' ORDER BY dtlastupdate"));
-    int nbparticipants = users.Where(u =>  u.presence=="Y").Count();
+    List<Meeting.User> users = Yemon.dnn.DataMapping.ExecSql<Meeting.User>(new SqlCommand("SELECT * FROM ais_meetings_users WHERE meetingguid='" + meeting.guid + "' ORDER BY dtlastupdate"));
+    int nbparticipants = users.Where(u => u.presence == "Y").Count();
     <div id='@PageData["appID"]' v-cloak>
         <div>
             <h3>Inscriptions</h3>
         </div>
-        <table class="table table-stripped">
+        <table class="table">
             <tbody>
                 <tr>
                     <th>
-                        @if(nbparticipants > 0)
+                        @if (nbparticipants > 0)
                         {
-                        <span>@nbparticipants participant@(nbparticipants > 1?"s":"")</span>
+                            <span>@nbparticipants participant@(nbparticipants > 1?"s":"")</span>
                         }
                         else
-                        { 
-                        <span>Aucun inscrit</span>
+                        {
+                            <span>Aucun inscrit</span>
                         }
                     </th>
                     <th>
@@ -397,11 +422,12 @@ else
                             {
                                 <p><em>@user.comment</em></p>
                             }
-                        </td>                        
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 }
+
 <iframe id="printIframe" style="display:none"></iframe>

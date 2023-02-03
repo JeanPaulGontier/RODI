@@ -26,6 +26,7 @@
 - DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 - DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 - Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+- DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 
 nouveau module :
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx

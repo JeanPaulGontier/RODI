@@ -20,6 +20,9 @@
 	- L’autre partie de l’écran de modification d’un membre continuera de fonctionner comme aujourd’hui
 - possibilité de personnaliser les catégories de nouvelles clubs et districts par le panneau de paramètres
 - remise en place de la spécificité du D1770 sur l'import des membres RI
+- modification module visualisation de réunion
+	- ajout d'un bouton d'export excel des participants
+	- visualisation sur fond grisé des membres ayant répondu non présent
 
 
 ###### 11/01/2023
