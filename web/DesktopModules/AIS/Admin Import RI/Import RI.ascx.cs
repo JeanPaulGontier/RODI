@@ -503,7 +503,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                         string prenom = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(("" + sheet.Cells[row, col + 6].Value).ToLower());
                         string name = ("" + sheet.Cells[row, col + 8].Value).ToUpper();
                         string sexe = ("" + sheet.Cells[row, col + 10].Value);
-                        string admission = "" + sheet.Cells[row, col + 13].Value;
+                        string admission = "" + sheet.Cells[row, col + 12].Value;
                         string active = "" + sheet.Cells[row, col + 14].Value;
                         string email = ("" + sheet.Cells[row, col + 17].Value).ToLower();
                         string telephone = "" + sheet.Cells[row, col + 19].Value;
@@ -517,7 +517,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                         bool satellite = satellites.ContainsKey(nim);
 
                         DateTime ad = DateTime.Now;
-                        DateTime.TryParse(admission, out ad);
+                        bool hasdate = DateTime.TryParse(admission, out ad);
+                            
 
                         #region traitement spécifique pour D1770
                         if (satellite && Const.DISTRICT_ID==1770)
@@ -562,7 +563,10 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                             sql.Parameters.AddWithValue("lastname", name);
                             sql.Parameters.AddWithValue("firstname", prenom);
                             sql.Parameters.AddWithValue("sexe", sexe == "Female" ? "Mme":"M") ;
-                            sql.Parameters.AddWithValue("admission", ad);
+                            if(hasdate)
+                                sql.Parameters.AddWithValue("admission", ad);
+                            else
+                                sql.Parameters.AddWithValue("admission", System.DBNull.Value);
                             sql.Parameters.AddWithValue("telephone", telephone);
                             sql.Parameters.AddWithValue("ad1", ad1);
                             sql.Parameters.AddWithValue("ad2", ad2);
@@ -787,15 +791,25 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                             if ((int)row["nim"] == m.nim)
                             {
                                 m.email = "" + row["email"];
+                                m.name = "" + row["firstname"];
+                                m.surname = "" + row["lastname"];
                                 m.civility = "" + row["sexe"];
-                                m.year_membership_rotary = (DateTime)row["admission"];
+                                if(row["admission"] != System.DBNull.Value)
+                                    m.year_membership_rotary = (DateTime)row["admission"];
+                                else
+                                    m.year_membership_rotary = null;
                                 m.telephone = "" + row["telephone"];
-                                m.adress_1 = "" + row["ad1"];
-                                m.adress_2 = "" + row["ad2"];
-                                m.adress_3 = "" + row["ad3"];
-                                m.zip_code = "" + row["cp"];
-                                m.town = "" + row["ville"];
-                                m.country = "" + row["pays"];
+                                
+                                //m.adress_1 = "" + row["ad1"];
+                                //m.adress_2 = "" + row["ad2"];
+                                //m.adress_3 = "" + row["ad3"];
+                                //m.zip_code = "" + row["cp"];
+                                //m.town = "" + row["ville"];
+                                //m.country = "" + row["pays"];
+                                m.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
+                                m.professionnal_zip_code = "" + row["cp"];
+                                m.professionnal_town = "" + row["ville"];
+                                
                                 m.honorary_member = honneur ? Const.YES : Const.NO;
                                 //m.base_dtupdate = DateTime.Now;
                                 DataMapping.UpdateMember(m);
@@ -813,15 +827,22 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 mm.cric = club.cric;
                                 mm.club_name = club.name;
                                 mm.email = "" + row["email"];
+                                mm.name = "" + row["firstname"];
+                                mm.surname = "" + row["lastname"];
                                 mm.civility = "" + row["sexe"];
                                 mm.year_membership_rotary = (DateTime)row["admission"];
                                 mm.telephone = "" + row["telephone"];
-                                mm.adress_1 = "" + row["ad1"];
-                                mm.adress_2 = "" + row["ad2"];
-                                mm.adress_3 = "" + row["ad3"];
-                                mm.zip_code = "" + row["cp"];
-                                mm.town = "" + row["ville"];
-                                mm.country = "" + row["pays"];
+                                //mm.adress_1 = "" + row["ad1"];
+                                //mm.adress_2 = "" + row["ad2"];
+                                //mm.adress_3 = "" + row["ad3"];
+                                //mm.zip_code = "" + row["cp"];
+                                //mm.town = "" + row["ville"];
+                                //mm.country = "" + row["pays"];
+
+                                mm.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
+                                mm.professionnal_zip_code = "" + row["cp"];
+                                mm.professionnal_town = "" + row["ville"];
+
                                 mm.honorary_member = honneur ? Const.YES:Const.NO;
                                 //mm.base_dtupdate = DateTime.Now;
 
@@ -837,11 +858,14 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 result += "Changement de club : " + row["firstname"] + " " + row["lastname"] + " (" + club.name + ")<br/>";
                             }
                             else
-                            { 
+                            {
                                 // le membre n'existe pas du tout donc in l'ajoute
+                                //sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members " +
+                                //    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,adress_1,adress_2,adress_3,zip_code,town,country,email,telephone,honorary_member) VALUES " +
+                                //    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@ad1,@ad2,@ad3,@cp,@ville,@pays,@email,@telephone,@honorary_member)", conn, trans);
                                 sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members " +
-                                    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,adress_1,adress_2,adress_3,zip_code,town,country,email,telephone,honorary_member) VALUES " +
-                                    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@ad1,@ad2,@ad3,@cp,@ville,@pays,@email,@telephone,@honorary_member)", conn, trans);
+                                                                    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,professionnal_adress,professionnal_zip_code,professionnal_town,email,telephone,honorary_member) VALUES " +
+                                                                    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@professionnal_adress,@professionnal_zip_code,@professionnal_town,@email,@telephone,@honorary_member)", conn, trans);
 
                                 sql.Parameters.AddWithValue("@nim", row["nim"]);
                                 sql.Parameters.AddWithValue("@surname", row["lastname"]);
@@ -852,12 +876,16 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 sql.Parameters.AddWithValue("@sexe", row["sexe"]);
                                 sql.Parameters.AddWithValue("@admission", row["admission"]);
                                 sql.Parameters.AddWithValue("@telephone", row["telephone"]);
-                                sql.Parameters.AddWithValue("@ad1", row["ad1"]);
-                                sql.Parameters.AddWithValue("@ad2", row["ad2"]);
-                                sql.Parameters.AddWithValue("@ad3", row["ad3"]);
-                                sql.Parameters.AddWithValue("@cp", row["cp"]);
-                                sql.Parameters.AddWithValue("@ville", row["ville"]);
-                                sql.Parameters.AddWithValue("@pays", row["pays"]);
+                                //sql.Parameters.AddWithValue("@ad1", row["ad1"]);
+                                //sql.Parameters.AddWithValue("@ad2", row["ad2"]);
+                                //sql.Parameters.AddWithValue("@ad3", row["ad3"]);
+                                //sql.Parameters.AddWithValue("@cp", row["cp"]);
+                                //sql.Parameters.AddWithValue("@ville", row["ville"]);
+                                //sql.Parameters.AddWithValue("@pays", row["pays"]);
+                                sql.Parameters.AddWithValue("@professionnal_adress", ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim());
+                                sql.Parameters.AddWithValue("@professionnal_zip_code", row["cp"]);
+                                sql.Parameters.AddWithValue("@professionnal_town", row["ville"]);
+
                                 sql.Parameters.AddWithValue("@email", row["email"]);
                                 sql.Parameters.AddWithValue("@honorary_member", honneur ? Const.YES : Const.NO);
                                 sql.ExecuteNonQuery();

@@ -220,7 +220,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                     IMG_Photo.ImageUrl = membre.GetPhoto();
                     
-                    if (string.IsNullOrEmpty(membre.visible) || membre.visible == Const.YES)
+                    if ((membre.visible + "").Trim().Equals("") || membre.visible == Const.YES)
                     {
                         RB_Autoriser_Publication.SelectedValue = Const.YES;
                     }
@@ -228,7 +228,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     {
                         RB_Autoriser_Publication.SelectedValue = Const.NO;
                     }
-                    if (string.IsNullOrEmpty(membre.honorary_member) || membre.honorary_member == Const.YES)
+                    if ((membre.honorary_member+"").Trim().Equals("") || membre.honorary_member == Const.YES)
                     {
                         RB_Membre_d_Honneur.SelectedValue = Const.YES;
                     }
@@ -237,7 +237,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         RB_Membre_d_Honneur.SelectedValue = Const.NO;
                     }
 
-                    if (string.IsNullOrEmpty(membre.satellite_member) || membre.satellite_member == Const.NO)
+                    if ((membre.satellite_member + "").Trim().Equals("") || membre.satellite_member == Const.NO)
                     {
                         RB_Membre_satellite.SelectedValue = Const.NO;
                     }

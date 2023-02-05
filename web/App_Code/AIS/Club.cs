@@ -109,7 +109,7 @@ namespace AIS
             if (pennant == "")
                 return "";
 
-            return chemin + Const.CLUBS_PREFIX + Const.PENNANT_PREFIX + pennant;
+            return Functions.UrlAddParam(chemin + Const.CLUBS_PREFIX + Const.PENNANT_PREFIX + pennant,"v",""+DateTime.Now.Ticks) ;
         }
 
         public string GetPostalAdress()

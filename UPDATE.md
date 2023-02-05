@@ -16,13 +16,15 @@
 	- Seule la modification des données membres ne venant pas du RI (photo, classification, page personnelle pro, etc.) seront modifiable sur le district
 	- Le bouton ajouter un membre dans la rubrique mon club / gestion / membres conduira a une page d’explications qui indiquera comment aller ajouter un membre sur le RI puis comment mettre a jour les membre du district a partir d’un export excel du RI
 	- Le terme « importer les membres » va être remplacé par « mettre a jour les membres » afin d’éviter toute confusion
-	- La page de modification des données des membres, va être scindée en deux avec une partie les infos non modifiables venant du RI (comme l’email, le tel, l’adresse, le n°nim) et un texte d’explication indiquera qu’il faut modifier le RI puis demander a un responsable du club d’appliquer la mise a jour a partir du fichier venant du RI
-	- L’autre partie de l’écran de modification d’un membre continuera de fonctionner comme aujourd’hui
+	- La page de modification des données des membres, est scindée en deux avec une partie les infos non modifiables venant du RI (comme l’email, le tel, l’adresse, le n°nim) et un texte d’explication indiquera qu’il faut modifier le RI puis demander a un responsable du club d’appliquer la mise a jour a partir du fichier venant du RI
+	- L’autre partie de l’écran de modification d’un membre continue de fonctionner comme avant
+- modification de l'import RI au niveau du district (l'adresse locale du membre n'est plus affectée par l'import RI)
 - possibilité de personnaliser les catégories de nouvelles clubs et districts par le panneau de paramètres
 - remise en place de la spécificité du D1770 sur l'import des membres RI
 - modification module visualisation de réunion
 	- ajout d'un bouton d'export excel des participants
 	- visualisation sur fond grisé des membres ayant répondu non présent
+- correction d'un pb d'affichage du fanion club lors du changement de l'image
 
 
 ###### 11/01/2023
