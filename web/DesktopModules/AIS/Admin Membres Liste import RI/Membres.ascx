@@ -179,8 +179,8 @@
     <h2>Informations issues de Rotary.org :</h2>
     
     <p class="alert alert-info">
-        <i class="glyphicon glyphicon-cloud-download" title="champ mis à jour lors de l'import de my Rotary"></i> cet icône après un champ, indique qu'il sera mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://my.rotary.org/" target="_blank">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/" target="_blank">myRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.
-        <br /><br /><em>Les champs grisés ci-dessous ne sont pas modifiable mais vous pouvez modifier les autres (exemple : votre photo, votre profession, etc.)</em>
+       <em>Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://my.rotary.org/" target="_blank">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/" target="_blank">myRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.
+        <br /><br />Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)</em>
     </p>
 
     <p>
@@ -224,7 +224,7 @@
     </p>
     <p>
             <asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Adhésion Initiale : " Width="200px" />
-            <asp:Label ID="lbl_ann_adh_rotaract" runat="server" Text="Adhésion initiale : " Width="200px" />
+           
             <asp:TextBox disabled="disabled" ReadOnly="true" runat="server" TextMode="Date" ID="dpk_ann__adh"></asp:TextBox>
     </p>
     <hr />    
@@ -233,7 +233,7 @@
     <p>
         <table>
             <tr>
-                <td><p><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Année de naissance : " /></p></td>
+                <td><p><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Date de naissance : " /></p></td>
                 <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
             </tr>
         </table>
@@ -321,14 +321,16 @@
 <asp:Panel ID="pnl_Bouton" runat="server" Visible="false">
 
     <div class="txtRight">
-			Visible dans l'annuaire public : 
+        <asp:Label runat="server" Text="Visible dans l'annuaire public : " Width="250px" />
+			
         <asp:RadioButtonList ID="RB_Autoriser_Publication" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Selected="true" Text="Oui" Value="O" />
             <asp:ListItem Text="Non" Value="N" />
         </asp:RadioButtonList>
 	</div>
     <div class="txtRight">
-        Membre d'honneur : 
+         <asp:Label runat="server" Text="Membre d'honneur : " Width="250px" />
+      
         <asp:RadioButtonList ID="RB_Membre_d_Honneur" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Selected="true" Text="Oui" Value="O" />
             <asp:ListItem Text="Non" Value="N" />
@@ -336,7 +338,9 @@
        
     </div>
      <div class="txtRight">
-        Membre club satellite : 
+
+        <asp:Label runat="server" Text="Membre club satellite : " Width="250px" />
+
         <asp:RadioButtonList ID="RB_Membre_satellite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Text="Oui" Value="O" />
             <asp:ListItem Selected="true" Text="Non" Value="N" />

@@ -277,20 +277,20 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                     Club c = DataMapping.GetClub(membre.cric);
                     hf_type_club.Value = c.club_type;
-                    lbl_ann_adh_rotary.Visible = false;
-                    lbl_ann_adh_rotaract.Visible = false;
+                   // lbl_ann_adh_rotary.Visible = false;
+                    //lbl_ann_adh_rotaract.Visible = false;
 
                     if (c.club_type==Const.Club_Rotary)
                     {
                         LBL_Club_Type.Text = "Rotary";
                         LBL_Titre_Rotary.Text = "Rotary :";
-                        lbl_ann_adh_rotary.Visible = true;
+                   //     lbl_ann_adh_rotary.Visible = true;
                     }
                     else
                     {
                         LBL_Club_Type.Text = "Rotaract";
                         LBL_Titre_Rotary.Text = "Rotaract :";
-                        lbl_ann_adh_rotaract.Visible = true;
+                    //    lbl_ann_adh_rotaract.Visible = true;
                     }
 
                     Panel1.Visible = false;
