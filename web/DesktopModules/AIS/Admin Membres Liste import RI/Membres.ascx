@@ -179,8 +179,12 @@
     <h2>Informations issues de Rotary.org :</h2>
     
     <p class="alert alert-info">
-       <em>Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://my.rotary.org/" target="_blank">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/" target="_blank">myRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.
-        <br /><br />Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)</em>
+        Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://www.rotary.org">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/fr/">MyRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.<br />
+        <br />
+        Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)<br /><br />
+        ATTENTION : l'email est utilisé comme identifiant pour accéder à l'espace membre, le changement d'email implique la recréation de l'identifiant et donc la génération d'un nouveau mot de passe, qu'il faudra réinitialiser lors de la prochaine connexion.<br />
+        <br />
+        Lors de l'import venant du Rotary.org, l'adresse professionnelle est choisi en priorité, dans le cas ou vous n'avez pas d'adresse professionnelle c'est l'adresse personnelle qui est utilisée
     </p>
 
     <p>
@@ -190,12 +194,7 @@
         </asp:RadioButtonList>
     </p>  
     <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom * : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator></p>
-    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p>
-   
-    <p class="alert alert-info">
-        <span>ATTENTION : l'email est utilisé comme identifiant pour accéder à l'espace membre, le changement d'email implique la recréation de l'identifiant et donc la génération d'un nouveau mot de passe, qu'il faudra réinitialiser lors de la prochaine connexion</span><br /><br />
-        <span>Lors de l'import venant du Rotary.org, l'adresse professionnelle est choisi en priorité, dans le cas ou vous n'avez pas d'adresse professionnelle c'est l'adresse personnelle qui est utilisée</span>
-    </p>
+    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p> 
     <p><asp:Label ID="lbl_email2" Width="200px" runat="server" Text="Email : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_email" Width="400px" MaxLength="255"   onchange='javascript: this.value = this.value.toLowerCase();' /></p>
     <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
     <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
