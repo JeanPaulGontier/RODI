@@ -155,6 +155,7 @@ img {
 A:link {
     color: #00246c;
     text-decoration: none;
+    transition: all .3s ease-out;
 }
 
 A:visited {
@@ -1313,29 +1314,30 @@ ul.mega_option {
 }
 .relative{position:relative;}
 .LimitedHeight {
-    max-height: 220px;
+    max-height: 150px;
     overflow: hidden;
+    display: grid;
+    align-content: center;
 }
 .ModAISClubNewsListeC .LimitedHeight {
-    max-height: 100px;
 	margin-bottom:1em;
 }
-.ModAISClubNewsListeC h2{position:absolute; bottom:0; left:0; right:0; top:0; background:rgba(255,255,255,0.8); margin:0; padding:30px 5px 5px 5px;text-align:center;}
-.ModAISClubNewsListeC .active h2, .ModAISClubNewsListeC a:hover h2{background:rgba(0,0,0,0.6);color:#ffffff;-webkit-transition: all 0.5s ease-in 0s;
+/*.ModAISClubNewsListeC h2{position:absolute; bottom:0; left:0; right:0; top:0; background:rgba(255,255,255,0.8); margin:0; padding:30px 5px 5px 5px;text-align:center;}*/
+/*.ModAISClubNewsListeC .active h2, .ModAISClubNewsListeC a:hover h2{background:rgba(0,0,0,0.6);color:#ffffff;-webkit-transition: all 0.5s ease-in 0s;
         -moz-transition: all 0.5s ease-in 0s;
         -o-transition: all 0.5s ease-in 0s;
-        transition: all 0.5s ease-in 0s;}
-.ModAISClubNewsListeC .Date{display:block;text-align:right;font-size:0.8em;font-family: Arial, Helvetica, sans-serif;}
+        transition: all 0.5s ease-in 0s;}*/
+/*.ModAISClubNewsListeC .Date{display:block;text-align:right;font-size:0.8em;font-family: Arial, Helvetica, sans-serif;}*/
 
 
 /*--------- News Accueil ----------*/
-.ModAISNewsVisuC ul, .ModAISClubLatestNewsC ul {
+.ModAISNewsVisuC ul, .ModAISClubLatestNewsC ul, .ModAISClubNewsListeC ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.ModAISNewsVisuC li, .ModAISClubLatestNewsC li, .Filet {
+.ModAISNewsVisuC li, .ModAISClubLatestNewsC li, .Filet, .ModAISClubNewsListeC li {
     list-style: none;
     padding: 0;
     margin-bottom: 10px;
@@ -1343,35 +1345,37 @@ ul.mega_option {
 }
 
     .ModAISNewsVisuC li:last-child, .ModAISNewsPanelC .Filet:last-child,
-    .ModAISClubLatestNewsC li:last-child, .ModAISClubLatestNewsC  .Filet:last-child{
+    .ModAISClubLatestNewsC li:last-child, .ModAISClubLatestNewsC  .Filet:last-child,
+    .ModAISClubNewsListeC li:last-child, .ModAISClubNewsListeC .Filet:last-child{
         border-bottom: none;
     }
 
-.ModAISNewsVisuC img, .ModAISClubLatestNewsC img {
+.ModAISNewsVisuC img, .ModAISClubLatestNewsC img, .ModAISClubNewsListeC img {
     width: 100%;
     margin-bottom: 0;
 }
 
-.ModAISNewsVisuC h2, .ModAISClubLatestNewsC h2 {
+.ModAISNewsVisuC h2, .ModAISClubLatestNewsC h2, .ModAISClubNewsListeC h2 {
     font-size: 1.1em;
     line-height: 1.05em;
     padding: 5px 5px 0 5px;
     margin: 0;
 }
 
-.ModAISNewsVisuC > ul > li > a > span, .ModAISClubLatestNewsC > ul > li > a > span {
+.ModAISNewsVisuC > ul > li > a > span, .ModAISClubLatestNewsC > ul > li > a > span,
+.ModAISClubNewsListeC > ul > li > a > span {
     text-align: right;
     color: #74585a;
     padding: 2px 5px 5px 5px;
     display: block;
 }
 
-.ModAISNewsVisuC h5, .ModAISClubLatestNewsC h5 {
+.ModAISNewsVisuC h5, .ModAISClubLatestNewsC h5, .ModAISClubNewsListeC h5 {
     border-bottom: 1px solid #dddddd;
     margin: 5px 5px 0 5px;
 }
 
-    .ModAISNewsVisuC h5 span, .ModAISClubLatestNewsC  h5 span{
+    .ModAISNewsVisuC h5 span, .ModAISClubLatestNewsC  h5 span, .ModAISClubNewsListeC h5 span{
         padding: 0;
         font-size: 1.15em;
         line-height: 1.2em;
@@ -1379,11 +1383,15 @@ ul.mega_option {
         margin-bottom: -1px;
     }
 
-.ModAISNewsVisuC > ul > li > a:hover img, .ModAISClubLatestNewsC > ul > li > a:hover img,
+.ModAISNewsVisuC > ul > li > a:hover img, 
+.ModAISClubLatestNewsC > ul > li > a:hover img,
+.ModAISClubNewsListeC > ul > li > a:hover img,
 .BlocPhotoTop > a:hover img,
 .BlocPhotoRight > a:hover img,
 .BlocPhotoLeft > a:hover img {
-    opacity: 0.8;
+    opacity: 0.7;
+    scale: 1.1;
+    transition: all .3s ease-in;
 }
 /* Petites Annonces */
 .Annonce > span {

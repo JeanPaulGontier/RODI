@@ -157,12 +157,11 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
 
         
         var image = e.Item.FindControl("Image1") as Image;
-        if (image == null)
-            throw new Exception("Error image");
-        image.ImageUrl = news.GetPhoto();
-
-        image.Visible = image.ImageUrl != "" &&  image.ImageUrl != Const.no_image;
-
+        if (image != null)
+        {
+            image.ImageUrl = news.GetPhoto();
+            image.Visible = image.ImageUrl != "" && image.ImageUrl != Const.no_image;
+        }
         var hl = e.Item.FindControl("HL_Detail") as HyperLink;
         string url = Functions.UrlAddParam(Request.RawUrl,"newsid",""+news.id);
         hl.NavigateUrl = Functions.UrlAddParam(url, "cric", ""+news.cric) ;

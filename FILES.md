@@ -29,6 +29,10 @@
 - Portals\\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
 - DesktopModules\RazorModules\RazorHost\Scripts\\_oukikan.cshtml
 - DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
+- DesktopModules\AIS\Club News Liste\News.ascx
+- DesktopModules\AIS\Club News Liste\News.ascx.cs
+- Portals\\_default\Skins\Rodi2017\skin.css
+- DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 
 nouveau module :
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx

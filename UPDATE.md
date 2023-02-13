@@ -25,6 +25,7 @@
 	- ajout d'un bouton d'export excel des participants
 	- visualisation sur fond grisé des membres ayant répondu non présent
 - correction d'un pb d'affichage du fanion club lors du changement de l'image
+- uniformisation style bandeau droit nos actions dans page des clubs avec l'affichage des actions des clubs dans le district
 
 
 ###### 11/01/2023
