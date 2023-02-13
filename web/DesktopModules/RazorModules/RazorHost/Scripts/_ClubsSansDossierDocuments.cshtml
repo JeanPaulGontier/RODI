@@ -1,0 +1,22 @@
+﻿@using AIS
+@using System.Text
+@{
+    List<Club> clubs = DataMapping.ListClubs(sort: "name");
+
+    foreach (Club club in clubs)
+    {
+        byte[] bytes = Encoding.ASCII.GetBytes("documents:" + club.cric);
+
+        string url = Functions.CalculateMD5Hash(bytes);
+
+        DotNetNuke.Entities.Tabs.TabController objTab = new DotNetNuke.Entities.Tabs.TabController();
+
+        DotNetNuke.Entities.Tabs.TabInfo objTabinfo = objTab.GetTabByName(url, 0);
+
+        if (objTabinfo == null)
+        {
+            <p>@club.name <code>@url</code></p>
+        }
+
+    }
+}
