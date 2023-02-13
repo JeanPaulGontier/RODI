@@ -1,4 +1,4 @@
-###### en cours
+###### 13/02/2023
 - correction d'un pb d'envoi d'email avec le formulaire de contact membre vers google
 - remplacement du libellé nom d'utilisateur par email pour l'ecran d'identification et de réinitialisation du mot de passe afin d'éviter toute ambiguité, le texte de réinitialisation indique plus clairement qu'il s'agit de l'email déclaré au niveau du RI
 - ajout du sous titre logo dans l'entete du club (Exemple : district 1640 Normandie)
