@@ -1,4 +1,10 @@
 ##### Modified files per commit
+###### en cours
+- DesktopModules\AIS\Club Contact Form\Contact.ascx
+- DesktopModules\AIS\Admin News Liste\Control.ascx.cs
+- DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
+- DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+- DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 
 ###### 13/02/2023
 - AIS\contact.aspx

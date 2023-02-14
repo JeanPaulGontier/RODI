@@ -1,3 +1,9 @@
+###### en cours
+- les adg peuvent de nouveau gérer les nouvelles des clubs de leur groupe
+- correction d'un style dans le popup contact membre
+- nouveau script administrateur pour voir les clubs qui n'ont pas de fonctionnalité Documents
+- dans la gestion des clubs district on peut voir des informations complémentaires dans la liste (Type, Role de groupe et présentation : carte de visite, site ou site avec domaine)
+
 ###### 13/02/2023
 - correction d'un pb d'envoi d'email avec le formulaire de contact membre vers google
 - remplacement du libellé nom d'utilisateur par email pour l'ecran d'identification et de réinitialisation du mot de passe afin d'éviter toute ambiguité, le texte de réinitialisation indique plus clairement qu'il s'agit de l'email déclaré au niveau du RI

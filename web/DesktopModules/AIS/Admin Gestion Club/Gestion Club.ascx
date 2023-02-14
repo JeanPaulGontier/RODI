@@ -13,6 +13,21 @@
                     <asp:Label ID="lbl_clubName" runat="server" Text='<%# Bind("name") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:TemplateField HeaderText="Type">
+                <ItemTemplate>
+                    <asp:Label ID="lbl_club_type" runat="server" Text='<%# (""+Eval("club_type")).ToUpper() %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Rôle groupe">
+                <ItemTemplate>
+                    <asp:Label ID="lbl_role" runat="server" Text='<%# GetRoleName(""+Eval("roles")) %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+             <asp:TemplateField HeaderText="Présentation">
+                <ItemTemplate>
+                    <asp:Label ID="lbl_seo_mode" runat="server" Text='<%# GetPresentation(""+Eval("seo_mode")) %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="lbt_edit" runat="server" CommandArgument='<%# Bind("cric") %>' CssClass="btn btn-primary"><span class="fa fa-pencil"></span></asp:LinkButton>

@@ -74,9 +74,40 @@ using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
 using System.Collections;
 using System.Globalization;
+using Dnn.PersonaBar.Prompt.Components.Commands.Client;
 
 public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : PortalModuleBase
 {
+    RoleController roleController = new RoleController();
+
+    public string GetPresentation(string seo_mode)
+    {
+        switch(seo_mode)
+        {
+            case "m":
+                return "Site district";
+
+            case "d":
+                return "Site district avec domaine";
+
+            default:
+                return "Carte de visite";
+           
+        }
+    }
+
+    public string GetRoleName(string id)
+    {
+        string result = "non défini";
+        if (String.IsNullOrEmpty(id))
+            return result;
+        int roleid = 0;
+        int.TryParse(id,out roleid);
+        if (roleid == 0)
+            return result;
+        return roleController.GetRoleById(PortalId, roleid).RoleName;
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         List<Club> clubs = DataMapping.ListClubs(sort: "name ASC",max: int.MaxValue);

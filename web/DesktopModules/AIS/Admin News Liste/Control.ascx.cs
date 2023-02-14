@@ -99,7 +99,8 @@ public partial class DesktopModules_AIS_Admin_News_List_Control : PortalModuleBa
             return (UserInfo.IsSuperUser || 
                 UserInfo.IsInRole(Const.ADMIN_ROLE) || 
                 UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
-                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) ||
+                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
 
         }
     }
