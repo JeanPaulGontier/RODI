@@ -5,6 +5,7 @@
 - DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+- DesktopModules\AIS\Admin Club\Control.ascx.cs
 
 ###### 13/02/2023
 - AIS\contact.aspx

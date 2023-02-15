@@ -197,6 +197,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_web.Text = club.web;
         tbx_zip.Text = club.zip;
         img_fanion.ImageUrl = club.GetPennant();
+        hfd_filename.Value = club.pennant;
         RB_Type_Club.SelectedValue = "" + club.club_type;
         SEO_MODE.SelectedValue = "" + club.seo_mode;
         tbx_domaine.Text = club.domaine;
