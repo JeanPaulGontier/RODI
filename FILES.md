@@ -6,6 +6,7 @@
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 - DesktopModules\AIS\Admin Club\Control.ascx.cs
+- DesktopModules\AIS\News Liste\Control.ascx
 
 ###### 13/02/2023
 - AIS\contact.aspx

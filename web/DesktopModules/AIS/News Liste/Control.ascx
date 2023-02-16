@@ -11,7 +11,7 @@
 <ItemTemplate><li>
 <asp:HyperLink ID="HL_Detail" runat="server">
 <p><asp:Image ID="Image1" runat="server" ImageAlign="Left"  /></p>
-<asp:Label ID="LBL_Titre" runat="server" Text='<%# Bind("titre") %>' />
+<asp:Label ID="LBL_Titre" runat="server" Text='<%# Bind("title") %>' />
 </asp:HyperLink>
 </li></ItemTemplate>
 <FooterTemplate></ul></FooterTemplate>

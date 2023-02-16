@@ -4,6 +4,7 @@
 - nouveau script administrateur pour voir les clubs qui n'ont pas de fonctionnalité Documents
 - dans la gestion des clubs district on peut voir des informations complémentaires dans la liste (Type, Role de groupe et présentation : carte de visite, site ou site avec domaine)
 - correction d'un bug dans la gestion des fanions
+- correction bug module "ais news liste"
 
 ###### 13/02/2023
 - correction d'un pb d'envoi d'email avec le formulaire de contact membre vers google
