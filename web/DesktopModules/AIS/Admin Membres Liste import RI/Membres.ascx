@@ -178,33 +178,28 @@
     
     <h2>Informations issues de Rotary.org :</h2>
     
-    <p class="alert alert-info">
+    <p class="alert alert-warning">
         Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://www.rotary.org">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/fr/">MyRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.<br />
         <br />
-        Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)<br /><br />
-        ATTENTION : l'email est utilisé comme identifiant pour accéder à l'espace membre, le changement d'email implique la recréation de l'identifiant et donc la génération d'un nouveau mot de passe, qu'il faudra réinitialiser lors de la prochaine connexion.<br />
-        <br />
+        Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)<br />
+         <br />
         Lors de l'import venant du Rotary.org, l'adresse professionnelle est choisi en priorité, dans le cas ou vous n'avez pas d'adresse professionnelle c'est l'adresse personnelle qui est utilisée
     </p>
 
-    <p>
-        <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " /><asp:RadioButtonList Enabled="false" ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-            <asp:ListItem Text="Madame" Value="Mme"  />
-            <asp:ListItem Text="Monsieur" Value="M"  />
-        </asp:RadioButtonList>
-    </p>  
-    <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom * : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator></p>
-    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom * : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p> 
-    <p><asp:Label ID="lbl_email2" Width="200px" runat="server" Text="Email : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_email" Width="400px" MaxLength="255"   onchange='javascript: this.value = this.value.toLowerCase();' /></p>
-    <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
-    <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_tel_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_fax_pro" Width="400px" MaxLength="50" /></p>    
-    <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone Perso. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_telephone" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax Perso. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_fax" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile Perso. : " /><asp:TextBox disabled="disabled" ReadOnly="true" runat="server" ID="tbx_gsm" Width="400px" MaxLength="50" /></p>
+    
+    <p style="background-color:#fafafa; border: 4px dotted #dddddd; padding: 6px;margin:-0px"><asp:Label ID="lbl_email2" Width="200px" runat="server" Text="Email Perso.* : " /><asp:TextBox runat="server" ID="tbx_email" Width="400px" MaxLength="255"   onchange='javascript: this.value = this.value.toLowerCase();' /><br /><em>ATTENTION : l'email personnel est utilisé comme identifiant pour accéder à l'espace membre, sa suppression entraine l'impossibilité de se connecter à l'espace membre</em></p>
+    <p>&nbsp;</p>
+    <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom : " /><asp:TextBox  runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator></p>
+    <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom : " /><asp:TextBox runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p> 
+    <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
+    <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox  runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
+    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
+    <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="400px" MaxLength="50" /></p>    
+    <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone Perso. : " /><asp:TextBox runat="server" ID="tbx_telephone" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax Perso. : " /><asp:TextBox runat="server" ID="tbx_fax" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile Perso. : " /><asp:TextBox runat="server" ID="tbx_gsm" Width="400px" MaxLength="50" /></p>
 
     <h3><asp:Label runat="server" ID="LBL_Titre_Rotary"></asp:Label></h3>
     <p>
@@ -228,6 +223,14 @@
     </p>
     <hr />    
     <h2>Informations modifiables dans le district</h2>
+    <p>
+        <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " />
+            <asp:RadioButtonList ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                <asp:ListItem Text="Monsieur" Value="M"  />
+                <asp:ListItem Text="Madame" Value="Mme"  />
+                <asp:ListItem Text="Non spécifiée" Value=""  />
+            </asp:RadioButtonList>
+    </p>  
     <p><asp:Label ID="lbl_titre2" Width="200px" runat="server" Text="Titre : " /><asp:TextBox runat="server" ID="tbx_titre" Width="400px" MaxLength="255" onchange='javascript: this.value = toTitleCase(this);' /></p>
     <p>
         <table>
@@ -238,7 +241,7 @@
         </table>
     </p>
     <p><asp:Label ID="lbl_nom_JF2" Width="200px" runat="server" Text="Nom de jeune fille : " /><asp:TextBox runat="server" ID="tbx_nom_JF" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_prenom_Conjoint2" Width="200px" runat="server" Text="Prénom conjoint : " /><asp:TextBox runat="server" ID="tbx_prenom_Conjoint" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /></p>
+    <p><asp:Label ID="lbl_prenom_Conjoint2" Width="200px" runat="server" Text="Prénom conjoint(e) : " /><asp:TextBox runat="server" ID="tbx_prenom_Conjoint" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /></p>
     <p><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
 
 
@@ -377,17 +380,16 @@
         Si vous avez un doute, contactez le webmaster du site du district. <br /><br />
         Le n° NIM (numéro d'identification de membre) sert pour rapprocher les membres issus du Rotary avec ceux du district.<br /><br />
         <em>NB : l'email personnel du membre est utilisé comme identifiant sur le site du district,<br />
-            en cas de changement d'email, un nouvel accès est alors créé avec le nouvel email et un nouveau mot de passe<br />
+            la suppression de l'email entraine l'impossibilité de se connecter à l'espace membre.<br />
             Le membre pourra alors réinitialiser son mot de passe à partir de l'écran connexion<br />
             Liste des champs qui sont mis à jour a partir du fichier venant du RI : <br />
-            nom, prénom, adresse pro, email, tel, fax & mobile pro et perso<br />
-            En cas de création d'un nouveau membre, il faut compléter manuellement la fiche.
+            nom, prénom, adresse pro, email, tel, fax & mobile pro et perso            
         </em>
     </div>
     <asp:HiddenField runat="server" ID="HF_Import" />
     <div>
         <div class="alert">
-            Choisir le fichier excel récupéré du Rotary.org : <asp:FileUpload runat="server" ID="FU_import" CssClass="btn" />  <asp:Button runat="server" CssClass="btn btn-primary" ID="Bti_Analyser" Text="Analyser le fichier" CausesValidation="false" OnClick="Bti_Analyser_Click" /> <em>L'analyse permet de fichier que le fichier correspond bien au club et affiche ce qui va être fait</em>           
+            Choisir le fichier excel récupéré du Rotary.org : <asp:FileUpload style="padding:0px;margin:3px;border:0px;width:100%" runat="server" ID="FU_import" CssClass="btn" />  <asp:Button runat="server" CssClass="btn btn-primary" ID="Bti_Analyser" Text="Analyser le fichier" CausesValidation="false" OnClick="Bti_Analyser_Click" /> <em>L'analyse permet de fichier que le fichier correspond bien au club et affiche ce qui va être fait</em>           
         </div>
         <asp:Panel runat="server" ID="PImportResult">
             <asp:Literal runat="server" ID="LT_Import"></asp:Literal>

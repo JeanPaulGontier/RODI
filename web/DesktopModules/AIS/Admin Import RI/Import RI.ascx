@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - https://rodi-platform.org                                                 -->
-<!-- Copyright (c) 2012-2022                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Import RI.ascx.cs" Inherits="DesktopModules_AIS_Admin_Import_RI" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Import RI.ascx.cs" Inherits="DesktopModules_AIS_Admin_Import_RI" %>
 
 
 <asp:Panel runat="server" ID="error" Visible="false" CssClass="alert alert-danger">

@@ -85,7 +85,10 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
 using System.Web.Security;
-
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Web;
+using Dnn.PersonaBar.Security.Components;
+using DotNetNuke.Security;
 
 namespace AIS
 {
@@ -1123,22 +1126,42 @@ namespace AIS
         public static bool UpdateOrCreateUser(int membreid, string email, string password = "")
         {
             Member membre = GetMember(membreid);
-            UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, email);
-            if (ui == null && membre != null)
+            if (membre == null)
+                return false;
+            if (String.IsNullOrEmpty(membre.email))
+                return true;
+            return UpdateOrCreateUser(membre, password);
+        }
+        public static bool UpdateOrCreateUser(Member membre, string password = "", SqlConnection conn = null,SqlTransaction trans=null) 
+        {
+            int lastuserid = membre.userid;
+           
+            UserInfo ui = UserController.GetUserById(Globals.GetPortalSettings().PortalId, membre.userid);
+            if(ui==null)
+            { 
+                ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+
+                // il n'y pas d'email ni utilisateur alors pas de pb
+                if (String.IsNullOrEmpty(membre.email))
+                    return true;
+
+            }
+            if (ui == null)
             {
                 ui = new UserInfo();
-                ui.Username = email;
+                ui.Username = membre.email;
                 ui.FirstName = membre.name;
                 ui.LastName = membre.surname;
                 ui.DisplayName = membre.name + " " + membre.surname;
-                ui.Email = email;
+                ui.Email = membre.email;
                 ui.IsSuperUser = false;
                 ui.PortalID = Globals.GetPortalSettings().PortalId;
 
                 UserMembership mb = new UserMembership(ui);
+                mb.IsDeleted = false;                
                 mb.Approved = true;
                 mb.CreatedDate = System.DateTime.Now;
-                mb.IsOnLine = false;
+                
 
                 if (password.Equals(""))
                 {
@@ -1159,25 +1182,71 @@ namespace AIS
                     rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
 
 
-                    return UpdateMemberDNNUserID(membreid, ui.UserID);
-                    //BT_CreateDNNUser.Visible = false;
-
-                    //Texte txt = DataMapping.LoadTexte("ENVOI MOT DE PASSE");
-
-                    //Functions.SendMail(ui.Email, txt.title, txt.content.Replace("[password]", password));
-
-
-                    // UserController.UserLogin(PortalId, ui, PortalSettings.PortalName, this.Request.UserHostAddress, false);
+                    return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);
 
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             else
             {
-                return UpdateMemberDNNUserID(membreid, ui.UserID);
+                if(membre.email!=ui.Username)
+                {
+                    if(String.IsNullOrEmpty(membre.email))
+                    {
+                        bool mustlogout = PortalSettings.Current.UserInfo.UserID == ui.UserID;
+                        // on detruit l'utilisateur si pas d'email n'existe pas
+                        if (UserController.DeleteUser(ref ui, false, false))
+                        {
+                            if (mustlogout)
+                            {
+
+                                PortalSecurity objPortalSecurity = new PortalSecurity();
+                                objPortalSecurity.SignOut();
+                            }
+
+                            membre.id = 0;
+                            DataCache.ClearCache();
+                            return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        bool mustrelogin = PortalSettings.Current.UserInfo.UserID == ui.UserID;
+
+                        UserController.ChangeUsername(ui.UserID, membre.email);
+                        ui = UserController.GetUserById(PortalSettings.Current.PortalId, ui.UserID);
+                        if (mustrelogin)
+                        {
+                            // on reloggue automatiquement l'utilisateur si c'est lui meme qui change son mail
+                            LoginStatus loginStatus;
+                            UserController.UserLogin(PortalSettings.Current.PortalId, ui, PortalSettings.Current.PortalName, HttpContext.Current.Request.UserHostAddress, false);
+                        }
+                    }
+                
+                }
+                ui.FirstName = membre.name;
+                ui.LastName = membre.surname;
+                ui.DisplayName = membre.name + " " + membre.surname;
+                ui.Email = membre.email;
+                ui.IsDeleted = false;
+                
+                //UserMembership mb = new UserMembership(ui);
+                
+                //mb.IsDeleted = false;
+                //mb.Approved = true;
+
+                UserController.UpdateUser(Globals.GetPortalSettings().PortalId, ui,true,false);
+                
+                DataCache.ClearCache();
+                if(ui.UserID!=membre.userid)
+                {
+                    return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);
+                }
+                return true;
             }
 
         }
@@ -2577,6 +2646,9 @@ namespace AIS
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);
 
+                if(!UpdateOrCreateUser(m,conn:conn,trans:trans))
+                    throw new Exception("Erreur update membre login : "+m.id);
+
                 ClearMemberCache();
 
                 trans.Commit();
@@ -2624,7 +2696,7 @@ namespace AIS
                 ClearMemberCache();
 
                 trans.Commit();
-
+                    
                 return true;
             }
             catch (Exception ee)
@@ -2662,14 +2734,20 @@ namespace AIS
         /// <param name="membreid">Member ID</param>
         /// <param name="dnnuserid">User ID</param>
         /// <returns></returns>
-        public static bool UpdateMemberDNNUserID(int membreid, int dnnuserid)
+        public static bool UpdateMemberDNNUserID(int membreid, int dnnuserid, SqlConnection conn = null, SqlTransaction trans = null)
         {
-            SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+            bool mustconnect = false;
+            if(conn==null)
+            {
+                conn = new SqlConnection(Config.GetConnectionString());
+                mustconnect = true;
+            }
             try
             {
-                conn.Open();
+                if(mustconnect)
+                    conn.Open();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET userid=@userid WHERE id=@id", conn);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET userid=@userid WHERE id=@id", conn,trans);
                 sql.Parameters.AddWithValue("id", membreid);
                 sql.Parameters.AddWithValue("userid", dnnuserid);
                 if (sql.ExecuteNonQuery() == 0)
@@ -2683,7 +2761,8 @@ namespace AIS
             }
             finally
             {
-                conn.Close();
+                if(mustconnect)
+                    conn.Close();
             }
             return false;
         }

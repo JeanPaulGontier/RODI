@@ -82,6 +82,7 @@ using Aspose;
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
+
     int presentationtabid
     {
         get
@@ -203,7 +204,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_Branche_Activite.Text = membre.industry;
                     LBL_Member_Honneur.Text = (""+membre.honorary_member == Const.YES) ? "Member d'honneur" : "";
                     string compl = (""+membre.honorary_member) == "" ? "&nbsp;|&nbsp;" : "";
-                    if ((""+membre.civility) == "M")
+                    if ((""+membre.retired) == Const.YES)
                         LBL_Retraite.Text = (""+membre.retired) == Const.YES ? "&nbsp;| Retraité" + compl : "&nbsp;| En activité" + compl;
                     else
                         LBL_Retraite.Text = (""+membre.retired) == Const.YES ? "&nbsp;| Retraitée" + compl : "&nbsp;| En activité" + compl;
@@ -669,13 +670,40 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
 
 
-
+    public bool IsEditable()
+    {
+        return  UserInfo.IsAdmin || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsSuperUser;
+    }
 
 
     protected void BT_Modifier_Click(object sender, EventArgs e)
     {
         try
         {
+            tbx_nom.Enabled = IsEditable();
+            tbx_nom.ReadOnly = !IsEditable();
+            tbx_prenom.Enabled = IsEditable();
+            tbx_prenom.ReadOnly = !IsEditable();
+            tbx_email.Enabled = IsEditable();
+            tbx_email.ReadOnly = !IsEditable();
+            tbx_adresse_pro.Enabled = IsEditable();
+            tbx_adresse_pro.ReadOnly = !IsEditable();
+            tbx_cp_pro.Enabled = IsEditable();
+            tbx_cp_pro.ReadOnly = !IsEditable();
+            tbx_ville_pro.Enabled = IsEditable();
+            tbx_ville_pro.ReadOnly = !IsEditable();
+            tbx_email_pro.Enabled = IsEditable();
+            tbx_email_pro.ReadOnly = !IsEditable();
+            tbx_tel_pro.Enabled = IsEditable();
+            tbx_tel_pro.ReadOnly = !IsEditable();
+            tbx_fax_pro.Enabled = IsEditable();
+            tbx_fax_pro.ReadOnly = !IsEditable();
+            tbx_telephone.Enabled = IsEditable();
+            tbx_telephone.ReadOnly = !IsEditable();
+            tbx_fax.Enabled = IsEditable();
+            tbx_fax.ReadOnly = !IsEditable();
+            tbx_gsm.Enabled = IsEditable();
+            tbx_gsm.ReadOnly = !IsEditable();
 
             Member membre = Get_Membre();
 
@@ -690,9 +718,13 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             {
                 rbtl_civilite.SelectedValue = "M";
             }
-            else
+            else if (membre.civility == "Mme")
             {
                 rbtl_civilite.SelectedValue = "Mme";
+            }
+            else
+            {
+                rbtl_civilite.SelectedValue = "";
             }
 
             tbx_titre.Text = "" + membre.title;
@@ -1396,7 +1428,6 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     }
                 }
                 LT_Import.Text = l_import;
-
                 Bti_Valider.Visible = true;
                 PImportResult.Visible = true;
 
@@ -1427,7 +1458,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.district_id = Const.DISTRICT_ID;
                 m.cric = Functions.CurrentCric;
                 m.club_name = Functions.CurrentClub.name;               
-                m.civility = "M";
+                m.civility = "";
                 m.adress_1 = "";
                 m.adress_2 = "";
                 m.adress_3 = "";
@@ -1501,7 +1532,6 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     }
     protected void Bti_Valider_Click(object sender, EventArgs e)
     {
-        Bti_Analyser.Visible = false;
         Byte[] content = (Byte[])Session[HF_Import.Value];
 
 
