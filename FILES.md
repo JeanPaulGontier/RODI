@@ -7,6 +7,12 @@
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 - DesktopModules\AIS\Admin Club\Control.ascx.cs
 - DesktopModules\AIS\News Liste\Control.ascx
+- DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+- DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+- DesktopModules\AIS\Admin Import RI\Import RI.ascx
+- DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
+- App_Code\AIS\DataMapping.cs
+
 
 ###### 13/02/2023
 - AIS\contact.aspx
