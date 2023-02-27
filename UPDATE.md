@@ -4,12 +4,13 @@
 - nouveau script administrateur pour voir les clubs qui n'ont pas de fonctionnalité Documents
 - dans la gestion des clubs district on peut voir des informations complémentaires dans la liste (Type, Role de groupe et présentation : carte de visite, site ou site avec domaine)
 - correction d'un bug dans la gestion des fanions
-- correction bug module "ais news liste"
+- correction bug module "ais news liste" 
+- modification libellé de visibilité dans l'admin des news : de Rotariens à Membres du district
 - amélioration du processus d'import et saisie membres dans les clubs 
 	- quand on change l'email d'un membre ca ne recrée plus un utilisateur il peut continuer a utiliser le meme mot de passe
 	- mes administrateurs district et webmaster peuvent maintenant modifier localement toutes les données membres afin de pouvoir aider un membre dans la saisie des données ou le changement de mail (exemple un membre a bien changé son mail sur le RI et veut le changer tout de suite pour accéder au district mais son responsable club ne peut pas le faire immédiatement, l'admin district peut alors l'aider)
 	- les explications sont plus explicites
-	- la civilité est redevenue modifiable localement
+	- la civilité et la date d'admission sont redevenues modifiables localement
 
 
 ###### 13/02/2023

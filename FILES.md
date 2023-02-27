@@ -5,12 +5,17 @@
 - DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 - DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+- DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 - DesktopModules\AIS\Admin Club\Control.ascx.cs
 - DesktopModules\AIS\News Liste\Control.ascx
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 - DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+- DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx
+- DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx.cs
 - DesktopModules\AIS\Admin Import RI\Import RI.ascx
 - DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
+- DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+- DesktopModules\AIS\Admin News Liste\NewsEdit.html
 - App_Code\AIS\DataMapping.cs
 
 

@@ -1129,7 +1129,7 @@ namespace AIS
             if (membre == null)
                 return false;
             if (String.IsNullOrEmpty(membre.email))
-                return true;
+                return false;
             return UpdateOrCreateUser(membre, password);
         }
         public static bool UpdateOrCreateUser(Member membre, string password = "", SqlConnection conn = null,SqlTransaction trans=null) 
@@ -1143,7 +1143,7 @@ namespace AIS
 
                 // il n'y pas d'email ni utilisateur alors pas de pb
                 if (String.IsNullOrEmpty(membre.email))
-                    return true;
+                    return false;
 
             }
             if (ui == null)
