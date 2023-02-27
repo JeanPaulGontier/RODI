@@ -86,46 +86,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-
-//        DotNetNuke.Entities.Users.UserController objUserController = new DotNetNuke.Entities.Users.UserController();
-//        ArrayList listroles = objUserController.GetUsers(PortalId, true, true);
-//        foreach (object i in listroles)
-//        {
-//            DotNetNuke.Entities.Users.UserInfo objuser = (DotNetNuke.Entities.Users.UserInfo)i;
-
-
-//            string oldPassword = DotNetNuke.Entities.Users.UserController.GetPassword(ref objuser, objuser.Membership.PasswordAnswer);
-//            if (oldPassword.StartsWith("<") && oldPassword.EndsWith(">"))
-//            {
-
-//                Response.Write(objuser.Username + "&nbsp;" + oldPassword + "<br/>");
-
-                
-//                string password = "" + DateTime.Now.Ticks;
-//                password = "rodi" + password.Substring(password.Length - 4, 4);
-//                //password = "rodi1730test";
-                
-
-//                DotNetNuke.Entities.Users.UserController.ChangePassword(objuser, oldPassword, password);
-
-//                string message = "Cheres amies et chers amis,<br/><br/>";
-//                message += "Certains anciens mot de passes posent des problemes<br/>";
-//                message += "afin d'eviter ca, j'en ai genere de nouveaux<br/><br/>";
-//                message += "Donc pour acceder a site du district :<br/>";
-//                message += "site : www.rotary1730.org<br/>";
-//                message += "nom d'utiliasteur : " + objuser.Email + "<br/>";
-//                message += "mot de passe : " + password + "<br/><br/>";
-//                message += "en cas de probleme n'hésitez pas a me contacter<br/>";
-//                message += "sur : webmaster@rotary1730.org";
-
-                
-////                Mail.SendEmail(ps.Email, ps.Email, objuser.Email, "Nouveau mot de passe site district", message);
-//                //Mail.SendEmail(Globals.GetPortalSettings().Email, Globals.GetPortalSettings().Email, objuser.Email, "Nouveau mot de passe site district", message);
-
-//            }
-
-        //}        
+    
     }
     protected void BT_Maj_Click(object sender, EventArgs e)
     {
@@ -257,7 +218,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                     if (membre.userid == 0)
                     {
                         TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
-                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+                        if (DataMapping.UpdateOrCreateUser(membre))
                         {                            
                             TXT_Result.Text += "<br/>et a été créé";
                             goto cestbon;
@@ -319,7 +280,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                         if(ui.Username != membre.email)
                         {
                             UserController.DeleteUser(ref ui, false, false);
-                            UserController.DeleteUnauthorizedUsers(Globals.GetPortalSettings().PortalId);
+                            //UserController.DeleteUnauthorizedUsers(Globals.GetPortalSettings().PortalId);
                             TXT_Result.Text += "<br/>Suppression ancien utilisateur : " + ui.Username;
 
                             if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))

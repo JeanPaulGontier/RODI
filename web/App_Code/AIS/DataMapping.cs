@@ -1205,7 +1205,7 @@ namespace AIS
                             }
 
                             membre.id = 0;
-                            DataCache.ClearCache();
+                            //DataCache.ClearCache();
                             return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);
                         }
                         else
@@ -1241,7 +1241,7 @@ namespace AIS
 
                 UserController.UpdateUser(Globals.GetPortalSettings().PortalId, ui,true,false);
                 
-                DataCache.ClearCache();
+                //DataCache.ClearCache();
                 if(ui.UserID!=membre.userid)
                 {
                     return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);

@@ -216,13 +216,10 @@
         <asp:Label ID="lbl_district2" runat="server" Text="District : " Width="200px" />
         <asp:Label ID="lbl_district3" runat="server" Width="400px" />
     </p>
-    <p>
-            <asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Adhésion Initiale : " Width="200px" />
-           
-            <asp:TextBox disabled="disabled" ReadOnly="true" runat="server" TextMode="Date" ID="dpk_ann__adh"></asp:TextBox>
-    </p>
+  
     <hr />    
     <h2>Informations modifiables dans le district</h2>
+  
     <p>
         <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " />
             <asp:RadioButtonList ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
@@ -232,14 +229,21 @@
             </asp:RadioButtonList>
     </p>  
     <p><asp:Label ID="lbl_titre2" Width="200px" runat="server" Text="Titre : " /><asp:TextBox runat="server" ID="tbx_titre" Width="400px" MaxLength="255" onchange='javascript: this.value = toTitleCase(this);' /></p>
-    <p>
-        <table>
-            <tr>
-                <td><p><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Date de naissance : " /></p></td>
-                <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
-            </tr>
-        </table>
-    </p>
+
+    <table>
+        <tr>
+            <td><asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Adhésion Initiale : " Width="200px" /></td>           
+            <td><asp:TextBox CssClass="form-control" runat="server" Height="30px"  TextMode="Date" ID="dpk_ann__adh"></asp:TextBox></td>
+        </tr>
+    </table>
+     <p></p>
+    <table>
+        <tr>
+            <td><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Date de naissance : " /></td>
+            <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
+        </tr>
+    </table>
+    <p></p>
     <p><asp:Label ID="lbl_nom_JF2" Width="200px" runat="server" Text="Nom de jeune fille : " /><asp:TextBox runat="server" ID="tbx_nom_JF" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
     <p><asp:Label ID="lbl_prenom_Conjoint2" Width="200px" runat="server" Text="Prénom conjoint(e) : " /><asp:TextBox runat="server" ID="tbx_prenom_Conjoint" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /></p>
     <p><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
