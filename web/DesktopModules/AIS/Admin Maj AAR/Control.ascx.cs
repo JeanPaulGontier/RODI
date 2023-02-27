@@ -217,15 +217,15 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                 {
                     if (membre.userid == 0)
                     {
-                        TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
+                        TXT_Result.Text += "<br/><span class='alert-warning'>Le membre : " + row["name"] + " n'a pas de user DNN</span>";
                         if (DataMapping.UpdateOrCreateUser(membre))
                         {                            
-                            TXT_Result.Text += "<br/><span class='success'>et a été créé</a>";
+                            TXT_Result.Text += "<br/><span class='alert-success'>et a été créé</span>";
                             goto cestbon;
                         }
                         else
                         {
-                            TXT_Result.Text += "<br/><span class='danger'>et n'a pas été créé</a>";
+                            TXT_Result.Text += "<br/><span class='alert-danger'>et n'a pas été créé</span>";
                         }
 
                     }

@@ -9,7 +9,7 @@
 
 
 <asp:Button ID="BT_Maj" runat="server" Text="Créer les users" OnClick="BT_Maj_Click" Visible="false" CssClass="btn btn-primary"/>
-<asp:Button ID="BT_Refresh_AAR" runat="server" Text="Mettre à jour les affectations" OnClick="BT_Refresh_AAR_Click" CssClass="btn btn-primary" />&nbsp;
+<asp:Button ID="BT_Refresh_AAR" runat="server" Text="Mettre à jour les affectations des clubs" OnClick="BT_Refresh_AAR_Click" CssClass="btn btn-primary" />&nbsp;
 <asp:Button ID="BT_CreateUsersManquants" runat="server" Text="Créer les utilisateurs manquants" OnClick="BT_CreateUsersManquants_Click" CssClass="btn btn-primary" />&nbsp;
 <asp:Button ID="BT_CorrigerSEOClubs" runat="server" Text="Corriger SEO Clubs" OnClick="BT_CorrigerSEOClubs_Click" CssClass="btn btn-primary"></asp:Button>
 
