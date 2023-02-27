@@ -220,12 +220,12 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                         TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
                         if (DataMapping.UpdateOrCreateUser(membre))
                         {                            
-                            TXT_Result.Text += "<br/>et a été créé";
+                            TXT_Result.Text += "<br/><span class='success'>et a été créé</a>";
                             goto cestbon;
                         }
                         else
                         {
-                            TXT_Result.Text += "<br/>et n'a pas été créé";
+                            TXT_Result.Text += "<br/><span class='danger'>et n'a pas été créé</a>";
                         }
 
                     }
