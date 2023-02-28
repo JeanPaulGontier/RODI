@@ -26,7 +26,7 @@
     if(IsPost)
     {
         member.presentation = ("" + Request["presentationvisible"]).Equals(Const.YES);
-        if (DataMapping.UpdateMember(member))
+        if (!DataMapping.UpdateMember(member))
         {
             <div class="alert alert-danger">La mise à jour de votre profil n'a pas fonctionné, veuillez contacter le webmaster</div>
         }
