@@ -12,6 +12,9 @@
 	- les explications sont plus explicites
 	- la civilité et la date d'admission sont redevenues modifiables localement
 
+Nouveau module : 
+- Admin Membre Page Pro : ce module permet à un membre de créer et modifier sa page professionnelle, il permet aussi de définir si on affiche ou pas la page afin de pouvoir la préparer tranquillement avant de la rendre visible
+
 
 ###### 13/02/2023
 - correction d'un pb d'envoi d'email avec le formulaire de contact membre vers google

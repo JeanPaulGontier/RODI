@@ -18,6 +18,10 @@
 - DesktopModules\AIS\Admin News Liste\NewsEdit.html
 - App_Code\AIS\DataMapping.cs
 
+Nouveau module :
+- DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
+- DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
+
 
 ###### 13/02/2023
 - AIS\contact.aspx

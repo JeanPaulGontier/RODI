@@ -2293,6 +2293,7 @@ namespace AIS
             obj.photo = "" + rd["photo"];
             obj.visible = "" + rd["visible"];
             obj.satellite_member = "" + rd["satellite_member"];
+            obj.presentation = ("" + rd["presentation"]).Equals(Const.YES);
 
             return obj;
         }
@@ -2438,7 +2439,7 @@ namespace AIS
                 int NIM = 0;
 
 
-                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member]) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member)", conn, trans);
+                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member],[presentation]) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member,@presentation)", conn, trans);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
                 sql.Parameters.AddWithValue("@surname", m.surname);
@@ -2495,6 +2496,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
                 sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
+                sql.Parameters.AddWithValue("@presentation", m.presentation ? Const.YES : Const.NO);
 
 
                 if (sql.ExecuteNonQuery() == 0)
@@ -2583,7 +2585,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid, [photo]=@photo,[visible]=@visible,[satellite_member]=@satellite_member WHERE [id]=@id", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid, [photo]=@photo,[visible]=@visible,[satellite_member]=@satellite_member,[presentation]=@presentation WHERE [id]=@id", conn, trans);
                 sql.Parameters.AddWithValue("@id", m.id);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
@@ -2626,7 +2628,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@job", m.job);
                 sql.Parameters.AddWithValue("@industry", m.industry);
                 sql.Parameters.AddWithValue("@biography", m.biography);
-                sql.Parameters.AddWithValue("@base_dtupdate", m.base_dtupdate);
+                sql.Parameters.AddWithValue("@base_dtupdate", m.base_dtupdate!=null?m.base_dtupdate:DateTime.Now);
                 sql.Parameters.AddWithValue("@professionnal_adress", m.professionnal_adress);
                 sql.Parameters.AddWithValue("@professionnal_zip_code", m.professionnal_zip_code);
                 sql.Parameters.AddWithValue("@professionnal_town", m.professionnal_town);
@@ -2642,6 +2644,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
                 sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
+                sql.Parameters.AddWithValue("@presentation", m.presentation?Const.YES:Const.NO);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);

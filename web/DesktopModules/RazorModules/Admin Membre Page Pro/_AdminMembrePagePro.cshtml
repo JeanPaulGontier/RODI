@@ -1,0 +1,66 @@
+﻿@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using DotNetNuke.Framework;
+@using AIS;
+@{
+    
+    Member member = Functions.GetCurrentMember();
+    if(member==null)
+    {
+        <div class="alert alert-info">La personnalisation de la page professionnelle n'est disponibles que pour les membres</div>
+        return;
+    }
+
+    if(IsPost)
+    {
+        member.presentation = ("" + Request["presentationvisible"]).Equals(Const.YES);
+        if (DataMapping.UpdateMember(member))
+        {
+            <div class="alert alert-danger">La mise à jour de votre profil n'a pas fonctionné, veuillez contacter le webmaster</div>
+        }
+    }
+
+
+<script>
+    function update(v) {
+        this.document.forms[0].submit();
+    }
+</script>
+<div class="form-group" >
+    <label class="radio-inline">Rendre visible ma page professionnelle :</label>
+    <label class="radio-inline"><input type="radio" value="@Const.YES" name="presentationvisible" onclick="update(this.value)" @(member.presentation ? "checked" : "")>Oui</label>
+    <label class="radio-inline"><input type="radio" value="@Const.NO" name="presentationvisible" onclick="update(this.value)" @(!member.presentation ? "checked" : "")>Non</label>
+</div>
+
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
+    PageData["HTML"] = Html;
+    PageData["blocksSuffix"] = "membrepagepro:"+member.nim;
+
+    ModuleController moduleController = new ModuleController();
+    var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
+    bool editable = true;// ModulePermissionController.CanEditModuleContent(moduleInfo);
+    PageData["editable"] = editable;
+
+    if (editable)
+    {
+        @RenderPage("../RazorHost/Scripts/BlocksContent/Editor.cshtml")
+    }
+    else
+    {
+        @RenderPage("../RazorHost/Scripts/BlocksContent/View.cshtml")
+    }
+}
