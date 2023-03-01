@@ -14,6 +14,7 @@
 
 Nouveau module : 
 - Admin Membre Page Pro : ce module permet à un membre de créer et modifier sa page professionnelle, il permet aussi de définir si on affiche ou pas la page afin de pouvoir la préparer tranquillement avant de la rendre visible
+- PDF Flipbook : qui permet d'afficher un fichier pdf sous forme de magazine a feuilleter
 
 
 ###### 13/02/2023

@@ -21,6 +21,7 @@
 Nouveau module :
 - DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 - DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
+- DesktopModules\AIS\PDF Flipbook\*
 
 
 ###### 13/02/2023
