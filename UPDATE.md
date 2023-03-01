@@ -1,4 +1,6 @@
 ###### en cours
+
+###### 01/03/2023
 - les adg peuvent de nouveau gérer les nouvelles des clubs de leur groupe
 - correction d'un style dans le popup contact membre
 - nouveau script administrateur pour voir les clubs qui n'ont pas de fonctionnalité Documents
@@ -12,8 +14,11 @@
 	- les explications sont plus explicites
 	- la civilité et la date d'admission sont redevenues modifiables localement
 
-Nouveau module : 
+Nouveaux modules : 
 - Admin Membre Page Pro : ce module permet à un membre de créer et modifier sa page professionnelle, il permet aussi de définir si on affiche ou pas la page afin de pouvoir la préparer tranquillement avant de la rendre visible
+
+MAJ BDD : ALTER TABLE ais_members ADD presentation CHAR(1) NULL 
+
 - PDF Flipbook : qui permet d'afficher un fichier pdf sous forme de magazine a feuilleter
 
 
