@@ -1,5 +1,6 @@
 ##### Modified files per commit
 ###### en cours
+```js
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx
 DesktopModules\AIS\News Detail\Control.ascx.cs
@@ -13,7 +14,7 @@ DesktopModules\RazorModules\Block Content\Settings.ascx
 DesktopModules\RazorModules\Block Content\Settings.ascx.cs
 App_Code\AIS\Meeting.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
-
+```
 ###### 01/03/2023
 DesktopModules\AIS\Club Contact Form\Contact.ascx
 DesktopModules\AIS\Admin News Liste\Control.ascx.cs
