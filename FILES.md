@@ -16,6 +16,7 @@ App_Code\AIS\Meeting.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
 ```
 ###### 01/03/2023
+```txt
 DesktopModules\AIS\Club Contact Form\Contact.ascx
 DesktopModules\AIS\Admin News Liste\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
@@ -38,9 +39,10 @@ Nouveau module :
 DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
 DesktopModules\AIS\PDF Flipbook\*
-
+```
 
 ###### 13/02/2023
+```txt
 AIS\contact.aspx
 AIS\contact.aspx.cs
 App_Code\AIS\DataMapping.cs
@@ -79,9 +81,10 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Settings.ascx.cs
-
+```
 
 ###### 11/01/2023
+```txt
 AIS\contact.aspx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\view.chtml
 Portals\_default\Skins\Rodi2017\images\rotary-district####.png
@@ -94,17 +97,20 @@ Portals\_default\Skins\Rodi2017\commonparts\PatternClub.ascx
 Portals\_default\Skins\Rodi2017\commonparts\HeaderMembre.ascx
 Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
 App_Code\AIS\Const.cs
-
+```
 ###### 11/12/2022
+```txt
 App_Code\AIS\webapi\news\NewsController.cs
-
+```
 ###### 07/12/2022
+```txt
 DesktopModules\AIS\Admin News Liste\NewsView.html
 DesktopModules\AIS\Admin News Liste\NewsEdit.html
 DesktopModules\AIS\News Detail\Control.ascx.cs
-
+```
 
 ###### 06/12/2022
+```txt
 Fichiers de version DNN
 Fichiers de version Yemon
 
@@ -129,12 +135,13 @@ DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.ascx
 Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
-
+```
 ###### 04/11/2022
+```txt
 DesktopModules\AIS\Admin Membres Liste\Membres.ascx.cs
-
+```
 ###### 02/11/2022
-
+```txt
 App_Code\AIS\Member.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Club\Control.ascx
@@ -149,9 +156,9 @@ DesktopModules\AIS\Club News Panel\News.ascx.cs
 ajout fichier :
 
 Portals/_default/Skins/Rodi2017/images/satellite.png
-
+```
 ###### 31/10/2022
-
+```txt
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Ticketing\Control.ascx
 DesktopModules\AIS\Ticketing\Control.ascx.cs
@@ -159,7 +166,7 @@ DesktopModules\AIS\Ticketing\People.ascx
 DesktopModules\AIS\Ticketing\People.ascx.cs
 DesktopModules\AIS\Ticketing\Settings.ascx
 DesktopModules\AIS\Ticketing\Settings.ascx.cs
-	
+```	
 	
 	
 	
