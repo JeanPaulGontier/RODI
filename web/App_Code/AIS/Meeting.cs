@@ -29,7 +29,8 @@ public class Meeting
     public string statutory { get; set; }   // O / N
     public DateTime dtstart { get; set; }
     public DateTime dtend { get; set; }
-    public Guid templateguid { get; set; }
+    public Guid templateguid { get; set; }  // permet de lier le meeting unitaire avec le meeting periodique qui a servi a le créer
+    public Guid periodguid { get; set; }    // permet de lier la periode unitaire avec la periode periodique correspondante afin de ne pas recreer une période si on change après coup l'heure de la période
 
 
     public DateTime dtrevision { get; set; } // date après laquelle une notificatione est envoyée (auto ou manuelle)
@@ -58,6 +59,7 @@ public class Meeting
 
     public class Period
     {
+        public Guid guid { get; set; }
         public int num { get; set; }
         public string day { get; set; }
         public string start { get; set; }
@@ -158,10 +160,13 @@ public class Meeting
                                         Meeting nextMeeting = null;
                                         foreach(Meeting m in unitmeetings)
                                         {
-                                            if(m.dtstart.ToString("yyyyMMddHH:mm")==startdate.ToString("yyyyMMdd")+period.start)
+                                            if( m.dtstart.ToString("yyyyMMdd")==startdate.ToString("yyyyMMdd") && 
+                                                m.templateguid==meeting.guid && 
+                                                m.periodguid == period.guid)
                                             {
                                                 nextMeeting =m;
                                                 System.Diagnostics.Debug.WriteLine("Date trouvée " + m.dtstart);
+                                                sb.Append("<div>Date trouvée " + m.dtstart + " ... added</div>");
                                                 break;  
                                             }
                                         }
@@ -179,8 +184,8 @@ public class Meeting
                                             nextMeeting.link = ("" + nextMeeting.guid).ToLower().Substring(9, 9);
 
                                             sql = new SqlCommand("INSERT INTO ais_meetings " +
-                                            "(cric,name,guid,active,type,periods,statutory,dtstart,dtend,dtrevision,templateguid,mustnotify,dtlastupdate,portalid,link,nbusers) VALUES " +
-                                            "(@cric,@name,@guid,@active,@type,@periods,@statutory,@dtstart,@dtend,@dtrevision,@templateguid,@mustnotify,@dtlastupdate,@portalid,@link,@nbusers)");
+                                            "(cric,name,guid,active,type,periods,statutory,dtstart,dtend,dtrevision,templateguid,periodguid,mustnotify,dtlastupdate,portalid,link,nbusers) VALUES " +
+                                            "(@cric,@name,@guid,@active,@type,@periods,@statutory,@dtstart,@dtend,@dtrevision,@templateguid,@periodguid,@mustnotify,@dtlastupdate,@portalid,@link,@nbusers)");
                                             sql.Parameters.AddWithValue("cric", nextMeeting.cric);
                                             sql.Parameters.AddWithValue("name", nextMeeting.name);
                                             sql.Parameters.AddWithValue("guid", nextMeeting.guid);
@@ -192,6 +197,7 @@ public class Meeting
                                             sql.Parameters.AddWithValue("dtend", nextMeeting.dtend);
                                             sql.Parameters.AddWithValue("dtrevision", nextMeeting.dtrevision);
                                             sql.Parameters.AddWithValue("templateguid", nextMeeting.templateguid);
+                                            sql.Parameters.AddWithValue("periodguid", period.guid);                                    
                                             sql.Parameters.AddWithValue("mustnotify", Const.NO);
                                             sql.Parameters.AddWithValue("dtlastupdate", DateTime.Now);
                                             sql.Parameters.AddWithValue("portalid", 0);
