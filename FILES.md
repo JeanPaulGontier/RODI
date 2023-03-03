@@ -1,6 +1,6 @@
 ##### Modified files per commit
 ###### en cours
-```js
+```txt
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx
 DesktopModules\AIS\News Detail\Control.ascx.cs
