@@ -1,6 +1,7 @@
 ###### en cours
 - blockcontent est maintenant utilisation comme module a part entiere ce qui permet de le mettre sur une page sans donner les droits d'administration
-- correction des styles sur l'affichage des nouvelles 
+- correction des styles sur l'affichage des nouvelles  
+- correction bug sur la programmation des réunions periodiques, quand on changeait l'heure d'une réunion générée elle était regénérée des 10aines de fois
 
 
 ###### 01/03/2023

@@ -399,6 +399,12 @@
                     b[i].Content = JSON.stringify(b[i].Content);
 
                 let m = JSON.parse(JSON.stringify(this.meeting));
+   
+                m.periods.forEach((p) => {
+                    if (!p.guid) {
+                        p['guid'] = _yemon[this.moduleid].service.guid();
+                    }
+                });
                 m.periods = JSON.stringify(m.periods);
 
                 _yemon[this.moduleid].service.postData("/SetMeeting", {
