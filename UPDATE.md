@@ -1,4 +1,7 @@
 ###### en cours
+- blockcontent est maintenant utilisation comme module a part entiere ce qui permet de le mettre sur une page sans donner les droits d'administration
+- correction des styles sur l'affichage des nouvelles 
+
 
 ###### 01/03/2023
 - les adg peuvent de nouveau gérer les nouvelles des clubs de leur groupe

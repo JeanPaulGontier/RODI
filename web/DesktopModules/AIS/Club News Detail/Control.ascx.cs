@@ -183,8 +183,23 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                     }
                                     sb.Append("</div>");
                                     break;
+                                case "B":
+                                    sb.Append("<div>");
+                                    if (p.Title != null)
+                                        sb.Append("<h2>" + p.Title + "</h2>");
+                                    if (p.Html != null)
+                                        sb.Append("<div>" + p.Html + "</div>");
+                                    if (p.Image != null)
+                                    {
+                                        sb.Append("<div>");
+                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                        sb.Append("</div>");
+                                    }
+
+                                    sb.Append("</div>");
+                                    break;
                                 default:
-                                    sb.Append("<div class='row'>");
+                                    sb.Append("<div>");
                                     if (p.Title != null)
                                         sb.Append("<h2>" + p.Title + "</h2>");
                                     if (p.Image != null)

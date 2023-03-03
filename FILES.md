@@ -1,5 +1,13 @@
 ##### Modified files per commit
 ###### en cours
+- DesktopModules\AIS\Club News Detail\Control.ascx.cs
+- DesktopModules\AIS\News Detail\Control.ascx
+- DesktopModules\AIS\News Detail\Control.ascx.cs
+- DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+- DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
+- DesktopModules\RazorModules\Block Content\_BlockContent.cshtml
+- DesktopModules\RazorModules\Block Content\BlockContent.ascx
+- DesktopModules\RazorModules\Block Content\BlockContent.ascx.cs
 
 ###### 01/03/2023
 - DesktopModules\AIS\Club Contact Form\Contact.ascx

@@ -1,0 +1,1 @@
+<%@ Control AutoEventWireup="false" Language="C#" Inherits="BlockContent" CodeFile="BlockContent.ascx.cs" %>
