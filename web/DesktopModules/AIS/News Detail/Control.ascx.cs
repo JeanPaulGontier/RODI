@@ -78,7 +78,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        string newsid = (""+Request.QueryString["newsid"]);
+        string newsid = ("" + Request.QueryString["newsid"]);
         if (newsid == "")
             Functions.Error(new Exception("Newsid inconnu : " + newsid));
         News news = DataMapping.GetNews(newsid);
@@ -128,180 +128,181 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 
             //LBL_Detail.Text = texte;
 
-            string o = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
-            
+            string o = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
+
             if (o == "[]" || o == "")
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<div>");
                 if (news.photo != "")
                 {
-                    
-                    sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title='" + news.title + "' />");
-                    
-                sb.Append("</div>");
-                LBL_Detail.Text = sb.ToString();
 
-            } 
+                    sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title='" + news.title + "' />");
+
+                    sb.Append("</div>");
+                    LBL_Detail.Text = sb.ToString();
+
+                }
                 else
-            {
-                List<Block> blocks = (List<Yemon.dnn.BlocksContent.Block>)Yemon.dnn.Functions.Deserialize(o, typeof(List<Block>));
-                sb = new StringBuilder();
-                foreach(Block block in blocks)
                 {
-                    switch (block.Type)
+                    List<Block> blocks = (List<Yemon.dnn.BlocksContent.Block>)Yemon.dnn.Functions.Deserialize(o, typeof(List<Block>));
+                    sb = new StringBuilder();
+                    foreach (Block block in blocks)
                     {
-                        case "ImageText":
-                            Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
-                            switch (p.Position)
-                            {
-                                case "G":
-                                    sb.Append("<div class='row'>");
-                                    if (p.Title != null)
-                                        sb.Append("<h2 class='col-sm-12'>"+p.Title+"</h2>");
-                                    if(p.Image!=null)
-                                    {
-                                        sb.Append("<div class='col-sm-6'>");
-                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid="+p.Image.GUID+"' title='"+p.Image.Name+"' />");
-                                        sb.Append("</div>");
-                                    }
-                                    if(p.Html!=null)
-                                        sb.Append("<div class='col-sm-6'>"+p.Html+"</div>");
-                                    sb.Append("</div>");
-                                    break;
-                                case "D":
-                                    sb.Append("<div class='row'>");
-                                    if (p.Title != null)
-                                        sb.Append("<h2 class='col-sm-12'>" + p.Title + "</h2>");
-                                    if (p.Html != null)
-                                        sb.Append("<div class='col-sm-6'>" + p.Html + "</div>");
-                                    if (p.Image != null)
-                                    {
-                                        sb.Append("<div class='col-sm-6'>");
-                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
-                                        sb.Append("</div>");
-                                    }
-                                    sb.Append("</div>");
-                                    break;
-                                case "B":
-                                    sb.Append("<div>");
-                                    if (p.Title != null)
-                                        sb.Append("<h2>" + p.Title + "</h2>");
-                                    if (p.Html != null)
-                                        sb.Append("<div>" + p.Html + "</div>");
+                        switch (block.Type)
+                        {
+                            case "ImageText":
+                                Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                                switch (p.Position)
+                                {
+                                    case "G":
+                                        sb.Append("<div class='row'>");
+                                        if (p.Title != null)
+                                            sb.Append("<h2 class='col-sm-12'>" + p.Title + "</h2>");
                                         if (p.Image != null)
-                                    {
-                                        sb.Append("<div>");
-                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                        {
+                                            sb.Append("<div class='col-sm-6'>");
+                                            sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                            sb.Append("</div>");
+                                        }
+                                        if (p.Html != null)
+                                            sb.Append("<div class='col-sm-6'>" + p.Html + "</div>");
                                         sb.Append("</div>");
-                                    }
-                                   
-                                    sb.Append("</div>");
-                                    break;
-                                default:
-                                    sb.Append("<div>");
-                                    if (p.Title != null)
-                                        sb.Append("<h2>" + p.Title + "</h2>");
-                                    if (p.Image != null)
-                                    {
-                                        sb.Append("<div>");
-                                        sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                        break;
+                                    case "D":
+                                        sb.Append("<div class='row'>");
+                                        if (p.Title != null)
+                                            sb.Append("<h2 class='col-sm-12'>" + p.Title + "</h2>");
+                                        if (p.Html != null)
+                                            sb.Append("<div class='col-sm-6'>" + p.Html + "</div>");
+                                        if (p.Image != null)
+                                        {
+                                            sb.Append("<div class='col-sm-6'>");
+                                            sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                            sb.Append("</div>");
+                                        }
                                         sb.Append("</div>");
-                                    }
-                                    if (p.Html != null)
-                                        sb.Append("<div>" + p.Html + "</div>");
-                                    sb.Append("</div>");
-                                    break;
+                                        break;
+                                    case "B":
+                                        sb.Append("<div>");
+                                        if (p.Title != null)
+                                            sb.Append("<h2>" + p.Title + "</h2>");
+                                        if (p.Html != null)
+                                            sb.Append("<div>" + p.Html + "</div>");
+                                        if (p.Image != null)
+                                        {
+                                            sb.Append("<div>");
+                                            sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                            sb.Append("</div>");
+                                        }
+
+                                        sb.Append("</div>");
+                                        break;
+                                    default:
+                                        sb.Append("<div>");
+                                        if (p.Title != null)
+                                            sb.Append("<h2>" + p.Title + "</h2>");
+                                        if (p.Image != null)
+                                        {
+                                            sb.Append("<div>");
+                                            sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + p.Image.GUID + "' title='" + p.Image.Name + "' />");
+                                            sb.Append("</div>");
+                                        }
+                                        if (p.Html != null)
+                                            sb.Append("<div>" + p.Html + "</div>");
+                                        sb.Append("</div>");
+                                        break;
                                 }
-                            break;
-                        case "FileCollection":
-                            Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
-                            if (fc.Title != null)
-                            {
-                                sb.Append("<h2>"+fc.Title+"</h2>");
-                            }
-                            if (fc.Files.Count > 0)
-                            {
-                                sb.Append("<ul>");
+                                break;
+                            case "FileCollection":
+                                Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                                if (fc.Title != null)
+                                {
+                                    sb.Append("<h2>" + fc.Title + "</h2>");
+                                }
+                                if (fc.Files.Count > 0)
+                                {
+                                    sb.Append("<ul>");
                                     foreach (var f in fc.Files)
                                     {
-                                        sb.Append("<li><a href='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid="+f.GUID+"' class='btn btn-link'>"+f.Name+"</a></li>");
+                                        sb.Append("<li><a href='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + f.GUID + "' class='btn btn-link'>" + f.Name + "</a></li>");
                                     }
-                                sb.Append("</ul>");
-                            }
-                            break;
-                        case "ImageCollection":
-                            Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
-                            if (ic.Title != null)
-                            {
-                                sb.Append("<h2>" + ic.Title + "</h2>");                                
-                            }
-                            if (ic.Images.Count > 0)
-                            {
-                                foreach (var i in ic.Images)
-                                {
-                                    sb.Append("<span>");
-                                    sb.Append("<img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + i.GUID + "' width='100%' title='" + i.Name + "' />");
-                                    sb.Append("</span>");
+                                    sb.Append("</ul>");
                                 }
-                            }
-                            break;
-                        case "Raw":
-                            Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
-                            sb.Append("<div>"+r.Html+"</div>");
-                            break;
-                        case "Video":
-                            Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
-                            if (v.Title != null)
-                            {
-                                sb.Append("<h2>" + v.Title + "</h2>");
-                            }
-                            sb.Append("<div id='container" + block.Guid + "'>");
-                            sb.Append("    <iframe width='100%' id='video" + block.Guid + "' class='video' src='" + v.Url + "' allowfullscreen=''></iframe>");
-                            sb.Append("</div>");
-                            sb.Append("<script>");
-                            sb.Append(
-                                "if (!resize) {" +
-                                "var resize = [];" +
-                                "}" +
-                                    "resize['@block.Guid'] = function() {" +
+                                break;
+                            case "ImageCollection":
+                                Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+                                if (ic.Title != null)
+                                {
+                                    sb.Append("<h2>" + ic.Title + "</h2>");
+                                }
+                                if (ic.Images.Count > 0)
+                                {
+                                    foreach (var i in ic.Images)
+                                    {
+                                        sb.Append("<span>");
+                                        sb.Append("<img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + i.GUID + "' width='100%' title='" + i.Name + "' />");
+                                        sb.Append("</span>");
+                                    }
+                                }
+                                break;
+                            case "Raw":
+                                Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
+                                sb.Append("<div>" + r.Html + "</div>");
+                                break;
+                            case "Video":
+                                Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
+                                if (v.Title != null)
+                                {
+                                    sb.Append("<h2>" + v.Title + "</h2>");
+                                }
+                                sb.Append("<div id='container" + block.Guid + "'>");
+                                sb.Append("    <iframe width='100%' id='video" + block.Guid + "' class='video' src='" + v.Url + "' allowfullscreen=''></iframe>");
+                                sb.Append("</div>");
+                                sb.Append("<script>");
+                                sb.Append(
+                                    "if (!resize) {" +
+                                    "var resize = [];" +
+                                    "}" +
+                                        "resize['@block.Guid'] = function() {" +
 
 
-                                "var ratio = 16 / 9;" +
-                                "const videoIFrame = document.getElementById('video@(block.Guid)');" +
-                                "const videoContainer = document.getElementById('container@(block.Guid)');" +
-                                "var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);" +
-                                "videoIFrame.style.height = Math.ceil(width / ratio) + 'px';" +
-                                "videoContainer.style.height = (width / ratio) + 'px';" +
-                                "}" +
-                                "$(window).resize(resize['@block.Guid']);" +
-                                "$(document).ready(function () {" +
-                                    "resize['@block.Guid']();" +
-                                "});" +
-                                "</script>");
-                            break;
-                                                }
+                                    "var ratio = 16 / 9;" +
+                                    "const videoIFrame = document.getElementById('video@(block.Guid)');" +
+                                    "const videoContainer = document.getElementById('container@(block.Guid)');" +
+                                    "var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);" +
+                                    "videoIFrame.style.height = Math.ceil(width / ratio) + 'px';" +
+                                    "videoContainer.style.height = (width / ratio) + 'px';" +
+                                    "}" +
+                                    "$(window).resize(resize['@block.Guid']);" +
+                                    "$(document).ready(function () {" +
+                                        "resize['@block.Guid']();" +
+                                    "});" +
+                                    "</script>");
+                                break;
+                        }
+                    }
+                    LBL_Detail.Text = sb.ToString();
                 }
-                LBL_Detail.Text = sb.ToString();
-            }
-            
-            LBL_Date.Text = news.dt.ToShortDateString();
-            //Image1.ImageUrl = news.GetPhoto();
-            //Image1.Visible = Image1.ImageUrl != "";
-            //HL_Url.NavigateUrl = news.GetUrl();
-            //HL_Url.Text = news.url_text;
-            //HL_Url.Visible = news.url.Trim() != "";
-            //LBL_Url.Visible = HL_Url.Visible;
 
-            Club c = DataMapping.GetClub(news.cric);
-            if(c != null)
-            {
-                HLK_Club.Text = c.name;
-                HLK_Club.NavigateUrl = Request.Url.AbsoluteUri.ToString().Replace(Request.Url.PathAndQuery, "") + "/" + c.seo + "/";
-            }
-            else
-            {
-                HLK_Club.Visible = false;
+                LBL_Date.Text = news.dt.ToShortDateString();
+                //Image1.ImageUrl = news.GetPhoto();
+                //Image1.Visible = Image1.ImageUrl != "";
+                //HL_Url.NavigateUrl = news.GetUrl();
+                //HL_Url.Text = news.url_text;
+                //HL_Url.Visible = news.url.Trim() != "";
+                //LBL_Url.Visible = HL_Url.Visible;
+
+                Club c = DataMapping.GetClub(news.cric);
+                if (c != null)
+                {
+                    HLK_Club.Text = c.name;
+                    HLK_Club.NavigateUrl = Request.Url.AbsoluteUri.ToString().Replace(Request.Url.PathAndQuery, "") + "/" + c.seo + "/";
+                }
+                else
+                {
+                    HLK_Club.Visible = false;
+                }
             }
         }
     }
