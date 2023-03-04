@@ -81,62 +81,48 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
         string newsid = ("" + Request.QueryString["newsid"]);
         if (newsid == "")
             Functions.Error(new Exception("Newsid inconnu : " + newsid));
+
         News news = DataMapping.GetNews(newsid);
         if (news != null)
         {
             LBL_Titre.Text = news.title;
 
-            //string texte = news.text;
-            //texte = texte.Replace(Environment.NewLine, "<br />");
-            //if(texte.IndexOf("http")>-1)
-            //{
-            //    int st = 0;
-            //    int index = texte.IndexOf("http");
-            //    while (st <= texte.Length && index > -1)
-            //    {
-            //        index = texte.IndexOf("http",index);
-            //        int index1 = texte.IndexOf("<", index);
-            //        if (index1>index)
-            //        {
-            //            string url = texte.Substring(index, index1 - index);
-
-            //            url = "<a href=\""+url+"\" target=\"_blank\">" + url + "</a>";
-            //            texte = texte.Substring(0, index) + url + texte.Substring(index1);
-
-            //            st = texte.Substring(0, index).Length + url.Length;                    
-            //        }
-            //        else
-            //        {
-            //            int index2 = texte.IndexOf("<", index);
-            //            if (index2 > index)
-            //            {
-            //                string url = texte.Substring(index, index2 - index);
-
-            //                url = "<a href=\"" + url + "\" target=\"_blank\">" + url + "</a>";
-            //                texte = texte.Substring(0, index) + url + texte.Substring(index2);
-
-            //                st = texte.Substring(0, index).Length + url.Length;
-            //            }
-            //            else
-            //            { 
-            //                st = index + 6;
-            //            }
-            //        }
-            //        index = texte.IndexOf("http",st);
-            //    }
-            //}
-
-            //LBL_Detail.Text = texte;
-
-            string o = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
-
-            if (o == "[]" || o == "")
+            List<Block> blocks = new List<Block>();
+            try
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append("<div>");
+                string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + news.id);
+                if (sblocks != "")
+                {
+                    blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+                }
+
+            }
+            catch
+            {
+
+            }
+            StringBuilder sb = new StringBuilder();
+
+            if (blocks.Count == 0)
+            {
                 if (news.photo != "")
                 {
+                    sb.Append("<div>");
+                    sb.Append("<img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title = '" + news.title + "' />");
+                    sb.Append("</div>");
 
+                }
+                else
+                {
+                    sb.Append("<div>Il n'y a pas de détail...</div>");
+                }
+            }
+            else
+            {
+              
+                if (news.photo != "")
+                {
+                    sb.Append("<div>");
                     sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title='" + news.title + "' />");
 
                     sb.Append("</div>");
@@ -145,8 +131,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                 }
                 else
                 {
-                    List<Block> blocks = (List<Yemon.dnn.BlocksContent.Block>)Yemon.dnn.Functions.Deserialize(o, typeof(List<Block>));
-                    sb = new StringBuilder();
+                   
                     foreach (Block block in blocks)
                     {
                         switch (block.Type)
