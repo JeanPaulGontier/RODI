@@ -33,392 +33,20 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
             
 
         }
-        //if (FU_RI.UploadedFiles.Count > 0)
-        //{
-
-        //    UploadedFile file = FU_RI.UploadedFiles[0];
-        //    if(Const.DISTRICT_ID==1700)
-        //        file.SaveAs(Server.MapPath(PortalSettings.HomeDirectory + "ClubsandMembersinYourDistrictList.xlsx"), true);
-        //    else
-        //        file.SaveAs(Server.MapPath(PortalSettings.HomeDirectory + "MembersInAClub.xls"), true);
-
-        //    Import_Fichier_MembersInAClub();
-
-        //    dvFileUpload.Visible = false;
-        //}
+   
     }
 
-    //protected void btn_import_ri_Click(object sender, EventArgs e)
-    //{
-    //    Import_Fichier_MembersInAClub();
-
-    //    //Import_Fichier_MyRotaryAccountStatusofMembers();
-    //}
+  
     void Import_Fichier_MembersInAClub()
     {
-        //if (Const.DISTRICT_ID == 1700 || Const.DISTRICT_ID == 1730)
-            Import_Fichier_MembersInAClub_2021(); // le fichier issu du RI est spécifique sur le 1700
-        /*else if (Const.DISTRICT_ID == 1770 )
-            Import_Fichier_MembersInAClub_1770_1730(); // le fichier issu du RI est spécifique sur le 1770
-        else
-            Import_Fichier_MembersInAClub_Autres();*/
+        
+            Import_Fichier_MembersInAClub_2021(); 
+       
     }
-    void Import_Fichier_MembersInAClub_1770_1730()
-    {
-        Aspose.Cells.License licenseCells = new Aspose.Cells.License();
-        //licenseCells.SetLicense("Aspose.Total.lic");
 
-        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        SqlTransaction trans = null;
-        SqlCommand sql = null;
-
-        try
-        {
-
-            Workbook xls = new Workbook(Server.MapPath(PortalSettings.HomeDirectory + "MembersInAClub.xls"));
-
-            conn.Open();
-            trans = conn.BeginTransaction();
-
-            sql = new SqlCommand("DELETE FROM ais_import_ri", conn, trans);
-            sql.ExecuteNonQuery();
-
-
-            sql = new SqlCommand("SELECT name,cric FROM ais_clubs ORDER BY name", conn,trans);
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sql);
-            DataSet dataSet = new DataSet();
-            dataAdapter.Fill(dataSet);
-            DataTable clubs = dataSet.Tables[0];
-
-
-
-            Worksheet sheet = xls.Worksheets[0];
-            int col = 0;
-            int row = 1;
-            int cric = 0;
-            int nbclub = 0;
-            
-            while (row < 65535)
-            {
-                Cell cell = sheet.Cells[row, col];
-                string valeur = "" + cell.Value;
-                cell = sheet.Cells[row, col+1];
-                string valeur1 = "" + cell.Value;
-                if (valeur.Equals("Club Name :"))
-                {
-                    Cell cell1 = sheet.Cells[row, col + 1];
-                    string[] st = ("" + cell1.Value).Split('(');
-                    if (st.Length > 2)
-                    {
-                        int.TryParse(st[2].Replace(")", ""), out cric);
-                        if (cric != 0)
-                            nbclub++;
-                    }
-                    else if (st.Length > 1)
-                    {
-                        int.TryParse(st[1].Replace(")", ""), out cric);
-                        if (cric != 0)
-                            nbclub++;
-                    }
-                    if(cric<10000)
-                    {
-                        // le cric n'est pas complet car tronqué dans le fichier excel
-                        string deb = "";
-                        foreach (DataRow r in clubs.Rows)
-                        {
-                            if((""+ r["name"]).Equals("PORTO VECCHIO"))
-                            {
-
-                            }
-                            //deb += ("" + cell1.Value).ToLower()+" - "+ ("" + r["name"]).ToLower() + Environment.NewLine;
-                            if ((""+cell1.Value).ToLower().StartsWith((""+r["name"]).ToLower()))
-                            {
-                                int.TryParse((""+r["cric"]), out cric);
-                               
-                                break;
-                            }
-                        }
-                    }
-                    //string[] st = ("" + cell1.Value).Split('(');
-                    //if (st.Length > 2)
-                    //{
-                    //    int.TryParse(st[2].Replace(")", ""), out cric);
-                    //    if (cric != 0)
-                    //        nbclub++;
-                    //}
-                    //else if (st.Length > 1)
-                    //{
-                    //    int.TryParse(st[1].Replace(")", ""), out cric);
-                    //    if (cric != 0)
-                    //        nbclub++;
-                    //}
-                    row++;
-
-                }
-                else if (valeur1.StartsWith("Total Active Members"))
-                {
-                    cric = 0;
-                }
-                else if (cric != 0 && !valeur.Equals("") && (valeur.Equals("Y") || valeur.Equals("N")))
-                {
-                    string nim = "";
-
-                    string name = "" + sheet.Cells[row, col + 1].Value;
-                    name = name.Trim().ToLower().Replace("\n"," ").Replace("\r", "");
-                    int idx = name.IndexOf(" (");
-                    if(idx>-1)
-                    {
-                        nim = name.Substring(idx).Replace("(", "").Replace(")","").Trim() ;
-                    }
-                    name = name.Replace("(" + nim + ")", "").Trim();
-                    string[] names = name.Split(',');
-                    
-                    string[] firstnameArray = names[1].Trim().Split('-');
-                    string firstNameFinal = "";
-                    foreach(string s in firstnameArray)
-                    {
-                        
-                        firstNameFinal = firstNameFinal + UppercaseFirst(s) + "-";
-                    }
-
-                    firstNameFinal = firstNameFinal.TrimEnd('-');
-
-                    name = firstNameFinal + " " + names[0].ToUpper();
-
-                    string email = "";// + sheet.Cells[row, col + 3].Value;
-
-                    sql = new SqlCommand("INSERT INTO ais_import_ri (cric,nim,membername,email,lastname,firstname,clubname) VALUES (@cric,@nim,@membername,@email,@lastname,@firstname,(select name from ais_clubs where cric=@cric))", conn, trans);
-                    sql.Parameters.AddWithValue("cric", cric);
-                    sql.Parameters.AddWithValue("nim", nim);
-                    sql.Parameters.AddWithValue("membername", name);
-                    sql.Parameters.AddWithValue("email", email);
-                    sql.Parameters.AddWithValue("lastname", names[0].ToUpper());
-                    sql.Parameters.AddWithValue("firstname", firstNameFinal);
-                    sql.ExecuteNonQuery();
-                }
-                row++;
-            }
-            trans.Commit();
-
-            sql = new SqlCommand("SELECT * FROM ais_import_ri ORDER BY CRIC", conn);
-            SqlDataAdapter da = new SqlDataAdapter(sql);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-
-            members.DataSource = ds.Tables[0];
-            members.DataBind();
-
-            lbl_result.Text = ds.Tables[0].Rows.Count + " membres importés, dans " + nbclub + " clubs";
-            panel_result.Visible = true;
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where clubname=''", conn);
-            int nb_club_noname = int.Parse("" + sql.ExecuteScalar());
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where nim=0", conn);
-            int nb_nim_null = int.Parse("" + sql.ExecuteScalar());
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where cric<10000", conn);
-            int nb_false_cric = int.Parse("" + sql.ExecuteScalar());
-
-            // il ne faut pas d'erreur pour pouvoir faire le rapprochement
-            btn_rapprochement.Visible = (nb_club_noname+ nb_nim_null+ nb_false_cric)==0;
-            if(!btn_rapprochement.Visible)
-                result_rapprochement.Text = "Impossible de procéder au rapprochement, il y a des erreurs dans les doonées (vérifier, nom club, cric et nim dans le fichier excel)";
-
-        }
-        catch (Exception ee)
-        {
-            if (trans != null)
-                trans.Rollback();
-
-            Functions.Error(ee);
-        }
-        finally
-        {
-            conn.Close();
-        }
-    }
-    void Import_Fichier_MembersInAClub_Autres()
-    {
-        Aspose.Cells.License licenseCells = new Aspose.Cells.License();
-        //licenseCells.SetLicense("Aspose.Total.lic");
-
-        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        SqlTransaction trans = null;
-        SqlCommand sql = null;
-
-        try
-        {
-
-            Workbook xls = new Workbook(Server.MapPath(PortalSettings.HomeDirectory + "MembersInAClub.xls"));
-
-            conn.Open();
-            trans = conn.BeginTransaction();
-
-            sql = new SqlCommand("DELETE FROM ais_import_ri", conn, trans);
-            sql.ExecuteNonQuery();
-
-
-            sql = new SqlCommand("SELECT name,cric FROM ais_clubs ORDER BY name", conn, trans);
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sql);
-            DataSet dataSet = new DataSet();
-            dataAdapter.Fill(dataSet);
-            DataTable clubs = dataSet.Tables[0];
-
-
-
-            Worksheet sheet = xls.Worksheets[0];
-            int col = 0;
-            int row = 1;
-            int cric = 0;
-            int nbclub = 0;
-
-            while (row < 65535)
-            {
-                Cell cell = sheet.Cells[row, col];
-                string valeur = "" + cell.Value;
-                cell = sheet.Cells[row, col + 1];
-                string valeur1 = "" + cell.Value;
-                if (valeur.Equals("Club Name :"))
-                {
-                    //                    Cell cell1 = sheet.Cells[row, col + 1];
-                    Cell cell1 = sheet.Cells[row, col + 2]; // modif 08/01/2020
-                    string[] st = ("" + cell1.Value).Split('(');
-                    if (st.Length > 2)
-                    {
-                        int.TryParse(st[2].Replace(")", ""), out cric);
-                        if (cric != 0)
-                            nbclub++;
-                    }
-                    else if (st.Length > 1)
-                    {
-                        int.TryParse(st[1].Replace(")", ""), out cric);
-                        if (cric != 0)
-                            nbclub++;
-                    }
-                    if (cric < 10000)
-                    {
-                        // le cric n'est pas complet car tronqué dans le fichier excel
-                        string deb = "";
-                        foreach (DataRow r in clubs.Rows)
-                        {
-                            if (("" + r["name"]).Equals("PORTO VECCHIO"))
-                            {
-
-                            }
-                            //deb += ("" + cell1.Value).ToLower()+" - "+ ("" + r["name"]).ToLower() + Environment.NewLine;
-                            if (("" + cell1.Value).ToLower().StartsWith(("" + r["name"]).ToLower()))
-                            {
-                                int.TryParse(("" + r["cric"]), out cric);
-
-                                break;
-                            }
-                        }
-                    }
-                    //string[] st = ("" + cell1.Value).Split('(');
-                    //if (st.Length > 2)
-                    //{
-                    //    int.TryParse(st[2].Replace(")", ""), out cric);
-                    //    if (cric != 0)
-                    //        nbclub++;
-                    //}
-                    //else if (st.Length > 1)
-                    //{
-                    //    int.TryParse(st[1].Replace(")", ""), out cric);
-                    //    if (cric != 0)
-                    //        nbclub++;
-                    //}
-                    row++;
-
-                }
-                else if (valeur1.StartsWith("Total Active Members"))
-                {
-                    cric = 0;
-                }
-                else if (cric != 0 && !valeur.Equals("") && (valeur.Equals("Y") || valeur.Equals("N")))
-                {
-                    string nim = "";
-
-                    string name = "" + sheet.Cells[row, col + 1].Value;
-                    name = name.Trim().ToLower().Replace("\n", " ").Replace("\r", "");
-                    int idx = name.IndexOf(" (");
-                    if (idx > -1)
-                    {
-                        nim = name.Substring(idx).Replace("(", "").Replace(")", "").Trim();
-                    }
-                    name = name.Replace("(" + nim + ")", "").Trim();
-                    string[] names = name.Split(',');
-
-                    string[] firstnameArray = names[1].Trim().Split('-');
-                    string firstNameFinal = "";
-                    foreach (string s in firstnameArray)
-                    {
-
-                        firstNameFinal = firstNameFinal + UppercaseFirst(s) + "-";
-                    }
-
-                    firstNameFinal = firstNameFinal.TrimEnd('-');
-
-                    name = firstNameFinal + " " + names[0].ToUpper();
-
-                    string email = "" + sheet.Cells[row, col + 3].Value;
-
-                    sql = new SqlCommand("INSERT INTO ais_import_ri (cric,nim,membername,email,lastname,firstname,clubname) VALUES (@cric,@nim,@membername,@email,@lastname,@firstname,(select name from ais_clubs where cric=@cric))", conn, trans);
-                    sql.Parameters.AddWithValue("cric", cric);
-                    sql.Parameters.AddWithValue("nim", nim);
-                    sql.Parameters.AddWithValue("membername", name);
-                    sql.Parameters.AddWithValue("email", email);
-                    sql.Parameters.AddWithValue("lastname", names[0].ToUpper());
-                    sql.Parameters.AddWithValue("firstname", firstNameFinal);
-                    sql.ExecuteNonQuery();
-                }
-                row++;
-            }
-            trans.Commit();
-
-            sql = new SqlCommand("SELECT * FROM ais_import_ri ORDER BY CRIC", conn);
-            SqlDataAdapter da = new SqlDataAdapter(sql);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-
-            members.DataSource = ds.Tables[0];
-            members.DataBind();
-
-            lbl_result.Text = ds.Tables[0].Rows.Count + " membres importés, dans " + nbclub + " clubs";
-            panel_result.Visible = true;
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where clubname=''", conn);
-            int nb_club_noname = int.Parse("" + sql.ExecuteScalar());
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where nim=0", conn);
-            int nb_nim_null = int.Parse("" + sql.ExecuteScalar());
-
-            sql = new SqlCommand("SELECT count(*) FROM ais_import_ri where cric<10000", conn);
-            int nb_false_cric = int.Parse("" + sql.ExecuteScalar());
-
-            // il ne faut pas d'erreur pour pouvoir faire le rapprochement
-            btn_rapprochement.Visible = (nb_club_noname + nb_nim_null + nb_false_cric) == 0;
-            if (!btn_rapprochement.Visible)
-                result_rapprochement.Text = "Impossible de procéder au rapprochement, il y a des erreurs dans les doonées (vérifier, nom club, cric et nim dans le fichier excel)";
-
-        }
-        catch (Exception ee)
-        {
-            if (trans != null)
-                trans.Rollback();
-
-            Functions.Error(ee);
-        }
-        finally
-        {
-            conn.Close();
-        }
-    }
     void Import_Fichier_MembersInAClub_2021()
     {
-        Aspose.Cells.License licenseCells = new Aspose.Cells.License();
-        //licenseCells.SetLicense("Aspose.Total.lic");
-
+   
         SqlConnection conn = new SqlConnection(Config.GetConnectionString());
         SqlTransaction trans = null;
         SqlCommand sql = null;
@@ -543,12 +171,6 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 default:
                                     break;
                             }
-                               
-   
-   
-   
-
-
                         }
                         #endregion
                         //if (active!="Honorary")
@@ -790,15 +412,17 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                         { 
                             if ((int)row["nim"] == m.nim)
                             {
-                                m.email = "" + row["email"];
-                                m.name = "" + row["firstname"];
-                                m.surname = "" + row["lastname"];
-                                m.civility = "" + row["sexe"];
-                                if(row["admission"] != System.DBNull.Value)
-                                    m.year_membership_rotary = (DateTime)row["admission"];
-                                else
-                                    m.year_membership_rotary = null;
-                                m.telephone = "" + row["telephone"];
+                                m.cric = (int)row["cric"];
+                                m.club_name = "" + row["clubname"];
+                                //m.email = "" + row["email"];
+                                //m.name = "" + row["firstname"];
+                                //m.surname = "" + row["lastname"];
+                                //m.civility = "" + row["sexe"];
+                                //if(row["admission"] != System.DBNull.Value)
+                                //    m.year_membership_rotary = (DateTime)row["admission"];
+                                //else
+                                //    m.year_membership_rotary = null;
+                                //m.telephone = "" + row["telephone"];
                                 
                                 //m.adress_1 = "" + row["ad1"];
                                 //m.adress_2 = "" + row["ad2"];
@@ -806,11 +430,11 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 //m.zip_code = "" + row["cp"];
                                 //m.town = "" + row["ville"];
                                 //m.country = "" + row["pays"];
-                                m.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
-                                m.professionnal_zip_code = "" + row["cp"];
-                                m.professionnal_town = "" + row["ville"];
+                                //m.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
+                                //m.professionnal_zip_code = "" + row["cp"];
+                                //m.professionnal_town = "" + row["ville"];
                                 
-                                m.honorary_member = honneur ? Const.YES : Const.NO;
+                                //m.honorary_member = honneur ? Const.YES : Const.NO;
                                 //m.base_dtupdate = DateTime.Now;
                                 DataMapping.UpdateMember(m);
                                 result += "Mise à jour : " + row["firstname"] + " " + row["lastname"] + " (" + club.name + ")<br/>";
@@ -826,12 +450,12 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 // on doit updater le club du membre
                                 mm.cric = club.cric;
                                 mm.club_name = club.name;
-                                mm.email = "" + row["email"];
-                                mm.name = "" + row["firstname"];
-                                mm.surname = "" + row["lastname"];
-                                mm.civility = "" + row["sexe"];
-                                mm.year_membership_rotary = (DateTime)row["admission"];
-                                mm.telephone = "" + row["telephone"];
+                                //mm.email = "" + row["email"];
+                                //mm.name = "" + row["firstname"];
+                                //mm.surname = "" + row["lastname"];
+                                //mm.civility = "" + row["sexe"];
+                                //mm.year_membership_rotary = (DateTime)row["admission"];
+                                //mm.telephone = "" + row["telephone"];
                                 //mm.adress_1 = "" + row["ad1"];
                                 //mm.adress_2 = "" + row["ad2"];
                                 //mm.adress_3 = "" + row["ad3"];
@@ -839,11 +463,11 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 //mm.town = "" + row["ville"];
                                 //mm.country = "" + row["pays"];
 
-                                mm.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
-                                mm.professionnal_zip_code = "" + row["cp"];
-                                mm.professionnal_town = "" + row["ville"];
+                                //mm.professionnal_adress = ("" + row["ad1"] + " " + row["ad2"] + " " + row["ad3"]).Trim();
+                                //mm.professionnal_zip_code = "" + row["cp"];
+                                //mm.professionnal_town = "" + row["ville"];
 
-                                mm.honorary_member = honneur ? Const.YES:Const.NO;
+                                //mm.honorary_member = honneur ? Const.YES:Const.NO;
                                 //mm.base_dtupdate = DateTime.Now;
 
                                 try
