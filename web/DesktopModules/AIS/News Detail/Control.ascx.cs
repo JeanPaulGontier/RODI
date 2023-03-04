@@ -120,18 +120,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
             else
             {
               
-                if (news.photo != "")
-                {
-                    sb.Append("<div>");
-                    sb.Append(" <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=" + news.photo + "' title='" + news.title + "' />");
-
-                    sb.Append("</div>");
-                    LBL_Detail.Text = sb.ToString();
-
-                }
-                else
-                {
-                   
+              
                     foreach (Block block in blocks)
                     {
                         switch (block.Type)
@@ -291,4 +280,3 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
             }
         }
     }
-}
