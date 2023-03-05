@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - http://rodi.aisdev.net                                                    -->
-<!-- Copyright (c) 2012-2016                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#"  AutoEventWireup="true" CodeFile="Membres.ascx.cs" Inherits="DesktopModules_AIS_Members_Liste_Presentation" %>
+﻿<%@ Control Language="C#"  AutoEventWireup="true" CodeFile="Membres.ascx.cs" Inherits="DesktopModules_AIS_Members_Liste_Presentation" %>
 
 <asp:Panel runat="server" ID="PanelSearch">
     <asp:Label ID="Label1" runat="server" Text="Recherche :"></asp:Label>

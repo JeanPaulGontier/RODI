@@ -1,0 +1,60 @@
+﻿@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using AIS
+@using Yemon.dnn
+@{
+    string userid = "" + Request["userid"];
+    int UserId = 0;
+    int.TryParse(userid, out UserId);
+    if (String.IsNullOrEmpty(userid) || UserId == 0)
+    {
+        <h1>Membre introuvable...</h1>
+        return;
+    }
+
+    Member member = AIS.DataMapping.GetMemberByUserID(UserId);
+    if (member == null)
+    {
+        <h1>Membre introuvable...</h1>
+        return;
+    }
+
+
+
+}
+<div class="text-center">
+    <p><img src="@member.GetPhoto()" /></p>
+    <p><strong>@member.name @member.surname</strong></p>
+    <p>@member.industry</p>
+    <p>@member.job</p>
+
+    <p>
+        @{
+            string label = (member.civility == "M" ? "Le" : "La") + " contacter";
+
+
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
+            if (userInfo != null && userInfo.UserID > -1)
+            {
+                <a class="btn btn-primary" href="javascript:dnnModal.show('/AIS/contact.aspx?id=@member.id&popUp=true',false,350,850,false);">@label</a>
+            }
+            else
+            {
+                <a class="btn btn-primary" href="javascript:dnnModal.show('/AIS/contact.aspx?id=@member.id&popUp=true',false,350,500,false);">@label</a>
+            }
+
+        }
+    </p>
+</div>

@@ -2828,8 +2828,8 @@ namespace AIS
 
                 if (where != "")
                     where += " AND ";
-                where += " userid in (SELECT DISTINCT id_user FROM " + Const.TABLE_PREFIX + "subscription WHERE  type = @type and dt_end >= @dt_end and active = 'o' AND id_content IN (SELECT id FROM " + Const.TABLE_PREFIX + "content WHERE published = 'o')) ";
-
+                // where += " userid in (SELECT DISTINCT id_user FROM " + Const.TABLE_PREFIX + "subscription WHERE  type = @type and dt_end >= @dt_end and active = 'o' AND id_content IN (SELECT id FROM " + Const.TABLE_PREFIX + "content WHERE published = 'o')) ";
+                where += " presentation ='"+Const.YES+"' ";
 
 
 

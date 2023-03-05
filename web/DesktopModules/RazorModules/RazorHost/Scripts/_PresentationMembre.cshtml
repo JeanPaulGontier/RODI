@@ -1,0 +1,43 @@
+@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using AIS
+@using Yemon.dnn
+@{
+    string userid = "" + Request["userid"];
+    int UserId = 0;
+    int.TryParse(userid, out UserId);
+    if (String.IsNullOrEmpty(userid) || UserId == 0)
+    {
+        <h1>Présentation introuvable...</h1>
+        return;
+    }
+
+    Member member = AIS.DataMapping.GetMemberByUserID(UserId);
+    if (member == null || !member.presentation)
+    {
+        <h1>Présentation introuvable...</h1>
+        return;
+    }
+
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
+    PageData["HTML"] = Html;
+    PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
+
+
+}
+@RenderPage("BlocksContent/View.cshtml");
+
