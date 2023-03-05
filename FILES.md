@@ -14,6 +14,11 @@ DesktopModules\RazorModules\Block Content\Settings.ascx
 DesktopModules\RazorModules\Block Content\Settings.ascx.cs
 App_Code\AIS\Meeting.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
+App_Code\AIS\DataMapping.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembreProfil.cshtml
+DesktopModules\AIS\Membres Liste Presentation\Membres.ascx
 ```
 ###### 01/03/2023
 ```txt
