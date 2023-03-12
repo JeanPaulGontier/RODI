@@ -6,7 +6,6 @@
         {
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-        }
-       
+        }       
     }
 </script>
