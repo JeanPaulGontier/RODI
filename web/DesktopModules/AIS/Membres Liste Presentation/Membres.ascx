@@ -11,7 +11,11 @@
 </asp:Panel>
 
 
-
+<style>
+    .presentationColWidth{
+        width:25%
+    }
+</style>
 
 <asp:GridView ID="GridView1" 
     runat="server" 
@@ -27,8 +31,8 @@
     <asp:BoundField DataField="civility" SortExpression="civility" ItemStyle-Width="32" />
     <asp:BoundField DataField="surname" HeaderText="Nom" SortExpression="surname"  />
     <asp:BoundField DataField="name" HeaderText="Prénom" SortExpression="name"  />
-    <asp:BoundField DataField="job" HeaderText="Profession" SortExpression="job" ControlStyle-Width="15%" />
-    <asp:BoundField DataField="industry" HeaderText="Activité" SortExpression="industry" ControlStyle-Width="15%" />
+    <asp:BoundField DataField="job" HeaderText="Profession" SortExpression="job" ItemStyle-CssClass="presentationColWidth" />
+    <asp:BoundField DataField="industry" HeaderText="Activité" SortExpression="industry"  ItemStyle-CssClass="presentationColWidth" />
     <asp:TemplateField HeaderText="" SortExpression="presentation">
             <ItemTemplate>
                 <asp:HyperLink ID="HLK_Presentation" CssClass="btn btn-primary" runat="server" >En voir plus</asp:HyperLink>
