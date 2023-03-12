@@ -27,7 +27,8 @@
     <asp:BoundField DataField="civility" SortExpression="civility" ItemStyle-Width="32" />
     <asp:BoundField DataField="surname" HeaderText="Nom" SortExpression="surname"  />
     <asp:BoundField DataField="name" HeaderText="Prénom" SortExpression="name"  />
-    <asp:BoundField DataField="title" HeaderText="Activité" SortExpression="title" />
+    <asp:BoundField DataField="job" HeaderText="Profession" SortExpression="job" />
+    <asp:BoundField DataField="industry" HeaderText="Activité" SortExpression="industry" />
     <asp:TemplateField HeaderText="" SortExpression="presentation">
             <ItemTemplate>
                 <asp:HyperLink ID="HLK_Presentation" runat="server" >En voir plus                    

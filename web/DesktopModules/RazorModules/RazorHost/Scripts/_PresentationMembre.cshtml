@@ -14,6 +14,8 @@
 @using DotNetNuke.Security.Permissions;
 @using AIS
 @using Yemon.dnn
+@using Yemon.dnn.BlocksContent;
+@using Yemon.dnn.BlocksContent;
 @{
     string userid = "" + Request["userid"];
     int UserId = 0;
@@ -25,9 +27,9 @@
     }
 
     Member member = AIS.DataMapping.GetMemberByUserID(UserId);
-    if (member == null || !member.presentation)
+    if (member == null)
     {
-        <h1>Présentation introuvable...</h1>
+        <h1>Membre introuvable ...</h1>
         return;
     }
 
@@ -38,5 +40,28 @@
     PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
 
 
+    List<Block> blocks = new List<Block>();
+    try
+    {
+        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + PageData["blocksSuffix"]);
+        if (sblocks != "")
+        {
+            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+            PageData["blocks"] = blocks;
+        }
+
+    }
+    catch
+    {
+
+    }
+
+    if(blocks.Count==0 || !member.presentation)
+    {
+        <h1>Le membre n'a pas créé de page de présentation...</h1>
+        return;
+
+    }
 }
 @RenderPage("BlocksContent/View.cshtml")
+

@@ -15,40 +15,71 @@
 @using DotNetNuke.Framework;
 @using AIS;
 @{
-    
+
     Member member = Functions.GetCurrentMember();
-    if(member==null)
+    if (member == null)
     {
         <div class="alert alert-info">La personnalisation de la page professionnelle n'est disponibles que pour les membres</div>
         return;
     }
 
-    if(IsPost)
+    if (IsPost)
     {
         member.presentation = ("" + Request["presentationvisible"]).Equals(Const.YES);
+        member.job = "" + Request["job"];
+        member.industry = "" + Request["industry"];
         if (!DataMapping.UpdateMember(member))
         {
             <div class="alert alert-danger">La mise à jour de votre profil n'a pas fonctionné, veuillez contacter le webmaster</div>
         }
     }
+    <script>
+        function soumettre() {
+            var presentationvisible = $("input[name='presentationvisible']:checked").val();
+            var job = $("#job").val();
+            var industry = $("#industry").val();
+
+            $.post('@Request.RawUrl',
+                {
+                    presentationvisible: presentationvisible,
+                    job: job,
+                    industry: industry
+                },
+                function (data, status) {
+                    if (status != "success") {
+                        alert('Une erreur est survenue...');
+                    }
+                });
+
+        }
+    </script>
+    <div class="alert alert-warning">
+        Vous pouvez créer votre page de présentation professionnelle et la rendre visible, votre nom sera alors mis en évidence dans l'annuaire des membres. Indiquez aussi vos profession et domaine d'activité, qui apparaitront dans le cadre de votre identité.
+    </div>
 
 
-<script>
-    function update(v) {
-        this.document.forms[0].submit();
-    }
-</script>
-<div class="form-group" >
-    <label class="radio-inline">Rendre visible ma page professionnelle :</label>
-    <label class="radio-inline"><input type="radio" value="@Const.YES" name="presentationvisible" onclick="update(this.value)" @(member.presentation ? "checked" : "")>Oui</label>
-    <label class="radio-inline"><input type="radio" value="@Const.NO" name="presentationvisible" onclick="update(this.value)" @(!member.presentation ? "checked" : "")>Non</label>
-</div>
+    <div class="form-group">
+        <label for="job">Profession :</label>
+        <input id="job" type="text" class="form-control" value="@member.job" name="job" onchange="soumettre()" />
+    </div>
+    <div class="form-group">
+        <label for="industry">Domaine d'activité :</label>
+        <input id="industry" type="text" class="form-control" value="@member.industry" name="industry" onchange="soumettre()" />
+    </div>
+
+   
+    <div class="form-group">
+        <label for="presentationvisible">Rendre visible ma page professionnelle :</label>
+        <label class="radio-inline"><input type="radio" value="@Const.YES" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(member.presentation ? "checked" : "")>Oui</label>
+        <label class="radio-inline"><input type="radio" value="@Const.NO" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(!member.presentation ? "checked" : "")>Non</label>
+    </div>
+    <div>&nbsp;</div>
 
     PageData["appID"] = "app" + Dnn.Module.ModuleID;
     PageData["PortalId"] = Dnn.Portal.PortalId;
     PageData["moduleID"] = Dnn.Module.ModuleID;
     PageData["HTML"] = Html;
-    PageData["blocksSuffix"] = "membrepagepro:"+member.nim;
+    PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
 
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);

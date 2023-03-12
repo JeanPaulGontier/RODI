@@ -18,7 +18,11 @@
     var blocksSuffix = PageData["blocksSuffix"];
     var Html = PageData["HTML"];
 
-    List<Block> blocks = new List<Block>();
+    List<Block> blocks = PageData["blocks"];
+    if(blocks==null)
+    {        
+        blocks = new List<Block>();
+    }
     try
     {
         string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix);

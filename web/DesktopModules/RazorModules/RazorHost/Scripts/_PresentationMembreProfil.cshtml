@@ -35,10 +35,10 @@
 
 }
 <div class="text-center">
-    <p><img src="@member.GetPhoto()" /></p>
+    <p><img src="@member.GetPhoto()" title="@member.name @member.surname" /></p>
     <p><strong>@member.name @member.surname</strong></p>
-    <p>@member.industry</p>
-    <p>@member.job</p>
+    <p title="Activité">@member.industry</p>
+    <p title="Profession">@member.job</p>
 
     <p>
         @{
