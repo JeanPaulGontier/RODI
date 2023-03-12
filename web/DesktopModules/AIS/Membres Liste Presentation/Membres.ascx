@@ -31,8 +31,7 @@
     <asp:BoundField DataField="industry" HeaderText="Activité" SortExpression="industry" />
     <asp:TemplateField HeaderText="" SortExpression="presentation">
             <ItemTemplate>
-                <asp:HyperLink ID="HLK_Presentation" runat="server" >En voir plus                    
-                </asp:HyperLink>
+                <asp:HyperLink ID="HLK_Presentation" CssClass="btn btn-primary" runat="server" >En voir plus</asp:HyperLink>
             </ItemTemplate>
         </asp:TemplateField>
    <%-- <asp:BoundField DataField="fonction_metier" HeaderText="Profession" SortExpression="fonction_metier" />
