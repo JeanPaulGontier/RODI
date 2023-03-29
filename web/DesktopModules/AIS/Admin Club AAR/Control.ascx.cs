@@ -1,10 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
-// supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2023
+// by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
 //Version 3, 29 June 2007 Copyright (C) 2007
@@ -81,6 +80,7 @@ using System.Data;
 public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 {
     int nbError = 0;
+    List<Member> members = new List<Member>();
 
     /// <summary>
     /// Crée dynamiquement un panel
@@ -123,23 +123,6 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             HF_Cric.Value = "" + Functions.CurrentCric;
         }
 
-        //if (nbError > 0)
-        //{
-        //    if (nbError == 1)
-        //    {
-        //        lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée chez le rotatien (www.lerotarien.org), vous ne pourrez pas affecter ce membre à un poste.";
-        //    }
-        //    else
-        //    {
-        //        lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que cette erreur n'est pas corrigée chez le rotatien (www.lerotarien.org), vous ne pourrez pas affecter ces membres à un poste.";
-        //    }
-        //    lbl_erreur.Visible = true;
-        //}
-        //else
-        //{
-        //    lbl_erreur.Visible = false;
-        //}
-        
     }
     
     /// <summary>
@@ -157,7 +140,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
         nbError = 0;
 
-        List<Member> members = DataMapping.ListMembers(cric, sort: "name asc");
+        members = DataMapping.ListMembers(cric, sort: "surname asc");
         // avant on utlisait la liste des affectations déjà données dans un club pour générer la droplist
         // maintenant on utilise un domaine de valeurs
         //List<string> fonctions = DataMapping.ListFunctionsRY(cric);
@@ -191,7 +174,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             {
                 if (membre.nim > 0)
                 {
-                    dl.Items.Add(new ListItem(membre.name + " " + membre.surname, "" + membre.nim));
+                    dl.Items.Add(new ListItem(membre.surname +" " + membre.name , "" + membre.nim));
                 }
                 else
                 {
@@ -200,7 +183,11 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             }
 
             dl.SelectedIndex = 0;
-            if(UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || DataMapping.isADG(Functions.GetCurrentMember().id))
+            if(UserInfo.IsSuperUser ||
+                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
+                DataMapping.isADG(Functions.GetCurrentMember().id))
                 dl.Attributes.Add("onchange", "javascript: AfficheValider();");
             Panel1.Controls.Add(dl);
             lit = new Literal();
@@ -256,7 +243,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                         for (int i = 0; i < dl.Items.Count; i++)
                         {
                             ListItem item = dl.Items[i] as ListItem;
-                            if (item.Text == affectation.name)
+                            if (item.Value == ""+affectation.nim)
                                 dl.SelectedIndex = i;
                         }
                         break;
@@ -274,7 +261,11 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
    /// <param name="e"></param>
     protected void BT_Valider_Click(object sender, EventArgs e)
     {
-        if (!(UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || DataMapping.isADG(Functions.GetCurrentMember().id)))
+        if (!(UserInfo.IsSuperUser || 
+            UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
+            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
+            DataMapping.isADG(Functions.GetCurrentMember().id)))
             return;
 
         int cric = Functions.CurrentCric;
@@ -294,7 +285,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                 int nim = 0;
                 int.TryParse("" + dl.SelectedValue, out nim);
                 affectation.nim = nim;
-                affectation.name = dl.SelectedIndex > 0 ? dl.Items[dl.SelectedIndex].Text : "";
+                affectation.name = dl.SelectedIndex > 0 ? GetMemberFullName(dl.Items[dl.SelectedIndex].Value) : "";
                 if (affectation.name != "")
                 {
                     affectations.Add(affectation);
@@ -314,6 +305,22 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             MajAAR();
         }
 
+    }
+
+    string GetMemberFullName(string nim)
+    {
+        int n = 0;
+        if (!int.TryParse(nim, out n))
+            return "";
+        
+        foreach(Member member in members)
+        {
+            if(member.nim==n)
+            {
+                return member.name + " " + member.surname;
+            }
+        }
+        return "";
     }
 
     /// <summary>
@@ -345,7 +352,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             List<UserInfo> club = new List<UserInfo>();
             foreach (UserInfo user in users)
             {
-                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric))
+                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric, sort:"Surname asc"))
                 {
                     if (m.userid == user.UserID)
                         club.Add(user);

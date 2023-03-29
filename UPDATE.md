@@ -6,7 +6,7 @@
 - correction pb de droits sur module pied de page du site de club
 - le redirecteur de site web de club de l'espace membre redirige aussi si on est en mode carte de visite de club
 - la carte visite de club dispose maintenant d'un design horizontal
-
+- changement d'ordre d'affichage du nom du membre dans le module d'affectation du club, le nom est en premier et trié par nom ascendant
 
 
 ###### 01/03/2023

@@ -40,6 +40,8 @@ DesktopModules\AIS\Membres Liste Presentation\Membres.ascx
 DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
 AIS\FilesManager\GetFilesHandler.ashx
+DesktopModules\AIS\Admin Club AAR\Control.ascx
+DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 
 ```
 ###### 01/03/2023
