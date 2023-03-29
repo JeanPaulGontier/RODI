@@ -94,7 +94,7 @@ public partial class DesktopModules_AIS_Club_Detail_Control : PortalModuleBase
                 LBL_cp.Text = club.zip;
                 LBL_ville.Text = club.town;
                 IMG_fanion.ImageUrl = club.GetPennant();
-                LBL_reunions.Text = (club.meetings!=""?"<p>Réunions :</p>":"") +club.meetings;
+                LBL_reunions.Text = club.meetings;
                 LBL_telephone.Text = club.telephone;
                 LBL_fax.Text = club.fax;
                 HL_email.NavigateUrl = "mailto:" + club.email;
