@@ -23,7 +23,7 @@ public class GetFilesHandler : IHttpHandler
                 string extFilter = "" + context.Request.Params["extFilter"];
                 string[] extString = extFilter.ToLower().Split(new string[] { ","}, StringSplitOptions.RemoveEmptyEntries);
 
-                string folder = "" + context.Request.Params["rep"];                   
+                string folder = "" + context.Request.Params["rep"];
                 string Serverpath = HttpContext.Current.Server.MapPath("~/" + folder);
                 if (!Directory.Exists(Serverpath))
                 {
@@ -67,7 +67,7 @@ public class GetFilesHandler : IHttpHandler
                         ListFiles.Add(fmc);
                     }
 
-                        
+
                 }
 
 
@@ -89,24 +89,24 @@ public class GetFilesHandler : IHttpHandler
         }
     }
 
-        public static string GetMimeType(string extension)
+    public static string GetMimeType(string extension)
+    {
+        if (extension == null)
         {
-            if (extension == null)
-            {
-                throw new ArgumentNullException("extension");
-            }
-
-            if (!extension.StartsWith("."))
-            {
-                extension = "." + extension;
-            }
-
-            string mime;
-
-            return _mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
+            throw new ArgumentNullException("extension");
         }
 
-        private static IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+        if (!extension.StartsWith("."))
+        {
+            extension = "." + extension;
+        }
+
+        string mime;
+
+        return _mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
+    }
+
+    private static IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
 
     #region Big freaking list of mime types
     // combination of values from Windows 7 Registry and 
@@ -602,6 +602,7 @@ public class GetFilesHandler : IHttpHandler
     {".wcm", "application/vnd.ms-works"},
     {".wdb", "application/vnd.ms-works"},
     {".wdp", "image/vnd.ms-photo"},
+    {".webp","image/webp" },
     {".webarchive", "application/x-safari-webarchive"},
     {".webtest", "application/xml"},
     {".wiq", "application/xml"},
@@ -676,13 +677,13 @@ public class GetFilesHandler : IHttpHandler
 
     };
 
-        
 
-    public bool IsReusable
+
+public bool IsReusable
+{
+    get
     {
-        get
-        {
-            return false;
-        }
+        return false;
     }
+}
 }

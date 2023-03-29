@@ -188,7 +188,7 @@
                         this.$router.push("/");
 
                     }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data);
+                        toastr["error"]("Erreur : " + e.response.data.Message);
                     })
 
                    
@@ -208,7 +208,7 @@
                     this.$router.push("/");
                    
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
                 
             },
@@ -228,7 +228,7 @@
                     }
                     this.$forceUpdate();
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             },
             getNewsDetail() {
@@ -249,7 +249,7 @@
                     }
                     this.$forceUpdate();
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             },
             //changed(data) {

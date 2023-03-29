@@ -196,7 +196,11 @@ public partial class DesktopModules_AIS_Club_Slideshow_Control : PortalModuleBas
         try
         {
             Member m = Functions.GetCurrentMember();
-            if (UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators") || (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m!=null && m.cric==cric))
+
+            if (UserInfo.IsSuperUser ||
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                UserInfo.IsInRole("Administrators") || 
+                (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m!=null && m.cric==cric))
             {
                 isAuthorised = true;
             }

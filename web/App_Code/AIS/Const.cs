@@ -79,6 +79,8 @@ namespace AIS
         public const string YES_UF = "Oui";
         public static DateTime NO_DATE = new DateTime(1900, 1, 1);
         public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
+        
+        public static string DISTRICT_GUID = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictGuid"];
         public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
         public static string DISTRICT_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictTitle"]);
         public static string DISTRICT_LOGO_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictLogoTitle"]);

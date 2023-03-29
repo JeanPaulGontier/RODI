@@ -89,10 +89,10 @@ public partial class DesktopModules_AIS_Club_Redirection_Control : PortalModuleB
         {
             if (club.web != "")
                 Response.Redirect(club.web);
-            else if(club.seo_mode=="m")
-                Response.Redirect("/"+club.seo);
             else if (club.seo_mode == "d")
                 Response.Redirect("https://" + club.domaine);
+            else // if (club.seo_mode=="m")
+                Response.Redirect("/"+club.seo);
 
         }
        

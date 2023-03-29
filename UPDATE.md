@@ -3,6 +3,10 @@
 - correction des styles sur l'affichage des nouvelles  
 - correction bug sur la programmation des réunions periodiques, quand on changeait l'heure d'une réunion générée elle était regénérée des 10aines de fois
 - l'import des membres RI au niveau district n'affecte plus les données des membres existants (sauf pour le changement de club) et ne sert plus qu'a ajouter ou supprimer les membres avant l'appel de cotisation de district
+- correction pb de droits sur module pied de page du site de club
+- le redirecteur de site web de club de l'espace membre redirige aussi si on est en mode carte de visite de club
+- la carte visite de club dispose maintenant d'un design horizontal
+
 
 
 ###### 01/03/2023

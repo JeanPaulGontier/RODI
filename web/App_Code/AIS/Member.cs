@@ -69,12 +69,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace AIS
 {
     [Serializable]
     public class Member
     {
+        public Guid guid
+        {
+            get
+            {
+                byte[] bytes = Encoding.Default.GetBytes(Const.DISTRICT_GUID+":"+ this.nim + ":" + this.cric);
+                return new Guid(Functions.CalculateMD5Hash(bytes));
+            }
+        }
         public int id { get; set; }
         public int nim { get; set; }
         public string honorary_member { get; set; }

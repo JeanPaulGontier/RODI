@@ -5,6 +5,7 @@ DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
 DesktopModules\RazorModules\Block Content\_BlockContent.cshtml
 DesktopModules\RazorModules\Block Content\BlockContent.ascx
@@ -19,6 +20,27 @@ App_Code\AIS\DataMapping.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembreProfil.cshtml
 DesktopModules\AIS\Membres Liste Presentation\Membres.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+App_Code\AIS\Const.cs
+App_Code\AIS\Member.cs
+DesktopModules\AIS\Admin Club Redirection\Control.ascx.cs
+DesktopModules\AIS\Admin Information Anime Titre_Texte\EditInformationAnimeTitle_Text.ascx.cs
+DesktopModules\AIS\Admin News Liste\News.html
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
+DesktopModules\AIS\Admin News Liste\NewsView.html
+DesktopModules\AIS\Club Detail\Control.ascx
+DesktopModules\AIS\Club Detail\Control.ascx.cs
+DesktopModules\AIS\Club Detail\Settings.ascx
+DesktopModules\AIS\Club Slideshow\Control.ascx.cs
+DesktopModules\AIS\District Board View\District Board View.ascx
+DesktopModules\AIS\District Board View\District Board View.ascx.cs
+DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx.cs
+DesktopModules\AIS\Information Titre_Texte\Control.ascx.cs
+DesktopModules\AIS\Membres Liste Presentation\Membres.ascx
+DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
+DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
+AIS\FilesManager\GetFilesHandler.ashx
+
 ```
 ###### 01/03/2023
 ```txt

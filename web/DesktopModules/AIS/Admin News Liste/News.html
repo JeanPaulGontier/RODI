@@ -126,7 +126,7 @@
                     }
                     this.$forceUpdate();
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             },
             getNewsCategories() {
@@ -140,7 +140,7 @@
                     }
                     this.$forceUpdate();
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             },
             addNews() {

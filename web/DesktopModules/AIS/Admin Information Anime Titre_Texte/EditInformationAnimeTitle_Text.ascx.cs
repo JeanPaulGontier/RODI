@@ -95,7 +95,7 @@ public partial class DesktopModules_AIS_Admin_Information_Anime_Titre_Texte_Edit
             if (!IsPostBack)
             {
                 DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-                TitleTextSerialized = "" + objModules.GetModuleSettings(ModID)["TitleTextSerialized_" + idClub];
+                TitleTextSerialized = "" + Settings["TitleTextSerialized_" + idClub];
 
                 List<KeyValuePair<string, string>> lstTitleText = new List<KeyValuePair<string, string>>();
                 if (!string.IsNullOrEmpty(TitleTextSerialized))
