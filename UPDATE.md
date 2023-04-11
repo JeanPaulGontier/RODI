@@ -1,4 +1,6 @@
 ###### en cours
+
+###### 11/04/2023
 - blockcontent est maintenant utilisation comme module a part entiere ce qui permet de le mettre sur une page sans donner les droits d'administration
 - correction des styles sur l'affichage des nouvelles  
 - correction bug sur la programmation des réunions periodiques, quand on changeait l'heure d'une réunion générée elle était regénérée des 10aines de fois
@@ -7,6 +9,14 @@
 - le redirecteur de site web de club de l'espace membre redirige aussi si on est en mode carte de visite de club
 - la carte visite de club dispose maintenant d'un design horizontal
 - changement d'ordre d'affichage du nom du membre dans le module d'affectation du club, le nom est en premier et trié par nom ascendant
+- affichage des n° de téléphones dans le trombinoscope
+
+
+La nouvelle version de l'application mobile du district est disponible et va être déployée dans les districts concernés
+prévision de disponibilité (dépend de l'acceptation des magasins d'application Apple & Android)
+1780 - avril (version de test) puis juin 2023
+1640 & 1670 - juillet 2023
+1730 & 1770 - septembre 2023
 
 
 ###### 01/03/2023

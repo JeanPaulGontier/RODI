@@ -1,6 +1,6 @@
 ﻿
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_Control_View" %>
-
+<script src="/Portals/_default/Skins/Rodi2017/bootstrap/js/bootstrap.js" type="text/javascript"></script>
 <asp:Panel runat="server" ID="P_Club">
     Veuillez choisir un club ...
 </asp:Panel>
@@ -26,6 +26,7 @@
                  <%} %>
             </td>
         </tr>
+
         <tr>
             <% 
             index = 0;
@@ -40,14 +41,14 @@
             %>
             <td style="width:25%;padding: 15px; text-align: center; vertical-align: top">
                 <div style='padding: 2px 0'>
-                    <img src="<%=m.Image %>" width="100%" />
+                    <img src="<%=m.Image %>"  style="height:180px" />
                 </div>
                 <div style='padding: 2px 0'><strong><%=m.Nom %></strong></div>
                 <% if (m.Affectation != "")
                 { %>
                 <div style='padding: 2px 0'><%=m.Affectation %></div>
                 <%} %>
-                <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.7rem'><em><%=m.Email %></em></div>
+                <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.7rem'><em><%=m.Email %> <%=m.Telephones %></em></div>
                 <%if ((Request["popup"] + "") != "") { }
                     else
                     { %>
@@ -57,6 +58,11 @@
 
             <% } %>
         </tr>
+        <%--<tr>
+            <td colspan="4" style="text-align:center">
+                <small><em><i class="glyphicon glyphicon-phone-alt"></i> Professionnel <i class="glyphicon glyphicon-earphone"></i> Mobile <i class="glyphicon glyphicon-home"></i> Personnel</em></small>
+            </td>
+        </tr>--%>
     </table>
 
 
@@ -72,12 +78,12 @@
                 
                 <% } %>
  
-                <div style='margin: 10px; width: 160px; height: 230px; page-break-before: auto'>
+                <div style='margin: 10px; width: 160px; height: auto; page-break-before: auto'>
                                
                         <div style='padding:2px 0'><asp:Image ID="Image1" runat="server" Width="120"  /></div>
                         <div style='padding:2px 0'><strong><asp:Label ID="LBL_Nom" runat="server"></asp:Label></strong></div>
                         <div style='padding:2px 0'><asp:Label ID="LBL_Affectation" runat="server"></asp:Label></div>
-                        <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word;font-size:0.7rem'><em><asp:Label ID="LBL_Coordonnees" runat="server"></asp:Label></em></div>
+                        <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word;font-size:0.7rem'><em><asp:Literal ID="LBL_Coordonnees" runat="server"></asp:Literal></em></div>
                         <%if ((Request["popup"] + "") != "") { }
                         else
                         { %>

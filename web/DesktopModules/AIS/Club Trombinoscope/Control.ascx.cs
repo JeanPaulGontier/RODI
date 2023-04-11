@@ -118,6 +118,7 @@ public partial class DesktopModules_Control_View : PortalModuleBase
         public string Affectation { get; set; }
         public string Lien { get; set; }
         public string LienLabel { get; set; }
+        public string Telephones { get; set; }
 
 
     }
@@ -132,6 +133,15 @@ public partial class DesktopModules_Control_View : PortalModuleBase
             Me m = new Me();
             m.Email = member.email;
             m.Nom = member.name + " " + member.surname;
+
+            m.Telephones = "";
+            if (member.professionnal_tel != "")
+                m.Telephones += "<br/><i class=\"glyphicon glyphicon-phone-alt\" title='Professionnel'></i> " + member.professionnal_tel;
+            if (member.gsm != "")
+                m.Telephones += "<br/><i class=\"glyphicon glyphicon-earphone\" title='Mobile'></i> " + member.gsm;
+            if (member.telephone != "")
+                m.Telephones += "<br/><i class=\"glyphicon glyphicon-home\" title='Personnel'></i> " + member.telephone;
+
             m.Image = member.GetPhoto();            
             m.Affectation = "";
             foreach (Affectation a in affectations)
@@ -176,8 +186,10 @@ public partial class DesktopModules_Control_View : PortalModuleBase
             if (a.nim == member.nim)
                 LBL_Affectation.Text += a.function + "<br/>";
         
-        Label LBL_Coordonnees = (Label)e.Item.FindControl("LBL_Coordonnees");
-        LBL_Coordonnees.Text = member.email + "<br/>" + member.gsm;
+        var LBL_Coordonnees = (Literal)e.Item.FindControl("LBL_Coordonnees");
+        string c = "&#x2709; " + member.email + "";
+
+        LBL_Coordonnees.Text = c;
 
         Label LBL_Nom = (Label)e.Item.FindControl("LBL_Nom");
         LBL_Nom.Text = member.name + " " + member.surname ;

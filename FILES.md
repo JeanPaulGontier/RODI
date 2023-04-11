@@ -1,6 +1,10 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+```
+
+###### 11/04/2023
+```txt
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx
 DesktopModules\AIS\News Detail\Control.ascx.cs
@@ -42,6 +46,8 @@ DesktopModules\RazorModules\Admin Membre Page Pro\AdminMembrePagePro.ascx
 AIS\FilesManager\GetFilesHandler.ashx
 DesktopModules\AIS\Admin Club AAR\Control.ascx
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
+DesktopModules\AIS\Club Trombinoscope\Control.ascx
+DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
 
 ```
 ###### 01/03/2023
