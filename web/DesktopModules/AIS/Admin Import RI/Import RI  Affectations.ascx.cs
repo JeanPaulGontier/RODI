@@ -83,17 +83,17 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
                 string A = ""+sheet.Cells["A2"].Value;
                 while(A!="")
                 {
-                    if(!"information non signalée".Equals(("" + sheet.Cells["G" + i].Value).Trim().ToLower()))
+                    if(!"information non signalée".Equals(("" + sheet.Cells[(type == "incoming" ? "F" : "G") + i].Value).Trim().ToLower()))
                     { 
                         sql = new SqlCommand("insert into ais_import_ri_affectations " +
                             "(type,cric,role,nom,email) VALUES " +
                             "(@type,@cric,@role,@nom,@email)", conn, trans);
                         sql.Parameters.AddWithValue("type", type);
-                        sql.Parameters.AddWithValue("cric", (""+sheet.Cells["D" + i].Value).Trim());
-                        sql.Parameters.AddWithValue("role", (""+sheet.Cells["F" + i].Value).Trim());
-                        string nom = clearnom(("" + sheet.Cells["G" + i].Value).Trim());
+                        sql.Parameters.AddWithValue("cric", ("" + sheet.Cells[(type == "incoming" ? "C" : "D") + i].Value).Trim());
+                        sql.Parameters.AddWithValue("role", (""+ sheet.Cells[(type == "incoming" ? "E" : "F") + i].Value).Trim());
+                        string nom = clearnom(("" + sheet.Cells[(type == "incoming" ? "F" : "G") + i].Value).Trim());
                         sql.Parameters.AddWithValue("nom", nom);
-                        sql.Parameters.AddWithValue("email", (""+sheet.Cells["J" + i].Value).Trim().ToLower());
+                        sql.Parameters.AddWithValue("email", (""+ sheet.Cells[(type == "incoming" ? "I" : "J") + i].Value).Trim().ToLower());
                         sql.ExecuteNonQuery();
                     }
                 
