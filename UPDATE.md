@@ -1,4 +1,8 @@
 ###### en cours
+- correction import des affectations clubs au niveau du district du au changement de format du fichier RI
+- nouvelle API serveur pour la nouvelle App mobile de district
+- ajout d'une fonctionnalité pour les administrateurs qui permet de créer les dossiers documents des clubs manquants 
+
 
 ###### 11/04/2023
 - blockcontent est maintenant utilisation comme module a part entiere ce qui permet de le mettre sur une page sans donner les droits d'administration

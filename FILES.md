@@ -1,6 +1,11 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+App_Code\AIS\webapi\mobile\MobileController.cs
+Portals\_default\Skins\Rodi2017\Mobile.ascx
+Portals\_default\Skins\Rodi2017\Mobile.ascx.cs
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
 ```
 
 ###### 11/04/2023

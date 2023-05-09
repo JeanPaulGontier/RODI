@@ -1,22 +1,135 @@
 ﻿@using AIS
 @using System.Text
+@using DotNetNuke.Services.FileSystem
+@using DotNetNuke.Entities.Tabs
+@using DotNetNuke.Entities.Modules
+@using DotNetNuke.Entities.Modules.Definitions
 @{
+    int portalId = 0;
+    TabController objTab = new TabController();
+
     List<Club> clubs = DataMapping.ListClubs(sort: "name");
 
-    foreach (Club club in clubs)
+    if (IsPost && Request.Form.AllKeys.Contains("update_folders"))
     {
-        byte[] bytes = Encoding.ASCII.GetBytes("documents:" + club.cric);
+        var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, "Secure");
+        FolderManager.Instance.Synchronize(portalId);
 
-        string url = Functions.CalculateMD5Hash(bytes);
+        <div class="panel-body">
+            @foreach (Club club in clubs)
+            { 
+                //Club club = clubs[0];
 
-        DotNetNuke.Entities.Tabs.TabController objTab = new DotNetNuke.Entities.Tabs.TabController();
 
-        DotNetNuke.Entities.Tabs.TabInfo objTabinfo = objTab.GetTabByName(url, 0);
+                byte[] bytes = Encoding.ASCII.GetBytes("documents:" + club.cric);
+                string url = Functions.CalculateMD5Hash(bytes);
 
-        if (objTabinfo == null)
-        {
-            <p>@club.name <code>@url</code></p>
-        }
+                FolderManager folderManager = new FolderManager();
+                string folderPath = "Clubs/Documents/" + url + "/Documents/";
+
+                FolderInfo folder = (FolderInfo)folderManager.GetFolder(portalId, folderPath);
+                if (folderMapping != null && folder == null)
+                {
+
+                    folderManager.AddFolder(folderMapping, folderPath);
+                    folder = (FolderInfo)folderManager.GetFolder(portalId, folderPath);
+                    //SecureFolderProvider.Instance(folderMapping.FolderProviderType).AddFolder(folderPath, folderMapping);
+                }
+                FolderManager.Instance.Synchronize(portalId, "Clubs/Documents/", true, true);
+
+                if (folder != null)
+                {
+                    <div>@club.name : @url ... Ok</div>
+
+                    TabInfo objTabinfo = objTab.GetTabByName(url, portalId);
+                    TabCollection tabs = TabController.Instance.GetTabsByPortal(portalId);
+                    TabInfo parent = null;
+                    foreach (TabInfo t in tabs.AsList())
+                    {
+
+                        if (t.FullUrl.EndsWith("/espace-membre/mon-club/gestion/documents"))
+                        {
+                            parent = t;
+                            break;
+                        }
+                    }
+
+                    if (objTabinfo == null)
+                    {
+                        TabInfo tab = new TabInfo();
+                        tab.TabName = url;
+                        tab.ParentId = parent.TabID;
+                        tab.SkinPath = parent.SkinPath;
+                        tab.SkinSrc = parent.SkinSrc;
+                        tab.Title = "Documents du club";
+                        tab.PortalID = portalId;
+                        tab.IsVisible = false;
+                        tab.TabPermissions.Clear();
+                        foreach (DotNetNuke.Security.Permissions.TabPermissionInfo info in parent.TabPermissions)
+                        {
+                            tab.TabPermissions.Add(info);
+                        }
+                        ModuleController moduleController = new ModuleController();
+
+                        ModuleInfo moduledef = moduleController.GetModuleByDefinition(portalId, "Digital Asset Management");
+                        ModuleInfo module = new ModuleInfo();
+
+                        int tabid = objTab.AddTab(tab);
+
+                        tab = objTab.GetTab(tabid, portalId);
+                        module.PortalID = portalId;
+                        module.TabID = tabid;
+                        module.ModuleTitle = "Documents du club";
+                        module.PaneName = "ContentPane";
+                        module.ModuleDefID = moduledef.ModuleDefID;
+                        module.CacheTime = moduledef.CacheTime;
+                        module.InheritViewPermissions = true;
+                        module.AllTabs = false;
+                        module.ModuleOrder = 1;
+                        module.ModulePermissions = moduledef.ModulePermissions;
+                        module.CacheMethod = moduledef.CacheMethod;
+                       
+
+                        int moduleid = moduleController.AddModule(module);
+
+
+                        module = moduleController.GetModule(moduleid);
+
+
+                        moduleController.UpdateModuleSetting(moduleid, "DefaultFolderTypeId", "" + folderMapping.FolderMappingID);
+                        moduleController.UpdateModuleSetting(moduleid, "FilterCondition", "FilterByFolder");
+                        moduleController.UpdateModuleSetting(moduleid, "Mode", "Normal");
+                        moduleController.UpdateModuleSetting(moduleid, "RootFolderId", "" + folder.FolderID);
+                        moduleController.UpdateModuleSetting(moduleid, "SubfolderFilter", "IncludeSubfoldersFolderStructure");
+
+                    }
+
+                }
+                else
+                {
+                    <code>@club.name : @folderPath ... ERREUR</code>
+                }
+            }
+        </div>
 
     }
+    <div><button name="update_folders" class="btn btn-primary">Créer les dossiers manquants</button></div>
+    <div class="panel-body">
+        @foreach (Club club in clubs)
+        {
+
+            byte[] bytes = Encoding.ASCII.GetBytes("documents:" + club.cric);
+
+            string url = Functions.CalculateMD5Hash(bytes);
+
+
+            TabInfo objTabinfo = objTab.GetTabByName(url, portalId);
+
+            if (objTabinfo == null)
+            {
+                <p>@club.name <code>@url</code></p>
+            }
+
+        }
+    </div>
 }
