@@ -1,4 +1,4 @@
-﻿@using System.Collections;
+@using System.Collections;
 @using System.IO;
 @using System.Collections.Generic;
 @using System.Data.SqlClient;
@@ -65,8 +65,10 @@
     }
 
     <h1>@news.title</h1>
+<h3>@news.club_name</h3>
     <div class="text-right">
         <span class="Date Normal">@news.dt.ToShortDateString()</span>
+
     </div>
     if (blocks.Count == 0)
     {
@@ -240,4 +242,8 @@
         }
     }
 }
+
+
+
+
 

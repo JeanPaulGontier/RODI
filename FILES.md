@@ -6,6 +6,21 @@ Portals\_default\Skins\Rodi2017\Mobile.ascx
 Portals\_default\Skins\Rodi2017\Mobile.ascx.cs
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
+DesktopModules\AIS\Membre\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+Portals\_default\Skins\Rodi2017\Mobile.ascx
+Portals\_default\Containers\Rodi2017\BlackTitle01.ascx
+Portals\_default\Containers\Rodi2017\BlackTitle02.ascx
+Portals\_default\Containers\Rodi2017\BlackTitle03.ascx
+Portals\_default\Containers\Rodi2017\BlackTitle04.ascx
+Portals\_default\Containers\Rodi2017\ColorBox.ascx
+Portals\_default\Containers\Rodi2017\Footer01.ascx
+Portals\_default\Containers\Rodi2017\Footer02.ascx
+Portals\_default\Containers\Rodi2017\GrayBox.ascx
+Portals\_default\Containers\Rodi2017\HeaderBox01.ascx
+Portals\_default\Containers\Rodi2017\HeaderBox02.ascx
+
+
 ```
 
 ###### 11/04/2023
