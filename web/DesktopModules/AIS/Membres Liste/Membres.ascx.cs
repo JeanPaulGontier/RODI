@@ -141,7 +141,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
         }
         else
         {
-            membres = DataMapping.ListMembers(cric: cric, criterion: critere, sort: " name ASC ", index: GridView1.PageIndex, max: GridView1.PageSize, onlyvisible: !UserLogged());
+            membres = DataMapping.ListMembers(cric: cric, criterion: critere, sort: " surname ASC ", index: GridView1.PageIndex, max: GridView1.PageSize, onlyvisible: !UserLogged());
         }
 
         List<int> lesPresentations = DataMapping.Get_List_Presentation_Active();

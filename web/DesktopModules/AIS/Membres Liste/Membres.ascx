@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - http://rodi.aisdev.net                                                    -->
-<!-- Copyright (c) 2012-2016                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#"  AutoEventWireup="true" CodeFile="Membres.ascx.cs" Inherits="DesktopModules_AIS_News_Visu_News" %>
+﻿<%@ Control Language="C#"  AutoEventWireup="true" CodeFile="Membres.ascx.cs" Inherits="DesktopModules_AIS_News_Visu_News" %>
 
 <div>
     <asp:Label ID="Label1" runat="server" Text="Afficher l'annuaire : "></asp:Label>
@@ -62,7 +55,7 @@
         <EmptyDataTemplate>Désolé mais nous n'avons aucun membre pour les critères saisis</EmptyDataTemplate>
        <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
     </asp:GridView>
-    <asp:HiddenField ID="tri2" Value="name" runat="server"/>
+    <asp:HiddenField ID="tri2" Value="surname" runat="server"/>
     <asp:HiddenField ID="sens2" Value="ASC" runat="server"/>
 </asp:Panel>
 
@@ -111,5 +104,5 @@
 
 
 
-<asp:HiddenField ID="tri" Value="name" runat="server"/>
+<asp:HiddenField ID="tri" Value="surname" runat="server"/>
 <asp:HiddenField ID="sens" Value="ASC" runat="server"/>
