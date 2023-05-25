@@ -3,6 +3,7 @@
 - nouvelle API serveur pour la nouvelle App mobile de district
 - ajout d'une fonctionnalité pour les administrateurs qui permet de créer les dossiers documents des clubs manquants 
 - correction des conteneurs graphiques qui ne fonctionnaient plus depuis la maj de DNN
+- changement de l'ordre d'affichage des membres dans l'annuaire afin que le tri se fasse sur le nom au lieu du prénom
 
 
 ###### 11/04/2023

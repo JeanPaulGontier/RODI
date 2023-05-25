@@ -19,6 +19,8 @@ Portals\_default\Containers\Rodi2017\Footer02.ascx
 Portals\_default\Containers\Rodi2017\GrayBox.ascx
 Portals\_default\Containers\Rodi2017\HeaderBox01.ascx
 Portals\_default\Containers\Rodi2017\HeaderBox02.ascx
+DesktopModules\AIS\Membres Liste\Membres.ascx
+DesktopModules\AIS\Membres Liste\Membres.ascx.cs
 
 
 ```
