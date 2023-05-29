@@ -1,4 +1,6 @@
 ###### en cours
+
+###### 29/05/2023
 - correction import des affectations clubs au niveau du district du au changement de format du fichier RI
 - nouvelle API serveur pour la nouvelle App mobile de district
 - ajout d'une fonctionnalité pour les administrateurs qui permet de créer les dossiers documents des clubs manquants 
