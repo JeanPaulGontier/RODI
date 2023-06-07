@@ -1,10 +1,10 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
-// supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
+//
+// Copyright (c) 2023
+// RODI Platform : https://www.rodi-platform.org
+// Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
 //Version 3, 29 June 2007 Copyright (C) 2007
@@ -66,106 +66,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using AIS;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Common;
-using System.IO;
-using DotNetNuke.Common.Utilities;
-using System.Web.Script.Serialization;
-using System.Resources;
 
-public partial class DesktopModules_AIS_Admin_Information_Anime_Titre_Texte_EditInformationTitle_Text : PortalModuleBase
+
+public class Mailing
 {
-    protected int ModID = 0;
-    protected string TitleTextSerialized = "";
-    protected string idClub = "";
-    protected string RedirectUrl = "";
-
-    protected void Page_Load(object sender, EventArgs e)
+    public enum STEPS
     {
-        try
-        {            
-
-            int.TryParse("" + Request.QueryString["ModuleID"], out ModID);
-            idClub = "" + Request.QueryString["clubId"];
-            RedirectUrl = "" + Request.QueryString["redirecturl"];
-
-            if (!IsPostBack)
-            {
-                DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-                ModuleInfo module = objModules.GetModule(ModID);
-                if(module == null)
-                {
-                    throw new Exception("Module introuvable");
-                }
-                TitleTextSerialized = "" + module.ModuleSettings["TitleTextSerialized_" + idClub];
-
-                List<KeyValuePair<string, string>> lstTitleText = new List<KeyValuePair<string, string>>();
-                if (!string.IsNullOrEmpty(TitleTextSerialized))
-                {
-                    lstTitleText = Json.Deserialize<List<KeyValuePair<string, string>>>(TitleTextSerialized);
-                    if (lstTitleText != null && lstTitleText.Count > 0)
-                    {
-                        tbx_title.Text = "" + lstTitleText.First(kvp => kvp.Key == "title").Value;
-                        tbx_contenu.Text = "" + lstTitleText.First(kvp => kvp.Key == "text").Value;
-                        ddl_Type_Anim.SelectedValue = "" + lstTitleText.First(kvp => kvp.Key == "anim").Value;
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "SelectIcon", "SelectIcon('" +  lstTitleText.First(kvp => kvp.Key == "icon").Value + "');", true);
-                        hfd_Icon.Value = "" + lstTitleText.First(kvp => kvp.Key == "icon").Value;
-                    }
-                }
-            }
-        }
-        catch (Exception ee)
-        {
-            Functions.Error(ee);
-        }
+        DRAFT = 0,
+        DEST=10,
+        CONTENT=20,
+        PREVIEW = 30,
+        PREPARE=40,
+        SENDING=50,
+        SENT=60            
     }
 
-    protected void btn_valid_Click(object sender, EventArgs e)
+
+    public int id { get; set; }
+    public int cric { get; set; }
+    public Guid guid { get; set; } 
+    public string category { get; set; }
+    public DateTime dt { get; set; }
+    public DateTime dt_start { get; set; }
+    public string subject { get; set; }
+    public string sender_email { get; set; }
+    public string sender_name { get; set; }
+    public STEPS step { get; set; }
+    public string recipients { get; set; }
+    public string template_url { get; set; }
+    public int portalid { get; set; }
+    
+    public string content { get; set; }
+
+    public Mailing()
     {
-        try
-        {
-            List<KeyValuePair<string, string>> lstTitleText = new List<KeyValuePair<string, string>>();
-            KeyValuePair<string, string> kvTitle = new KeyValuePair<string, string>("title", "" + tbx_title.Text);
-            lstTitleText.Add(kvTitle);
-
-            KeyValuePair<string, string> kvText = new KeyValuePair<string, string>("text", "" + tbx_contenu.Text);
-            lstTitleText.Add(kvText);
-
-            KeyValuePair<string, string> kvanim = new KeyValuePair<string, string>("anim", "" + ddl_Type_Anim.SelectedValue);
-            lstTitleText.Add(kvanim);
-
-            KeyValuePair<string, string> kvicon = new KeyValuePair<string, string>("icon", "" + hfd_Icon.Value);
-            lstTitleText.Add(kvicon);
-
-            string jsonLstSliderShow = new JavaScriptSerializer().Serialize(lstTitleText);
-            DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-            objModules.UpdateModuleSetting(ModID, "TitleTextSerialized_" + idClub, jsonLstSliderShow);
-            
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "SelectIcon", "SelectIcon('" + lstTitleText.First(kvp => kvp.Key == "icon").Value + "');", true);
-
-            //int club = 0;
-            //int.TryParse(idClub, out club);
-            //Club c = DataMapping.GetClub(club);
-            //if (c != null)
-            //{
-            //    string url = "/" + c.seo + "/";
-
-            //    Response.Redirect(url, false);
-            //    Context.ApplicationInstance.CompleteRequest();
-            //}
-            Response.Redirect(RedirectUrl,false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
-        catch (Exception ee)
-        {
-            Functions.Error(ee);
-        }
+        guid = Guid.NewGuid();
+        dt = DateTime.Now;
     }
 
    
-
-
 }
