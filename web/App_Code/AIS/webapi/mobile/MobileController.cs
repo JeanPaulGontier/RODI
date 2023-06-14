@@ -194,7 +194,7 @@ namespace AIS.controller
             {
                 if (club.cric == 11066)
                 {
-                    news = DataMapping.ListNews_EN(cric: club.cric, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "Actions", tags_excluded: "", max: 20);
+                    news = DataMapping.ListNews_EN(cric: club.cric, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "Actions", tags_excluded: "", max: 20, where:" dt > GETDATE()-1");
                     foreach (News n in news)
 
                     {
