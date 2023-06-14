@@ -208,9 +208,11 @@ namespace AIS.controller
                                 id = n.id,
                                 dt = n.dt.ToLongDateString(),
                                 newsColor = "blue",
+                                category=n.category,
                                 title = n.title,
                                 photo = n.photo,
-                                tag1 = n.tag1
+                                tag1 = n.tag1,
+                                clubname=n.club_name
                             });
                         }
                     }
