@@ -149,7 +149,10 @@ namespace AIS
                             break;
                         case "RADIO":
                             RadioButtonList rbl = FindControlRecursive(P_Fields, "f" + ii) as RadioButtonList;
-                            item_field.value = rbl.SelectedValue;
+                            if (rbl.SelectedIndex > -1)
+                                item_field.value = rbl.Items[rbl.SelectedIndex].Value;
+                            else                           
+                                item_field.value = "";
                             break;
                     }
                     item_fields.Add(item_field);
