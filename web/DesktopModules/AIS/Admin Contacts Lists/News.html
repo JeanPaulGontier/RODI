@@ -1,0 +1,161 @@
+﻿<script type="text/x-template" id="news-template">
+    <div v-if="context.mode=='clubs' && context.cric==0">
+        <div class="panel-body">
+            Veuillez choisir un club...
+        </div>
+    </div>
+    <div v-if="context.mode=='clubs' && context.cric>0">
+        <div v-if="news.length==0" class="panel-body">Aucune nouvelle pour le moment...</div>
+        <div class="row">
+            <div class="col-sm-3">
+                <button type="button" v-on:click="addNews()" class="btn btn-primary" v-show="editable">Ajouter une nouvelle</button>
+            </div>
+            <div class="col-sm-8 form-inline text-right">
+                Catégorie : <select class="form-control" v-model="categorie" v-on:change="getNews()">
+                <option v-for="c in categories" :value="c.Value">{{c.Key}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="pe-spacer size10"></div>
+        <table class="table table-striped table-hover" v-if="news.length>0">
+            <tbody>
+                <tr>
+                    <th class="col-sm-1">Date</th>
+                    <th class="col-sm-8">Titre</th>
+                    <th class="col-sm-1">Catégorie</th>
+                    <th class="col-sm-2">Visibilité</th>
+                </tr>
+                <tr v-for="n in news" v-on:click="editNews(n)">
+                    <td>{{date(n.dt)}}</td>
+                    <td>{{n.title}}</td>
+                    <td>{{n.tag1}}</td>
+                    <td>{{visibility(n)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div v-if="context.mode=='district'">
+        <div v-if="news.length==0" class="panel-body">Aucune nouvelle pour le moment...</div>
+        <div class="row">
+            <div class="col-sm-3">
+                <button type="button" v-on:click="addNews()" class="btn btn-primary" v-show="editable">Ajouter une nouvelle</button>
+            </div>
+            <div class="col-sm-8 form-inline text-right">
+                Catégorie : <select class="form-control" v-model="categorie" v-on:change="getNews()">
+                   <option v-for="c in categories" :value="c.Value">{{c.Key}}</option>
+                </select>
+            </div>        
+        </div>
+        <div class="pe-spacer size10"></div>
+        <table class="table table-striped table-hover" v-if="news.length>0">
+            <tbody>
+                <tr>
+                    <th class="col-sm-1">Date</th>
+                    <th class="col-sm-8">Titre</th>
+                    <th class="col-sm-1">Catégorie</th>
+                    <th class="col-sm-2">Visibilité</th>
+                </tr>
+                <tr v-for="n in news" v-on:click="editNews(n)">
+                    <td>{{date(n.dt)}}</td>
+                    <td>{{n.title}}</td>
+                    <td>{{n.tag1}}</td>
+                    <td>{{visibility(n)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+<script>
+    const News = {
+        template: '#news-template',
+        name: 'News',
+        props: {
+          moduleid: Number,
+          context: Object,
+          editable: Boolean
+        },
+        data: function () {
+            return {
+                d: null,
+                news: [],
+                categories: [],
+                categorie:''
+            }
+        },
+      
+        methods: {
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            visibility(n) {
+                switch (n.visible) {
+                    case "O":
+                        return "Tout le monde";
+                        break;
+                    case "N":
+                        return "Personne";
+                        break;
+                    case "M":
+                        return "Membres du club";
+                        break;
+                    case "D":
+                        return "Rotariens";
+                        break;
+                }
+                return "";
+            },
+            editNews(n) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                if(this.editable)
+                    this.$router.push("/edit/" + n.id);
+                else
+                    this.$router.push("/view/" + n.id);
+            },
+            getNews() {
+                _yemon[this.moduleid].service.getData("/GetNews", {
+                    context: this.context.context,
+                    categorie: this.categorie?this.categorie:''
+                }, (r) => {
+                  this.news = [];
+                    if (r.data) {
+                      this.news = JSON.parse(r.data);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            getNewsCategories() {
+                _yemon[this.moduleid].service.getData("/GetNewsCategories", {
+                    context: this.context.context
+                }, (r) => {
+                    this.categories = [];
+                    if (r.data) {
+                        this.categories = r.data;
+                        
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            addNews() {
+                this.$router.push("/edit/new");
+            }
+        },
+        mounted() {
+            if (this.context.mode == 'clubs' && this.context.cric == 0)
+                return;
+
+            let lastScroll = sessionStorage.getItem(window.location.pathname + ":scroll");
+            if (lastScroll)
+                window.scrollTo(window.scrollX, parseInt(lastScroll));
+            this.getNewsCategories();
+            this.getNews();
+        }
+    }
+</script>

@@ -1,4 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Mailing_Control" %>
+﻿
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Contacts_Lists_Control" %>
 <% 
     string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     string appID = "app" + ModuleId;
@@ -31,22 +32,22 @@
      <router-view :moduleid="moduleid" :context="context" :editable="editable"></router-view> 
 </div>
 <script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
-<!-- #include virtual ="/DesktopModules/AIS/Admin Mailing/Mailing.html" -->
-<!-- #include virtual ="/DesktopModules/AIS/Admin Mailing/MailingEdit.html" -->
-<!-- #include virtual ="/DesktopModules/AIS/Admin Mailing/MailingView.html" -->
-<script src="/DesktopModules/AIS/Admin Mailing/app.js"></script>
+<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/News.html" -->
+<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsEdit.html" -->
+<!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsView.html" -->
+<script src="/DesktopModules/AIS/Admin News Liste/app.js"></script>
 <script>
 
-    var CATEGORIES = [];
+    var CATEGORIES =  <%=Yemon.dnn.Functions.Serialize(categories)%>;
 
-$(document).ready(function () {
-
-    
+    $(document).ready(function () {
 
         if (typeof _yemon == 'undefined')
             _yemon = [];
-        _yemon[<%=ModuleId%>] = new Yemon(<%=ModuleId%>, '/Desktopmodules/AIS/API/Mailing');
+        _yemon[<%=ModuleId%>] = new Yemon(<%=ModuleId%>, '/Desktopmodules/AIS/API/Contacts');
 
+
+    //Yemon = new Yemon(@moduleID, '/DesktopModules/Yemon/API/Services');
         InitApp('<%=appID %>',<%=ModuleId%>, '<%=context%>',<%=cric%>,'<%=mode%>',<%=editable.ToString().ToLower()%>);
         });
         //$("form").keypress(function (e) {
@@ -57,3 +58,8 @@ $(document).ready(function () {
   //  });
 </script>
 
+
+
+<asp:Panel runat="server" ID="p_convert" Visible="false">
+    <asp:Button runat="server" ID="convert" Text="Convertir" OnClick="convert_Click" />
+</asp:Panel>

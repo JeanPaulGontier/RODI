@@ -1,0 +1,287 @@
+﻿<script type="text/x-template" id="newsedit-template">
+    <div class="row">
+
+        <div class="col-sm-3 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
+            <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid() ? 'visible' : 'hidden'}">Valider</button>
+        </div>
+        <div class="col-sm-7 ">
+        </div>
+
+        <div class="col-sm-2">
+            <button type="button" v-on:click="deleteNews()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
+        </div>
+    </div>
+    <h3>Accroche</h3>
+    <div class="bc-dotted">
+        <div class="row">
+            <div class="col-sm-3">
+                Titre :
+            </div>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" v-model="news.title" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                Date de l'évènement :
+            </div>
+            <div class="col-sm-3">
+                <p><input type="date" class="form-control" v-model="news.dt" title="Saisir la date de début de l'évènement'" /></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                Catégorie :
+            </div>
+            <div class="col-sm-3" v-if="context.mode=='clubs'">
+                <p>
+                    <select v-model="news.tag1" class="form-control">
+                        <option v-for="c in categories">{{c}}</option>                        
+                    </select>
+                </p>
+            </div>
+            <div class="col-sm-3" v-if="context.mode=='district'">
+                <p>
+                    <select v-model="news.tag1" class="form-control">
+                        <option v-for="c in categories">{{c}}</option>
+                    </select>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                Visibilité :
+            </div>
+            <div class="col-sm-9">
+                <p>
+                    <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="N">Personne</label>
+                    <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="O">Tout le monde</label>
+                    <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="M">Membres du club</label>
+                    <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="D">Membres du district</label>
+                </p>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-sm-2">
+                Résumé :
+            </div>
+            <div class="col-sm-10">
+                <textarea class="form-control" rows="5" v-model="news.text" style="resize:vertical"></textarea>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-sm-3">
+                Photo d'accroche :
+            </div>
+            <div class="col-sm-9">
+                <button type="button" class="btn btn-sm btn-primary" v-on:click="addDocument">Choisir une photo</button>
+                <em class="small"> Le fichier doit être une photo et ne doit pas dépasser 5 Mo</em>
+
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
+                <div v-if="news.photo">
+                    <div class="bc-photo"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+news.photo" /></div>
+
+                    <br />
+                    <button type="button" v-on:click="news.photo=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Contenu détaillé</h4>
+        </div>
+        <div class="col-sm-12">
+            <p><em v-if="this.blocks.length==0">L'image d'accroche est utilis&eacute;e dans le d&eacute;tail de la nouvelle s'il n'a pas de contenu d&eacute;taill&eacute;...</em></p>
+            
+        </div>
+        <div class="col-sm-12">
+            <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+        </div>
+    </div>
+
+</script>
+<script>
+    const NewsEdit = {
+        template: '#newsedit-template',
+        name: 'NewsEdit',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean
+        },
+        data: function () {
+            return {
+                blocks: [],
+                news: {},
+                blocks: [],
+                fichiers: [],
+                categories: CATEGORIES
+            }
+        },
+        filters: {
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            isValid() {
+                return this.news.title && this.news.dt && this.news.tag1 && this.news.visible;
+
+            },
+            addDocument(event) {
+                event.preventDefault();
+                this.$refs.document.click();
+            },
+            onChangeDocumentUpload() {
+                if (this.$refs.document.files.length == 0)
+                    return;
+                this.fichiers.push({
+                    file: this.$refs.document.files[0],
+                    uploaded: false
+                });
+                this.uploadMedia({
+                    type: 'photo'
+                }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+            },
+            onDocumentUploaded(r) {
+
+                console.log('onDocumentUploaded', r);
+                this.news.photo = r.data.GUID;
+                this.fichiers = [];
+            },
+            uploadMedia(meta, callbackok, callbackerror) {
+                let fichier = this.fichiers[this.fichiers.length - 1];
+                if (fichier.file.size > 5 * 1024 * 1024) {
+                    alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                    this.fichiers = [];
+                    return;
+                }
+                let formData = new FormData();
+                formData.append('file', fichier.file);
+                if (meta) {
+                    for (let p in meta) {
+                        formData.append(p, meta[p]);
+                    }
+                }
+                _yemon[this.moduleid].service.postFile('/setMedia',
+                    formData,
+                    (r) => callbackok(r),
+                    (r) => callbackerror(r)
+                );
+
+            },
+
+            deleteNews() {
+                if (confirm("Supprimer la nouvelle ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteNews", {
+                        guid: this.news.id
+                    }, (r) => {
+                        this.$router.push("/");
+
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    })
+
+                   
+                }
+            },
+
+            valider() {
+                let b = JSON.parse(JSON.stringify(this.blocks));
+                for (let i = 0; i < b.length; i++)
+                    b[i].Content = JSON.stringify(b[i].Content);
+
+                _yemon[this.moduleid].service.postData("/SetNews", {
+                    context: this.context.context,
+                    news: JSON.stringify(this.news),
+                    blocks: JSON.stringify(b)
+                }, (r) => {
+                    this.$router.push("/");
+                   
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+                
+            },
+
+            cancel() {
+                this.$router.push("/");
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            getNewsDetail() {
+                _yemon[this.moduleid].service.getData("/GetNewsDetail", {
+                    guid: this.id
+                }, (r) => {
+                    this.news = {};
+                    if (r.data == 'null') {
+                        this.$router.push("/");
+                    }
+                    else if (r.data) {
+                        this.news = JSON.parse(r.data);
+                        this.news.dt = new Date(this.news.dt + 'Z').toISOString().substr(0, 10);
+                        this.getBlocks();
+                    }
+                    else {
+                        this.$router.push("/");
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            //changed(data) {
+            //    if (!data)
+            //        return;
+
+            //    _yemon[this.moduleid].service.postData("/SetItem", {
+            //        name: 'blockscontent:' + this.moduleid,
+            //        value: JSON.stringify(data),
+            //        keephistory: false
+            //    }, (r) => {
+            //        //this.changed = false;
+            //        //toastr["success"]("enregistrée");
+
+            //    }, (e) => {
+            //        toastr["error"]("Erreur : " + e.response.data);
+            //    })
+            //}
+
+
+        },
+        mounted() {
+            //this.getBlocks();
+            if (!this.editable) {
+                this.$router.push("/");
+                return;
+            }
+            if (this.id != "new") {
+                this.getNewsDetail();
+            }
+
+            window.scrollTo(window.scrollX, 0);
+        }
+    }
+</script>

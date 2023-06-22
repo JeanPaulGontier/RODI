@@ -2,8 +2,9 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2023
-// Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
+// Copyright (c) 2023
+// by SAS AIS : https://www.aisdev.net
+// supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
 //Version 3, 29 June 2007 Copyright (C) 2007
@@ -60,35 +61,34 @@
 
 #endregion Copyrights
 
+/// Modifié le 12/07/2021 pour autoriser les catégories de nouvelles pour les nouvelles district
+/// 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AIS;
 using DotNetNuke.Entities.Modules;
 using System.IO;
 using System.Drawing;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Entities.Users;
-using AIS;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using DotNetNuke.Common.Utilities;
+
+using DotNetNuke.Services.FileSystem;
+using FileInfo = System.IO.FileInfo;
 using DotNetNuke.Framework;
+using System.Data;
+using System.Net;
 
-public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
+public partial class DesktopModules_AIS_Admin_Contacts_Lists_Control : PortalModuleBase
 {
-    string param = "";
-
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
-    public string mode
+
+    public string[] categories
     {
         get
         {
-            return "" + Settings["mode"];
-
+            return ("" + Settings["categories"]).Replace("\r", "").Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 
@@ -96,9 +96,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
     {
         get
         {
-            return (UserInfo.IsSuperUser ||
-                UserInfo.IsInRole(Const.ADMIN_ROLE) ||
-                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+            return (UserInfo.IsSuperUser || 
+                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
                 UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) ||
                 AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
 
@@ -113,11 +113,21 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         }
     }
 
+
+    public string mode
+    {
+        get
+        {
+            return "" + Settings["mode"];
+
+        }
+    }
+
     public string context
     {
         get
         {
-            if (ContextGuid.Value != "")
+            if(ContextGuid.Value!="")
             {
 
             }
@@ -139,17 +149,193 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
     }
 
     /// <summary>
-    /// Définit à quel groupe l'utilisateur appartient et affiche les éléments en fonction
+    /// Rafraichit le GridView et, si l'utilisateur a les droits, affiche le bouton d'ajout de nouvelles
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
         
+
+        //if ("" + Functions.CurrentCric != HF_Cric.Value)
+       // {
+            //HF_Cric.Value = "" + Functions.CurrentCric;
+            //GridView1.PageIndex = 0;
+            //Panel1.Visible = true;
+            //Panel2.Visible = false;
+        //}
+       //RefreshGrid();
+
+        //BT_Ajouter_News.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || (DataMapping.isADG()) && Functions.CurrentCric!=0);
+
+        if (mode == "district")
+        {
+            
+            //lbl_TousADG.Visible = false;
+            //GridView1.Visible = true;
+        } 
+        else if(mode == "clubs" && Functions.CurrentCric==0)
+        {
+            //lbl_TousADG.Visible = true;
+            //GridView1.Visible = false;
+            //BT_Ajouter_News.Visible = false;
+        }
+        else if(mode == "clubs")
+        {
+            //lbl_TousADG.Visible = false;
+            //GridView1.Visible = true;
+        }
+
+
+
+       // p_convert.Visible = UserInfo.IsSuperUser;
+        
          
     }
 
 
-   
 
+    protected void convert_Click(object sender, EventArgs e)
+    {
+        DataTable table  =  Yemon.dnn.DataMapping.ExecSql("SELECT * FROM [ais_news] where category in ('District','Clubs')");
+        foreach(DataRow row in table.Rows)
+        {
+            int cric = (int)row["cric"];
+
+            string url = PortalSettings.HomeDirectory;
+            if(cric>0)
+            {
+                Club club = DataMapping.GetClub(cric);
+                if (club != null)
+                {
+                    url += Const.CLUBS_PREFIX + Functions.GetSEO(club.seo).ToLower() + "/";
+                }                    
+                else
+                {
+                    url = "/";
+                }
+                    
+            }
+            else
+            {
+                url += Const.DISTRICT_PREFIX;
+            }
+            
+
+            string id = "" + row["id"];
+            List<Yemon.dnn.BlocksContent.Block> b = new List<Yemon.dnn.BlocksContent.Block>();
+
+           Yemon.dnn.BlocksContent.Block block = new Yemon.dnn.BlocksContent.Block();
+
+            String photo = ""+row["photo"];
+            Yemon.dnn.BlocksContent.Block.Image image = null;
+            if(photo!="")
+            {
+                WebClient webClient = new WebClient();
+                try
+                {
+
+                
+                    byte[] arr = webClient.DownloadData("https://www.rotary-district1770.org"+url+"/images/" + photo);
+
+                    string contentEncoding = webClient.ResponseHeaders["Content-Encoding"];
+                    string contentType = webClient.ResponseHeaders["Content-Type"];
+
+                    image = new Yemon.dnn.BlocksContent.Block.Image();
+                    image.Content = arr;
+                    image.ContentSize = arr.Length;
+                    image.Date = DateTime.Now;
+                    image.Filename = photo;
+                    image.MimeType = contentType;
+                    image.Name = "";
+
+                    string guid = Yemon.dnn.Helpers.SetMedia(image, "" + UserId,folder:"photo");
+                    image.GUID = guid;
+                }
+                catch
+                {
+
+                }
+
+            }
+
+
+            block.Content = new Yemon.dnn.BlocksContent.Block.ImageText()
+            {
+                Html = "<pre>" + row["text"] + "</pre>",
+                Position = "H",
+                Title = "",
+                Image = image
+                
+                //Image = ""+row["photo"]
+
+            };
+            block.Guid = Guid.NewGuid();
+            block.Type = "ImageText";
+            
+
+            b.Add(block);
+
+
+            String file = "" + row["url"];
+            String title = "" + row["url_text"];
+
+            Yemon.dnn.BlocksContent.Block.File fi = null;
+            if (file != "")
+            {
+                block = new Yemon.dnn.BlocksContent.Block();
+
+                WebClient webClient = new WebClient();
+                try
+                {
+
+
+                    byte[] arr = webClient.DownloadData("https://www.rotary-district1770.org"+url+"/documents/" + file);
+
+                    string contentEncoding = webClient.ResponseHeaders["Content-Encoding"];
+                    string contentType = webClient.ResponseHeaders["Content-Type"];
+
+                    fi = new Yemon.dnn.BlocksContent.Block.File();
+                    fi.Content = arr;
+                    fi.ContentSize = arr.Length;
+                    fi.Date = DateTime.Now;
+                    fi.Filename = file;
+                    fi.MimeType = contentType;
+                    fi.Name = title;
+
+                    string guid = Yemon.dnn.Helpers.SetMedia(fi, "" + UserId, folder: "document");
+                    fi.GUID = guid;
+                }
+                catch
+                {
+
+                }
+
+                block.Content = new Yemon.dnn.BlocksContent.Block.FileCollection()
+                {
+                    Files= new List<Yemon.dnn.BlocksContent.Block.File>() { fi },
+                    Title = "",
+                    
+
+                    //Image = ""+row["photo"]
+
+                };
+                block.Guid = Guid.NewGuid();
+                block.Type = "FileCollection";
+
+
+                b.Add(block);
+            }
+
+            string blocks = Yemon.dnn.Functions.Serialize(b);
+
+            Yemon.dnn.Helpers.SetItem("blockscontent:" + id, "" +blocks, "" + UserId, keephistory: false, portalid: PortalId);
+
+            if(image!=null)
+            {
+                DataMapping.ExecSql("update ais_news set photo='" + image.GUID + "' where id='" + id + "'");
+            }
+
+        }
+    }
 }
