@@ -1,0 +1,120 @@
+@using AIS;
+@using System.Data;
+@{ 
+    List<Payment> payments = DataMapping.ListPayments(index: 0, max: int.MaxValue, sort:"dt desc");
+    if (payments.Count > 0)
+    {
+        Payment payment = payments[0];
+        <h3>@payment.title</h3>
+
+
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
+            "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
+            "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
+            "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
+            "FROM [ais_orders] O  where id_payment='" + payment.id + "' order by club");
+
+        List<DataTable> liste = new List<DataTable>();
+        liste.Add(ds.Tables[0]);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        //List<Order> orders= DataMapping.ListOrderByPayment(payment.id, sort: "club ASC", cric: 0);
+        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+        {
+            int NbResteAPayer=0;
+            double MontantAttendu =0;
+            double MontantResteAPayer =0;
+            double MontantParCheque =0;
+            double MontantParVirement =0;
+
+            foreach (DataRow order in ds.Tables[0].Rows)
+            {
+                double montant = (double)order["montant"];
+                MontantAttendu += montant;
+                bool paye = ("" + order["regle"]).Equals(Const.YES);
+                if(paye)
+                {
+                    if (("" + order["moyen"]).Equals("virement"))
+                    {
+                        MontantParVirement += montant;
+                    }
+                    else
+                    {
+                        MontantParCheque += montant;
+                    }
+                }
+                else
+                {
+                    MontantResteAPayer += montant;
+                    NbResteAPayer += 1;
+                }
+            }
+            <div>
+                <em>Montant attendu : @MontantAttendu.ToString("#,##0.00") &euro;, montant reste &agrave; payer : @MontantResteAPayer.ToString("#,##0.00") &euro;, nb reste &agrave; payer : @NbResteAPayer, total par virement : @MontantParVirement.ToString("#,##0.00")  &euro;,  par ch&egrave;que : @MontantParCheque.ToString("#,##0.00")  &euro;</em>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <th>Cric</th>
+                    <th>Club</th>
+                    <th>N&ordm;</th>
+                    <th>Montant</th>
+                    <th>M&eacute;thode</th>
+                    <th>Par qui</th>
+                    <th>Quand</th>
+                    <th>R&eacute;gl&eacute;e</th>
+                    <th>Commentaire</th>
+                    <th>Groupe</th>
+                    <th>ADG</th>
+                    <th>Email</th>
+                </tr>
+            
+            @foreach (DataRow order in ds.Tables[0].Rows) {
+                DateTime dt = (DateTime)order["date reglement"];
+                string mt = ((double)order["montant"]).ToString("#,##0.00");
+                string style = "";
+                if (!("" + order["regle"]).Equals(Const.YES))
+                {
+                    style = "danger ";
+                }
+                <tr class="@style">
+                    <td>@order["cric"]</td>
+                    <td>@order["club"]</td>
+                    <td>@order["no commande"]</td>
+                    <td class="text-right">@mt</td>
+                    <td>@order["moyen"]</td>
+                    <td>@order["par qui"]</td>
+                    @if (dt == Const.NO_DATE)
+                    {
+                        <td></td>
+                    }
+                    else
+                    {
+                        <td>@dt.ToString("dd/MM/yyyy")</td>
+                    }
+
+                    <td>@order["regle"]</td>
+                    <td>@order["commentaire"]</td>
+                    <td>@order["groupe"]</td>
+                    <td>@order["adg"]</td>
+                    <td><a href='mailto:@order["email"]'>@order["email"]</a></td>
+                </tr>
+            }
+
+
+
+            </table>
+
+            <p>
+                <a href="@(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid)" target="_blank" class="dnnPrimaryAction">T&eacute;l&eacute;charger la liste au format Excel</a>;
+            </p>
+        }
+        else {
+
+        }
+    }
+    else
+    {
+        <em>Aucun suivi disponible...</em>
+    }
+}
