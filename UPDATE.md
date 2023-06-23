@@ -1,4 +1,11 @@
 ###### en cours
+- correction bug billeterie quand on revalidait les options lors d'une inscription les données choisies étaient perdues
+- correction d'un bug sur le popup de saisie des 4 cadres bleus de pied de page club (la modification ne reprenait pas les données déjà saisies)
+- ajout de fonctionnalités dans l'api mobile pour la nouvelle application mobile de district
+
+Publication de la nouvelle application mobile sur Android (Google Play Store) :
+- District 1780 & 1670
+
 
 ###### 29/05/2023
 - correction import des affectations clubs au niveau du district du au changement de format du fichier RI

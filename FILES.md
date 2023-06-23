@@ -1,7 +1,12 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
-
+App_Code\AIS\webapi\contacts\ContactsController.cs
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\Mailing.cs
+DesktopModules\AIS\Admin Information Anime Titre_Texte\EditInformationAnimeTitle_Text.ascx.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\AIS\Ticketing\People.ascx.cs
 ```
 
 ###### 29/05/2023
