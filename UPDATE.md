@@ -2,6 +2,8 @@
 - correction bug billeterie quand on revalidait les options lors d'une inscription les données choisies étaient perdues
 - correction d'un bug sur le popup de saisie des 4 cadres bleus de pied de page club (la modification ne reprenait pas les données déjà saisies)
 - ajout de fonctionnalités dans l'api mobile pour la nouvelle application mobile de district
+- ajout du module de suivi des factures des clubs au niveau district (Développement spécifique du 1770 offerts aux autres districts)
+- tri des inscrits aux réunions par ordre croissant de nom
 
 Publication de la nouvelle application mobile sur Android (Google Play Store) :
 - District 1780 & 1670

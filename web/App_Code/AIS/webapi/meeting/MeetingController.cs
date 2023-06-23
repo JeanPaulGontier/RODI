@@ -416,7 +416,7 @@ namespace AIS.controller
         {
             try
             {
-                SqlCommand sql = new SqlCommand("SELECT * FROM [ais_meetings_users] WHERE meetingguid=@guid");
+                SqlCommand sql = new SqlCommand("SELECT * FROM [ais_meetings_users] WHERE meetingguid=@guid order by lastname,firstname ");
                 sql.Parameters.AddWithValue("guid", guid);
                 var users = Yemon.dnn.DataMapping.ExecSql<Meeting.User>(sql);
                 return Request.CreateResponse(HttpStatusCode.OK, users);
