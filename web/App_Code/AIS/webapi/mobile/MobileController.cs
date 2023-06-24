@@ -200,7 +200,7 @@ namespace AIS.controller
                         {
 
 
-                            n.photo = "https://www.rotary1780.org" + n.GetPhoto();
+                            n.photo = Const.DISTRICT_URL + n.GetPhoto();
                             news1.Add(new
                             {
                                 id = n.id,
@@ -221,7 +221,7 @@ namespace AIS.controller
                         {
 
 
-                            n.photo = "https://www.rotary1780.org" + n.GetPhoto();
+                            n.photo = Const.DISTRICT_URL + n.GetPhoto();
                             news1.Add(new
                             {
                                 id = n.id,

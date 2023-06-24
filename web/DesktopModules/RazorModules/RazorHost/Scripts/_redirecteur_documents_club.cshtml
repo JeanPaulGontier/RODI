@@ -1,0 +1,32 @@
+@using AIS
+@using System.Text
+@{
+    if(Functions.CurrentCric==0)
+    {
+        <div>Vous devez choisir un club pour acc&eacute;der &agrave; sa page documents</div>
+        return;
+    }
+
+    byte[] bytes = Encoding.ASCII.GetBytes("documents:" + Functions.CurrentCric);
+
+    string url =  Functions.CalculateMD5Hash(bytes);
+
+    DotNetNuke.Entities.Tabs.TabController objTab = new DotNetNuke.Entities.Tabs.TabController();
+
+    DotNetNuke.Entities.Tabs.TabInfo objTabinfo = objTab.GetTabByName(url, 0);
+
+    if(objTabinfo!=null)
+    {
+        url = Request.RawUrl + "/" + url;
+
+        Response.Redirect(url);
+    } else {
+        <div >La page documents n'est pas disponible pour votre club</div>
+        <div>Contactez le webmaster pour qu'il l'active</div>
+        <div style="color:whitesmoke;font-size:xx-small">@url</div>
+    }
+
+
+}
+
+
