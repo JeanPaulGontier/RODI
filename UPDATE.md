@@ -4,9 +4,10 @@
 - ajout de fonctionnalités dans l'api mobile pour la nouvelle application mobile de district
 - ajout du module de suivi des factures des clubs au niveau district (Développement spécifique du 1770 offerts aux autres districts)
 - tri des inscrits aux réunions par ordre croissant de nom
+- désactivation de l'affichage du popup cookie consent quand on regarde les news de l'app mobile
 
 Publication de la nouvelle application mobile sur Android (Google Play Store) :
-- District 1780 & 1670
+- District 1780 & 1670 (liens vers les différents stores visibles dans la page d'accueil de l'espace membre)
 
 
 ###### 29/05/2023
