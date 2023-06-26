@@ -132,6 +132,13 @@ public class ClubRewriter : IHttpModule
             string url = request.CurrentExecutionFilePath.ToString().ToLower();
             //if (url.Length<3)
             //    return;
+            
+            if(url.Contains("cookieconsent") && context.Request.UrlReferrer.ToString().Contains("/mobile")){
+                context.Response.ClearContent();
+                context.Response.End();
+                return;
+            }
+            
             if (url.StartsWith("/ais/redir"))
                 return;
             if (url.StartsWith("/m-"))
