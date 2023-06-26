@@ -68,6 +68,10 @@ using AIS;
 using System.Data.SqlClient;
 using System.Data;
 using DotNetNuke.Common.Utilities;
+using System.IO;
+using System.Text;
+using System.Web.UI;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Description résumée de ClubRewriter
@@ -96,7 +100,8 @@ public class ClubRewriter : IHttpModule
     public void Init(HttpApplication context)
     {
         context.BeginRequest += Context_BeginRequest;
-        
+        context.ReleaseRequestState += Context_ReleaseRequestState;
+
         //throw new NotImplementedException();
     }
 
@@ -104,27 +109,28 @@ public class ClubRewriter : IHttpModule
     {
         try
         {
-            if(context.Application["ClubsSEO"]==null)
-            {   lines = System.IO.File.ReadAllLines(context.Server.MapPath("/listeSEO.txt"));
+            if (context.Application["ClubsSEO"] == null)
+            {
+                lines = System.IO.File.ReadAllLines(context.Server.MapPath("/listeSEO.txt"));
                 context.Application["ClubsSEO"] = lines;
             }
             else
             {
                 lines = (string[])context.Application["ClubsSEO"];
             }
-        
+
         }
         catch (Exception ee)
         {
             Functions.Error(ee);
         }
     }
-    
+
 
     private void Context_BeginRequest(object sender, EventArgs e)
     {
         HttpApplication application = sender as HttpApplication;
-        
+
         HttpContext context = (application == null) ? null : application.Context;
         if (context != null)
         {
@@ -132,20 +138,20 @@ public class ClubRewriter : IHttpModule
             string url = request.CurrentExecutionFilePath.ToString().ToLower();
             //if (url.Length<3)
             //    return;
-            
-            
+
+
             if (url.StartsWith("/ais/redir"))
                 return;
             if (url.StartsWith("/m-"))
             {
                 string link = url.Substring(3);
-                context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"],true);
+                context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"], true);
                 return;
             }
             if (url.StartsWith("/ais"))
                 return;
             if (url.StartsWith("/admin"))
-                return; 
+                return;
             if (url.StartsWith("/espace-membre"))
                 return;
             if (url.StartsWith("/icons"))
@@ -180,7 +186,8 @@ public class ClubRewriter : IHttpModule
             if (lines != null)
             {
 
-                try {
+                try
+                {
                     foreach (string linee in lines)
                     {
                         string line = linee;
@@ -260,4 +267,124 @@ public class ClubRewriter : IHttpModule
             }
         }
     }
+
+
+
+    private void Context_ReleaseRequestState(object sender, EventArgs e)
+    {
+        HttpApplication application = sender as HttpApplication;
+
+        HttpContext context = (application == null) ? null : application.Context;
+        if (context != null)
+        {
+            HttpResponse response = HttpContext.Current.Response;
+
+            if (response.ContentType == "text/html" && context.Request.RawUrl.Contains("/mobile"))
+                response.Filter = new PageFilter(response.Filter, "cookieconsent.min.js", "nope");
+
+        }
+    }
+
+
+    public class PageFilter : Stream
+    {
+        Stream responseStream;
+        long position;
+        StringBuilder responseHtml;
+        string oldtext = "";
+        string newtext = "";
+
+        public PageFilter(Stream inputStream, string oldtext, string newtext)
+        {
+            this.oldtext = oldtext;
+            this.newtext = newtext;
+
+            responseStream = inputStream;
+            responseHtml = new StringBuilder();
+        }
+
+        #region Filter overrides
+        public override bool CanRead
+        {
+            get { return true; }
+        }
+
+        public override bool CanSeek
+        {
+            get { return true; }
+        }
+
+        public override bool CanWrite
+        {
+            get { return true; }
+        }
+
+        public override void Close()
+        {
+            responseStream.Close();
+        }
+
+        public override void Flush()
+        {
+            responseStream.Flush();
+        }
+
+        public override long Length
+        {
+            get { return 0; }
+        }
+
+        public override long Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            return responseStream.Seek(offset, origin);
+        }
+
+        public override void SetLength(long length)
+        {
+            responseStream.SetLength(length);
+        }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            return responseStream.Read(buffer, offset, count);
+        }
+        #endregion
+
+        #region Dirty work
+        public override void Write(byte[] buffer, int offset, int count)
+        {
+            string strBuffer = System.Text.UTF8Encoding.UTF8.GetString(buffer, offset, count);
+
+            // ---------------------------------
+            // Wait for the closing </html> tag
+            // ---------------------------------
+            Regex eof = new Regex("</html>", RegexOptions.IgnoreCase);
+
+            if (!eof.IsMatch(strBuffer))
+            {
+                responseHtml.Append(strBuffer);
+            }
+            else
+            {
+                responseHtml.Append(strBuffer);
+                string finalHtml = responseHtml.ToString();
+
+
+                //here's where you'd manipulate the response.
+                finalHtml = finalHtml.Replace(oldtext, newtext);
+
+                byte[] data = System.Text.UTF8Encoding.UTF8.GetBytes(finalHtml);
+
+                responseStream.Write(data, 0, data.Length);
+            }
+        }
+        #endregion
+    }
+
 }
