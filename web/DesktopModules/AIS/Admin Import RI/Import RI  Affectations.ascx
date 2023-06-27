@@ -16,7 +16,7 @@
             </asp:RadioButtonList>
         </div>
         <asp:Panel runat="server" ID="dvFileUpload">       
-            <div><asp:FileUpload runat="server" ID="FU_RI" /><br /></div>
+            <div><asp:FileUpload runat="server" ID="FU_RI" Width="100%" /><br /></div>
             <div><asp:Button runat="server" ID="BT_Upload" CssClass="btn btn-primary"  Text="Importer" OnClick="BT_Upload_Click" CausesValidation="false" /><br />
             </div>
                 

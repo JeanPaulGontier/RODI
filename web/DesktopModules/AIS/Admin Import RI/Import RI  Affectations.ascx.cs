@@ -19,6 +19,7 @@ using System.Text;
 using DotNetNuke.Common;
 using DotNetNuke.Security.Roles;
 
+
 public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalModuleBase
 {
     public string type {
@@ -55,6 +56,14 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
         }
     }
 
+    public Dictionary<string, string> col = new Dictionary<string, string>();
+
+    public string GetVal(Worksheet worksheet, string key, int line) {
+        string c = col[key];
+        return ("" + worksheet.Cells[c + line].Value).Trim() ;
+    }
+
+
     void ImportCurrent(string filename)
     {
         Aspose.Cells.License licenseCells = new Aspose.Cells.License();
@@ -64,6 +73,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
         SqlTransaction trans = null;
         SqlCommand sql = null;
 
+        
         try
         {
 
@@ -75,59 +85,108 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
             sql = new SqlCommand("delete from ais_import_ri_affectations where type='" + type + "'", conn,trans);
             sql.ExecuteNonQuery();
 
-
+            
             #region rotary
                 Worksheet sheet = xls.Worksheets[0];
 
+                col = new Dictionary<string, string>();
+
+                if (("" + sheet.Cells["A1"].Value).Trim() == "Adjoint du gouverneur")
+                {
+                    col.Add("Adjoint du gouverneur", "A");
+                    col.Add("Nom du rotary club", "B");
+                    col.Add("Numéro de club", "C");
+                    col.Add("Rôle Club", "E");
+                    col.Add("Prénom et nom", "F");
+                    col.Add("E-mail", "I");
+                }
+                else if (("" + sheet.Cells["B1"].Value).Trim() == "Adjoint du gouverneur")
+                {
+                    col.Add("Adjoint du gouverneur", "B");
+                    col.Add("Nom du rotary club", "C");
+                    col.Add("Numéro de club", "D");
+                    col.Add("Rôle Club", "F");
+                    col.Add("Prénom et nom", "G");
+                    col.Add("E-mail", "J");
+                }
+                else
+                {
+                    throw new Exception("mauvais format de fichier contactez le webmaster");
+                }
+
                 int i = 2;
-                string A = ""+sheet.Cells["A2"].Value;
+                string A = GetVal(sheet, "Adjoint du gouverneur",i);
                 while(A!="")
                 {
-                    if(!"information non signalée".Equals(("" + sheet.Cells[(type == "incoming" ? "F" : "G") + i].Value).Trim().ToLower()))
+                    if(!"information non signalée".Equals(GetVal(sheet, "Prénom et nom", i).ToLower()))
                     { 
                         sql = new SqlCommand("insert into ais_import_ri_affectations " +
                             "(type,cric,role,nom,email) VALUES " +
                             "(@type,@cric,@role,@nom,@email)", conn, trans);
                         sql.Parameters.AddWithValue("type", type);
-                        sql.Parameters.AddWithValue("cric", ("" + sheet.Cells[(type == "incoming" ? "C" : "D") + i].Value).Trim());
-                        sql.Parameters.AddWithValue("role", (""+ sheet.Cells[(type == "incoming" ? "E" : "F") + i].Value).Trim());
-                        string nom = clearnom(("" + sheet.Cells[(type == "incoming" ? "F" : "G") + i].Value).Trim());
+                        sql.Parameters.AddWithValue("cric",GetVal(sheet, "Numéro de club",i));
+                        sql.Parameters.AddWithValue("role", GetVal(sheet, "Rôle Club", i));
+                        string nom = clearnom(GetVal(sheet, "Prénom et nom",i));
                         sql.Parameters.AddWithValue("nom", nom);
-                        sql.Parameters.AddWithValue("email", (""+ sheet.Cells[(type == "incoming" ? "I" : "J") + i].Value).Trim().ToLower());
+                        sql.Parameters.AddWithValue("email", GetVal(sheet, "E-mail", i).ToLower());
                         sql.ExecuteNonQuery();
                     }
                 
 
                     i++;
-                    A = "" + sheet.Cells["A"+i].Value;
+                    A = GetVal(sheet, "Adjoint du gouverneur", i);
                 }
             #endregion
             #region rotaract
                 sheet = xls.Worksheets[1];
 
+                col = new Dictionary<string, string>();
+
+                if (("" + sheet.Cells["E1"].Value).Trim() == "Prénom et nom")
+                {
+                    col.Add("Nom du rotaract  club", "A");
+                    col.Add("Numéro de club", "B");
+                    col.Add("Rôle Rotaract", "D");
+                    col.Add("Prénom et nom", "E");
+                    col.Add("E-mail", "H");
+                }
+                else if (("" + sheet.Cells["F1"].Value).Trim() == "Prénom et nom")
+                {
+                    col.Add("Nom du rotaract  club", "A");
+                    col.Add("Numéro de club", "B");
+                    col.Add("Rôle Rotaract", "D");
+                    col.Add("Prénom et nom", "F");
+                    col.Add("E-mail", "I");
+                }
+                else
+                {
+                    throw new Exception("mauvais format de fichier contactez le webmaster");
+                }
+
+
                 i = 2;
-                A = "" + sheet.Cells["A2"].Value;
+                A = GetVal(sheet, "Nom du rotaract  club", i);
                 while (A != "")
                 {
-                    if (!"information non signalée".Equals(("" + sheet.Cells["F" + i].Value).Trim().ToLower()))
+                    if (!"information non signalée".Equals(GetVal(sheet, "Prénom et nom", i).ToLower()))
                     {
                         sql = new SqlCommand("insert into ais_import_ri_affectations " +
                             "(type,cric,role,nom,email) VALUES " +
                             "(@type,@cric,@role,@nom,@email)", conn, trans);
                         sql.Parameters.AddWithValue("type", type);
-                        sql.Parameters.AddWithValue("cric", ("" + sheet.Cells["B" + i].Value).Trim());
-                        sql.Parameters.AddWithValue("role", ("" + sheet.Cells["D" + i].Value).Trim());
+                        sql.Parameters.AddWithValue("cric", GetVal(sheet, "Numéro de club", i));
+                        sql.Parameters.AddWithValue("role", GetVal(sheet, "Rôle Rotaract", i));
 
-                    // patch différence entre fichier incoming et fichier current
+                        // patch différence entre fichier incoming et fichier current
 
-                        string nom = clearnom(("" + sheet.Cells[(type=="incoming"?"E":"F") + i].Value).Trim());
+                        string nom = clearnom(GetVal(sheet, "Prénom et nom",i));
                         sql.Parameters.AddWithValue("nom", nom );
-                        sql.Parameters.AddWithValue("email", ("" + sheet.Cells[(type == "incoming" ? "H" : "I") + i].Value).Trim().ToLower());
+                        sql.Parameters.AddWithValue("email", GetVal(sheet, "E-mail", i).ToLower());
                         sql.ExecuteNonQuery();
                     }
 
                     i++;
-                    A = "" + sheet.Cells["A" + i].Value;
+                    A = GetVal(sheet, "Nom du rotaract  club", i);
                 }
             #endregion
 
