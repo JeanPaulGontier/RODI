@@ -5,7 +5,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Web.Api;
-using EasyDNNSolutions.Modules.EasyDNNRotator.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;

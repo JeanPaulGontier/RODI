@@ -7,6 +7,15 @@ App_Code\AIS\Mailing.cs
 DesktopModules\AIS\Admin Information Anime Titre_Texte\EditInformationAnimeTitle_Text.ascx.cs
 App_Code\AIS\webapi\mobile\MobileController.cs
 DesktopModules\AIS\Ticketing\People.ascx.cs
+Portals\_default\Skins\Rodi2017\images\app-store.png
+Portals\_default\Skins\Rodi2017\images\play-store.png
+DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
+App_Code\AIS\webapi\meeting\MeetingController.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_redirecteur_documents_club.cshtml
+App_Code\ClubRewriter.cs
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
 ```
 
 ###### 29/05/2023

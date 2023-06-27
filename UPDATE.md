@@ -5,6 +5,7 @@
 - ajout du module de suivi des factures des clubs au niveau district (Développement spécifique du 1770 offerts aux autres districts)
 - tri des inscrits aux réunions par ordre croissant de nom
 - désactivation de l'affichage du popup cookie consent quand on regarde les news de l'app mobile
+- modification du module d'import des roles rotariens des clubs (current et incoming) pour supporter toutes les variations du fichier venant du RI
 
 Publication de la nouvelle application mobile sur Android (Google Play Store) :
 - District 1780 & 1670 (liens vers les différents stores visibles dans la page d'accueil de l'espace membre)
