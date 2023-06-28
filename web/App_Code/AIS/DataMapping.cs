@@ -1730,7 +1730,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
                 sql.Parameters.AddWithValue("@type_club", "" + c.club_type);
-                sql.Parameters.AddWithValue("@payment_method", c.payment_method);
+                sql.Parameters.AddWithValue("@payment_method", ""+c.payment_method);
                 sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update club : " + c.cric);
@@ -1815,7 +1815,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@roles", "" + c.roles);
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
-                sql.Parameters.AddWithValue("@payment_method", c.payment_method);
+                sql.Parameters.AddWithValue("@payment_method", ""+c.payment_method);
                 sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
 
                 if (sql.ExecuteNonQuery() == 0)

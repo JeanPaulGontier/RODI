@@ -7,6 +7,16 @@
 - désactivation de l'affichage du popup cookie consent quand on regarde les news de l'app mobile
 - modification du module d'import des roles rotariens des clubs (current et incoming) pour supporter toutes les variations du fichier venant du RI
 - correction d'un pb d'export de l'organigramme district en format Excel
+- modification admin club 
+	- reorganisation panneau de paramètres
+	- ajout du nb d'exonéré de cotisation de district
+	- définition du type de paiement par défaut
+- ajout de fonctionnalités sur le module d'appel de cotisation de district
+	- gestion des prélèvements
+	- possiblité pour les admins d'effacer les factures
+	- dans la fonctionnalité reglement on peut changer le montant effectivement réglé (permet de corriger après coup la facture)
+	- prise en compte du nb de membres exonérés
+	- prise en compte du type de règlement par défaut des clubs (exemple : pour les prélèvements SEPA)
 
 Publication de la nouvelle application mobile sur Android (Google Play Store) :
 - District 1780 & 1670 (liens vers les différents stores visibles dans la page d'accueil de l'espace membre)

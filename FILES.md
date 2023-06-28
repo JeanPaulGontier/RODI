@@ -18,6 +18,12 @@ DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
 DesktopModules\AIS\Admin District Board\District Board.ascx
 DesktopModules\AIS\Admin District Board\District Board.ascx.cs
+App_Code\AIS\Club.cs
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Comptabilité\Control.ascx
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 ```
 
 ###### 29/05/2023
