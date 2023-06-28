@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://www.rodi-platform.org
+// Copyright (c) 2012-2023
+// by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -390,18 +390,18 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
         List<DataTable> liste = new List<DataTable>();
-        foreach (ListItem laSection in ddl_section.Items)
-        {
-            DataSet ds_ = DataMapping.ExecSql("SELECT nim as NIM, surname as Nom, name as Prénom, job as Poste, cric as Cric, club as 'Nom du club', [description] as 'Description', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "' AND section = '"+laSection.Value+"'  order by rank");
-            ds_.Tables[0].TableName = laSection.Text;
+        //foreach (ListItem laSection in ddl_section.Items)
+        //{
+            DataSet ds_ = DataMapping.ExecSql("SELECT section as Section, nim as NIM, surname as Nom, name as Prénom, job as Poste, cric as Cric, club as 'Nom du club', [description] as 'Description', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
+           // ds_.Tables[0].TableName = "Organigramme "+ rbl_rotaryYear.SelectedValue + "/" + (1+int.Parse(rbl_rotaryYear.SelectedValue));
             liste.Add(ds_.Tables[0]);
-        }
+  //      }
 
-        DataSet ds = DataMapping.ExecSql("SELECT name as 'Nom de la commission', memberName as Membre, job as 'Poste' FROM "+Const.TABLE_PREFIX+"commission where rotary_year ='" + rbl_rotaryYear.SelectedValue + "' order by name");
-        ds.Tables[0].TableName = "Commissions";
-        liste.Add(ds.Tables[0]);
+        //DataSet ds = DataMapping.ExecSql("SELECT name as 'Nom de la commission', memberName as Membre, job as 'Poste' FROM "+Const.TABLE_PREFIX+"commission where rotary_year ='" + rbl_rotaryYear.SelectedValue + "' order by name");
+        //ds.Tables[0].TableName = "Commissions";
+        //liste.Add(ds.Tables[0]);
 
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -409,6 +409,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
 
     }
+
 
     /// <summary>
     /// Permet d'exporter le GridView en CSV

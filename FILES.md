@@ -16,6 +16,8 @@ DesktopModules\RazorModules\RazorHost\Scripts\_redirecteur_documents_club.cshtml
 App_Code\ClubRewriter.cs
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
+DesktopModules\AIS\Admin District Board\District Board.ascx
+DesktopModules\AIS\Admin District Board\District Board.ascx.cs
 ```
 
 ###### 29/05/2023
