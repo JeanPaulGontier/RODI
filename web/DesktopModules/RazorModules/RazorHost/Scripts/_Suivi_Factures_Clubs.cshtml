@@ -1,4 +1,4 @@
-@using AIS;
+﻿@using AIS;
 @using System.Data;
 @{ 
     List<Payment> payments = DataMapping.ListPayments(index: 0, max: int.MaxValue, sort:"dt desc");
@@ -26,7 +26,8 @@
             double MontantAttendu =0;
             double MontantResteAPayer =0;
             double MontantParCheque =0;
-            double MontantParVirement =0;
+            double MontantParVirement = 0;
+            double MontantParPrelevement = 0;
 
             foreach (DataRow order in ds.Tables[0].Rows)
             {
@@ -35,13 +36,17 @@
                 bool paye = ("" + order["regle"]).Equals(Const.YES);
                 if(paye)
                 {
-                    if (("" + order["moyen"]).Equals("virement"))
+                    if (("" + order["moyen"]).Equals("Virement"))
                     {
                         MontantParVirement += montant;
                     }
-                    else
+                    else if (("" + order["moyen"]).Equals("Chèque"))
                     {
                         MontantParCheque += montant;
+                    }
+                    else if (("" + order["moyen"]).Equals("Prélèvement"))
+                    {
+                        MontantParPrelevement += montant;
                     }
                 }
                 else
@@ -51,7 +56,7 @@
                 }
             }
             <div>
-                <em>Montant attendu : @MontantAttendu.ToString("#,##0.00") &euro;, montant reste &agrave; payer : @MontantResteAPayer.ToString("#,##0.00") &euro;, nb reste &agrave; payer : @NbResteAPayer, total par virement : @MontantParVirement.ToString("#,##0.00")  &euro;,  par ch&egrave;que : @MontantParCheque.ToString("#,##0.00")  &euro;</em>
+                <em>Montant attendu : @MontantAttendu.ToString("#,##0.00") &euro;, montant reste &agrave; payer : @MontantResteAPayer.ToString("#,##0.00") &euro;, nb reste &agrave; payer : @NbResteAPayer, total par virement : @MontantParVirement.ToString("#,##0.00")  &euro;,  par ch&egrave;que : @MontantParCheque.ToString("#,##0.00")  &euro;,  par prélèvement : @MontantParPrelevement.ToString("#,##0.00")  &euro;</em>
             </div>
             <table class="table table-striped">
                 <tr>
