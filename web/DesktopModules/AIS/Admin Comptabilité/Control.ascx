@@ -144,7 +144,7 @@
    <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
 </asp:GridView>
     <asp:HiddenField ID="tri2" Value="club" runat="server"/><asp:HiddenField ID="sens2" Value="ASC" runat="server"/>
-    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les factures" OnClick="BT_Export_Orders_Click"  />&nbsp;<asp:Button runat="server" Text="Exporter seulement les virements" OnClick="BT_Export_Only_Transfers_Click" ID="BT_Export_Only_Transfers" CssClass="btn btn-primary"  />&nbsp;<asp:Button runat="server" Text="Valider tous les virements" ID="BT_Validate_Transfers" CssClass="btn btn-primary" OnClientClick="confirm('voulez vous validez tous les paiements par virement d'un coup ?')" Visible="false" OnClick="BT_Validate_Transfers_Click" />&nbsp;<asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Visible="false" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
+    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les factures" OnClick="BT_Export_Orders_Click"  />&nbsp;<asp:Button runat="server" Text="Exporter seulement les prélèvements" OnClick="BT_Export_Only_Transfers_Click" ID="BT_Export_Only_Transfers" CssClass="btn btn-primary"  />&nbsp;<asp:Button runat="server" Text="Valider tous les virements" ID="BT_Validate_Transfers" CssClass="btn btn-primary" OnClientClick="confirm('voulez vous validez tous les paiements par virement d'un coup ?')" Visible="false" OnClick="BT_Validate_Transfers_Click" />&nbsp;<asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Visible="false" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
 </div>
 
 </asp:Panel>
