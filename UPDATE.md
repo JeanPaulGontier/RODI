@@ -1,4 +1,6 @@
 ###### en cours
+
+###### 29/06/2023
 - correction bug billeterie quand on revalidait les options lors d'une inscription les données choisies étaient perdues
 - correction d'un bug sur le popup de saisie des 4 cadres bleus de pied de page club (la modification ne reprenait pas les données déjà saisies)
 - ajout de fonctionnalités dans l'api mobile pour la nouvelle application mobile de district
