@@ -24,6 +24,8 @@ DesktopModules\AIS\Admin Comptabilité\Control.ascx
 DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
 ```
 
 ###### 29/05/2023
