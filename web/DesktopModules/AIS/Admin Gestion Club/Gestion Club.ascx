@@ -5,7 +5,7 @@
     <asp:Label ID="lbl_nb" runat="server"></asp:Label>
 
     <asp:Button ID="btn_add" runat="server" CssClass="btn btn-primary right" Text="Ajouter un club" OnClick="btn_add_Click" />
-
+      <div class="pe-spacer size10"></div>
     <asp:GridView ID="gvw_clubs" CssClass="table table-striped"  GridLines="None"  OnRowCommand="gvw_clubs_RowCommand" runat="server" AutoGenerateColumns="false">
         <Columns>
             <asp:TemplateField HeaderText="Nom du club">
