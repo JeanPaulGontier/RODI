@@ -136,18 +136,7 @@
             <asp:Button ID="btn_img" runat="server" OnClick="btn_img_Click" Text="Modifier le fanion" CssClass="btn btn-primary" />
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <strong>Réunions : </strong>
-        </div>
-        <div class="col-sm-8">
-            <asp:TextBox ID="tbx_meetings" TextMode="MultiLine" Width="500" Height="300" runat="server"></asp:TextBox>
-        </div>
-        <script> CKEDITOR.replace('<%=tbx_meetings.ClientID%>', {
-            uiColor: '#CCEAEE'
-        });  </script>
-    </div>
-    <div class="pe-spacer size10"></div>
+   <div class="pe-spacer size10"></div>
     <div class="row">
         <div class="col-sm-4">
             <strong>Téléphone : </strong>
@@ -172,35 +161,81 @@
             <asp:TextBox ID="tbx_email" Width="500" runat="server"></asp:TextBox>
         </div>
     </div>
+     <div class="pe-spacer size10"></div>
     <div class="row">
         <div class="col-sm-4">
-            <strong>Site web : </strong>
+            <strong>Rôle de groupe de clubs : </strong>
+        </div>
+        <div class="col-sm-8">
+             <asp:DropDownList runat="server" ID="DDL_Role" Width="500" CssClass="form-control"></asp:DropDownList>
+        </div>
+    </div>
+    <div class="pe-spacer size10"></div>
+    <div class="row">
+        <div class="col-sm-4">
+            <strong>Site web externe : </strong>
             <em>(incluant https://)</em>
         </div>
         <div class="col-sm-8">
             <asp:TextBox ID="tbx_web" Width="500" runat="server"></asp:TextBox>
         </div>
     </div>
+     <div class="pe-spacer size10"></div>
+    <fieldset>
+        <legend><h3>Cotisation de district</h3></legend>
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>Méthode de paiement : </strong>
+            </div>
+            <div class="col-sm-8">
+                  <asp:RadioButtonList ID="rbl_type" RepeatDirection="Horizontal" runat="server">
+                      <asp:ListItem Text="Chèque" Value="Chèque"></asp:ListItem>
+                      <asp:ListItem Text="Virement" Value="Virement"></asp:ListItem>
+                      <asp:ListItem Text="Prélèvement" Value="Prélèvement"></asp:ListItem>
+                </asp:RadioButtonList>
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-sm-4">
+                <strong>Nb membres gratuits : </strong>
+            </div>
+            <div class="col-sm-8">
+                <asp:TextBox ID="tbx_nb_free_of_charge" CssClass="form-control" TextMode="Number" Width="100" inputmode="decimal" min="0" step="1" runat="server"></asp:TextBox>
+            </div>
+        </div>
+    </fieldset>
+      <div class="pe-spacer size40"></div>
+    <hr />
+    <fieldset>
+        <legend>Présentation du club sur le district :</legend>
+   
     <div class="row">
         <div class="col-sm-4">
-            <strong>Présentation du club :</strong>
         </div>
         <div class="col-sm-8">
-            <asp:RadioButtonList runat="server" ID="SEO_MODE" RepeatDirection="Horizontal">
+            <asp:RadioButtonList runat="server" ID="SEO_MODE" RepeatDirection="Vertical">
                 <asp:ListItem Text="Carte de visite" Value=""></asp:ListItem>
                 <asp:ListItem Text="Site" Value="m"></asp:ListItem>
                 <asp:ListItem Text="Site avec domaine" Value="d"></asp:ListItem>
             </asp:RadioButtonList>
         </div>
-    </div>
+    </div> 
     <div class="row">
-        <div class="col-sm-4">
-            <strong>Nom de domaine site :</strong>
+        <div class="col-sm-4">  
         </div>
         <div class="col-sm-8">
-            <asp:TextBox ID="tbx_domaine" Width="500" runat="server"></asp:TextBox>
+            <asp:TextBox ID="tbx_domaine" Width="500" runat="server" placeholder="Saisir le nom de domaine du site"></asp:TextBox>
         </div>
     </div>
+        <div class="row">
+            <div class="col-sm-4">  
+        </div>
+              <div class="col-sm-8">
+                         <em class="text-info">ATTENTION : le site avec domaine sur le district nécessite un paramétrage technique, contactez le webmaster pour en savoir plus</em>
+     
+                  </div>
+            </div>
+    <h3>Informations pour la carte de visite</h3>
     <div class="row">
         <div class="col-sm-4">
             <strong>Texte de présentation : </strong>
@@ -212,6 +247,19 @@
             uiColor: '#CCEAEE'
         });  </script>
     </div>
+    <div class="pe-spacer size10"></div>
+      <div class="row">
+        <div class="col-sm-4">
+            <strong>Réunions : </strong>
+        </div>
+        <div class="col-sm-8">
+            <asp:TextBox ID="tbx_meetings" TextMode="MultiLine" Width="500" Height="300" runat="server"></asp:TextBox>
+        </div>
+        <script> CKEDITOR.replace('<%=tbx_meetings.ClientID%>', {
+                uiColor: '#CCEAEE'
+            });  </script>
+    </div>
+    
     <div class="pe-spacer size10"></div>
     <div class="row">
         <div class="col-sm-4">
@@ -245,15 +293,10 @@
             <asp:TextBox ID="tbx_meetZip" Width="500" runat="server"></asp:TextBox>
         </div>
     </div>
+    </fieldset>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <strong>Rôle de groupe : </strong>
-        </div>
-        <div class="col-sm-8">
-             <asp:DropDownList runat="server" ID="DDL_Role" Width="500" CssClass="form-control"></asp:DropDownList>
-        </div>
-    </div>
+   
+    
     <div class="pe-spacer size40"></div>
     <div class="row">
         <div class="col-sm-4">

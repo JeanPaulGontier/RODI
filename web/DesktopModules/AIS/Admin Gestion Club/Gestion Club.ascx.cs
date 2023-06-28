@@ -147,6 +147,8 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         img_fanion.ImageUrl = "";
         hfd_cric.Text = "";
         RB_Type_Club.SelectedIndex = 0;
+        rbl_type.SelectedIndex = -1;
+        tbx_nb_free_of_charge.Text = "0";
         BindRoleList();
         //btn_addClub.Text = "Ajouter le club rotaract";
         btn_addClub.Text = "Ajouter un club";
@@ -164,9 +166,13 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         foreach (RoleInfo role in roles)
         {
            var li = new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture));
-           DDL_Role.Items.Add(li);
-            if (selected.Equals(role.RoleID.ToString(CultureInfo.InvariantCulture)))
-                DDL_Role.SelectedIndex = DDL_Role.Items.Count - 1;
+            if(role.RoleName.StartsWith("ADG"))
+            {
+                DDL_Role.Items.Add(li);
+                if (selected.Equals(role.RoleID.ToString(CultureInfo.InvariantCulture)))
+                    DDL_Role.SelectedIndex = DDL_Role.Items.Count - 1;
+
+            }
         }
     }
 
@@ -203,6 +209,14 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_domaine.Text = club.domaine;
         tbx_name.Text = club.name;
         btn_delete.CommandArgument =""+ club.cric;
+        tbx_nb_free_of_charge.Text = "" + club.nb_free_of_charge;
+        if (!String.IsNullOrEmpty(club.payment_method))
+            try
+            {
+                rbl_type.SelectedValue = club.payment_method;
+            }
+            catch { }
+            
         btn_delete.Visible = true;
 
         tbx_seo.Enabled = false;
@@ -262,6 +276,12 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         club.roles = DDL_Role.SelectedValue;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = tbx_domaine.Text;
+        
+        int nbfoc = 0;
+        int.TryParse(tbx_nb_free_of_charge.Text, out nbfoc);
+        club.nb_free_of_charge = nbfoc;
+        if (rbl_type.SelectedIndex > -1)
+            club.payment_method = rbl_type.Items[rbl_type.SelectedIndex].Value;
 
         if (btn_addClub.Text != "Modifier le club")
         {

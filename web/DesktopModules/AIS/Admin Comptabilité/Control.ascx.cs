@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2021
+// Copyright (c) 2012-2023
 // by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -75,6 +75,8 @@ using System.Drawing;
 using Telerik.Web.UI;
 using System.Data;
 using System.Data.SqlClient;
+using Argotic.Extensions.Core;
+using DNN.Modules.SecurityAnalyzer.Components.Checks;
 
 public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModuleBase
 {
@@ -85,6 +87,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
+       
+
         if (TXT_Email_Sender.Text.Trim().Equals("")){
             TXT_Email_Sender.Text = UserInfo.Email;
         }
@@ -120,30 +124,24 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 HF_id.Value = "" + n.id;
                 
                 TXT_Titre.Text = "" + n.title;
-                TXT_Dt.SelectedDate = n.dt;
+                TXT_Dt.Text = n.dt.ToString("yyyy-MM-dd");
                 TXT_Editor.Text = n.text;
-                try
-                {
-                    RB_Type.SelectedValue = n.type;
-                }
-                catch 
-                {
-                    RB_Type.SelectedIndex = -1;
-                }
+                
                 LBL_libelle1.Text = n.wording1;
-                TXT_montant1.Value = n.amount1;
+                TXT_montant1.Text = FromDouble(n.amount1);
                 LBL_libelle2.Text = n.wording2;
-                TXT_montant2.Value = n.amount2;
+                TXT_montant2.Text = FromDouble(n.amount2);
                 TXT_Result.Text = "";
                 TXT_Result_Mails.Text = "";
                 tri2.Value = "club";
                 sens2.Value = "ASC";
 
-                Check_Buttons();
                 
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 RefreshGridOrders();
+                Check_Buttons();
+
                 break;
         }
     }
@@ -171,7 +169,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     private void BindPanelModif()
     {
         Order o = DataMapping.GetOrder(hfd_id.Value);
-        lbl_Titre.Text = "Taxe per capita du club " + o.club;
+        lbl_Titre.Text = "Règlement facture du club " + o.club;
         BindDDL(o.cric);
         ddl_members.Items.Insert(0, "");
         if(o.rule_par!=null && o.rule_par!="")
@@ -184,6 +182,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         }
         if (o.rule_type != null && o.rule_type != "")
             rbl_type.SelectedValue = o.rule_type;
+        tbx_amount.Text=FromDouble(o.amount);
         tbx_info.Text = ""+o.rule_info;
         btn_validate.CommandArgument = ""+o.id;
         if (o.rule_dt == Const.NO_DATE)
@@ -282,28 +281,61 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     /// <param name="e"></param>
     protected void BT_Valider_Click(object sender, EventArgs e)
     {
-        Payment obj = new Payment();
-        if (HF_id.Value != "")
+        try
         {
-            obj = DataMapping.GetPayment(HF_id.Value);
+            Payment obj = new Payment();
+            if (HF_id.Value != "")
+            {
+                obj = DataMapping.GetPayment(HF_id.Value);
+            }
+            obj.dt = TXT_Dt.Text != null ? DateTime.Parse(TXT_Dt.Text) : DateTime.Now;
+            obj.text = Server.HtmlDecode(TXT_Editor.Text);
+            obj.title = TXT_Titre.Text;
+            obj.type = "T";
+            obj.wording1 = LBL_libelle1.Text;
+            obj.amount1 = TXT_montant1.Text == "" ? 0 : ToDouble(TXT_montant1.Text);
+            if (obj.amount1 <= 0.01)
+                throw new Exception("Veuillez saisir un montant");
+            obj.wording2 = LBL_libelle2.Text;
+            obj.amount2 = TXT_montant2.Text == "" ? 0 : ToDouble(TXT_montant2.Text);
+            if (!DataMapping.UpdatePayment(obj))
+                return;
+
+
+            RefreshGrid();
+            Panel1.Visible = true;
+            Panel2.Visible = false;
+            HideError();
+            Check_Buttons();
         }
-        obj.dt = TXT_Dt.SelectedDate != null ? (DateTime)TXT_Dt.SelectedDate : DateTime.Now;
-        obj.text = Server.HtmlDecode(TXT_Editor.Text);
-        obj.title = TXT_Titre.Text;
-        obj.type = RB_Type.SelectedValue;
-        obj.wording1 = LBL_libelle1.Text;
-        obj.amount1 = TXT_montant1.Value == null ? 0 : (float)TXT_montant1.Value;
-        obj.wording2 = LBL_libelle2.Text;
-        obj.amount2 = TXT_montant2.Value == null ? 0 : (float)TXT_montant2.Value;
-        if (!DataMapping.UpdatePayment(obj))
-            return;
-       
+        catch(Exception ee)
+        {
+            Functions.Error(ee);
+            ShowError(ee.Message);
+        }
         
-        RefreshGrid();
-        Panel1.Visible = true;
-        Panel2.Visible = false;
     }
-   
+    void HideError()
+    {
+        P_Error.Visible= false;
+    }
+    void ShowError(string msg)
+    {
+        TXT_Error.Text=msg;
+        P_Error.Visible = true;
+    }
+    double ToDouble(string str)
+    {
+        double d = 0;
+        str = str.Trim().Replace(".", ",");
+        double.TryParse(str,out d);
+
+        return d;
+    }
+    string FromDouble(double d)
+    {
+        return d.ToString().Replace(",",".");
+    }
     /// <summary>
     /// Permet d'afficher les champs nécessaires à l'ajout d'un règlement
     /// </summary>
@@ -314,9 +346,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         HF_id.Value = "";
         TXT_Titre.Text = "";
-        TXT_Dt.SelectedDate = DateTime.Now;
+        TXT_Dt.Text = DateTime.Now.ToString("yyyy-MM-dd");
         TXT_Editor.Text = "";
-        RB_Type.SelectedIndex = -1;
+       
         Check_Buttons();
         RefreshGridOrders();
         Panel2.Visible = true;
@@ -359,42 +391,21 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         if(HF_id.Value!="")    
             nbcommandes=  DataMapping.NbOrderByPayment(HF_id.Value);
 
-        RB_Type.Enabled = nbcommandes == 0;
         BT_Valider.Visible = nbcommandes == 0;
         BT_Supprimer.Visible = nbcommandes == 0;
+        BT_Export_Orders.Visible = nbcommandes > 0;
+        BT_Export_Only_Transfers.Visible = nbcommandes > 0;
         Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
 
-        if (RB_Type.SelectedValue == "T")
-        {
-            LBL_libelle1.Text = "Montant par membre :";
-            //TXT_montant1.Value = 50;
-            P_Montant1.Visible = true;
-            P_Montant2.Visible = false;
-            BT_Generer_Orders.Visible = HF_id.Value!="" && !DataMapping.OrdersComplete(HF_id.Value);
-            Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
-        }
-        else if (RB_Type.SelectedValue == "M")
-        {
-            LBL_libelle1.Text = "Montant par membre :";
-            //TXT_montant1.Value = 50;
-            LBL_libelle2.Text = "Montant par invité :";
-            //TXT_montant2.Value = 50;
-            P_Montant1.Visible = true;
-            P_Montant2.Visible = true;
-            BT_Generer_Orders.Visible = false;
-            Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
-        }
-        else
-        {
-            LBL_libelle1.Text = "";
-            LBL_libelle2.Text = "";
-            TXT_montant1.Value = 0;
-            TXT_montant2.Value = 0;
-            P_Montant1.Visible = false;
-            P_Montant2.Visible = false;
-            BT_Generer_Orders.Visible = false;
-            Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
-        }
+       
+        LBL_libelle1.Text = "Montant par membre :";
+        //TXT_montant1.Value = 50;
+        P_Montant1.Visible = true;
+        P_Montant2.Visible = false;
+        BT_Generer_Orders.Visible = HF_id.Value!="" && !DataMapping.OrdersComplete(HF_id.Value) && ToDouble(TXT_montant1.Text)>0;
+        Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
+
+        P_Admin_Commands.Visible = (UserInfo.IsAdmin || UserInfo.IsSuperUser) && Panel2.Visible && nbcommandes>0;
 
     }
 
@@ -419,52 +430,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 }
             if (!dejacommande)
             {
-                // version modifiée le 01/01/2017 pour utiliser le fichier importé du RI
-
-                //SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-                //conn.Open();
-                //SqlCommand sql = new SqlCommand("SELECT * FROM ais_import_ri WHERE cric = @cric ORDER BY membername",conn);
-                //sql.Parameters.AddWithValue("cric", club.cric);
-
-                //SqlDataAdapter da = new SqlDataAdapter(sql);
-                //DataSet ds = new DataSet();
-                //da.Fill(ds);
-
-                //conn.Close();
-                //DataTable membres = ds.Tables[0];
-
-                //Order commande = new Order();
-                //commande.cric = club.cric;
-                //commande.club = club.name;
-                //commande.dt = DateTime.Now;
-                //commande.id_payment = HF_id.Value;
-                //commande.rule = "N";
-                //commande.rule_dt = Const.NO_DATE;
-                //commande.rule_info = "";
-                //commande.rule_par = "";
-                //commande.rule_type = "";
-                //commande.amount = (float)TXT_montant1.Value * membres.Rows.Count;
-
-                //foreach (DataRow membre in membres.Rows)
-                //{
-                //    Order.Detail detail = new Order.Detail();
-                //    detail.wording = membre["membername"]+ " (" + membre["nim"]+ ")";
-                //    detail.amount = (float)TXT_montant1.Value;
-                //    detail.quantity = 1;
-                //    detail.unitary = (float)TXT_montant1.Value;
-                //    detail.id_parent = 0;
-                //    commande.Details.Add(detail);
-                //}
-
-
-                //if (DataMapping.UpdateOrder(commande))
-                //    TXT_Result.Text += "<br/>" + club.name + " commande pour " + membres.Rows.Count + " membres";
-                //else
-                //    TXT_Result.Text += "<br/>Erreur commande : " + club.name;
-
-
-
-
+             
 
                 List<Member> membres = DataMapping.ListMembers(cric: club.cric, sort: "name ASC");
 
@@ -479,19 +445,21 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 commande.rule_info = "";
                 commande.rule_par = "";
                 commande.rule_type = "";
+                if (!String.IsNullOrEmpty(club.payment_method))
+                    commande.rule_type = club.payment_method;
                 
                 foreach (Member membre in membres)
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
-                    detail.amount = (float)TXT_montant1.Value;
+                    detail.amount = ToDouble(TXT_montant1.Text);
                     detail.quantity = 1;
-                    detail.unitary = (float)TXT_montant1.Value;
+                    detail.unitary = ToDouble(TXT_montant1.Text);
                     detail.id_parent = 0;
                     if(membre.honorary_member=="N")
                         commande.Details.Add(detail);
                 }
-                commande.amount = (float)TXT_montant1.Value * commande.Details.Count;
+                commande.amount = ToDouble(TXT_montant1.Text) * (commande.Details.Count- club.nb_free_of_charge);
 
 
                 if (DataMapping.UpdateOrder(commande))
@@ -567,7 +535,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -612,6 +580,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     protected void btn_validate_Click(object sender, EventArgs e)
     {
         Order o = DataMapping.GetOrder(hfd_id.Value);
+        o.amount = ToDouble(tbx_amount.Text);
         o.rule_type = rbl_type.SelectedValue;
         o.rule_par = ddl_members.SelectedItem.Text;
         o.rule_info = tbx_info.Text;
@@ -689,5 +658,34 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         if (d == Const.NO_DATE)
             return "";
         return d.ToString("dd/MM/yyyy");
+    }
+
+    
+    protected void BT_Delete_Invoices_Click(object sender, EventArgs e)
+    {
+        DataMapping.ExecSql("DELETE FROM ais_orders_details WHERE id_order IN (SELECT id FROM ais_orders WHERE id_payment='" + HF_id.Value + "'");
+        DataMapping.ExecSql("DELETE FROM ais_orders WHERE id_payment='" + HF_id.Value + "'");
+        BT_Valider_Click(sender, e);
+    }
+
+    protected void BT_Validate_Transfers_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void BT_Export_Only_Transfers_Click(object sender, EventArgs e)
+    {
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
+           "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
+           "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
+           "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
+           "FROM [ais_orders] O  where id_payment='" + HF_id.Value + "' and type_rule='Prélèvement'  order by club");
+
+        List<DataTable> liste = new List<DataTable>();
+        liste.Add(ds.Tables[0]);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes par prélèvement au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
     }
 }

@@ -1679,7 +1679,8 @@ namespace AIS
             obj.club_type = "" + rd["type_club"];
             obj.seo_mode = "" + rd["seo_mode"];
             obj.domaine = "" + rd["domaine"];
-
+            obj.payment_method = "" + rd["payment_method"];
+            if (rd["nb_free_of_charge"] == System.DBNull.Value) obj.nb_free_of_charge = 0; else obj.nb_free_of_charge = (int)rd["nb_free_of_charge"];
 
             return obj;
         }
@@ -1698,7 +1699,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine,type_club=@type_club WHERE cric=@last_cric", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine,type_club=@type_club,nb_free_of_charge=@nb_free_of_charge,payment_method=@payment_method WHERE cric=@last_cric", conn, trans);
 
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@last_cric", last_cric);
@@ -1729,7 +1730,8 @@ namespace AIS
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
                 sql.Parameters.AddWithValue("@type_club", "" + c.club_type);
-
+                sql.Parameters.AddWithValue("@payment_method", c.payment_method);
+                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update club : " + c.cric);
 
@@ -1738,6 +1740,8 @@ namespace AIS
                 sql.Parameters.AddWithValue("@last_cric", last_cric);
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@club_name", c.name);
+
+
                 sql.ExecuteNonQuery();
 
 
@@ -1774,7 +1778,7 @@ namespace AIS
             {
                 conn.Open();
                 trans = conn.BeginTransaction();
-                SqlCommand sql = new SqlCommand("INSERT INTO  " + Const.TABLE_PREFIX + "clubs ([cric],[district_id],[name],[adress_1],[adress_2],[adress_3],[zip],[town],[pennant],[meetings],[telephone],[fax],[email],[web],[text],[seo],[latitude],[longitude],[meeting_adr1],[meeting_adr2],[meeting_zip],[meeting_town],[former_presidents],[type_club],[roles],[seo_mode],[domaine]) VALUES (@cric,@district_id,@name,@adress_1,@adress_2,@adress_3,@zip,@town,@pennant,@meetings,@telephone,@fax,@email,@web,@text,@seo,@latitude,@longitude,@meeting_adr1,@meeting_adr2,@meeting_zip,@meeting_town,@former_presidents,@type_club,@roles,@seo_mode,@domaine)", conn, trans);
+                SqlCommand sql = new SqlCommand("INSERT INTO  " + Const.TABLE_PREFIX + "clubs ([cric],[district_id],[name],[adress_1],[adress_2],[adress_3],[zip],[town],[pennant],[meetings],[telephone],[fax],[email],[web],[text],[seo],[latitude],[longitude],[meeting_adr1],[meeting_adr2],[meeting_zip],[meeting_town],[former_presidents],[type_club],[roles],[seo_mode],[domaine],[payment_method],[nb_free_of_charge]) VALUES (@cric,@district_id,@name,@adress_1,@adress_2,@adress_3,@zip,@town,@pennant,@meetings,@telephone,@fax,@email,@web,@text,@seo,@latitude,@longitude,@meeting_adr1,@meeting_adr2,@meeting_zip,@meeting_town,@former_presidents,@type_club,@roles,@seo_mode,@domaine,@payment_method,@nb_free_of_charge)", conn, trans);
 
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@district_id", c.district_id);
@@ -1811,6 +1815,8 @@ namespace AIS
                 sql.Parameters.AddWithValue("@roles", "" + c.roles);
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
+                sql.Parameters.AddWithValue("@payment_method", c.payment_method);
+                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur insert club");
