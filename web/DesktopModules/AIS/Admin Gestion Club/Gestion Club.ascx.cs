@@ -209,7 +209,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_domaine.Text = club.domaine;
         tbx_name.Text = club.name;
         btn_delete.CommandArgument =""+ club.cric;
-        tbx_nb_free_of_charge.Text = "" + club.nb_free_of_charge;
+        tbx_nb_free_of_charge.Text = ("" + club.nb_free_of_charge).Replace(",",".");
         if (!String.IsNullOrEmpty(club.payment_method))
             try
             {
@@ -277,8 +277,8 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = tbx_domaine.Text;
         
-        int nbfoc = 0;
-        int.TryParse(tbx_nb_free_of_charge.Text, out nbfoc);
+        double nbfoc = 0;
+        double.TryParse(tbx_nb_free_of_charge.Text.Trim().Replace(".",","), out nbfoc);
         club.nb_free_of_charge = nbfoc;
         if (rbl_type.SelectedIndex > -1)
             club.payment_method = rbl_type.Items[rbl_type.SelectedIndex].Value;

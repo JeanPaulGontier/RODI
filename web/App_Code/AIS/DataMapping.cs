@@ -1680,7 +1680,7 @@ namespace AIS
             obj.seo_mode = "" + rd["seo_mode"];
             obj.domaine = "" + rd["domaine"];
             obj.payment_method = "" + rd["payment_method"];
-            if (rd["nb_free_of_charge"] == System.DBNull.Value) obj.nb_free_of_charge = 0; else obj.nb_free_of_charge = (int)rd["nb_free_of_charge"];
+            if (rd["nb_free_of_charge"] == System.DBNull.Value) obj.nb_free_of_charge = 0; else obj.nb_free_of_charge = (double)rd["nb_free_of_charge"];
 
             return obj;
         }

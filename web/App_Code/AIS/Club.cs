@@ -102,7 +102,7 @@ namespace AIS
         public string seo_mode { get; set; }
         public string domaine { get; set; }
         public string payment_method { get; set; }
-        public int nb_free_of_charge { get; set; }
+        public double nb_free_of_charge { get; set; }
        
 
         public string GetPennant()

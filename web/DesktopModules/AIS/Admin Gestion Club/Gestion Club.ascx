@@ -200,7 +200,7 @@
                 <strong>Nb membres gratuits : </strong>
             </div>
             <div class="col-sm-8">
-                <asp:TextBox ID="tbx_nb_free_of_charge" CssClass="form-control" TextMode="Number" Width="100" inputmode="decimal" min="0" step="1" runat="server"></asp:TextBox>
+                <asp:TextBox ID="tbx_nb_free_of_charge" CssClass="form-control" TextMode="Number" Width="100" inputmode="decimal" min="0" step="0.01" runat="server"></asp:TextBox>
             </div>
         </div>
     </fieldset>

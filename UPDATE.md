@@ -1,27 +1,30 @@
 ###### en cours
+- on peut maintenant définir au niveau admin district des remises pour les clubs avec des nb à virgules pour tenir compte des remises spécifiques aux districts (exemple : jeune rotarien de moins de 2 ans qui paie 50% de cotisation ou gratuité pour le conjoint pour les couples)
+
 
 ###### 29/06/2023
-- correction bug billeterie quand on revalidait les options lors d'une inscription les données choisies étaient perdues
+- correction bug billetterie quand on revalidait les options lors d'une inscription les données choisies étaient perdues
 - correction d'un bug sur le popup de saisie des 4 cadres bleus de pied de page club (la modification ne reprenait pas les données déjà saisies)
 - ajout de fonctionnalités dans l'api mobile pour la nouvelle application mobile de district
 - ajout du module de suivi des factures des clubs au niveau district (Développement spécifique du 1770 offerts aux autres districts)
 - tri des inscrits aux réunions par ordre croissant de nom
 - désactivation de l'affichage du popup cookie consent quand on regarde les news de l'app mobile
-- modification du module d'import des roles rotariens des clubs (current et incoming) pour supporter toutes les variations du fichier venant du RI
+- modification du module d'import des rôles rotariens des clubs (current et incoming) pour supporter toutes les variations du fichier venant du RI
 - correction d'un pb d'export de l'organigramme district en format Excel
 - modification admin club 
-	- reorganisation panneau de paramètres
-	- ajout du nb d'exonéré de cotisation de district
-	- définition du type de paiement par défaut
+                - réorganisation panneau de paramètres
+                - ajout du nb d'exonéré de cotisation de district
+                - définition du type de paiement par défaut
 - ajout de fonctionnalités sur le module d'appel de cotisation de district
-	- gestion des prélèvements
-	- possiblité pour les admins d'effacer les factures
-	- dans la fonctionnalité reglement on peut changer le montant effectivement réglé (permet de corriger après coup la facture)
-	- prise en compte du nb de membres exonérés
-	- prise en compte du type de règlement par défaut des clubs (exemple : pour les prélèvements SEPA)
+                - gestion des prélèvements
+                - possibilité pour les admins d'effacer les factures
+                - dans la fonctionnalité règlement on peut changer le montant effectivement réglé (permet de corriger après coup la facture)
+                - prise en compte du nb de membres exonérés
+                - prise en compte du type de règlement par défaut des clubs (exemple : pour les prélèvements SEPA)
 
 Publication de la nouvelle application mobile sur Android (Google Play Store) :
 - District 1780 & 1670 (liens vers les différents stores visibles dans la page d'accueil de l'espace membre)
+
 
 
 ###### 29/05/2023
