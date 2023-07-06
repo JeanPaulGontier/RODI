@@ -6,6 +6,7 @@
 </asp:Panel>
 <asp:Panel ID="Panel1" runat="server">
 <asp:Button runat="server" Text="Ajouter un appel" CssClass="btn btn-primary" ID="BT_Ajouter" OnClick="BT_Ajouter_Click" />
+    <div class="pe-spacer size20"></div>
 <asp:GridView ID="GridView1" runat="server" CssClass="table table-striped"  AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting">
 <Columns>
     <asp:BoundField DataField="dt" HeaderText="Date" SortExpression="dt" DataFormatString="{0:d}" />
