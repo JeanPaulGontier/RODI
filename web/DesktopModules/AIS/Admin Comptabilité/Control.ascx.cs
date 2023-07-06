@@ -618,44 +618,49 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         List<Order> commandes = DataMapping.ListOrderByPayment(HF_id.Value);
         foreach(Order order in commandes)
         {
-            
-            List<Affectation> affectations = DataMapping.ListAffectationRY(order.cric,Functions.GetRotaryYear());
-            bool notresorier = true;
-            List<string> emails = new List<string>();
-            foreach(Affectation a in affectations)
+            if(!order.rule.Equals(Const.YES) || CB_Just_A_Test.Checked)
             {
-                if(a.function.Equals("Trésorier") || a.function.Equals("Président") || a.function.Equals("Secrétaire"))
+
+            
+                List<Affectation> affectations = DataMapping.ListAffectationRY(order.cric,Functions.GetRotaryYear());
+                bool notresorier = true;
+                List<string> emails = new List<string>();
+                foreach(Affectation a in affectations)
                 {
-                    TXT_Result_Mails.Text = TXT_Result_Mails.Text + order.club + " : " + a.name+"<br/>";
-                    
-                    Member m = DataMapping.GetMemberByNim(a.nim);
-                    if(m!=null)
+                    if(a.function.Equals("Trésorier") || a.function.Equals("Président") || a.function.Equals("Secrétaire"))
                     {
-                        notresorier = false;
-                        emails.Add(m.email);
+                        TXT_Result_Mails.Text = TXT_Result_Mails.Text + order.club + " : " + a.name+"<br/>";
+                    
+                        Member m = DataMapping.GetMemberByNim(a.nim);
+                        if(m!=null)
+                        {
+                            notresorier = false;
+                            emails.Add(m.email);
+                        }
                     }
                 }
-            }
             
-            if (notresorier)
-            {
-                TXT_Result_Mails.Text =TXT_Result_Mails.Text  +"<strong style='color: red'>ATTENTION : " + order.club + " pas de trésorier, ni président, ni secrétaire déclaré</strong><br/>";
-            }
-            else
-            {
-                string url =  Functions.UrlAddParam(Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "") + Const.ORDER_VIEW_URL, "id", order.guid);
-
-                if(CB_Just_A_Test.Checked)
+                if (notresorier)
                 {
-                    Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
+                    TXT_Result_Mails.Text =TXT_Result_Mails.Text  +"<strong style='color: red'>ATTENTION : " + order.club + " pas de trésorier, ni président, ni secrétaire déclaré</strong><br/>";
                 }
                 else
                 {
-                    foreach (string em in emails)
-                        Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
+                    string url =  Functions.UrlAddParam(Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "") + Const.ORDER_VIEW_URL, "id", order.guid);
+
+                    if(CB_Just_A_Test.Checked)
+                    {
+                        Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
+                    }
+                    else
+                    {
+                        foreach (string em in emails)
+                            Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
+                    }
                 }
+               
             }
-            if(CB_Just_A_Test.Checked)
+            if (CB_Just_A_Test.Checked)
                 break;
         }
         Functions.SendMail(TXT_Email_Sender.Text, "Rapport envoi emails : " + TXT_Titre.Text, TXT_Result_Mails.Text);

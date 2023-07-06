@@ -87,11 +87,12 @@
 <asp:Panel runat="server" ID="P_SendMail">
 <div>Envoi des emails :</div>
 <div class="txtCenter">
-    <div><em>Les emails sont envoyés à chaque trésorier, président et secrétaire. Dans le cas ou un club n'aurait ni trésorier ni président ni secrétaire déclaré, l'email n'est pas envoyé, il faut alors contacter le club par un autre moyen.</em></div>
+    <div class="text-info"><em>Les emails sont envoyés à chaque trésorier, président et secrétaire. Dans le cas ou un club n'aurait ni trésorier ni président ni secrétaire déclaré, l'email n'est pas envoyé, il faut alors contacter le club par un autre moyen.</em></div>
+    <div class="text-info"><em>Les emails ne sont envoyés qu'aux destinataires qui n'ont pas encore réglé leurs factures, vous pouvez utiliser l'envoi de mail en changeant le texte pour faire des relances.</em></div>
     <div>
         <span>Email expéditeur : </span>
         <asp:TextBox runat="server" ID="TXT_Email_Sender" MaxLength="255" Width="300px"></asp:TextBox><br />
-        <asp:CheckBox runat="server" ID="CB_Just_A_Test" Checked="true" Text="&nbsp;Juste un test&nbsp;" /><em>Quand cette option est cochée, un test sur le 1er club est envoyé à l'adresse expéditeur. Il faut décocher pour envoyer les messages a tout les clubs.</em>
+        <asp:CheckBox runat="server" ID="CB_Just_A_Test" Checked="true" Text="&nbsp;Juste un test&nbsp;" /><em>Quand cette option est cochée, un test sur un club au hasard est envoyé à l'adresse expéditeur. Il faut décocher pour envoyer les messages a tout les clubs.</em>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Il manque l'email expéditeur" Display="None" ControlToValidate="TXT_Email_Sender" ></asp:RequiredFieldValidator>
     </div>
     <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Send_Emails" Text="Envoi des emails" OnClick="BT_Send_Emails_Click" />
