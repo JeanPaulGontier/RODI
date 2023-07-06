@@ -391,7 +391,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         if(HF_id.Value!="")    
             nbcommandes=  DataMapping.NbOrderByPayment(HF_id.Value);
 
-        BT_Valider.Visible = nbcommandes == 0;
+        BT_Valider.Visible = true;// nbcommandes == 0;
         BT_Supprimer.Visible = nbcommandes == 0;
         BT_Export_Orders.Visible = nbcommandes > 0;
         BT_Export_Only_Transfers.Visible = nbcommandes > 0;
@@ -638,13 +638,13 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 string url =  Functions.UrlAddParam(Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "") + Const.ORDER_VIEW_URL, "id", order.guid);
 
                 if(CB_Just_A_Test.Checked)
-                { 
-                    Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#",url).Replace("#url#",url));
+                {
+                    Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url), replyto: TXT_Email_Sender.Text);
                 }
                 else
                 {
                     foreach (string em in emails)
-                        Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
+                        Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url), replyto: TXT_Email_Sender.Text);
                 }
             }
             if(CB_Just_A_Test.Checked)

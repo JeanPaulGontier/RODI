@@ -93,6 +93,7 @@ using System.Globalization;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Data;
+using Lucene.Net.Analysis;
 //using Org.BouncyCastle.Asn1.Ocsp;
 //using System.Web.Http;
 //using System.Activities.Expressions;
@@ -426,12 +427,17 @@ namespace AIS
                 Error(ee);
             }
         }
-        public static void SendMail(string from, string email, string subject, string body)
+        public static void SendMail(string from, string email, string subject, string body, string replyto="")
         {
             try
             {
                 PortalSettings ps = Globals.GetPortalSettings();
-                Mail.SendEmail(ps.Email, from, email, subject, body);
+                string[] att = new string[0];
+
+                if (replyto != "")
+                    Mail.SendMail(ps.Email, email, "", "", from, DotNetNuke.Services.Mail.MailPriority.Normal, subject, MailFormat.Html, Encoding.UTF8, body,att, "", "", "", "", false);
+                else
+                    Mail.SendEmail(ps.Email, from, email, subject, body);
             }
             catch (Exception ee)
             {
