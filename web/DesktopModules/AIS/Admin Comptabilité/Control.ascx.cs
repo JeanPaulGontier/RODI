@@ -639,12 +639,12 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
                 if(CB_Just_A_Test.Checked)
                 {
-                    Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url), replyto: TXT_Email_Sender.Text);
+                    Functions.SendMail(TXT_Email_Sender.Text, TXT_Email_Sender.Text, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
                 }
                 else
                 {
                     foreach (string em in emails)
-                        Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url), replyto: TXT_Email_Sender.Text);
+                        Functions.SendMail(TXT_Email_Sender.Text, em, TXT_Titre.Text, Server.HtmlDecode(TXT_Editor.Text).Replace("#URL#", url).Replace("#url#", url));
                 }
             }
             if(CB_Just_A_Test.Checked)
