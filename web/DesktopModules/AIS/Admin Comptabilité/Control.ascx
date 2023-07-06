@@ -176,6 +176,7 @@
         </div>
         <div class="col-md-10">
             <asp:RadioButtonList ID="rbl_type" RepeatDirection="Horizontal" runat="server">
+                 <asp:ListItem Text="Non réglée" Value=""></asp:ListItem>
                 <asp:ListItem Text="Chèque" Value="Chèque"></asp:ListItem>
                 <asp:ListItem Text="Virement" Value="Virement"></asp:ListItem>
                  <asp:ListItem Text="Prélèvement" Value="Prélèvement"></asp:ListItem>

@@ -161,6 +161,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 pnl_modif.Visible = true;
                 hfd_id.Value =""+ e.CommandArgument;
                 BindPanelModif();
+                Check_Buttons();
                 break;
 
         }
@@ -182,6 +183,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         }
         if (o.rule_type != null && o.rule_type != "")
             rbl_type.SelectedValue = o.rule_type;
+        else
+            rbl_type.SelectedValue = "";
+
         tbx_amount.Text=FromDouble(o.amount);
         tbx_info.Text = ""+o.rule_info;
         btn_validate.CommandArgument = ""+o.id;
@@ -272,6 +276,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         RefreshGrid();
         Panel1.Visible = true;
         Panel2.Visible = false;
+        Check_Buttons();
     }
 
     /// <summary>
@@ -370,6 +375,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         RefreshGrid();
         Panel1.Visible = true;
         Panel2.Visible = false;
+        Check_Buttons();
     }
 
     /// <summary>
@@ -405,7 +411,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         BT_Generer_Orders.Visible = HF_id.Value!="" && !DataMapping.OrdersComplete(HF_id.Value) && ToDouble(TXT_montant1.Text)>0;
         Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
 
-        P_Admin_Commands.Visible = (UserInfo.IsAdmin || UserInfo.IsSuperUser) && Panel2.Visible && nbcommandes>0;
+        P_Admin_Commands.Visible = (UserInfo.IsAdmin || UserInfo.IsSuperUser) && Panel2.Visible  && pnl_modif.Visible==false && nbcommandes>0;
 
     }
 
@@ -587,7 +593,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         DateTime dt = DateTime.Now;
         DateTime.TryParse("" + tbx_date.Text, out dt);
         o.rule_dt = dt;
-        o.rule = "O";
+        o.rule = rbl_type.SelectedValue!=""?"O":"N";
        // o.rule_dt = DateTime.Now;
 
         DataMapping.UpdateOrder(o);
@@ -595,6 +601,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         Panel2.Visible = true;
         pnl_modif.Visible = false;
         tbx_info.Text = "";
+        Check_Buttons();
     }
 
     protected void btn_cancel_Click(object sender, EventArgs e)
@@ -602,6 +609,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         tbx_info.Text = "";
         pnl_modif.Visible = false;
         Panel2.Visible = true;
+        Check_Buttons();
     }
 
     protected void BT_Send_Emails_Click(object sender, EventArgs e)
