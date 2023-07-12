@@ -271,9 +271,9 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                             break;
                     }
                 }
-                LBL_Detail.Text = sb.ToString();
+                
             }
-
+            LBL_Detail.Text = sb.ToString();
             LBL_Date.Text = news.dt.ToShortDateString();
             //Image1.ImageUrl = news.GetPhoto();
             //Image1.Visible = Image1.ImageUrl != "";
