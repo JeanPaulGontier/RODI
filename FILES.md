@@ -2,10 +2,18 @@
 
 ###### en cours
 ```txt
+```
+
+###### 12/07/2023
+```txt
 App_Code\AIS\Club.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+DesktopModules\AIS\Admin Comptabilité\Control.ascx
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+App_Code\AIS\Functions.cs
+DesktopModules\AIS\Club Comptabilité\Control.ascx
 
 ```
 

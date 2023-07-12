@@ -1,10 +1,18 @@
 ###### en cours
+
+###### 12/07/2023
 - on peut maintenant définir au niveau admin district des remises pour les clubs avec des nb à virgules pour tenir compte des remises spécifiques aux districts (exemple : jeune rotarien de moins de 2 ans qui paie 50% de cotisation ou gratuité pour le conjoint pour les couples)
 - comptabilité district:
 	- ajout de la possibilité de marquer une facture comme non réglée
 	- ajout de l'email expéditeur en replyto pour que les personnes qui répondent ne répondent pas à l'admin du district mais au trésorier
 	- le bouton suppression des factures pour les admins fonctionne correctement
 	- on peut revalider le texte de l'email meme quand les mails ont déjà été envoyés, on peut donc utiliser l'envoi de mail en changeant le texte pour faire des relances, les emails ne sont envoyées qu'aux clubs qui n'ont pas encore réglé leur facture.
+
+
+Publication de la nouvelle application mobile sur Android (Google Play Store & Apple App Store) :
+- District 1640 & 1760 (liens vers les différents stores visibles dans la page d'accueil de l'espace membre)
+- des qr codes ont été ajoutés dans les pages d'accueil espace membre de différents districts pour faciliter l'accès aux app mobile directement sur smartphone
+
 
 
 ###### 29/06/2023
