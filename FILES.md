@@ -14,7 +14,8 @@ DesktopModules\AIS\Admin Comptabilité\Control.ascx
 DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Club Comptabilité\Control.ascx
-
+DesktopModules\AIS\Club News Detail\Control.ascx.cs
+DesktopModules\AIS\News Detail\Control.ascx.cs
 ```
 
 ###### 29/06/2023

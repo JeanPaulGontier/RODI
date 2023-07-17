@@ -189,58 +189,52 @@ namespace AIS.controller
             
             List<News> news = new List<News>();
             List<object> news1 = new List<object>();
-            //List<Club> clubs = DataMapping.ListClubs();
-            //foreach (Club club in clubs)
-            //{
+         
                 
-                    news = DataMapping.ListNews_EN(onlyvisible: true, category: "Clubs", tri: "dt asc", tags_included: "Actions", tags_excluded: "", max: 100, where:" dt > getdate()-1");
-                    foreach (News n in news)
+            news = DataMapping.ListNews_EN(onlyvisible: true, category: "Clubs", tri: "dt asc", tags_included: "Actions", tags_excluded: "", max: 100, where:" dt > getdate()-1");
+            foreach (News n in news)
+            {
+                if (n.id != null)
+                {
+
+
+                    n.photo = Const.DISTRICT_URL + n.GetPhoto();
+                    news1.Add(new
                     {
-                        if (n.id != null)
-                        {
+                        id = n.id,
+                        dt = n.dt.ToLongDateString(),
+                        newsColor = "blue",
+                        category=n.category,
+                        title = n.title,
+                        photo = n.photo,
+                        tag1 = n.tag1,
+                        clubname=n.club_name
+                    });
+                }
+            }
+            news = DataMapping.ListNews_EN(onlyvisible: true, category: "District", tri: "dt asc", tags_excluded: "", max: 100, where: " dt > getdate()-1");
+            foreach (News n in news)
+            {
+                if (n.id != null)
+                {
 
 
-                            n.photo = Const.DISTRICT_URL + n.GetPhoto();
-                            news1.Add(new
-                            {
-                                id = n.id,
-                                dt = n.dt.ToLongDateString(),
-                                newsColor = "blue",
-                                category=n.category,
-                                title = n.title,
-                                photo = n.photo,
-                                tag1 = n.tag1,
-                                clubname=n.club_name
-                            });
-                        }
-                    }
-                    news = DataMapping.ListNews_EN(onlyvisible: true, category: "District", tri: "dt asc", tags_excluded: "", max: 100, where: " dt > getdate()-1");
-                    foreach (News n in news)
+                    n.photo = Const.DISTRICT_URL + n.GetPhoto();
+                    news1.Add(new
                     {
-                        if (n.id != null)
-                        {
+                        id = n.id,
+                        dt = n.dt.ToLongDateString(),
+                        newsColor = "blue",
+                        category = n.category,
+                        title = n.title,
+                        photo = n.photo,
+                        tag1 = n.tag1,
+                        clubname = ""
+                    });
+                }
+            }
 
-
-                            n.photo = Const.DISTRICT_URL + n.GetPhoto();
-                            news1.Add(new
-                            {
-                                id = n.id,
-                                dt = n.dt.ToLongDateString(),
-                                newsColor = "blue",
-                                category = n.category,
-                                title = n.title,
-                                photo = n.photo,
-                                tag1 = n.tag1,
-                                clubname = ""
-                            });
-                        }
-                    }
-
-            //  }
-            //}
-            //            news = DataMapping.ListNews(0, "District", max: 5);
-            //            foreach (News n in news)
-            //                news1.Add(n);
+         
             return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(news1));
         }
 
@@ -253,7 +247,7 @@ namespace AIS.controller
             try
             {
 
-                List<AIS.Member> list = DataMapping.ListMembers(max: int.MaxValue, onlyvisible: true, sort: "surname asc");
+                List<AIS.Member> list = DataMapping.ListMembers(max: int.MaxValue, onlyvisible: UserInfo.UserID < 0, sort: "surname asc");
                 List<Member> list1 = new List<Member>();
                 foreach (AIS.Member m in list)
                 {
@@ -274,22 +268,6 @@ namespace AIS.controller
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             
-        }
-
-
-        [HttpGet]
-        [DnnAuthorize(AuthTypes = "JWT")]
-        public HttpResponseMessage GetMembersFull()
-        {
-            List<AIS.Member> list = DataMapping.ListMembers(max: int.MaxValue, onlyvisible: true, sort: "surname asc");
-            List<Member> list1 = new List<Member>();
-            foreach (AIS.Member m in list)
-            {
-                Member member = new Member(m);
-                list1.Add(member);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(list1));
         }
 
 
