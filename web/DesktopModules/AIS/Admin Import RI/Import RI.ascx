@@ -9,7 +9,7 @@
         <h2>Traitement du fichier Excel des membres extrait du site Rotary.org (ClubsandMembersinYourDistrictList.xlsx)</h2>
         <div class="alert alert-info">Le traitement se déroule en 2 étapes :<br /><ol>
             <li>l'import pour vérifier qu'il s'agit du bon fichier</li>
-            <li>puis le rapprochement qui met a jour les données locales de RODI</li>
+            <li>puis le rapprochement qui met à jour les données locales de RODI</li>
                                                          </ol> </div>
         <asp:Panel runat="server" ID="dvFileUpload">       
             <div><asp:FileUpload runat="server" ID="FU_RI" /><br /></div>
@@ -31,7 +31,7 @@
                     <ul>
                         <li>Ajoute les membres manquants (nim,email,nom,prenom,sexe,date admission,telephone,adresse professionnelle,statut honorifique)</li>
                         <li>Supprime ceux qui ne sont plus rotarien ou rotaractien.</li>
-                        <li>Pour les membres existant dans RODI, seul l'appartenance au club et l'email sont remplacés (pour l'email uniquement s'il n'y avait pas déjà un email local)</li>   
+                        <li>Pour les membres existant dans RODI, seul l'appartenance au club, le statut honorifique et l'email sont remplacés (pour l'email uniquement s'il n'y avait pas déjà un email local)</li>   
                     </ul>
 
                 </div>

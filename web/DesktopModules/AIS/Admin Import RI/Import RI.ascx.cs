@@ -361,6 +361,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
         SqlTransaction trans = null;
         SqlCommand sql = null;
         string result = "";
+        bool found = false;
         try
         {
             conn.Open();
@@ -385,7 +386,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                     foreach (Member m in membres)
                     {
                         string nom = (m.surname + " " + m.name).ToLower();
-                        bool found = false;
+                        found = false;
                         foreach(DataRow row in ds.Tables[0].Rows)
                         {
                             if((int)row["nim"]==m.nim)
@@ -407,7 +408,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
                     foreach (DataRow row in ds.Tables[0].Rows)
                     {
-                        bool found = false;
+                        found = false;
                         bool honneur = (bool)row["honneur"];
 
                         foreach (Member m in membres)
@@ -440,8 +441,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 //m.professionnal_zip_code = "" + row["cp"];
                                 //m.professionnal_town = "" + row["ville"];
                                 
-                                //m.honorary_member = honneur ? Const.YES : Const.NO;
-                                //m.base_dtupdate = DateTime.Now;
+                                m.honorary_member = honneur ? Const.YES : Const.NO;
+                                m.base_dtupdate = DateTime.Now;
                                 DataMapping.UpdateMember(m);
                                 result += "Mise à jour : " + row["firstname"] + " " + row["lastname"] + " (" + club.name + ")<br/>";
                                 found = true;
@@ -477,8 +478,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 //mm.professionnal_zip_code = "" + row["cp"];
                                 //mm.professionnal_town = "" + row["ville"];
 
-                                //mm.honorary_member = honneur ? Const.YES:Const.NO;
-                                //mm.base_dtupdate = DateTime.Now;
+                                mm.honorary_member = honneur ? Const.YES:Const.NO;
+                                mm.base_dtupdate = DateTime.Now;
 
                                 try
                                 { 
