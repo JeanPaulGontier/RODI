@@ -2,6 +2,11 @@
 
 ###### en cours
 ```txt
+DesktopModules\AIS\Club News Detail\Control.ascx.cs
+DesktopModules\AIS\News Detail\Control.ascx.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\AIS\Admin Import RI\Import RI.ascx
+DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
 ```
 
 ###### 12/07/2023

@@ -21,6 +21,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
     protected void Page_Load(object sender, EventArgs e)
     {
         panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
+
     }
 
     protected void BT_Upload_Click(object sender, EventArgs e)
@@ -231,6 +232,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
             // il ne faut pas d'erreur pour pouvoir faire le rapprochement
             btn_rapprochement.Visible = (nb_club_noname + nb_nim_null + nb_false_cric) == 0;
+            panel_rapprochement.Visible = btn_rapprochement.Visible;
             if (!btn_rapprochement.Visible)
                 result_rapprochement.Text = "Impossible de procéder au rapprochement, il y a des erreurs dans les données (vérifier, nom club, cric et nim dans le fichier excel)";
 
@@ -414,6 +416,10 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                             {
                                 m.cric = (int)row["cric"];
                                 m.club_name = "" + row["clubname"];
+                                if(string.IsNullOrEmpty(m.email) && !("" + row["email"]).Equals(""))
+                                {
+                                    m.email = "" + row["email"];
+                                }
                                 //m.email = "" + row["email"];
                                 //m.name = "" + row["firstname"];
                                 //m.surname = "" + row["lastname"];
@@ -450,6 +456,10 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 // on doit updater le club du membre
                                 mm.cric = club.cric;
                                 mm.club_name = club.name;
+                                if (string.IsNullOrEmpty(mm.email) && !("" + row["email"]).Equals(""))
+                                {
+                                    mm.email = "" + row["email"];
+                                }
                                 //mm.email = "" + row["email"];
                                 //mm.name = "" + row["firstname"];
                                 //mm.surname = "" + row["lastname"];
