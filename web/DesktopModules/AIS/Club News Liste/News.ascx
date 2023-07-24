@@ -6,7 +6,7 @@
     <ItemTemplate>
         <li class="BlocBlanc">
             <asp:HyperLink ID="HL_Detail" runat="server">
-                <asp:Panel runat="server" ID="PNews" CssClass="LimitedHeight">
+                <asp:Panel runat="server" ID="PNews" CssClass="LimitedHeight" Visible="false">
                     <asp:Image ID="Image1" runat="server" />
                 </asp:Panel>
                 <h2>
