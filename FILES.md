@@ -9,7 +9,9 @@ DesktopModules\AIS\Admin Import RI\Import RI.ascx
 DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_DerniereLettreDuGouverneur.cshtml
 DesktopModules\AIS\Club News Liste\News.ascx
-App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\news\NewsController.cs
+DesktopModules\AIS\Admin Exports\Exports.ascx
+DesktopModules\AIS\Admin Exports\Exports.ascx.cs
 ```
 
 ###### 12/07/2023
