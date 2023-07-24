@@ -1,6 +1,8 @@
 ###### en cours
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public
 - modification import RI global, ajout de textes d'explications et modification import pour importer l'email d'un membre existant s'il n'y en avait pas au préalable dans le district
+- création d'un nouveau module Razor qui affiche un bouton pour accéder directement à la dernière lettre du gouverneur et un lien vers toutes les lettres
+- modification de l'affichage de la liste des nouvelles dans la rubrique "nos actions" sur les clubs pour masquer l'image
 
 ###### 12/07/2023
 - on peut maintenant définir au niveau admin district des remises pour les clubs avec des nb à virgules pour tenir compte des remises spécifiques aux districts (exemple : jeune rotarien de moins de 2 ans qui paie 50% de cotisation ou gratuité pour le conjoint pour les couples)
