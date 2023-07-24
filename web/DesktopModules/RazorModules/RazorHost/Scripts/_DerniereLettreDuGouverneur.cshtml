@@ -1,0 +1,23 @@
+﻿@using DotNetNuke.Entities.Tabs
+@{
+    var urllast = "";
+    var urllettres = "/lettre-du-gouverneur";
+    int parenttab = 953;
+    var tabs = (from t in TabController.GetTabsByParent(parenttab, 0)
+                where t.ParentId == parenttab &&
+                      t.IsVisible && !t.IsDeleted && !t.IsSecure &&
+                      DotNetNuke.Security.Permissions.TabPermissionController.CanViewPage(t)
+                orderby t.TabOrder descending
+                select t).Take(1).ToList();
+
+    if(tabs.Count>0)
+    {
+        urllast = tabs[0].FullUrl;
+    }
+}
+@if (urllast != "")
+{
+    <div><a href="@urllast" class="btn btn-primary">Dernière lettre</a></div>
+    <div class="pe-spacer size10"></div>
+}
+<div><a href="@urllettres">toutes les lettres...</a></div>
