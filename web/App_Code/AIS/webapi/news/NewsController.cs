@@ -183,6 +183,7 @@ namespace AIS.controller
             if (mode=="clubs" && cric!=0)
             {
                 news = DataMapping.ListNews(cric,"Clubs",max:int.MaxValue);
+
             }
             else if(mode=="district")
             {
@@ -192,7 +193,7 @@ namespace AIS.controller
             {
                 news = DataMapping.ListNews(0, mode, max: int.MaxValue);
             }
-            if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB))
+            if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && !UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) && !UserInfo.IsAdmin && !UserInfo.IsSuperUser)
             {
                 foreach (News n in news)
                 {
