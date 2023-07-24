@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using UnityEngine;
 using Yemon.dnn;
 
 namespace AIS.controller
@@ -401,6 +402,14 @@ namespace AIS.controller
                 Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
 
+                var data = new Dictionary<string, string>();
+                data.Add("userguid", user.useridguid);
+                data.Add("userfirstname", user.firstname);
+                data.Add("userlastname", user.lastname);
+                data.Add("userpresence", user.presence);
+                Functions.Notify("MeetingSetUser", "" + user.meetingguid, optionaldata: data);
+
+
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ee)
@@ -443,6 +452,9 @@ namespace AIS.controller
                 sql = new SqlCommand("UPDATE ais_meetings SET nbusers=(select count(*) FROM ais_meetings_users WHERE meetingguid = ais_meetings.guid AND presence='Y')");
                 Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
+                var data = new Dictionary<string, string>();
+                data.Add("userguid", guid);
+                Functions.Notify("MeetingDeleteUser", "" + meetingguid, optionaldata: data);
 
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
