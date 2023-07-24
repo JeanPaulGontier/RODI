@@ -5,6 +5,9 @@
         <h2>Année Rotarienne actuelle</h2>
         <asp:Button ID="btn_exportPresActuel" runat="server" OnClick="btn_exportPresActuel_Click" CssClass="btn btn-primary" Text="Exporter les présidents" />
         <asp:Button ID="btn_exportBureauActuel" runat="server" OnClick="btn_exportBureauActuel_Click" CssClass="btn btn-primary" Text="Exporter le bureau" />
+        <asp:Button ID="btn_exportBureauActuelComplet" runat="server" OnClick="btn_exportBureauActuelComplet_Click" CssClass="btn btn-primary" Text="Exporter le bureau déclaré complet" />
+        <asp:Button ID="btn_exportClubsSansBureauActuel" runat="server" OnClick="btn_exportClubsSansBureauActuel_Click" CssClass="btn btn-primary" Text="Exporter les clubs qui n'ont pas déclaré de bureau" />
+ 
     </div>
     <div>
         <h2>Année Rotarienne prochaine</h2>
