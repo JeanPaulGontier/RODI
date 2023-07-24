@@ -5,6 +5,7 @@
 - modification de l'affichage de la liste des nouvelles dans la rubrique "nos actions" sur les clubs pour masquer l'image
 - un administrateur district peut maintenant voir les nouvelles masquées dans les nouvelles district et clubs
 - ajout de boutons d'export dans le module admin district export fichiers pour exporter les bureaux  et clubs n'ayant pas déclarés de bureau pour l'année en cours
+- le changement de mot de passe prend en compte tous les caractères spéciaux (la même regle de validation que le cms est appliquée)
 
 ###### 12/07/2023
 - on peut maintenant définir au niveau admin district des remises pour les clubs avec des nb à virgules pour tenir compte des remises spécifiques aux districts (exemple : jeune rotarien de moins de 2 ans qui paie 50% de cotisation ou gratuité pour le conjoint pour les couples)
