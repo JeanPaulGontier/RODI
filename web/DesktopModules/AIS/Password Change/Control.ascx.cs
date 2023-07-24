@@ -93,9 +93,14 @@ public partial class DesktopModules_AIS_Password_Change_Control : PortalModuleBa
             TXT_Resultat.Text = "Le mot de passe doit contenir au moins 8 caractères";
             return;
         }
-        if (Regex.IsMatch(pass1, @"^[a-zA-Z]+$"))
+        if(pass1== "MonBeau!M0tdeP@sse")
         {
-            TXT_Resultat.Text = "Le mot de passe doit contenir au moins 1 chiffre";
+            TXT_Resultat.Text = "Veuillez ne pas utiliser 'MonBeau!M0tdeP@sse'... c'est un exemple !";
+            return;
+        }
+        if (!Regex.IsMatch(pass1, @"^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"))
+        {
+            TXT_Resultat.Text = "Le mot de passe doit contenir au moins 1 chiffre, 1 lettre majuscule, 1 lettre minuscule & 1 caractère spécial";
             return;
         }
 
