@@ -146,11 +146,11 @@ namespace AIS.controller
                 response.Headers.CacheControl = new CacheControlHeaderValue()
                 {
                     Public = true,
-                    MaxAge = new TimeSpan(60, 0, 0, 0)
+                    MaxAge = new TimeSpan(365, 0, 0, 0)
 
                 };
 
-                response.Content.Headers.Expires = DateTime.Now.ToUniversalTime().AddDays(60);
+                response.Content.Headers.Expires = DateTime.Now.ToUniversalTime().AddDays(365);
                 response.Content.Headers.LastModified = dt;
 
                 return response;

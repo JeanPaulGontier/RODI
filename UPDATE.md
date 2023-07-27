@@ -6,7 +6,7 @@
 - un administrateur district peut maintenant voir les nouvelles masquées dans les nouvelles district et clubs
 - ajout de boutons d'export dans le module admin district export fichiers pour exporter les bureaux  et clubs n'ayant pas déclarés de bureau pour l'année en cours
 - le changement de mot de passe prend en compte tous les caractères spéciaux (la même regle de validation que le cms est appliquée)
-- mise en place du cache client sur les médias (images, documents) pour 60 jours
+- mise en place du cache client sur les médias (images, documents) pour 365 jours
 - mise en place du moteur de notification pour préparer l'arrivée des nouvelles fonctionnalités de septembre
 
 ###### 12/07/2023
