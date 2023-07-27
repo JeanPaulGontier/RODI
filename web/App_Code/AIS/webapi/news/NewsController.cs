@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
@@ -122,7 +123,7 @@ namespace AIS.controller
 
         [HttpGet]
         [AllowAnonymous]
-        public HttpResponseMessage GetMedia(string guid)
+        public HttpResponseMessage GetMedia(string guid, int width = 0, string format = "")
         {
             try
             {
@@ -138,6 +139,18 @@ namespace AIS.controller
                     response.Content.Headers.Add("Content-Disposition", "attachment; filename = \"" + media.Filename + "\"");
                 }
                 response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(media.MimeType);
+                DateTime dt = media.Date.ToUniversalTime();
+                dt = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+
+                response.Headers.CacheControl = new CacheControlHeaderValue()
+                {
+                    Public = true,
+                    MaxAge = new TimeSpan(60, 0, 0, 0)
+
+                };
+
+                response.Content.Headers.Expires = dt.AddDays(60);
+                response.Content.Headers.LastModified = dt;
 
                 return response;
             }
