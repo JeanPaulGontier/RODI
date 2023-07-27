@@ -134,6 +134,7 @@ namespace AIS.controller
                 MemoryStream ms = new MemoryStream(media.Content);
                 response.Content = new StreamContent(ms); ;
                 response.Content.Headers.Add("Content-type", media.MimeType);
+                response.Content.Headers.Add("Content-Length", "" + media.ContentSize);
                 if (!media.MimeType.StartsWith("image"))
                 {
                     response.Content.Headers.Add("Content-Disposition", "attachment; filename = \"" + media.Filename + "\"");
@@ -149,7 +150,7 @@ namespace AIS.controller
 
                 };
 
-                response.Content.Headers.Expires = dt.AddDays(60);
+                response.Content.Headers.Expires = DateTime.Now.ToUniversalTime().AddDays(60);
                 response.Content.Headers.LastModified = dt;
 
                 return response;

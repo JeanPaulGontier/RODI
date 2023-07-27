@@ -16,6 +16,7 @@ DesktopModules\AIS\Password Change\Control.ascx
 DesktopModules\AIS\Password Change\Control.ascx.cs
 App_Code\AIS\webapi\meeting\MeetingController.cs
 App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\Functions.cs
 ```
 
 ###### 12/07/2023

@@ -2135,5 +2135,44 @@ namespace AIS
 
     };
 
+
+
+
+        
+        public static int Notify(string name, string value, Dictionary<string,string> optionaldata =null)
+        {
+            //var namespaceFound = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+            //                      from type in assembly.GetTypes()
+            //                      where type.Namespace == "Yemon.dnn.SIPro"
+            //                      select type).Any();
+                                  
+            //if(!namespaceFound)
+            //{
+            //    return 0;
+            //}
+
+            PortalSettings ps = Globals.GetPortalSettings();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
+            try
+            {
+                string data = "";
+                if(optionaldata != null)
+                {
+                    data = Yemon.dnn.Functions.Serialize(optionaldata);
+                }
+
+                int msgid = Yemon.dnn.SIPro.SIPro.AddMessage(ps.PortalId, userInfo.UserID, name, value, data);
+
+                return msgid;
+            }
+            catch(Exception ee)
+            {
+                Functions.Error(ee);
+                return 0;
+                
+            }
+
+            
+        }
     }
 }
