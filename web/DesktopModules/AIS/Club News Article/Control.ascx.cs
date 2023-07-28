@@ -1,8 +1,8 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2023
 // by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -72,7 +72,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Common;
-using Telerik.Web.UI;
 using System.IO;
 using System.Web.UI.HtmlControls;
 
@@ -183,7 +182,18 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                     Functions.Error(new Exception("Newsid inconnu : " + newsid));
 
                 HL_Print.NavigateUrl = print+"?popUp=true&print=yes&newsid=" + newsid;
+                TabController tabController = new TabController();
+                TabInfo parent = tabController.GetTab(PortalSettings.ActiveTab.ParentId, PortalId);
+                if (parent != null)
+                {
+                    HL_Back.NavigateUrl = parent.FullUrl;
+                    HL_Back.Visible = true;
 
+                }
+                else
+                {
+                    HL_Back.Visible = false;
+                }
                 if (("" + Request.QueryString["print"]) != "")
                 {
                     HL_Print.Visible = false;
@@ -804,7 +814,7 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                 {
                     
                     ///////////////////////////////////////////////////////*Changer ici l'image*//////////////////////////////////
-                    string fileName = Path.GetFileName(Guid.NewGuid().ToString().Substring(0,8) +"-"+ ful.PostedFile.FileName);
+                    string fileName = Path.GetFileName(Guid.NewGuid().ToString().Substring(0,8) +"-"+ Functions.ClearFileName(ful.PostedFile.FileName));
                     string path = PortalSettings.HomeDirectory + accessPath ;
                      DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
                     if (!d.Exists)
@@ -854,7 +864,7 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                 if (ful.HasFile)
                 {
                     
-                    string fileName = Path.GetFileName(Guid.NewGuid().ToString().Substring(0,8) + "-" + ful.PostedFile.FileName);
+                    string fileName = Path.GetFileName(Guid.NewGuid().ToString().Substring(0,8) + "-" + Functions.ClearFileName(ful.PostedFile.FileName));
                     string path = PortalSettings.HomeDirectory + accessPath + "/";
                     DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
                     if (!d.Exists)
@@ -885,7 +895,14 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
 
                     if (bloc.content!=null && bloc.content!="")
                     {
-                        files = (List<AIS_File>) Functions.Deserialize(bloc.content, files.GetType());
+                        try
+                        {
+                            files = (List<AIS_File>)Functions.Deserialize(bloc.content, files.GetType());
+                        }
+                        catch
+                        {
+                            files = new List<AIS_File>();
+                        }
                     }
                     else if (Request.QueryString["add"] != null && Request.QueryString["add"] != "" && Request.QueryString["add"] == "true")
                     {

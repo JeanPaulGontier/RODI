@@ -1,11 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Club_News_Article_Control" %>
-<%@ Register TagPrefix="AIS" TagName="MediaUpload" Src="~/AIS/MediaUpload/MediaUpload.ascx" %>
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 
 <script src="/AIS/TextEditor/ckeditor/ckeditor.js"></script>
 <h1 class="DetailedArticle">
 	<asp:Label ID="LBL_Titre" runat="server" Text=""></asp:Label>
 	<asp:HyperLink runat="server" ID="HL_Print" CssClass="fa fa-print" Target="_blank"></asp:HyperLink>
+     <asp:HyperLink runat="server" ID="HL_Back" CssClass="fa fa-reply"  style="padding:0 3px " ToolTip="Retour"></asp:HyperLink>
 </h1>
 <!--<div class="text-right">
 	<asp:HyperLink ID="HLK_Club" runat="server" CssClass="Normal"/>
@@ -177,12 +176,12 @@
     
 </asp:Panel>
 
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<%--<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <script type="text/javascript" stLight.options({ publisher: "ur-2d12a09a-60ba-4999-196a-7d351be3cccc", doNotHash: true, doNotCopy: true, hashAddressBar: false });></script>
-
+--%>
 
 <div class="pe-spacer size10"></div>
-<asp:Panel ID="P_Share" runat="server" CssClass="text-right">
+<asp:Panel ID="P_Share" runat="server" CssClass="text-right" Visible="false">
     <a class='st_facebook_large' displayText='Facebook'></a>
     <a class='st_twitter_large' displayText='Tweet'></a>
     <a class='st_googleplus_large' displayText='Google +'></a>

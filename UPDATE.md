@@ -18,7 +18,8 @@
 	- on peut revalider le texte de l'email même quand les mails ont déjà été envoyés, on peut donc utiliser l'envoi de mail en changeant le texte pour faire des relances, les emails ne sont envoyées qu'aux clubs qui n'ont pas encore réglé leur facture.
 - correction d'un pb d'affichage dans le détail des nouvelles qui empêchait de voir l'image d'accroche quand aucun détail n'était spécifié
 - ajout du nom du club dans le détail de la news avec lien vers le club 
-- 
+- ajout d'un bouton retour dans le module détail article pour revenir à la liste des articles
+- ajout d'un filtre supplémentaire sur les noms des fichiers uploadés pour les images et fichiers dans les articles pour résoudre le pb d'accent sur Mac
 
 
 Publication de la nouvelle application mobile sur Android (Google Play Store & Apple App Store) :

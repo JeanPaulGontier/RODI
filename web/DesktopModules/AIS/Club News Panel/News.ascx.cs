@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org   
-// Copyright (c) 2012-2019
+// Copyright (c) 2012-2023
 // by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -65,19 +65,13 @@
 using DotNetNuke.Entities.Modules;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Common;
 using System.IO;
 
 public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
 {
-    DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    ModuleController objModules = new ModuleController();
     
     int nbnews
     {

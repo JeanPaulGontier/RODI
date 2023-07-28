@@ -70,10 +70,9 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using AIS;
 using Yemon.dnn.BlocksContent;
 using System.Text;
-using Aspose.Pdf.Generator;
+
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {

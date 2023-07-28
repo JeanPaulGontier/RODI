@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2020
+// Copyright (c) 2012-2023
 // by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -65,13 +65,8 @@
 using DotNetNuke.Entities.Modules;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Common;
 using System.IO;
 
@@ -316,7 +311,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         if (ful_image.HasFile)
         {
             ///////////////////////////////////////////////////////*Changer ici l'image*//////////////////////////////////
-            string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + ful_image.PostedFile.FileName);
+            string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + Functions.ClearFileName(ful_image.PostedFile.FileName));
             string path = PortalSettings.HomeDirectory  +accessPath + "/"  + objModules.GetModuleSettings(ModuleId)["tags_included"]+  "/Images/";
             DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
             if (!d.Exists)

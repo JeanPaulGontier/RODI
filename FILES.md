@@ -7,9 +7,8 @@ DesktopModules\AIS\News Detail\Control.ascx.cs
 App_Code\AIS\webapi\mobile\MobileController.cs
 DesktopModules\AIS\Admin Import RI\Import RI.ascx
 DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
-DesktopModules\RazorModules\RazorHost\Scripts\_DerniereLettreDuGouverneur.cshtml
 DesktopModules\AIS\Club News Liste\News.ascx
-App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\webapi\News\NewsController.cs
 DesktopModules\AIS\Admin Exports\Exports.ascx
 DesktopModules\AIS\Admin Exports\Exports.ascx.cs
 DesktopModules\AIS\Password Change\Control.ascx
@@ -18,6 +17,17 @@ App_Code\AIS\webapi\meeting\MeetingController.cs
 App_Code\AIS\webapi\news\NewsController.cs
 App_Code\AIS\Functions.cs
 App_Code\AIS\Notification.cs
+DesktopModules\AIS\News Article\Control.ascx
+DesktopModules\AIS\News Article\Control.ascx.cs
+DesktopModules\AIS\News Article\Settings.ascx.cs
+App_Code\AIS\File.cs
+DesktopModules\AIS\Club News Article\Control.ascx
+DesktopModules\AIS\Club News Article\Control.ascx.cs
+DesktopModules\AIS\Club News Detail\Control.ascx
+DesktopModules\AIS\Club News Detail\Control.ascx.cs
+DesktopModules\AIS\Club News Panel\News.ascx.cs
+DesktopModules\AIS\News Panel\News.ascx
+DesktopModules\AIS\News Panel\News.ascx.cs
 ```
 
 ###### 12/07/2023
