@@ -4,7 +4,7 @@
 <h1 class="DetailedArticle">
 	<asp:Label ID="LBL_Titre" runat="server" Text=""></asp:Label>
 	<asp:HyperLink runat="server" ID="HL_Print" CssClass="fa fa-print" Target="_blank"></asp:HyperLink>
-     <asp:HyperLink runat="server" ID="HL_Back" CssClass="fa fa-reply"  style="padding:0 3px " ToolTip="Retour"></asp:HyperLink>
+    <%-- <asp:HyperLink runat="server" ID="HL_Back" CssClass="fa fa-reply"  style="padding:0 3px " ToolTip="Retour"></asp:HyperLink>--%>
 </h1>
 <!--<div class="text-right">
 	<asp:HyperLink ID="HLK_Club" runat="server" CssClass="Normal"/>

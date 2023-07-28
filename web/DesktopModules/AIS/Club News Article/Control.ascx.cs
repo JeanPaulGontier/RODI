@@ -182,18 +182,18 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                     Functions.Error(new Exception("Newsid inconnu : " + newsid));
 
                 HL_Print.NavigateUrl = print+"?popUp=true&print=yes&newsid=" + newsid;
-                TabController tabController = new TabController();
-                TabInfo parent = tabController.GetTab(PortalSettings.ActiveTab.ParentId, PortalId);
-                if (parent != null)
-                {
-                    HL_Back.NavigateUrl = parent.FullUrl;
-                    HL_Back.Visible = true;
+                //TabController tabController = new TabController();
+                //TabInfo parent = tabController.GetTab(PortalSettings.ActiveTab.ParentId, PortalId);
+                //if (parent != null)
+                //{
+                //    HL_Back.NavigateUrl = parent.FullUrl;
+                //    HL_Back.Visible = true;
 
-                }
-                else
-                {
-                    HL_Back.Visible = false;
-                }
+                //}
+                //else
+                //{
+                //    HL_Back.Visible = false;
+                //}
                 if (("" + Request.QueryString["print"]) != "")
                 {
                     HL_Print.Visible = false;

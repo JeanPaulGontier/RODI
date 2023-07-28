@@ -72,7 +72,7 @@ using System.IO;
 
 public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
 {
-    DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
     int tabid
     {
         get
