@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2023
+// by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -67,18 +67,14 @@ using DotNetNuke.Entities.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Common;
-using Telerik.Web.UI;
 using System.IO;
-using System.Web.UI.HtmlControls;
+using DotNetNuke.Entities.Tabs;
 
 public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
 {
-    DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    ModuleController objModules = new ModuleController();
     string accessPath
     {
         get { return "" + Settings["path"]; }
@@ -94,7 +90,10 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
 
     bool HasPermission()
     {
-        return UserInfo.IsSuperUser || UserInfo.IsInRole("Rédacteur courrier District");
+        return UserInfo.IsSuperUser || 
+            UserInfo.IsInRole("Rédacteur courrier District") || 
+            UserInfo.IsAdmin|| 
+            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
     }
 
     News.Bloc theBloc;
@@ -119,6 +118,17 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
                     Functions.Error(new Exception("Newsid inconnu : " + newsid));
 
                 HL_Print.NavigateUrl = print+"?popUp=true&print=yes&newsid=" + newsid;
+                TabController tabController = new TabController();
+                TabInfo parent =  tabController.GetTab(PortalSettings.ActiveTab.ParentId,PortalId);
+                if(parent != null)
+                {
+                    HL_Back.NavigateUrl = parent.FullUrl;
+                    HL_Back.Visible = true;
+
+                }else
+                {
+                    HL_Back.Visible=false;
+                }
 
                 if (("" + Request.QueryString["print"]) != "")
                 {
@@ -472,39 +482,6 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
     protected void btn_deleteFiles_Click(object sender, EventArgs e)
     {
         throw new Exception("deleting");
-        /*if (Request.QueryString["newsid"] == null || Request.QueryString["newsid"] == "" || Request.QueryString["blocid"] == null || Request.QueryString["blocid"] == "")
-            throw new Exception("Error delete files");
-
-        News news = DataMapping.GetNews_EN(Request.QueryString["newsid"]);
-        News.Bloc bloc = new News.Bloc();
-        foreach(News.Bloc b in news.GetListBlocs())
-        {
-            if (b.id == Request.QueryString["blocid"])
-                bloc = b;
-        }
-
-        Button btn_deleteFiles = sender as Button;
-        String fileToDeleteURL = btn_deleteFiles.CommandName;
-
-        List<AIS_File> files = new List<AIS_File>();
-        files = (List<AIS_File>)Functions.Deserialize(bloc.content, files.GetType());
-
-        foreach (AIS_File file in files)
-        {
-            if (file.Url == fileToDeleteURL)
-            {
-                files.Remove(file);
-                break;
-            }
-        }
-
-        bloc.content = Functions.Serialize(files);
-        List<News.Bloc> blocs = new List<News.Bloc>();
-        blocs.Add(bloc);
-        DataMapping.UpdateNewsBloc(bloc, news.id);
-        
-        LI_Blocs.DataSource = blocs;
-        LI_Blocs.DataBind();*/
     }
 
     private void BindDDL(DropDownList ddl)
@@ -556,7 +533,7 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
                     if (li.Selected)
                         bloc.type = "Bloc" + li.Value;
                 }
-                List<News.Bloc> blocs = new List<News.Bloc>();
+                List<News.Bloc> blocs = new List<News.Bloc>();               
                 blocs.Add(bloc);
                 LI_Blocs.DataSource = blocs;
                 LI_Blocs.DataBind();
@@ -740,12 +717,10 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
                 FileUpload ful = (FileUpload)e.Item.FindControl("ful_img");
                 if(ful.HasFile)
                 {
-                    
-                    ///////////////////////////////////////////////////////*Changer ici l'image*//////////////////////////////////
-                    string fileName = Path.GetFileName(Guid.NewGuid().ToString() +"-"+ ful.PostedFile.FileName);
-                    string path = PortalSettings.HomeDirectory + accessPath +"/"+ news.tag1 + "/Images/2015-2016/";
+                    string fileName = Path.GetFileName(Guid.NewGuid().ToString() +"-"+ Functions.ClearFileName(ful.PostedFile.FileName));
+                    string path = PortalSettings.HomeDirectory + accessPath +"/"+ news.tag1 + "/Images/";
                     if(accessPath=="")
-                        path = PortalSettings.HomeDirectory + "District/Courrier du District/" + news.tag1 + "/Images/2015-2016/";
+                        path = PortalSettings.HomeDirectory + "District/Courrier du District/" + news.tag1 + "/Images/";
                     DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
                     if (!d.Exists)
                         d.Create();
@@ -794,10 +769,10 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
                 if (ful.HasFile)
                 {
                     
-                    string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + ful.PostedFile.FileName);
-                    string path = PortalSettings.HomeDirectory + accessPath + "/" + news.tag1 + "/Documents/2015-2016/";
+                    string fileName = Path.GetFileName(Guid.NewGuid().ToString() + "-" + Functions.ClearFileName(ful.PostedFile.FileName));
+                    string path = PortalSettings.HomeDirectory + accessPath + "/" + news.tag1 + "/Documents/";
                     if(accessPath=="")
-                        path = PortalSettings.HomeDirectory + "District/Courrier du District/" + news.tag1 + "/Documents/2015-2016/";
+                        path = PortalSettings.HomeDirectory + "District/Courrier du District/" + news.tag1 + "/Documents/";
                     DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
                     if (!d.Exists)
                         d.Create();
@@ -827,7 +802,13 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
 
                     if (bloc.content!=null && bloc.content!="")
                     {
+                        try { 
                         files = (List<AIS_File>) Functions.Deserialize(bloc.content, files.GetType());
+                        }
+                        catch 
+                        {
+                            files = new List<AIS_File>();
+                        }
                     }
                     else if (Request.QueryString["add"] != null && Request.QueryString["add"] != "" && Request.QueryString["add"] == "true")
                     {
@@ -863,22 +844,7 @@ public partial class DesktopModules_AIS_News_Article_Control : PortalModuleBase
 
                     LI_Blocs.DataSource = blocs;
                     LI_Blocs.DataBind();
-
-                    /*blocs = DataMapping.GetNews_EN(news.id).GetListBlocs();
-
-                    foreach(News.Bloc b in blocs)
-                    {
-                        if (b.content == bloc.content)
-                            bloc = b;
-                    }
-                    String url = Functions.UrlAddParam(Globals.NavigateURL(), "newsid", news.id);
-                    url = Functions.UrlAddParam(Globals.NavigateURL(), "blocid", bloc.id);
-                    if(Request.QueryString["add"]!= null && Request.QueryString["add"]!="" && Request.QueryString["add"] =="true")
-                        url = Functions.UrlAddParam(Globals.NavigateURL(), "add", "true");
-                    else if (Request.QueryString["edit"] != null && Request.QueryString["edit"] != "" && Request.QueryString["edit"] == "true")
-                        url = Functions.UrlAddParam(Globals.NavigateURL(), "edit", "true");
-
-                    Response.Redirect(url);*/
+                   
 
                 }
             }

@@ -319,8 +319,37 @@ namespace AIS
             filename = filename.Replace("*", "");
             filename = filename.Replace(">", "");
             filename = filename.Replace("<", "");
+            filename = MakeValidFileName(filename);
+            filename = RemoveDiacritics(filename);
             return filename;
         }
+        public static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
+
+            for (int i = 0; i < normalizedString.Length; i++)
+            {
+                char c = normalizedString[i];
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder
+                .ToString()
+                .Normalize(NormalizationForm.FormC);
+        }
+        public static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
+        }
+
         public static string GetSEO(string nom)
         {
             nom = RemoveAccents(nom);
