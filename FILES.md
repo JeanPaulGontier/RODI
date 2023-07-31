@@ -28,6 +28,12 @@ DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\Club News Panel\News.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
+Portals\_default\Skins\Rodi2017\Membres.ascx
+
+nouveaux fichiers :
+AIS\RodiVersion.ascx
+AIS\RodiVersion.ascx.cs
+
 ```
 
 ###### 12/07/2023

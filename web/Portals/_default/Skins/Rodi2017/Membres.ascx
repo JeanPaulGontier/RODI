@@ -16,6 +16,7 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/Menu.ascx" %>
+<%@ Register TagPrefix="ais" TagName="RODIVERSION" Src="~/AIS/RodiVersion.ascx" %>
 
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -192,7 +193,7 @@
     <div class="skin_width">
       <div class="copyright_bar clearafter">
         <div class="footer_left">
-          <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT" cssclass="Footer" />
+          <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT" cssclass="Footer" /> | <a class="Footer" title="Voir la liste des mises à jour RODI\nLe développement de RODI est continu, la fréquence des mises à jour est de 1 à 2 par mois, le n° de version affichée correspond à celle installée ici, vous pouvez participer aux améliorations, rubrique contact sur le site RODI Platform" href="https://raw.githubusercontent.com/JeanPaulGontier/RODI/main/UPDATE.md" target="_blank">Mises à jour</a> | <span class="Footer"><ais:RODIVERSION runat="server" /></span>
         </div>
         <div class="footer_right">
           <dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
