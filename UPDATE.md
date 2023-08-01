@@ -10,6 +10,7 @@
 - mise en place du moteur de notification pour préparer l'arrivée des nouvelles fonctionnalités de septembre
 - ajout d'un lien en bas de page espace membre pour voir la liste des mises à jour RODI sur Github
 - ajout du numéro de version RODI installée
+- correction du nom de l'expediteur lors de l'envoi de mailing, malgré le nom saisi dans le panneau de mailing celui du district apparassait systématiquement (le reply-to était bon)
 
 ###### 12/07/2023
 - on peut maintenant définir au niveau admin district des remises pour les clubs avec des nb à virgules pour tenir compte des remises spécifiques aux districts (exemple : jeune rotarien de moins de 2 ans qui paie 50% de cotisation ou gratuité pour le conjoint pour les couples)

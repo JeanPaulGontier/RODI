@@ -16,6 +16,7 @@ using DotNetNuke.Entities.Portals;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
+using System.Activities.Expressions;
 
 /// <summary>
 /// Description résumée de Newsletter
@@ -179,7 +180,7 @@ public class NewsletterWS : System.Web.Services.WebService
                                 Newsletter news = DataMapping.GetNewsletter(n.newsletter_id);
 
 
-                                MailMessage message = new MailMessage(new MailAddress(ps.Email, ps.PortalName), new MailAddress(n.email, ""));
+                                MailMessage message = new MailMessage(new MailAddress(ps.Email, String.IsNullOrEmpty(news.sender_name) ? ps.PortalName:news.sender_name), new MailAddress(n.email, "")) ;
                                 
                                 message.ReplyToList.Add(new MailAddress(news.sender_email, news.sender_name));
                                 //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
@@ -454,10 +455,8 @@ public class NewsletterWS : System.Web.Services.WebService
                                         msgbody = msgbody.Replace("#email#", "");
                                         msgbody = msgbody.Replace("#password#", "");
                                 }
-
-
-                                    MailMessage message = new MailMessage(new MailAddress(ps.Email, ps.PortalName), new MailAddress(n_o.email, ""));
-                                    //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
+                                MailMessage message = new MailMessage(new MailAddress(ps.Email, String.IsNullOrEmpty(n.sender_name) ? ps.PortalName : n.sender_name), new MailAddress(n_o.email, ""));
+                                //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
                                     message.ReplyToList.Add(new MailAddress(n.sender_email,n.sender_name));
                                     message.Subject = n.title;
                                     message.IsBodyHtml = true;

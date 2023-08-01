@@ -29,6 +29,7 @@ DesktopModules\AIS\Club News Panel\News.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
 Portals\_default\Skins\Rodi2017\Membres.ascx
+App_Code\Newsletter.cs
 
 nouveaux fichiers :
 AIS\RodiVersion.ascx
