@@ -1,6 +1,8 @@
 ##### Modified files per commit
-
 ###### en cours
+```txt
+```
+###### 02/08/2023
 ```txt
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs

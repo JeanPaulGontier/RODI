@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 02/08/2023
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public
 - modification import RI global, ajout de textes d'explications et modification import pour importer l'email d'un membre existant s'il n'y en avait pas au préalable dans le district
 - création d'un nouveau module Razor qui affiche un bouton pour accéder directement à la dernière lettre du gouverneur et un lien vers toutes les lettres
