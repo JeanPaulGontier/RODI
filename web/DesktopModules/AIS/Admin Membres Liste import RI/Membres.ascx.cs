@@ -79,6 +79,8 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
 using Aspose;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
@@ -101,6 +103,59 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             
         }
     }
+    public bool issatellite
+    {
+        get
+        {
+           
+            if(Functions.GetParentCricFromSatelliteClub(Functions.CurrentCric)>0)
+                return true;
+            return false;
+        }
+    }
+    public bool isparent
+    {
+        get
+        {
+
+            if (Functions.GetSatelliteCricFromParentClub(Functions.CurrentCric) > 0)
+                return true;
+            return false;
+        }
+    }
+    public string clubsatellitename
+    {
+        get
+        {
+            Club club = DataMapping.GetClub(Functions.GetSatelliteCricFromParentClub(Functions.CurrentCric));
+            if (club == null)
+                return "";
+            return club.name;
+        }
+    }
+    public string clubparentname
+    {
+        get
+        {
+            Club club = DataMapping.GetClub(Functions.GetParentCricFromSatelliteClub(Functions.CurrentCric));
+            if (club == null)
+                return "";
+            return club.name;
+        }
+    }
+    public bool isadmin
+    {
+        get
+        {
+            return UserInfo.IsAdmin  || 
+                UserInfo.IsSuperUser ||
+                
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
+                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                DataMapping.isADG();
+        }
+    }
 
     /// <summary>
     /// Affiche la liste des membres selon les droits de l'utilisateur
@@ -110,8 +165,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     protected void Page_Load(object sender, EventArgs e)
     {
 
- 
-
+        P_SatelliteInfo.Visible = issatellite;
+        P_ClubParent.Visible = isparent;
 
         //if ("" + Functions.CurrentCric != HF_Cric.Value)
         //{
@@ -142,17 +197,18 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             RefreshGrid();
         }
 
-        BT_Export_CSV.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || ((UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG()) /*&& Functions.CurrentCric != 0*/);
-        BT_Export_XLS.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || ((UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG()) /*&& Functions.CurrentCric != 0*/);
+        BT_Export_CSV.Visible = isadmin; /*&& Functions.CurrentCric != 0*/
+        BT_Export_XLS.Visible = isadmin; /*&& Functions.CurrentCric != 0*/
        
-        BT_Carte_Member_Recto.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Recto_DOC.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso_DOC.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Recto_Docx.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso_Docx.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
+        BT_Carte_Member_Recto.Visible =isadmin && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso.Visible = isadmin && Functions.CurrentCric != 0;
+        BT_Carte_Member_Recto_DOC.Visible = isadmin && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso_DOC.Visible = isadmin && Functions.CurrentCric != 0;
+        BT_Carte_Member_Recto_Docx.Visible = isadmin && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso_Docx.Visible = isadmin && Functions.CurrentCric != 0;
 
-        BT_Ajout.Visible = (UserInfo.IsSuperUser ||
+        BT_Ajout.Visible = !issatellite 
+            && (UserInfo.IsSuperUser ||
             UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
             UserInfo.IsInRole(Const.ADMIN_ROLE) ||
             UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
@@ -994,19 +1050,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     
             m = SaisieToMember(m);
 
-            //if (!string.IsNullOrEmpty(ddlClubs.SelectedValue))
-            //{
-                if (m != null)
+           
+            if (m != null)
                 {
-                    //if (ddlClubs.SelectedValue != "" + m.cric)
-                    //{
-                    //    m.cric = int.Parse(ddlClubs.SelectedValue);
-                    //    m.club_name = DataMapping.GetClub(m.cric).name;
-                    //    //ddl_RotClubs.Visible = false;
-                    //    //lbl_club3.Visible = true;
-                    //}
-
-
+                   
                     //Test doublon NIM
                     int hfNIM = 0;
                     int.TryParse(("" + HF_NIM.Value), out hfNIM);
@@ -1033,6 +1080,24 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                     if (nimOK == true)
                     {
+                        if (isparent)
+                        {
+                            if (m.satellite_member == Const.YES)
+                            {
+                                m.cric = Functions.GetSatelliteCricFromParentClub(Functions.CurrentCric);
+                                m.club_name = clubsatellitename;
+                            }
+                           
+                        }
+                        if(issatellite)
+                        {
+                            if (m.satellite_member == Const.NO)
+                            {
+                                m.cric = Functions.GetParentCricFromSatelliteClub(Functions.CurrentCric);
+                                m.club_name = clubparentname;
+                            }
+                     }
+
                         bool err = true;
                         if (hf_Modif.Value=="o")
                         {
@@ -1059,34 +1124,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                             if (Session[HF_Photo2.Value] != null)
                             {
-                            //    //PhotoMember pm = DataMapping.GetPhotoMember(m.nim);
-
-                            //    //if (pm == null)
-                            //    //{
-                            //    //    pm = new PhotoMember();
-                            //    //    pm.nim = m.nim;
-                            //    //    pm.visible = Const.YES;
-                            //    //}
-
-                            //    pm.photo = HF_Photo2.Value;
-
-                            //    if (DataMapping.InsertPhotoMember(pm))
-                            //    {
+                          
                                     File.WriteAllBytes(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + HF_Photo2.Value), ((Media)Session[HF_Photo2.Value]).content);
-                            //        Session[HF_Photo2.Value] = null;
-                            //    }
-                            //    else
-                            //    {
-                            //        Response.Write("<script LANGUAGE='JavaScript' >alert('Erreur lors de la mise à jour de la photo dans la base de donnée');</script>");
-                                    
-                            //    }
                             }
-                            //else
-                            //{
-                            //    DataMapping.DeletePhotoMember(m.nim);
-                            //}
-                        
-
+                          
                           
                             hf_Ajout.Value = "";
                             hf_Modif.Value = "";
@@ -1101,12 +1142,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     }
               
                 }
-            //}
-            //else
-            //{
-            //    Response.Write("<script LANGUAGE='JavaScript' >alert('Vous devez sélectionner un club.');</script>");
-            //    Panel1.Visible = false;
-            //}
+           
 
         }
         catch (Exception ee)
@@ -1244,7 +1280,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
     protected void BT_Import_Click(object sender, EventArgs e)
     {
-        if (UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+        if (isadmin)
         {
             if(Functions.CurrentCric > 0)
             { 
@@ -1377,6 +1413,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         List<Member> members = new List<Member>();
         int r = 9;
+
+      
         while (w.Cells[r,1].Value!=null)
         {
             //if ((""+w.Cells[r,16].Value).Trim().Equals("Member"))
@@ -1387,7 +1425,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.nim = int.Parse(""+w.Cells[r, 0].Value);
                 m.district_id = Const.DISTRICT_ID;
                 m.cric = Functions.CurrentCric;
-                m.club_name = Functions.CurrentClub.name;               
+                m.club_name = Functions.CurrentClub.name;                
+                    
                 m.civility = "";
                 m.adress_1 = "";
                 m.adress_2 = "";
@@ -1409,7 +1448,6 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.professionnal_mobile = "";
                
                 m.base_dtupdate = DateTime.Now;
-                m.satellite_member = Const.NO;
                 
                 string[] names = ("" + w.Cells[r, 1].Value).Split(',');
                 if (names.Length > 0)
@@ -1464,6 +1502,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         Byte[] content = (Byte[])Session[HF_Import.Value];
 
+        string satname = clubsatellitename;
+        int satcric = Functions.GetSatelliteCricFromParentClub(Functions.CurrentCric);
+        bool satapart = issatellite;
 
         MemoryStream ms = new MemoryStream(content);
         try
@@ -1537,7 +1578,17 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     mm.professionnal_email = m.professionnal_email;
                     mm.email = m.email;
                     mm.base_dtupdate = DateTime.Now;
-                    if(DataMapping.UpdateMember(mm))
+
+                    if (satapart)
+                    {
+                        if (m.satellite_member == Const.YES)
+                        {
+                            m.cric = satcric;
+                            m.club_name = satname;
+                        }
+                    }
+
+                    if (DataMapping.UpdateMember(mm))
                         l_import += m.cric + " : " + m.surname + " " + m.name + "<br/>";
                     else
                         l_import += "<span class'alert-danger'>Erreur de mise à jour : " + m.cric + " : " + m.surname + " " + m.name + "</span><br/>";

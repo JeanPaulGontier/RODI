@@ -286,6 +286,48 @@ namespace AIS
         }
 
         /// <summary>
+        /// Get cric of satellite club from parent cric
+        /// </summary>
+        /// <param name="cric"></param>
+        /// <returns>Satellite CRIC (0, if no sat or CLUB_SATELLITE_APART is false </returns>
+        public static int GetSatelliteCricFromParentClub(int cric)
+        {
+            if(!Const.CLUB_SATELLITE_APART && Const.CLUB_SATELLITE_PARENT_CHILD.Length==0)
+                return 0;
+
+            var cpc = Const.CLUB_SATELLITE_PARENT_CHILD;
+            for (int i = 0; i < cpc.GetLength(0); i++)
+            {
+                if (cpc[i,0]==cric)
+                {
+                    return cpc[i,1];
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Get cric of parent club from satellite cric
+        /// </summary>
+        /// <param name="cric"></param>
+        /// <returns>Satellite CRIC (0, if no sat or CLUB_SATELLITE_APART is false </returns>
+        public static int GetParentCricFromSatelliteClub(int cric)
+        {
+            if (!Const.CLUB_SATELLITE_APART && Const.CLUB_SATELLITE_PARENT_CHILD.Length == 0)
+                return 0;
+
+            var cpc = Const.CLUB_SATELLITE_PARENT_CHILD;
+            for (int i = 0; i < cpc.GetLength(0); i++)
+            {
+                if (cpc[i,1] == cric)
+                {
+                    return cpc[i, 0];
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// Get the cric of the user club
         /// </summary>
         public static int CurrentCric
@@ -497,7 +539,7 @@ namespace AIS
         /// <param name="e"></param>
         public static void Error(Exception e)
         {
-            DotNetNuke.Services.Log.EventLog.EventLogController eventLog = new DotNetNuke.Services.Log.EventLog.EventLogController();
+            EventLogController eventLog = new EventLogController();
             LogInfo logInfo = new LogInfo();
 
             logInfo.LogUserID = -1;

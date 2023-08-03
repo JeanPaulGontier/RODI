@@ -91,8 +91,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
 
 
-
-
+            var club_satellite_parent_child = Const.CLUB_SATELLITE_PARENT_CHILD;
+            bool club_satellite_apart = Const.CLUB_SATELLITE_APART && club_satellite_parent_child.Length>0;
 
             sheet = xls.Worksheets[1];
             col = 0;
@@ -149,31 +149,22 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                         bool hasdate = DateTime.TryParse(admission, out ad);
                             
 
-                        #region traitement spécifique pour D1770
-                        if (satellite && Const.DISTRICT_ID==1770)
+                        
+                        if (club_satellite_apart && satellite)
                         {
-                            switch(cric)
+                            for(int z = 0; z < club_satellite_parent_child.GetLength(0);z++)
                             {
-                                case 11366:
-                                    cric = 84712;
+                               
+                                if (club_satellite_parent_child[z, 0] == cric)
+                                {
+                                    cric = club_satellite_parent_child[z, 1];
                                     break;
-                                case 22999:
-                                    cric = 84775;
-                                    break;
-                                case 11384:
-                                    cric = 84138;
-                                    break;
-                                case 11400:
-                                    cric = 85035;
-                                    break;
-                                case 11394:
-                                    cric = 222336;
-                                    break;
-                                default:
-                                    break;
+                                }
+                               
                             }
+                          
                         }
-                        #endregion
+                        
                         //if (active!="Honorary")
                         //{ 
                         sql = new SqlCommand("INSERT INTO ais_import_ri " +
@@ -410,6 +401,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                     {
                         found = false;
                         bool honneur = (bool)row["honneur"];
+                        bool satellite = (bool)row["satellite"];
 
                         foreach (Member m in membres)
                         { 
@@ -417,6 +409,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                             {
                                 m.cric = (int)row["cric"];
                                 m.club_name = "" + row["clubname"];
+                                //m.satellite_member = satellite ? Const.YES : Const.NO;
                                 if(string.IsNullOrEmpty(m.email) && !("" + row["email"]).Equals(""))
                                 {
                                     m.email = "" + row["email"];
@@ -457,6 +450,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 // on doit updater le club du membre
                                 mm.cric = club.cric;
                                 mm.club_name = club.name;
+                               // mm.satellite_member = satellite ? Const.YES : Const.NO;
                                 if (string.IsNullOrEmpty(mm.email) && !("" + row["email"]).Equals(""))
                                 {
                                     mm.email = "" + row["email"];
@@ -499,8 +493,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 //    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,adress_1,adress_2,adress_3,zip_code,town,country,email,telephone,honorary_member) VALUES " +
                                 //    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@ad1,@ad2,@ad3,@cp,@ville,@pays,@email,@telephone,@honorary_member)", conn, trans);
                                 sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members " +
-                                                                    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,professionnal_adress,professionnal_zip_code,professionnal_town,email,telephone,honorary_member) VALUES " +
-                                                                    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@professionnal_adress,@professionnal_zip_code,@professionnal_town,@email,@telephone,@honorary_member)", conn, trans);
+                                                                    "([nim],[surname],[name],[cric],[district_id],[club_name],civility,year_membership_rotary,professionnal_adress,professionnal_zip_code,professionnal_town,email,telephone,honorary_member,satellite_member) VALUES " +
+                                                                    "(@nim,@surname,@name,@cric,@district_id,@club_name,@sexe,@admission,@professionnal_adress,@professionnal_zip_code,@professionnal_town,@email,@telephone,@honorary_member,@satellite_member)", conn, trans);
 
                                 sql.Parameters.AddWithValue("@nim", row["nim"]);
                                 sql.Parameters.AddWithValue("@surname", row["lastname"]);
@@ -523,6 +517,8 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
                                 sql.Parameters.AddWithValue("@email", row["email"]);
                                 sql.Parameters.AddWithValue("@honorary_member", honneur ? Const.YES : Const.NO);
+                                sql.Parameters.AddWithValue("@satellite_member",satellite ? Const.YES : Const.NO);
+
                                 sql.ExecuteNonQuery();
 
                                 result += "Creation : " + row["firstname"] + " " + row["lastname"] + " (" + club.name + ")<br/>";

@@ -105,7 +105,10 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         int.TryParse(id,out roleid);
         if (roleid == 0)
             return result;
-        return roleController.GetRoleById(PortalId, roleid).RoleName;
+        RoleInfo r = roleController.GetRoleById(PortalId, roleid);
+        if (r == null)
+            return "";
+        return r.RoleName;
     }
 
     protected void Page_Load(object sender, EventArgs e)

@@ -270,6 +270,9 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
         //c.Add("", "Webmaster Adjoint");
         c.Add("Club Service Projects Chair", "Responsable Actions");
         c.Add("Rotaract Service Projects Chair", "Responsable Actions");
+        c.Add("Club Learning Facilitator", "Responsable Formation");
+        c.Add("Club Vice President", "Vice Président");
+       
 
         result_rapprochement.Text = "";
 

@@ -63,10 +63,6 @@
 #endregion Copyrights
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace AIS
@@ -89,6 +85,32 @@ namespace AIS
         public static int MENU_MEMBER_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuMemberRootTabId"]);
 
         public static string NOTIFICATIONS_DEBUG_DEST = "" + System.Configuration.ConfigurationManager.AppSettings["NotificationsDebugDest"];
+
+        public static bool CLUB_SATELLITE_APART = (""+ System.Configuration.ConfigurationManager.AppSettings["ClubSatelliteApart"]).Equals("true");
+        public static int[,] CLUB_SATELLITE_PARENT_CHILD
+        {
+            get
+            {
+                var parent = new int[0,0];
+               
+                string t = "" + System.Configuration.ConfigurationManager.AppSettings["ClubSatelliteParentChild"];
+                if (t != "")
+                {
+                    try
+                    {
+
+                        parent = Yemon.dnn.Functions.Deserialize<int[,]>(t);
+                    }
+                    catch (Exception e)
+                    {
+                        Functions.Error(e);
+                    }
+
+                }
+
+                return parent;
+            }
+        }
 
         public const string GoogleMapsKey = "AIzaSyBdbBwqDZJ2_E0UZ3m84pIgWd9Q4LXwQjU";
         public const string ZOOM = "7";

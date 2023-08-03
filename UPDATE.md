@@ -1,4 +1,14 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavent ce traitement était spécifique au D1770
+- l'import membre district et club s'adapte a ce fonctionnement, en verrouillant l'import pour les clubs satellites, seuls les clubs parents peuvent importer le fichier membre du RI et les membres sont alors affectés aux clubs satellites correspondants
+- dans la gestion des membres d'un club, l'import des membres est désactivée pour les clubs satellites, le club parent doit importer les membres pour le club parent et satellite car les données sont dans le meme fichier venant du RI
+- on peut déplacer le membre du club parent au club satellite et vice versa en modifiant sa fiche  et en cochant la case membre d'un club satellite, lors de l'import des membres au niveau du club, comme l'information de club satellite du membre n'existe pas dans le fichier du ri, on se base sur ce qui a été coché en local dans RODI, ce qui fait que les membres restent dans le bon club lors de l'import, en cas d'import suite à l'ajout d'un nouveau membre sur le RI pour le club satellite alors il faut ajuster son positionnement après import dans le club parrain
+- ajout des 2 nouvelles affectations venant du RI
+	-	Libellé RI	> 	Libellé RODI
+	-	Club Learning Facilitator	>	Responsable Formation
+	-	Club Vice President		> 	Vice Président
+
+
 
 ###### 02/08/2023
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public

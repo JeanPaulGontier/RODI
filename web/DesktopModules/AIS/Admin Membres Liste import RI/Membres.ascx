@@ -26,6 +26,7 @@
 <asp:Label ID="LBL_Nb" runat="server"></asp:Label>
 <asp:Button runat="server" ID="BT_Import" Text="Mettre à jour les membres" CssClass="btn btn-primary" ToolTip="Mettre à jour les membres à partir d'un fichier Excel extrait de Rotary.org" CausesValidation="false" OnClick="BT_Import_Click" />
 <asp:Button runat="server" ID="BT_Ajout" Text="Ajouter un membre" CssClass="btn btn-primary" ToolTip="Ajouter un membre" CausesValidation="false" OnClick="BT_Ajout_Click" />
+<asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_SatelliteInfo">Vous êtes dans un club satellite, l'ajout ou la mise à jour des membres doit être faite par le club parent : <%=clubparentname %></asp:Panel>
 <h3><asp:Label runat="server" ID="lbl_TousADG" Text="Choisissez un club" Visible="false" /></h3>
 
 
@@ -389,8 +390,11 @@
             Liste des champs qui sont mis à jour a partir du fichier venant du RI : <br />
             nom, prénom, adresse pro, email, tel, fax & mobile pro et perso            
         </em>
-    </div>
+
+     </div>
     <asp:HiddenField runat="server" ID="HF_Import" />
+          <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_ClubParent">Votre club dispose d'un club satellite (<%=clubsatellitename %>), lors de l'import les membres du club satellite n'y seront pas affectés automatiquement car l'information n'existe pas dans le fichier qu'on importe. Pour déplacer un membre dans le club satellite il suffit de modifier sa fiche et de cocher membre du club satellite et valider, il est alors déplacé dans le club satellite. Lors des prochains import il restera dans le club satellite.</asp:Panel>
+ 
     <div>
         <div class="alert">
             Choisir le fichier excel récupéré du Rotary.org : <asp:FileUpload style="padding:0px;margin:3px;border:0px;width:100%" runat="server" ID="FU_import" CssClass="btn" />  <asp:Button runat="server" CssClass="btn btn-primary" ID="Bti_Analyser" Text="Analyser le fichier" CausesValidation="false" OnClick="Bti_Analyser_Click" /> <em>L'analyse permet de fichier que le fichier correspond bien au club et affiche ce qui va être fait</em>           
