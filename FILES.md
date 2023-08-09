@@ -8,6 +8,10 @@ DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\AIS\News Article\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+
 ```
 ###### 02/08/2023
 ```txt
