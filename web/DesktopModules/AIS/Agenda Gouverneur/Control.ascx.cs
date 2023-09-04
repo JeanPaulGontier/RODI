@@ -29,6 +29,10 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
                 username = username,
                 password = password
             });
+            if((username+password).Trim()=="")
+            {
+                return;
+            }
 
             System.Net.WebClient client = new System.Net.WebClient();
             client.Headers.Add("content-type", "application/json");//set your header here, you can add multiple headers
@@ -53,7 +57,8 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
                 {
                     string user = calendars[0]["owner"].ToString();
                     string calendarid = calendars[0]["id"].ToString();
-                    s = client.DownloadString(Settings["host"] + "/api/v1/calendars/events/" + user + "/" + calendarid + "?startDate=" + DateTime.Now.AddDays(-1).ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ss"));
+                    string startdate = DateTime.Now.AddDays(-1).ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ss");
+                    s = client.DownloadString(Settings["host"] + "/api/v1/calendars/events/" + user + "/" + calendarid + "?startDate=" + startdate);
                    
                     o = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(s);
                     List<Event> events = new List<Event>();
@@ -65,25 +70,29 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
                         string type = "rdv";
                         JToken startWith = (JToken)evt["startWithTZ"];
                         DateTime dt = DateTime.Parse(""+startWith["dt"]).ToLocalTime();
-                        JToken endWith = (JToken)evt["endWithTZ"];
-                        DateTime dtfin = DateTime.Parse(""+endWith["dt"]).ToLocalTime();
-
-                        string dtFmt = dt.ToString("ddd") + " " + dt.ToString("dd MMM yyyy");
-                        string hr = dt.ToString("HH:mm") + " - "+ dtfin.ToString("HH:mm");
-                        if ((bool)evt["allDay"])
-                        { 
-                            hr ="Toute la journée";
-                            type = "journee";
-                        }
-                        TimeSpan diff = dtfin - dt;
-                        if (diff.TotalDays>1)
+                        if(dt>DateTime.Now.AddDays(-1))
                         {
-                            dtFmt = dt.ToString("dd MMM yyyy") + " - " + dtfin.ToString("dd MMM yyyy");
-                            hr = "Plusieurs jours";
-                            type = "periode";
-                        }
+                            JToken endWith = (JToken)evt["endWithTZ"];
+                            DateTime dtfin = DateTime.Parse("" + endWith["dt"]).ToLocalTime();
 
-                        events.Add(new Event {type=type, title = title, dt = dtFmt, date = dt, datefin = dtfin, hr = hr });
+                            string dtFmt = dt.ToString("ddd") + " " + dt.ToString("dd MMM yyyy");
+                            string hr = dt.ToString("HH:mm") + " - " + dtfin.ToString("HH:mm");
+                            if ((bool)evt["allDay"])
+                            {
+                                hr = "Toute la journée";
+                                type = "journee";
+                            }
+                            TimeSpan diff = dtfin - dt;
+                            if (diff.TotalDays > 1)
+                            {
+                                dtFmt = dt.ToString("dd MMM yyyy") + " - " + dtfin.ToString("dd MMM yyyy");
+                                hr = "Plusieurs jours";
+                                type = "periode";
+                            }
+
+                            events.Add(new Event { type = type, title = title, dt = dtFmt, date = dt, datefin = dtfin, hr = hr });
+
+                        }
                     }
                     events = events.OrderBy(x => x.date).ToList();
                     ServeJSON(events);

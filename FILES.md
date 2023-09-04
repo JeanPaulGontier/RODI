@@ -11,7 +11,10 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\AIS\News Article\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
-
+DesktopModules\AIS\Admin Maj AAR\Control.ascx
+DesktopModules\AIS\Schedule\Schedule.ascx
+DesktopModules\AIS\Schedule\Schedule.ascx.cs
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 ```
 ###### 02/08/2023
 ```txt

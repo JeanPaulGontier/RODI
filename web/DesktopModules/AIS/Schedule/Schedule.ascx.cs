@@ -88,13 +88,13 @@ public partial class DesktopModules_AIS_Schedule : PortalModuleBase
         get
         {
             int t = 0;
-            int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["presentationtabid"], out t);
+            int.TryParse("" + Settings["presentationtabid"], out t);
             return t;
         }
     }
 
-    public const string username = "gouverneur@rotary1730.org";
-    public const string pwd = "TiensLeDroitEtFaisLeBien";
+    public const string username = "";
+    public const string pwd = "";
 
     /// <summary>
     /// Affiche la liste des membres selon les droits de l'utilisateur
@@ -162,14 +162,14 @@ public partial class DesktopModules_AIS_Schedule : PortalModuleBase
             //    {
 
             List<Schedule.Schedule_events> liste = new List<Schedule.Schedule_events>();
-            if (!string.IsNullOrEmpty(tri.Value) && !string.IsNullOrEmpty(sens.Value))
-            {
-                liste = SmarterMailSchedule.DataMapping.Get_Event_Schedule(0, "", "", " and start > '" + DateTime.Now.AddDays(-1).Date + "' ORDER BY " + tri.Value + " " + sens.Value);
-            }
-            else
-            {
-                liste = SmarterMailSchedule.DataMapping.Get_Event_Schedule(0, "", "", " and start > '" + DateTime.Now.AddDays(-1).Date + "' ORDER BY start ASC ");
-            }
+            //if (!string.IsNullOrEmpty(tri.Value) && !string.IsNullOrEmpty(sens.Value))
+            //{
+            //    liste = SmarterMailSchedule.DataMapping.Get_Event_Schedule(0, "", "", " and start > '" + DateTime.Now.AddDays(-1).Date + "' ORDER BY " + tri.Value + " " + sens.Value);
+            //}
+            //else
+            //{
+            //    liste = SmarterMailSchedule.DataMapping.Get_Event_Schedule(0, "", "", " and start > '" + DateTime.Now.AddDays(-1).Date + "' ORDER BY start ASC ");
+            //}
                     
 
             //Thread oThread = new Thread(new ThreadStart(SmarterMailSchedule.CallWS.GetSchedule));

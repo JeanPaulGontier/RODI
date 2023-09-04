@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - http://rodi.aisdev.net                                                    -->
-<!-- Copyright (c) 2012-2016                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Maj_AAR_Control" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Maj_AAR_Control" %>
 
 
 <asp:Button ID="BT_Maj" runat="server" Text="Créer les users" OnClick="BT_Maj_Click" Visible="false" CssClass="btn btn-primary"/>
