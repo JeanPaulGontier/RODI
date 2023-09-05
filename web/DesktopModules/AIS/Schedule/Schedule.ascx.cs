@@ -174,7 +174,7 @@ public partial class DesktopModules_AIS_Schedule : PortalModuleBase
 
             //Thread oThread = new Thread(new ThreadStart(SmarterMailSchedule.CallWS.GetSchedule));
 
-            foreach (News n in AIS.DataMapping.ListNews_EN(category: "District", where: "dt >='" + DateTime.Now + "'"))
+            foreach (News n in AIS.DataMapping.ListNews_EN(category: "District", where: "dt >='" + DateTime.Now + "'",onlyvisible:true))
             {
                 liste.Add(newsToSchedule(n));
             }
