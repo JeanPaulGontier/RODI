@@ -1441,7 +1441,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.retired = Const.NO;
                 m.spouse_name = "";
                 m.title = "";
-                m.visible = Const.YES;
+                m.visible = "";
                 m.removed = Const.NO;
                 m.job = "";
                 m.biography = "";

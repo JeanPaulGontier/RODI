@@ -12,6 +12,7 @@
 - correction du ratio video dans le détail d'un article quand on masque le panneau des articles (exemple : personnalisation du courrier du district 1730 et 1760)
 - l'agenda du gouverneur n'affiche maintenant que les éléments à partir de la date du jour
 - correction d'un problème d'affichage sur le module d'agenda district en liste
+- lors de l'import de nouveaux membres dans l'import des membres clubs, la visibilité publique dans l'annuaire est maintenant a définir, alors qu'avant elle était sur Oui par défaut
 
 ###### 02/08/2023
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public
