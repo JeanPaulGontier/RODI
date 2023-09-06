@@ -16,6 +16,9 @@ DesktopModules\AIS\Schedule\Schedule.ascx
 DesktopModules\AIS\Schedule\Schedule.ascx.cs
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+AIS\Contact.aspx
+AIS\Contact.aspx.cs
+DesktopModules\AIS\Membres Liste\Membres.ascx.cs
 ```
 ###### 02/08/2023
 ```txt

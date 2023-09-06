@@ -13,6 +13,7 @@
 - l'agenda du gouverneur n'affiche maintenant que les éléments à partir de la date du jour
 - correction d'un problème d'affichage sur le module d'agenda district en liste
 - lors de l'import de nouveaux membres dans l'import des membres clubs, la visibilité publique dans l'annuaire est maintenant a définir, alors qu'avant elle était sur Oui par défaut
+- ajout de la biographie dans le popup contact membre, le pop fait maintenant 80% de la largeur de la fenetre pour éviter d'avoir à le retailler
 
 ###### 02/08/2023
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public

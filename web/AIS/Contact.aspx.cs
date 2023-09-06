@@ -21,6 +21,9 @@ public partial class AIS_Contact : System.Web.UI.Page
             {
                 HF_id.Value = ""+id;
                 TXT_membre.Text = member.name + " " + member.surname;
+                
+                lit_bio.Text = member.biography.Replace("\n","<br/>");
+                Pnl_Bio.Visible = member.biography != "";
 
                 PortalSettings ps = PortalController.GetCurrentPortalSettings();
                 if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)

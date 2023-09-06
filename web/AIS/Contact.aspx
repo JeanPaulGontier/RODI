@@ -85,10 +85,23 @@
             <asp:Panel runat="server" ID="Pnl_Coord" Visible="false"  Style="margin-left: 20px;">
                 
             </asp:Panel>
+           
         </td>
     </tr>
 </table>
-
+         <asp:Panel runat="server" ID="Pnl_Bio" Style="margin-left: 20px;">
+     <table>
+         <tbody>
+             <tr>
+                 <td>
+                     <span style="font-weight:bold;">Biographie : </span>
+                     <div><asp:Literal runat="server" ID="lit_bio"></asp:Literal></div>
+                 </td>
+             </tr>
+         </tbody>
+     </table>
+     
+ </asp:Panel>
     
     </form>
     <script type="text/javascript" src="/Portals/_default/Skins/Rodi2017/bootstrap/js/bootstrap.js"></script>

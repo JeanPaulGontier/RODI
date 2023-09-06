@@ -252,11 +252,11 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             PortalSettings ps = PortalController.GetCurrentPortalSettings();
             if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
             {
-                return "javascript:dnnModal.show('/AIS/contact.aspx?id=" + id + "&popUp=true',false,350,850,false);";
+                return "javascript:dnnModal.show('/AIS/contact.aspx?id=" + id + "&popUp=true',false,450,(window.innerWidth*.8),false);";
             }
             else
             {
-                return "javascript:dnnModal.show('/AIS/contact.aspx?id=" + id + "&popUp=true',false,350,500,false);";
+                return "javascript:dnnModal.show('/AIS/contact.aspx?id=" + id + "&popUp=true',false,450,(window.innerWidth*.8),false);";
             }
         }
         catch (Exception ee)
