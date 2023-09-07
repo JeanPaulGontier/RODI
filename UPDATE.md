@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 07/09/2023
 - ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavent ce traitement était spécifique au D1770
 - l'import membre district et club s'adapte a ce fonctionnement, en verrouillant l'import pour les clubs satellites, seuls les clubs parents peuvent importer le fichier membre du RI et les membres sont alors affectés aux clubs satellites correspondants
 - dans la gestion des membres d'un club, l'import des membres est désactivée pour les clubs satellites, le club parent doit importer les membres pour le club parent et satellite car les données sont dans le meme fichier venant du RI
