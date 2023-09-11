@@ -12,6 +12,8 @@ DesktopModules\AIS\News Article\Control.ascx
 DesktopModules\AIS\News Article\Control.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
+DesktopModules\AIS\News Panel\Settings.ascx
+DesktopModules\AIS\News Panel\Settings.ascx.cs
 ```
 ```###### 07/09/2023
 ```txt
