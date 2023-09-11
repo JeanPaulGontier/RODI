@@ -70,6 +70,7 @@ using AIS;
 using DotNetNuke.Common;
 using System.IO;
 
+
 public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
 {
     ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
@@ -80,6 +81,13 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
             int t = 0;
             int.TryParse("" + Settings["tabid"], out t);
             return t;
+        }
+    }
+    bool justimage
+    {
+        get
+        {
+            return ("" + Settings["justimage"]).Equals(Const.YES);
         }
     }
     string categorie
@@ -232,7 +240,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
             panel.CssClass = panel.CssClass + " active";
 
 
-        var title = e.Item.FindControl("L_Title") as Literal;
+        Literal title = e.Item.FindControl("L_Title") as Literal;
         title.Text = "<h2>"+theNews.title+"</h2>";
         title.Visible = !theNews.title.Trim().Equals("");
 
@@ -252,7 +260,9 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         hlk_edit_texte.Visible = HasPermission();
         hlk_edit_texte.NavigateUrl = Functions.UrlAddParam(Globals.NavigateURL(), "id", theNews.id);
         hlk_edit_texte.NavigateUrl = Functions.UrlAddParam(hlk_edit_texte.NavigateUrl, "modif", "true");
-        if(theNews.tag2=="BlocVideo" && theNews.text!="")
+        Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+        Panel p_buttons = (Panel)e.Item.FindControl("P_Buttons");
+        if (theNews.tag2=="BlocVideo" && theNews.text!="")
         {
             Video vid = new Video();
             try { 
@@ -262,10 +272,16 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
 
             Label Texte1 = (Label)e.Item.FindControl("Texte1");
             Texte1.Text = vid.getLink();
-            Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+           
             pnl_content.CssClass += " videoContainer";
-        }
 
+        }
+        if(!HasPermission() && justimage)
+        {
+            pnl_content.Visible = false;
+            title.Visible = false;
+            p_buttons.Visible = false;
+        }
 
 
         

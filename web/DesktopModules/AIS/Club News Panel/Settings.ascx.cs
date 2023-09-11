@@ -86,6 +86,10 @@ public partial class DesktopModules_AIS_Club_News_Panel_Settings : ModuleSetting
         int.TryParse("" + Settings["nbnews"], out nbnews);
         TXT_NB_News.Text = ""+nbnews;
 
+        RB_Visu_Link.Text = "" + Settings["justimage"];
+        TXT_Class.Text = "" + Settings["mainclass"];
+        TXT_ClassAdmin.Text = "" + Settings["mainclassadmin"];
+
         Tab.DataTextField = "Text";
         Tab.DataValueField = "Value";
         Tab.DataSource = Functions.GetListItemsFromTabs(0);
@@ -101,7 +105,10 @@ public partial class DesktopModules_AIS_Club_News_Panel_Settings : ModuleSetting
 
         DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
         objModules.UpdateModuleSetting(ModuleId, "tabid", Tab.SelectedValue);
-       
+        objModules.UpdateModuleSetting(ModuleId, "justimage", RB_Visu_Link.Text);
+        objModules.UpdateModuleSetting(ModuleId, "mainclass", TXT_Class.Text);
+        objModules.UpdateModuleSetting(ModuleId, "mainclassadmin", TXT_ClassAdmin.Text);
+
         int nbnews = 0;
         int.TryParse(TXT_NB_News.Text, out nbnews);
         objModules.UpdateModuleSetting(ModuleId, "nbnews", ""+nbnews);

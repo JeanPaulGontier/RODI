@@ -1,6 +1,17 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Club News Article\Control.ascx
+DesktopModules\AIS\Club News Article\Control.ascx.cs
+DesktopModules\AIS\Club News Panel\News.ascx
+DesktopModules\AIS\Club News Panel\News.ascx.cs
+DesktopModules\AIS\Club News Panel\Settings.ascx
+DesktopModules\AIS\Club News Panel\Settings.ascx.cs
+DesktopModules\AIS\News Article\Control.ascx
+DesktopModules\AIS\News Article\Control.ascx.cs
+DesktopModules\AIS\News Panel\News.ascx
+DesktopModules\AIS\News Panel\News.ascx.cs
 ```
 ```###### 07/09/2023
 ```txt

@@ -167,8 +167,10 @@
     </asp:Panel>
     <asp:Panel Visible="false" ID="pnl_modif" runat="server" CssClass="row panel-body DNNAlignright">
         <asp:HyperLink ID="hlk_modif" CssClass="btn btn-primary" runat="server" ><span class="fa fa-pencil"></span></asp:HyperLink>
-        <asp:LinkButton ID="ibt_up" Visible="false" runat="server" CommandName='<%# Bind("id") %>' CssClass="btn btn-default middle"><span class="fa fa-arrow-up"></span></asp:LinkButton>
-        <asp:LinkButton ID="ibt_down" Visible="false" runat="server" CssClass="btn btn-default middle" CommandName='<%# Bind("id") %>' ><span class="fa fa-arrow-down"></span></asp:LinkButton>
+        <asp:LinkButton ID="ibt_top" Visible="false" runat="server" CommandName='<%# Bind("id") %>' CssClass="btn btn-default middle"><span class="fa fa-angle-double-up" title="monter tout en haut"></span></asp:LinkButton>
+        <asp:LinkButton ID="ibt_up" Visible="false" runat="server" CommandName='<%# Bind("id") %>' CssClass="btn btn-default middle"><span class="fa fa-angle-up" title="monter d'une position"></span></asp:LinkButton>
+        <asp:LinkButton ID="ibt_down" Visible="false" runat="server" CssClass="btn btn-default middle" CommandName='<%# Bind("id") %>' ><span class="fa fa-angle-down" title="descendre d'une position"></span></asp:LinkButton>
+        <asp:LinkButton ID="ibt_bottom" Visible="false" runat="server" CssClass="btn btn-default middle" CommandName='<%# Bind("id") %>' ><span class="fa fa-angle-double-down" title="descendre tout en bas"></span></asp:LinkButton>
         <!-- Button trigger modal -->
         <asp:HiddenField ID="hfd_blocid" runat="server" />
         <asp:LinkButton OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce bloc ?');" CommandArgument='<%# Bind("id") %>' CssClass="btn btn-danger" ID="lbt_delete" runat="server"><span class="fa fa-trash-o"></span></asp:LinkButton>     

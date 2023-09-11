@@ -80,10 +80,10 @@ public partial class DesktopModules_AIS_News_Panel_Settings : ModuleSettingsBase
 
         DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
         int tabid = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["tabid"], out tabid);
+        int.TryParse("" + Settings["tabid"], out tabid);
         
         int nbnews = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["nbnews"], out nbnews);
+        int.TryParse("" + Settings["nbnews"], out nbnews);
         TXT_NB_News.Text = ""+nbnews;
 
         Tab.DataTextField = "Text";
@@ -92,14 +92,17 @@ public partial class DesktopModules_AIS_News_Panel_Settings : ModuleSettingsBase
         Tab.DataBind();
         Tab.SelectedValue = ""+tabid;
 
-        RB_Categorie.SelectedValue = "" + objModules.GetModuleSettings(ModuleId)["category"];
+        RB_Categorie.SelectedValue = "" + Settings["category"];
 
-        TXT_Tags_Inclus.Text = "" + objModules.GetModuleSettings(ModuleId)["tags_included"];
-        TXT_Tags_Exclus.Text = "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"];
+        TXT_Tags_Inclus.Text = "" + Settings["tags_included"];
+        TXT_Tags_Exclus.Text = "" + Settings["tags_excluded"];
 
-        TXT_Style.Text = "" + objModules.GetModuleSettings(ModuleId)["style"];
+        TXT_Style.Text = "" + Settings["style"];
 
-        tbx_path.Text = "" + objModules.GetModuleSettings(ModuleId)["path"];
+        tbx_path.Text = "" + Settings["path"];
+        RB_Visu_Link.Text = "" + Settings["justimage"];
+        TXT_Class.Text = "" + Settings["mainclass"];
+        TXT_ClassAdmin.Text = "" + Settings["mainclassadmin"];
 
     }
     public override void UpdateSettings()
@@ -118,5 +121,9 @@ public partial class DesktopModules_AIS_News_Panel_Settings : ModuleSettingsBase
         objModules.UpdateModuleSetting(ModuleId, "tags_excluded", TXT_Tags_Exclus.Text.Trim());
         objModules.UpdateModuleSetting(ModuleId, "style", TXT_Style.Text);
         objModules.UpdateModuleSetting(ModuleId, "path", tbx_path.Text);
+        objModules.UpdateModuleSetting(ModuleId, "justimage", RB_Visu_Link.Text);
+        objModules.UpdateModuleSetting(ModuleId, "mainclass", TXT_Class.Text);
+        objModules.UpdateModuleSetting(ModuleId, "mainclassadmin", TXT_ClassAdmin.Text);
+
     }
 }

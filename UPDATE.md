@@ -1,9 +1,13 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- news panel (informations club, lettre du gouverneur, nouvelles clubs et district) :
+	- ajout de boutons de déplacement pour les blocs tout en haut / tout en bas
+	- on peut maintenant masquer le lien lire la suite pour n'utiliser qu'une image cliquable pour voir le détail de la nouvelle
+	- correction d'un pb de déplacement dans certains cas qui mettait le bloc tout en bas
 
 ###### 07/09/2023
-- ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavent ce traitement était spécifique au D1770
+- ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavant ce traitement était spécifique au D1770
 - l'import membre district et club s'adapte a ce fonctionnement, en verrouillant l'import pour les clubs satellites, seuls les clubs parents peuvent importer le fichier membre du RI et les membres sont alors affectés aux clubs satellites correspondants
-- dans la gestion des membres d'un club, l'import des membres est désactivée pour les clubs satellites, le club parent doit importer les membres pour le club parent et satellite car les données sont dans le meme fichier venant du RI
+- dans la gestion des membres d'un club, l'import des membres est désactivée pour les clubs satellites, le club parent doit importer les membres pour le club parent et satellite car les données sont dans le même fichier venant du RI
 - on peut déplacer le membre du club parent au club satellite et vice versa en modifiant sa fiche  et en cochant la case membre d'un club satellite, lors de l'import des membres au niveau du club, comme l'information de club satellite du membre n'existe pas dans le fichier du ri, on se base sur ce qui a été coché en local dans RODI, ce qui fait que les membres restent dans le bon club lors de l'import, en cas d'import suite à l'ajout d'un nouveau membre sur le RI pour le club satellite alors il faut ajuster son positionnement après import dans le club parrain
 - ajout des 2 nouvelles affectations venant du RI
 	-	Libellé RI	> 	Libellé RODI
@@ -11,11 +15,12 @@
 	-	Club Vice President		> 	Vice Président
 
 - modification des droits sur l'admin mailing district, maintenant un membre rotaract admin district peut utiliser le mailing district normalement
-- correction du ratio video dans le détail d'un article quand on masque le panneau des articles (exemple : personnalisation du courrier du district 1730 et 1760)
+- correction du ratio vidéo dans le détail d'un article quand on masque le panneau des articles (exemple : personnalisation du courrier du district 1730 et 1760)
 - l'agenda du gouverneur n'affiche maintenant que les éléments à partir de la date du jour
 - correction d'un problème d'affichage sur le module d'agenda district en liste
 - lors de l'import de nouveaux membres dans l'import des membres clubs, la visibilité publique dans l'annuaire est maintenant a définir, alors qu'avant elle était sur Oui par défaut
-- ajout de la biographie dans le popup contact membre, le pop fait maintenant 80% de la largeur de la fenetre pour éviter d'avoir à le retailler
+- ajout de la biographie dans le popup contact membre, le pop fait maintenant 80% de la largeur de la fenêtre pour éviter d'avoir à le retailler
+
 
 ###### 02/08/2023
 - correction affichage annuaire détaillé quand on est identifié dans l'app mobile, lors du déploiement de l'app mobile on avait regroupé la récupération des membres pour les anonymes et les rotariens dans une seule fonction, mais le module n'avait pas été déployé en prod donc ca entrainait un disfonctionnement de l'app mobile n'affichant jamais les membres non visible public

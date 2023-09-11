@@ -73,6 +73,13 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
 {
     ModuleController objModules = new ModuleController();
     
+    public string MainClass
+    {
+        get
+        {
+            return HasPermission() ? "" + Settings["mainclassadmin"] :"" + Settings["mainclass"];
+        }
+    }
     int nbnews
     {
         get
@@ -84,7 +91,13 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
             return nb;
         }
     }
-    
+    bool justimage
+    {
+        get
+        {
+            return ("" + Settings["justimage"]).Equals(Const.YES);
+        }
+    }
     int tabid
     {
         get
@@ -298,6 +311,9 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
         News theNews = (News)e.Item.DataItem;
         if (theNews == null)
             return;
+        var mainpanel = e.Item.FindControl("P_Main") as Panel;
+        mainpanel.CssClass = MainClass;
+
         var panel = e.Item.FindControl("Panel1") as Panel;
        
         panel.CssClass = panel.CssClass +" " +theNews.tag2 + " " +style;
@@ -305,7 +321,7 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
             panel.CssClass = panel.CssClass + " active";
 
 
-        var title = e.Item.FindControl("L_Title") as Literal;
+        Literal title = e.Item.FindControl("L_Title") as Literal;
         title.Text = "<h2>"+theNews.title+"</h2>";
         title.Visible = !theNews.title.Trim().Equals("");
 
@@ -327,6 +343,8 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
         hlk_edit_texte.NavigateUrl = Functions.UrlAddParam(hlk_edit_texte.NavigateUrl, "modif", "true");
         hlk_edit_texte.NavigateUrl = Functions.UrlAddParam(hlk_edit_texte.NavigateUrl, "cric", ""+cric);
 
+        Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
+        Panel p_buttons = (Panel)e.Item.FindControl("P_Buttons"); 
         if (theNews.tag2=="BlocVideo" && theNews.text!="")
         {
             Video vid = new Video();
@@ -337,13 +355,17 @@ public partial class DesktopModules_AIS_Club_News_Panel : PortalModuleBase
 
             Label Texte1 = (Label)e.Item.FindControl("Texte1");
             Texte1.Text = vid.getLink();
-            Panel pnl_content = (Panel)e.Item.FindControl("pnl_content");
-            pnl_content.CssClass += " videoContainer";
+           pnl_content.CssClass += " videoContainer";
+        }
+
+        if (!HasPermission() && justimage)
+        {
+            pnl_content.Visible = false;
+            title.Visible = false;
+            p_buttons.Visible = false;
         }
 
 
-
-        
         hlk_edit_texte.Visible = HasPermission() && (Request.QueryString["modif"] == null || Request.QueryString["modif"] == "")&& (Request.QueryString["delete"] == null || Request.QueryString["delete"] == "");
         if(! (theNews.GetListBlocs().Count > 0 || hlk_edit_texte.Visible))
             hl.NavigateUrl = "";

@@ -21,7 +21,7 @@
 <asp:Repeater runat="server" ID="LI_News" OnItemDataBound="LI_News_ItemDataBound" OnItemCommand="LI_News_ItemCommand" >
 <HeaderTemplate></HeaderTemplate>
 <ItemTemplate>
-    <asp:Panel runat="server" CssClass="Filet">
+    <asp:Panel ID="P_Main" runat="server">
         <asp:Panel ID="Panel1" runat="server">
 		    <asp:HyperLink ID="HL_Detail" runat="server">
 			    <div><asp:Image ID="Image1" runat="server" /></div>
@@ -35,14 +35,14 @@
 		    </asp:Panel>   
 	    </asp:Panel>
 	    
-        <div class="row panel-body DNNAlignright">
+        <asp:Panel ID="P_Buttons" runat="server" class="row panel-body DNNAlignright">
             <asp:HyperLink ID="hlk_edit_texte" Target="_blank" CssClass="btn btn-primary" runat="server"><span class="fa fa-pencil"></span></asp:HyperLink>
             <asp:LinkButton ID="btn_up" CssClass="btn btn-default" CommandName='<%#Bind("id") %>' runat="server" ><span class="fa fa-arrow-up"></span></asp:LinkButton>
             <asp:LinkButton ID="btn_down" CssClass="btn btn-default" CommandName='<%#Bind("id") %>' runat="server" Text="" ><span class="fa fa-arrow-down"></span></asp:LinkButton>
             <asp:LinkButton ID="lbt_delete" CommandArgument='<%# Bind("id") %>' OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce bloc ?');" CssClass="btn btn-danger"  runat="server" ><span class="fa fa-trash-o"></span></asp:LinkButton>
         </div>
      </asp:Panel>
-	
+    </asp:Panel>
 </ItemTemplate>
 <FooterTemplate></FooterTemplate>
 </asp:Repeater>

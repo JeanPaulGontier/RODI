@@ -285,7 +285,7 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
             try { 
                 var title = e.Item.FindControl("L_Title") as Literal;
                 title.Text = "<h2>" + bloc.title + "</h2>";
-                title.Visible = !bloc.title.Trim().Equals("");
+                title.Visible = !(""+bloc.title).Trim().Equals("");
             }
             catch { }
 
@@ -313,6 +313,8 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
 
             LinkButton ibt_up = (LinkButton)e.Item.FindControl("ibt_up");
             LinkButton ibt_down = (LinkButton)e.Item.FindControl("ibt_down");
+            LinkButton ibt_top = (LinkButton)e.Item.FindControl("ibt_top");
+            LinkButton ibt_bottom = (LinkButton)e.Item.FindControl("ibt_bottom");
             if (HasPermission())
             {
 
@@ -322,7 +324,8 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                 var blocs = news.GetListBlocs();
                 ibt_up.Visible = (blocs.Count > 0 && bloc.id != blocs[0].id) && (Request.QueryString["edit"] == "" || Request.QueryString["edit"] == null) && (Request.QueryString["add"] == "" || Request.QueryString["add"] == null) && (Request.QueryString["delete"] == "" || Request.QueryString["delete"] == null);
                 ibt_down.Visible = (blocs.Count > 0 && bloc.id != blocs[blocs.Count - 1].id) && (Request.QueryString["edit"] == "" || Request.QueryString["edit"] == null) && (Request.QueryString["add"] == "" || Request.QueryString["add"] == null) && (Request.QueryString["delete"] == "" || Request.QueryString["delete"] == null);
-
+                ibt_top.Visible = ibt_up.Visible;
+                ibt_bottom.Visible = ibt_down.Visible;
             }
 
             var image2 = e.Item.FindControl("Image2") as Image;
@@ -1040,10 +1043,40 @@ public partial class DesktopModules_AIS_Club_News_Article_Control : PortalModule
                 LI_Blocs.DataBind();
 
             }
+            if (e.CommandSource == e.Item.FindControl("ibt_top"))
+            {
+                foreach (News.Bloc b in news.GetListBlocs())
+                {
+                    if (b.id == e.CommandName)
+                        bloc = b;
+                }
+                bloc.ord = int.MinValue;
+                if (!DataMapping.UpdateNewsBloc(bloc))
+                    throw new Exception("Error update bloc");
+                DataMapping.UpdateNewsBlocOrd(news.id);
+                news = DataMapping.GetNews_EN(news.id);
+                LI_Blocs.DataSource = news.GetListBlocs();
+                LI_Blocs.DataBind();
+            }
+            if (e.CommandSource == e.Item.FindControl("ibt_bottom"))
+            {
+                foreach (News.Bloc b in news.GetListBlocs())
+                {
+                    if (b.id == e.CommandName)
+                        bloc = b;
+                }
+                bloc.ord = int.MaxValue;
+                if (!DataMapping.UpdateNewsBloc(bloc))
+                    throw new Exception("Error update bloc");
+                DataMapping.UpdateNewsBlocOrd(news.id);
+                news = DataMapping.GetNews_EN(news.id);
+                LI_Blocs.DataSource = news.GetListBlocs();
+                LI_Blocs.DataBind();
+            }
             #endregion Up/Down
 
             #region cancel
-            if(e.CommandSource == e.Item.FindControl("btn_cancel"))
+            if (e.CommandSource == e.Item.FindControl("btn_cancel"))
             {
                 if(bloc.content != "" && bloc.type=="BlocFiles")
                 {

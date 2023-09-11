@@ -85,9 +85,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using Newtonsoft.Json;
 using System.Web.Security;
-using Org.BouncyCastle.Asn1.Ocsp;
 using System.Web;
-using Dnn.PersonaBar.Security.Components;
 using DotNetNuke.Security;
 
 namespace AIS
@@ -4547,6 +4545,28 @@ namespace AIS
             obj.content_type = "" + rd["content_type"];
 
             return obj;
+        }
+
+        public static void UpdateNewsBlocOrd(string newsid)
+        {
+
+            SqlCommand sql = new SqlCommand("SELECT id,((ROW_NUMBER() OVER (ORDER BY ord))*10) ord from  " + Const.TABLE_PREFIX + "news_blocs where news_id=@news_id ");
+            sql.Parameters.AddWithValue("@news_id", newsid);
+            DataTable tableord = Yemon.dnn.DataMapping.ExecSql(sql);
+            if (tableord != null)
+            {
+                SqlConnection sqlConnection = Yemon.dnn.DataMapping.GetOpenedConn();
+                foreach (DataRow row in tableord.Rows)
+                {
+                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "news_blocs SET ord = @ord WHERE id=@id");
+                    sql.Parameters.AddWithValue("@id", row["id"]);
+                    sql.Parameters.AddWithValue("@ord", row["ord"]);
+                    Yemon.dnn.DataMapping.ExecSqlNonQuery(sql, sqlConnection, null);
+
+                }
+                sqlConnection.Close();
+            }
+            
         }
 
         public static bool UpdateNewsBloc(News.Bloc bloc, string newsid = "")
