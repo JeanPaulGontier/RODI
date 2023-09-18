@@ -1491,6 +1491,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         m.email = pemails[0];
                    
                 }
+                m.satellite_member = "";
 
                 members.Add(m);
             //}

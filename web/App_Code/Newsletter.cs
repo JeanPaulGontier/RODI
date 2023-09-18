@@ -16,7 +16,6 @@ using DotNetNuke.Entities.Portals;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
-using System.Activities.Expressions;
 
 /// <summary>
 /// Description résumée de Newsletter
@@ -180,7 +179,7 @@ public class NewsletterWS : System.Web.Services.WebService
                                 Newsletter news = DataMapping.GetNewsletter(n.newsletter_id);
 
 
-                                MailMessage message = new MailMessage(new MailAddress(ps.Email, String.IsNullOrEmpty(news.sender_name) ? ps.PortalName:news.sender_name), new MailAddress(n.email, "")) ;
+                                MailMessage message = new MailMessage(new MailAddress(ps.Email, ps.PortalName), new MailAddress(n.email, ""));
                                 
                                 message.ReplyToList.Add(new MailAddress(news.sender_email, news.sender_name));
                                 //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
@@ -230,29 +229,12 @@ public class NewsletterWS : System.Web.Services.WebService
                                 resultat_MAJ = DataMapping.Update_Newsletter_Out(n);
                             }
 
-                            //string result = Mail.SendMail(HostEmail, n.email, "", "", "", MailPriority.Normal, n.la_Newsletter.titre, MailFormat.Html, System.Text.Encoding.UTF8, n.la_Newsletter.texte, att, SMTPServer, SMTPAuthentication, SMTPUsername, SMTPPassword, false);
-
-                            //if (!string.IsNullOrEmpty(result))
-                            //{
-                            //    sb.AppendLine("Erreur lors de l'envoie du mail Test id = " + n.id.ToString());
-                            //    n.statut = "E";
-                            //    n.erreur = result;
-                            //    resultat_MAJ = DataMapping.Update_Newsletter_Out(n);
-                            //}
-                            //else
-                            //{
-                            //    sb.AppendLine("Succes de l'envoie du mail Test id = " + n.id.ToString());
-                            //    n.statut = "T";
-                            //    n.erreur = "";
-                            //    resultat_MAJ = DataMapping.Update_Newsletter_Out(n);
-                            //}
 
                             if (resultat_MAJ == false)
                             {
                                 sb.AppendLine("Erreur lors de la MAJ du mail Test id = " + n.id.ToString());
                             }
-                            //Thread.Sleep(5000);
-                        } // end FOREACH
+                        } 
                     }
                     else
                     {
@@ -431,32 +413,20 @@ public class NewsletterWS : System.Web.Services.WebService
                                         msgbody = msgbody.Replace("#prenom#", member.name);
                                         msgbody = msgbody.Replace("#nom#", member.surname);
                                         msgbody = msgbody.Replace("#email#", member.email);
-                                        try
-                                        {
-                                            DotNetNuke.Entities.Users.UserInfo userInfo = DotNetNuke.Entities.Users.UserController.GetUserByName(0, n_o.email);
-                                            DotNetNuke.Security.Membership.MembershipProvider membershipProvider = DotNetNuke.Security.Membership.MembershipProvider.Instance();
-
-                                            string password = DotNetNuke.Entities.Users.UserController.GetPassword(ref userInfo, userInfo.Membership.PasswordAnswer);
-                                            msgbody = msgbody.Replace("#password#", password);
-
-                                        }
-                                        catch(Exception ee)
-                                        {
-                                            Functions.Error(ee);
-                                            msgbody = msgbody.Replace("#password#", "");
-                                        }
                                         
 
-                                }
-                                else
-                                {
-                                        msgbody = msgbody.Replace("#prenom#", "");
-                                        msgbody = msgbody.Replace("#nom#", "");
-                                        msgbody = msgbody.Replace("#email#", "");
-                                        msgbody = msgbody.Replace("#password#", "");
-                                }
-                                MailMessage message = new MailMessage(new MailAddress(ps.Email, String.IsNullOrEmpty(n.sender_name) ? ps.PortalName : n.sender_name), new MailAddress(n_o.email, ""));
-                                //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
+                                    }
+                                    else
+                                    {
+                                            msgbody = msgbody.Replace("#prenom#", "");
+                                            msgbody = msgbody.Replace("#nom#", "");
+                                            msgbody = msgbody.Replace("#email#", "");
+                                       
+                                    }
+
+
+                                    MailMessage message = new MailMessage(new MailAddress(ps.Email, ps.PortalName), new MailAddress(n_o.email, ""));
+                                    //message.ReplyTo = new MailAddress(newsletter.replyemail, newsletter.fromname);
                                     message.ReplyToList.Add(new MailAddress(n.sender_email,n.sender_name));
                                     message.Subject = n.title;
                                     message.IsBodyHtml = true;
@@ -504,32 +474,10 @@ public class NewsletterWS : System.Web.Services.WebService
                                 }
 
 
-                                //string result = Mail.SendEmail(GetAdminEmail(), GetAdminEmail(), n_o.email, n.titre, n.texte, att);
-                                ////string result = Mail.SendMail(HostEmail, n.email, "", "", "", MailPriority.Normal, n.la_Newsletter.titre, MailFormat.Html, System.Text.Encoding.UTF8, n.la_Newsletter.texte, att, SMTPServer, SMTPAuthentication, SMTPUsername, SMTPPassword, false);
-
-                                //bool resultat_MAJ = true;
-                                //if (!string.IsNullOrEmpty(result))
-                                //{
-                                //    sb.AppendLine("Erreur lors de l'envoie du mail id = " + n_o.id.ToString());
-                                //    n_o.statut = "E";
-                                //    n_o.erreur = result;
-                                //    resultat_MAJ = DataMapping.Update_Newsletter_Out(n_o);
-                                //}
-                                //else
-                                //{
-                                //    sb.AppendLine("Succes de l'envoie du mail id = " + n_o.id.ToString());
-                                //    n_o.statut = "T";
-                                //    n_o.erreur = "";
-                                //    resultat_MAJ = DataMapping.Update_Newsletter_Out(n_o);
-                                //}
-
                                 if (resultat_MAJ == false)
                                 {
                                     sb.AppendLine("Erreur lors de la MAJ du mail : " + n_o.email + ", newsletter : " + n.title);
                                 }
-
-                             //   Thread.Sleep(5000);
-                            //} //end foreach
 
                            
                         }
