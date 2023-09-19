@@ -4,6 +4,7 @@
 	- on peut maintenant masquer le lien lire la suite pour n'utiliser qu'une image cliquable pour voir le détail de la nouvelle
 	- correction d'un pb de déplacement dans certains cas qui mettait le bloc tout en bas
 - suppression du champ password inutile dans la fonctionnalité mailing, les password ne sont plus récupérables depuis longtemps, cette fonctionnalité ne pouvait plus fonctionner.
+- correction d'un bug d'affichage dans la lettre du gouverneur apparu à la dernière maj
 
 ###### 07/09/2023
 - ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavant ce traitement était spécifique au D1770
