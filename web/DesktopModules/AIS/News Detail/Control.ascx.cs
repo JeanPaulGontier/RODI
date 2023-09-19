@@ -189,6 +189,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                 }
                                 break;
                             case "FileCollection":
+                                sb.Append("<div>");
                                 Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
                                 if (fc.Title != null)
                                 {
@@ -203,8 +204,10 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                     }
                                     sb.Append("</ul>");
                                 }
+                                sb.Append("</div>");
                                 break;
                             case "ImageCollection":
+                                sb.Append("<div>");
                                 Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
                                 if (ic.Title != null)
                                 {
@@ -219,6 +222,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                         sb.Append("</span>");
                                     }
                                 }
+                                sb.Append("</div>");
                                 break;
                             case "Raw":
                                 Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
