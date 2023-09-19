@@ -39,9 +39,8 @@
             <asp:HyperLink ID="hlk_edit_texte" Target="_blank" CssClass="btn btn-primary" runat="server"><span class="fa fa-pencil"></span></asp:HyperLink>
             <asp:LinkButton ID="btn_up" CssClass="btn btn-default" CommandName='<%#Bind("id") %>' runat="server" ><span class="fa fa-arrow-up"></span></asp:LinkButton>
             <asp:LinkButton ID="btn_down" CssClass="btn btn-default" CommandName='<%#Bind("id") %>' runat="server" Text="" ><span class="fa fa-arrow-down"></span></asp:LinkButton>
-            <asp:LinkButton ID="lbt_delete" CommandArgument='<%# Bind("id") %>' OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce bloc ?');" CssClass="btn btn-danger"  runat="server" ><span class="fa fa-trash-o"></span></asp:LinkButton>
-        </div>
-     </asp:Panel>
+            <asp:LinkButton ID="lbt_delete" CommandArgument='<%# Bind("id") %>' OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce bloc ?');" CssClass="btn btn-danger"  runat="server" ><span class="fa fa-trash-o"></span></asp:LinkButton>       
+        </asp:Panel>
     </asp:Panel>
 </ItemTemplate>
 <FooterTemplate></FooterTemplate>
