@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2020
+// Copyright (c) 2012-2023
 // by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -70,7 +70,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using System.IO;
 using System.Drawing;
-using Telerik.Web.UI;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Entities.Users;
 using AIS;
@@ -137,7 +136,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     {
                         if (c.RoleID > 4)
                         {
-                            CHKList_Role.Items.Add(new ListItem(c.RoleName, c.RoleName));
+                            CHKList_Role.Items.Add(new ListItem("&nbsp;"+c.RoleName, c.RoleName));
                         }
                     }
 
@@ -145,12 +144,12 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     List<string> liste_Fonctions = DataMapping.GetFunctions();
                     foreach (string s in liste_Fonctions)
                     {
-                        CHKList_Fct.Items.Add(new ListItem(s, s));
+                        CHKList_Fct.Items.Add(new ListItem("&nbsp;"+s, s));
                     }
 
                     // Peuplement des années rotariennes
-                    CHK_AR_0.Text = annee_0.ToString();
-                    CHK_AR_1.Text = (annee_0 + 1).ToString();
+                    CHK_AR_0.Text = "&nbsp;"+ annee_0.ToString();
+                    CHK_AR_1.Text = "&nbsp;" + (annee_0 + 1).ToString();
 
                     // Peuplement du filtre departemental
                     List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
@@ -277,8 +276,8 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
             else
             {
-                if (!Panel2.Visible || !Panel_Envoi.Visible || !Panel_Result.Visible)
-                    Panel1.Visible = true;
+                //if (!Panel2.Visible || !Panel_Envoi.Visible || !Panel_Result.Visible)
+                //    Panel1.Visible = true;
                 lbl_noClubSelected.Visible = false;
 
             }
@@ -324,7 +323,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         HF_id.Value = "" + n.id;
 
         TXT_Titre.Text = "" + n.title;
-        TXT_Dt.SelectedDate = n.dt;
+        TXT_Dt.Text = n.dt.ToString("yyyy-MM-dd");
         TXT_Editor.Text = n.text;
         TXT_Exp_Nom.Text = n.sender_name;
         TXT_Exp_Email.Text = n.sender_email;
@@ -697,7 +696,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     obj.recipient = "";
                 }
                 obj.cric = Functions.CurrentCric;
-                obj.dt = TXT_Dt.SelectedDate != null ? (DateTime)TXT_Dt.SelectedDate : DateTime.Now;
+                DateTime n= DateTime.Now;
+                DateTime.TryParse("" + TXT_Dt.Text, out n);
+                obj.dt = n;
                 obj.text = Server.HtmlDecode(TXT_Editor.Text) + "<br />";
                 obj.sender_email = TXT_Exp_Email.Text;
                 obj.sender_name = TXT_Exp_Nom.Text;
@@ -819,7 +820,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
 
         TXT_Titre.Text = "";
-        TXT_Dt.SelectedDate = DateTime.Now;
+        TXT_Dt.Text = DateTime.Now.ToString("yyyy-MM-dd");
         TXT_Editor.Text = "";
         CHK_Bureau_Pres.Checked = false;
         CHK_Bureau_Secr.Checked = false;
@@ -1383,6 +1384,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         {
             parametres = parametres.Remove(0, 1);
         }
+       
         return la_List;
     }
 
@@ -1431,7 +1433,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         {
             obj = DataMapping.GetNewsletter(HF_id.Value);
             obj.cric = Functions.CurrentCric;
-            obj.dt = TXT_Dt.SelectedDate != null ? (DateTime)TXT_Dt.SelectedDate : DateTime.Now;
+            DateTime n=DateTime.Now;
+            DateTime.TryParse("" + TXT_Dt.Text, out n);
+            obj.dt = n;
             obj.text = Server.HtmlDecode(TXT_Editor.Text) + "<br />";
             if (System.Diagnostics.Debugger.IsAttached)
             {

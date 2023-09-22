@@ -1,5 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Mailing_Control" %>
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx" %>
 
 <asp:Label ID="test" runat="server" />
@@ -32,19 +31,28 @@
 	<h2><span class="Head">Détail de votre message</span></h2>
 </div>
 
+<div class="form-inline">
+    <div class="form-group">
+	    <span>Date : </span>
+        <asp:TextBox runat="server" ID="TXT_Dt" TextMode="Date" Width="120px" CssClass="form-control"></asp:TextBox>
+
+        <span>Sujet : </span>
+        <asp:TextBox runat="server" ID="TXT_Titre" MaxLength="255" Width="450px"  CssClass="form-control"></asp:TextBox>
+      </div>
+        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Il manque le sujet" Display="None" ControlToValidate="TXT_Titre"></asp:RequiredFieldValidator>
+  
+</div>
 <div>
-	<span>Date : </span><telerik:RadDatePicker runat="server" ID="TXT_Dt"></telerik:RadDatePicker>		
-	<span>Sujet : </span>
-	<asp:TextBox runat="server" ID="TXT_Titre" MaxLength="255" Width="300px"></asp:TextBox>
-    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Il manque le sujet" Display="None" ControlToValidate="TXT_Titre"></asp:RequiredFieldValidator>
-</div>   
-<div>
+	</div>   
+<div class="form-inline">
+    <div class="form-group">
 	<span>Nom expéditeur : </span>
-    <asp:TextBox runat="server" ID="TXT_Exp_Nom" MaxLength="255" Width="300px"></asp:TextBox>
+    <asp:TextBox runat="server" ID="TXT_Exp_Nom" MaxLength="255" Width="300px"  CssClass="form-control"></asp:TextBox>
     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="Il manque le nom expediteur" Display="None" ControlToValidate="TXT_Exp_Nom"></asp:RequiredFieldValidator>	
 	<span>E-mail : </span>
-	<asp:TextBox runat="server" ID="TXT_Exp_Email" MaxLength="255" Width="300px"></asp:TextBox>
+	<asp:TextBox runat="server" ID="TXT_Exp_Email" MaxLength="255" Width="300px"  CssClass="form-control"></asp:TextBox>
     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Il manque l'email" Display="None" ControlToValidate="TXT_Exp_Email"></asp:RequiredFieldValidator>
+        </div>
 </div>   
 <div>
 	<span>Contenu : </span>
@@ -56,8 +64,8 @@
     <asp:Panel ID="Panel_Bureau" runat="server" >
         <asp:Label ID="LBL_Bureau_Titre" runat="server" Text="Envoyer aux autres clubs :" />
   
-        <asp:CheckBox ID="CHK_Bureau_Pres" runat="server" Text="Président" OnCheckedChanged="CHK_Bureau_Pres_CheckedChanged"  AutoPostBack="true"/>
-        <asp:CheckBox ID="CHK_Bureau_Secr" runat="server" Text="Secrétaire" OnCheckedChanged="CHK_Bureau_Secr_CheckedChanged"  AutoPostBack="true"/>                
+        <asp:CheckBox ID="CHK_Bureau_Pres" runat="server" Text="&nbsp;Président" OnCheckedChanged="CHK_Bureau_Pres_CheckedChanged"  AutoPostBack="true"/>
+        <asp:CheckBox ID="CHK_Bureau_Secr" runat="server" Text="&nbsp;Secrétaire" OnCheckedChanged="CHK_Bureau_Secr_CheckedChanged"  AutoPostBack="true"/>                
 
         <asp:Label ID="LBL_Bureau_Filtre" runat="server" Text="Filtrer par département : " Visible="false"></asp:Label>
         <asp:RadioButtonList ID="RB_Dept" runat="server" RepeatDirection="Horizontal" OnSelectedIndexChanged="RB_Dept_SelectedIndexChanged" AutoPostBack="true" Visible="false"></asp:RadioButtonList>
@@ -65,20 +73,20 @@
 
     <asp:Panel ID="Panel3" runat="server" >
         <asp:Label ID="LBL_All_Members_Titre" runat="server" Text="Envoyer à tous les membres de mon club :" />
-        <asp:CheckBox ID="CHK_All_Members" runat="server" Text="Tous les membres"  OnCheckedChanged="CHK_All_Members_CheckedChanged"  AutoPostBack="true"/>
+        <asp:CheckBox ID="CHK_All_Members" runat="server" Text="&nbsp;Tous les membres"  OnCheckedChanged="CHK_All_Members_CheckedChanged"  AutoPostBack="true"/>
     </asp:Panel>
 </asp:Panel>
 
 <asp:Panel ID="Panel_District" runat="server" Visible="false">
     <asp:Panel ID="Panel_Role" runat="server" >
         <asp:Label ID="LBL_Role" runat="server" Text="Rôle(s) :" CssClass="Titre"/>
-        <asp:CheckBoxList ID="CHKList_Role" TextAlign="Right" runat="server" RepeatColumns="5" OnSelectedIndexChanged="CHKList_Role_SelectedIndexChanged" AutoPostBack="true" />
+        <asp:CheckBoxList ID="CHKList_Role" TextAlign="Right" runat="server" Width="100%" RepeatColumns="4" OnSelectedIndexChanged="CHKList_Role_SelectedIndexChanged" AutoPostBack="true" />
     </asp:Panel>
 
 
     <asp:Panel ID="Panel_Fct" runat="server" >
         <asp:Label ID="LBL_Fct" runat="server" Text="Fonction(s) (rotary et rotaract) :" CssClass="Titre"/>
-        <asp:CheckBoxList ID="CHKList_Fct" TextAlign="Right" runat="server" RepeatColumns="5" OnSelectedIndexChanged="CHKList_Role_SelectedIndexChanged" AutoPostBack="true"  />
+        <asp:CheckBoxList ID="CHKList_Fct" TextAlign="Right" runat="server" Width="100%" RepeatColumns="4" OnSelectedIndexChanged="CHKList_Role_SelectedIndexChanged" AutoPostBack="true"  />
     </asp:Panel>
 
 
@@ -95,7 +103,7 @@
 <div>
     <asp:Label ID="LBL_NB_Dest" runat="server" CssClass="Titre"/>
 </div>
-
+<div class="pe-spacer size20"></div>
 <div class="txtCenter">
 	<asp:ValidationSummary runat="server" DisplayMode="BulletList" HeaderText="Veuillez compléter le formulaire avant de valider..." ShowMessageBox="true" ShowSummary="false" />
 	<asp:Button runat="server" ID="BT_Supprimer" Text="Supprimer" CssClass="btn btn-danger" CausesValidation="false" OnClick="BT_Supprimer_Click" OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce message ?');" />&nbsp;
@@ -125,7 +133,7 @@
 		<h2><asp:Label ID="LBL_Titre_Env" Text="Envoyer la newsletter" runat="server" CssClass="Head"/></h2>
 	</div>
     <asp:Label ID="LBL_Nb_Env" runat="server" /><br/><br/>
-    <asp:CheckBox ID="CHK_Env" runat="server" AutoPostBack="true" Text="Confirmer l'envoi de la newsletter." OnCheckedChanged="CHK_Env_CheckedChanged" />
+    <asp:CheckBox ID="CHK_Env" runat="server" AutoPostBack="true" Text="&nbsp;Confirmer l'envoi de la newsletter." OnCheckedChanged="CHK_Env_CheckedChanged" />
     <asp:Button ID="BTN_Env" runat="server" OnClick="BTN_Env_Click" CssClass="btn btn-primary"   Text="Envoyer" Visible="false"/>
 </asp:Panel>
 

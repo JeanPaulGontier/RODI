@@ -18,6 +18,8 @@ App_Code\Newsletter.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 ```
 ```###### 07/09/2023
 ```txt
