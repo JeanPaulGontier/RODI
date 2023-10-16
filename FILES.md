@@ -25,7 +25,7 @@ AIS\SIProMS.asmx
 App_Code\ClubRewriter.cs
 App_Code\AIS\Const.cs
 App_Code\AIS\Mailing.cs
-AIS\Meeting.cs
+App_Code\AIS\Meeting.cs
 App_Code\AIS\webapi\mailing\MailingController.cs
 App_Code\AIS\webapi\mailing\MailingHelper.cs
 App_Code\AIS\webapi\meeting\MeetingController.cs
