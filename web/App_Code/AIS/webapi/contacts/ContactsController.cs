@@ -21,6 +21,12 @@ namespace AIS.controller
 {
     public class ContactsController : DnnApiController
     {
+        [HttpGet]
+        public HttpResponseMessage Hello()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]

@@ -1,0 +1,183 @@
+﻿<script type="text/x-template" id="mailingview-template">
+    <div class="row">
+        <div class="col-sm-3">
+            <router-link to="/" class="btn btn-default">Retour</router-link>
+        </div>
+        <div class="col-sm-9">
+        </div>
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Statut :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{statut(mailing)}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Date :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{mailing.dt?new Date(mailing.dt).toLocaleDateString():''}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size10"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Expéditeur :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{mailing.sender_name}} &lt;{{mailing.sender_email}}&gt;</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size10"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Object :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{mailing.subject}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Destinataires :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{destinataires()}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <div style="margin:0 auto;" class="bc-dotted">
+                <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="false"></blocks-editor>
+            </div>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+
+</script>
+<script>
+    const MailingView = {
+        template: '#mailingview-template',
+        name: 'MailingView',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean
+        },
+        data: function () {
+            return {
+                recipients: RECIPIENTS,
+                blocks: [],
+                mailing: {
+                    recipients:[]
+                }
+            }
+        },
+        filters: {
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            statut(n) {
+                switch (n.step) {
+                    case 10:
+                    case 20:
+                    case 30:
+                        return 'Brouillon';
+                    case 40:
+                        return 'Préparation envoi';
+                    case 50:
+                        return 'Envoi en cours';
+                    case 60:
+                        return 'Envoyé';
+                }
+            },
+            destinataires() {
+                let dests = '';               
+                if (!this.mailing.recipients)
+                    return '';
+                this.mailing.recipients.forEach(d => {
+                    this.recipients.forEach(s => {
+                        if (s.guid == d) {
+                            dests += s.name + ', ';
+                        }
+                    })
+                })
+                if (dests.endsWith(', '))
+                    dests = dests.substring(0, dests.length - 2);
+                return dests;
+            },
+
+            cancel() {
+                this.$router.push("/");
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            getMailingDetail() {
+                _yemon[this.moduleid].service.getData("/GetMailingDetail", {
+                    guid: this.id
+                }, (r) => {
+                    if (r.data == 'null') {
+                        this.$router.push("/");
+                    }
+                    else if (r.data) {
+                        this.mailing = JSON.parse(r.data);
+                        if (!this.mailing.recipients)
+                            this.mailing['recipients'] = [];
+                        else
+                            this.mailing['recipients'] = JSON.parse(this.mailing.recipients);
+
+                        this.getBlocks();
+                    }
+                    else {
+                        this.$router.push("/");
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+         
+
+
+        },
+        mounted() {
+            this.getMailingDetail();
+            window.scrollTo(window.scrollX, 0);
+        }
+    }
+</script>

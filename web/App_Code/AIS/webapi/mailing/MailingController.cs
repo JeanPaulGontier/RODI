@@ -4,6 +4,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,16 @@ using System.Web;
 using System.Web.Http;
 using Yemon.dnn;
 
+
 namespace AIS.controller
 {
     public class MailingController : DnnApiController
     {
+        [HttpGet]
+        public HttpResponseMessage Hello()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -157,9 +164,12 @@ namespace AIS.controller
 
             Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
             if (mailing == null)
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+            {
+                return Request.CreateResponse(Yemon.dnn.Functions.Serialize(new Mailing() { guid=new Guid(guid)}));
+            }
+                
 
-            mailing.content = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
+           // mailing.content = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
 
             return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(mailing));
         }
@@ -167,7 +177,7 @@ namespace AIS.controller
         [HttpGet]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
-        public HttpResponseMessage DeleteMail(string guid)
+        public HttpResponseMessage DeleteMailing(string guid)
         {
             SqlCommand sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
             sql.Parameters.AddWithValue("guid", guid);
@@ -178,8 +188,67 @@ namespace AIS.controller
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage SendMailing(dynamic param)
+        {
+            try
+            {
+                string guid = "" + param["guid"];
+                string date = "" + param["date"];
 
-        
+                DateTime dt_start = DateTime.Now;
+
+                SqlCommand sql = new SqlCommand("update " + Const.TABLE_PREFIX + "mailings set step="+(int)Mailing.STEPS.PREPARE+",dt_start=@dt_start where guid=@guid");
+                sql.Parameters.AddWithValue("guid", guid);
+                sql.Parameters.AddWithValue("dt_start", dt_start);
+
+                int nb=Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                if(nb>0)
+                    return Request.CreateResponse(HttpStatusCode.OK);
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            catch (Exception ee)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage SendTest(dynamic param)
+        {
+            try
+            {
+                string guid = "" + param["guid"];
+                string email = "" + param["email"];
+
+                DateTime dt_start = DateTime.Now;
+
+                SqlCommand sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "mailing_out " +
+                    "(guid,mailing_guid,nim,email,status,portalid,priority) VALUES " +
+                    "(@guid,@mailing_guid,@nim,@email,@status,@portalid,@priority)");
+                sql.Parameters.AddWithValue("mailing_guid", "" + guid);
+                sql.Parameters.AddWithValue("guid", "" + Guid.NewGuid());
+                sql.Parameters.AddWithValue("nim", 0);
+                sql.Parameters.AddWithValue("email", email);
+                sql.Parameters.AddWithValue("status", Mailing.Out.TEST);
+                sql.Parameters.AddWithValue("priority", Mailing.Out.PRIORITY.NORMAL);
+                sql.Parameters.AddWithValue("portalid", 0);
+                if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql) > 0)
+                   return Request.CreateResponse(HttpStatusCode.OK);
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            catch (Exception ee)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
+            }
+        }
+
         [HttpGet]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
@@ -233,17 +302,17 @@ namespace AIS.controller
 
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
-                Mailing mailing = (Mailing)Yemon.dnn.Functions.Deserialize("" + param["mailing"], typeof(Mailing));
-                string blocks = "" + param["blocks"];
+                Mailing m = (Mailing)Yemon.dnn.Functions.Deserialize("" + param["mailing"], typeof(Mailing));
+             
                 
                 Dictionary<string,object> row = new Dictionary<string,object>();
 
-                SqlCommand sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX + "mailings WHERE cric=@cric AND guid=@guid");
-                sql.Parameters.AddWithValue("cric", cric);
-                sql.Parameters.AddWithValue("guid", mailing.guid);
+                //SqlCommand sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX + "mailings WHERE cric=@cric AND guid=@guid");
+                //sql.Parameters.AddWithValue("cric", cric);
+                //sql.Parameters.AddWithValue("guid", mailing.guid);
 
-                Mailing m = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
-                if (m == null)
+                //Mailing m = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
+                if (m.id == 0)
                 {
                     row["id"] = null;
                 }                    
@@ -252,17 +321,20 @@ namespace AIS.controller
                     row["id"] = m.id;                   
                 }
 
-                row["cric"] = m.cric;
+                row["cric"] = cric;
                 row["guid"] = m.guid;
                 row["step"] = m.step;
 
-                row["category"] = mailing.category;
-                row["dt"] = mailing.dt;
-                row["dt"] = mailing.dt_start;
-                row["subject"] = mailing.subject;
-                row["sender_email"] = mailing.sender_email;
-                row["sender_name"] = mailing.sender_name;
-                row["recipients"] = mailing.recipients;
+                row["category"] = m.category;
+                row["dt"] = DateTime.Now;
+                if (m.dt_start > DateTime.MinValue)
+                    row["dt_start"] = m.dt_start;
+                else
+                    row["dt_start"] = null;
+                row["subject"] = m.subject;
+                row["sender_email"] = m.sender_email;
+                row["sender_name"] = m.sender_name;
+                row["recipients"] = m.recipients;
 
                 row["portalid"] = ps.PortalId;
 
@@ -270,8 +342,7 @@ namespace AIS.controller
                 if(result.Key=="error")
                     throw new Exception("Erreur de mise a jour");
 
-                Yemon.dnn.Helpers.SetItem("blockscontent:" + mailing.guid, blocks, "" + userInfo.UserID, keephistory: false, portalid: ps.PortalId);
-                return Request.CreateResponse(HttpStatusCode.OK, ""+ mailing.guid);
+                return Request.CreateResponse(HttpStatusCode.OK, ""+ m.guid);
 
             }
             catch (Exception ee)
@@ -279,6 +350,10 @@ namespace AIS.controller
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
             }
         }
+
+
+        
+        
 
     }
 }

@@ -20,6 +20,43 @@ DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+AIS\purgednnscripts.ashx
+AIS\SIProMS.asmx
+App_Code\ClubRewriter.cs
+App_Code\AIS\Const.cs
+App_Code\AIS\Mailing.cs
+AIS\Meeting.cs
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\mailing\MailingHelper.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\webapi\contacts\ContactsController.cs
+App_Code\AIS\schedulers\MailingScheduler.cs
+App_Code\AIS\schedulers\MeetingScheduler.cs
+DesktopModules\AIS\Admin Mailing2\app.js
+DesktopModules\AIS\Admin Mailing2\app.min.js
+DesktopModules\AIS\Admin Mailing2\Control.ascx
+DesktopModules\AIS\Admin Mailing2\Control.ascx.cs
+DesktopModules\AIS\Admin Mailing2\Mailing.html
+DesktopModules\AIS\Admin Mailing2\MailingEdit.html
+DesktopModules\AIS\Admin Mailing2\MailingView.html
+DesktopModules\AIS\Admin Mailing2\Settings.ascx
+DesktopModules\AIS\Admin Mailing2\Settings.ascx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\AIS\News Detail\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.min.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_mail.mailing.email.cshtml
+Portals\_default\Skins\Rodi2017\skin.css
+Portals\_default\Skins\Rodi2017\mail.ascx
+Portals\_default\Skins\Rodi2017\mail.ascx.cs
+Portals\_default\Skins\Rodi2017\Mobile.ascx
+Portals\_default\Skins\Rodi2017\Mobile.ascx.cs
+
+
 ```
 ```###### 07/09/2023
 ```txt

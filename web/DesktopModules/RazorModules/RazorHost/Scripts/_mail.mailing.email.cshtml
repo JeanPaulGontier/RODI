@@ -1,0 +1,42 @@
+﻿@using Yemon.dnn.BlocksContent;
+@using AIS;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Entities.Tabs;
+@{
+    try
+    {
+        string culture = "fr-FR";
+
+        string g = "" + Request["guid"];
+        Guid guid = new Guid(g);
+
+        SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "mailing_out WHERE guid=@guid");
+        sql.Parameters.AddWithValue("guid", guid);
+
+        Mailing.Out mailingout = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing.Out>(sql);
+        if (mailingout == null)
+        {
+            <div>Message introuvable...</div>
+            return;
+        }
+
+        var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+        PageData["appID"] = "app" + Dnn.Module.ModuleID;
+        PageData["PortalId"] = Dnn.Portal.PortalId;
+        PageData["moduleID"] = Dnn.Module.ModuleID;
+        PageData["HTML"] = Html;
+
+
+        PageData["blocksSuffix"] = "" + mailingout.mailing_guid;
+        var userInfo = UserController.Instance.GetCurrentUserInfo();
+
+        @RenderPage("BlocksContent/View.mailing.cshtml")
+
+
+    }
+    catch (Exception ee)
+    {
+        Functions.Error(ee);
+    }
+}

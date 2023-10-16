@@ -38,6 +38,7 @@
     url("fonts/Frutiger LT W01 77 Black Cond.svg#Frutiger LT W01 77 Black Cond") format("svg"); /* iOS 4.1- */
     font-weight: normal;
 }
+
 /*
  * CSS For DotNetNuke Skin by bestdnnskins.com
  * Copyright 2014 By BESTDNNSKINS.COM
@@ -159,7 +160,7 @@ A:link {
 }
 
 A:visited {
-    color: #005daa;
+    color: inherit; /* #005daa;*/
     text-decoration: none;
 }
 
@@ -249,7 +250,7 @@ input[type=radio] + label, .ModAISNewsDetailC a.Normal {
     list-style: none;
 }
 
-input[type=text], textarea {
+input[type=text], input[type=date], input[type=number], textarea {
     border: 1px solid #d1d1d1;
     padding: 7px 0 7px 5px;
     margin-bottom: 8px;

@@ -79,7 +79,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
 using Aspose;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {

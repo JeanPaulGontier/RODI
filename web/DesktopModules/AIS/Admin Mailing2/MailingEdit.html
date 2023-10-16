@@ -1,0 +1,541 @@
+﻿<style>
+    .nav-tabs {
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+    }
+    @media only screen and (max-width: 480px){
+        .nav-tabs{
+            display:block;
+        }
+    }
+</style>
+<script type="text/x-template" id="mailingedit-template">
+
+    <div class="row">
+        <div class="col-sm-3">
+            <input type="button" v-on:click="back()" class="btn btn-default" value="Retour">
+        </div>
+        <div class="col-sm-7">
+        </div>
+        <div class="col-sm-2">
+            <button type="button" v-on:click="deleteMailing()" class="btn btn-sm btn-danger" title="Supprimer" v-if="mailing.id>0">Supprimer</button>
+        </div>
+    </div>
+    <div class="pe-spacer size10" ></div>
+        <div>
+            <ul class="nav nav-tabs">
+                <li :class="{ 'active': mailing.step==10 }">
+                    <router-link :to="{name: 'dest', params: {id: $route.params.id}}">Destinataires</router-link>
+                </li>
+                <li :class="{ 'active': mailing.step==20 }" v-if="mailing.step>10">
+                    <router-link :to="{name: 'content', params: {id: $route.params.id}}">Contenu</router-link>
+                </li>
+                <li v-if="mailing.step<20" class="disabled">
+                    <a>Contenu</a>
+                </li>
+                <li :class="{ 'active': mailing.step==30 }" v-if="mailing.step>20">
+                    <router-link :to="{name: 'preview', params: {id: $route.params.id}}">Prévisualisation</router-link>
+                </li>
+                <li v-if="mailing.step<30" class="disabled">
+                    <a>Prévisualisation</a>
+                </li>
+                <li :class="{ 'active': mailing.step==40 }" v-if="mailing.step>30">
+                    <router-link :to="{name: 'send', params: {id: $route.params.id}}">Envoi</router-link>
+                </li>
+                <li v-if="mailing.step<40" class="disabled">
+                    <a>Envoi</a>
+                </li>
+            </ul>
+        </div>
+
+    <router-view :id="$route.params.id" :moduleid="moduleid" :context="context" :editable="editable" :mailing="mailing"></router-view>
+</script>
+
+
+<script type="text/x-template" id="mailingeditdest-template">
+    <h3>Expéditeur</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-info">
+            Le message sera envoyé avec l'email {{sender_email}}
+            </div>
+        </div>
+
+    </div>
+   
+    <div class="row">
+        <div class="col-sm-6">
+            <span>E-mail de réponse : </span>
+            <select v-model="mailing.sender_email" class="form-control" v-on:change="onSenderChange($event)">
+                <option :value="s.email" v-for="s in default_senders">{{s.email}}</option>
+            </select>
+        </div>
+        <div class="col-sm-6">
+            <span>Nom affiché aux destinataires : </span>
+            <input type="text" class="form-control" v-model="mailing.sender_name" />
+        </div>
+    </div>
+    <h3>Objet du message :</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="text" class="form-control" v-model="mailing.subject" />
+        </div>
+    </div>
+    <div class="pe-spacer size20"></div>
+    <h3>Destinataires</h3>
+    <div class="row">
+        <div class="col-sm-4" v-for="r in recipients">
+            <label class="checkbox-inline"><input type="checkbox" :key="r.guid" :value="r.guid" v-model="mailing.recipients">{{r.name}}</label>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="text-center">
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Valider" v-if="isValid()">
+    </div>
+
+</script>
+
+
+<script type="text/x-template" id="mailingeditcontent-template">
+    <div class="text-center">
+        <div style="margin: 0 auto;; width: 50%" class="bc-dotted">
+            <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+        </div>
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="text-center">
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Valider" v-if="blocks.length>0">
+    </div>
+</script>
+
+
+<script type="text/x-template" id="mailingeditpreview-template">
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-3">
+            Envoyer un e-mail de test :
+        </div>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" v-model="email" placeholder="saisir ici l'e-mail qui recevra le test" />
+        </div>
+        <div class="col-sm-3">
+            <input type="button" class="btn btn-sm btn-primary" v-on:click="test()" value="Tester">
+        </div>
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="text-center">
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Suivant">
+    </div>
+</script>
+
+
+<script type="text/x-template" id="mailingeditsend-template">
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Expéditeur :
+        </div>  
+        <div class="col-sm-8">
+            <strong>{{mailing.sender_name}} &lt;{{mailing.sender_email}}&gt;</strong>
+        </div>
+        <div class="col-sm-2 text-right">
+            <router-link :to="{name: 'dest', params: {id: $route.params.id}}" class="btn btn-sm btn-primary">Modifier</router-link>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            Object :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{mailing.subject}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            Destinataires :
+        </div>
+        <div class="col-sm-10">
+            <strong>{{destinataires()}}</strong>
+        </div>
+
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <div style="margin:0 auto;width:50%" class="bc-dotted">
+                <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="false"></blocks-editor>
+            </div>
+        </div>
+      
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="text-center">
+        <button class="btn btn-default" v-if="false">Programmer l'envoi</button>&nbsp;
+        <button class="btn btn-success" v-on:click="send()">Envoyer maintenant</button>
+    </div>
+</script>
+
+
+<script>
+    const MailingEditDest = {
+        template: '#mailingeditdest-template',
+        name: 'MailingEditDest',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean,
+            mailing: Object
+        },
+        data: function () {
+            return {
+                categories: CATEGORIES,
+                recipients: RECIPIENTS,
+                sender_email: SENDER_EMAIL,
+                default_senders: DEFAULT_SENDERS
+            }
+        },
+        methods: {
+            onSenderChange(event) {
+                this.default_senders.forEach((s) => {
+                    if (s.email == event.target.value) {
+                        this.mailing.sender_name = s.name;
+                        return;
+                    }
+                })
+            },
+            next() {
+                let m = JSON.parse(JSON.stringify(this.mailing));
+                m.recipients = JSON.stringify(m.recipients);
+
+                _yemon[this.moduleid].service.postData("/SetMail", {
+                    context: this.context.context,
+                    mailing: JSON.stringify(m)
+                }, (r) => {
+                    this.$router.push({ name: 'content', params: { id: this.id } });
+
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            isValid() {
+                return this.mailing.recipients &&
+                    this.mailing.recipients.length > 0 &&
+                    this.mailing.sender_email &&
+                    this.mailing.sender_name &&
+                    this.mailing.subject;
+            }
+        },
+        mounted() {
+            this.mailing.step = 10;
+        }
+
+    };
+    const MailingEditContent = {
+        template: '#mailingeditcontent-template',
+        name: 'MailingEditContent',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean,
+            mailing: Object
+        },
+        data: function () {
+            return {
+                blocks: []
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            next() {
+                let b = JSON.parse(JSON.stringify(this.blocks));
+                for (let i = 0; i < b.length; i++)
+                    b[i].Content = JSON.stringify(b[i].Content);
+
+                _yemon[this.moduleid].service.postData("/SetItem", {
+                    name: 'blockscontent:' + this.id,
+                    value: JSON.stringify(b),
+                    keephistory: false
+                }, (r) => {
+                    this.$router.push({ name: 'preview', params: { id: this.id } });
+
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+
+
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+        },
+        mounted() {
+            this.mailing.step = 20;
+            this.getBlocks();
+        }
+
+    };
+    const MailingEditPreview = {
+        template: '#mailingeditpreview-template',
+        name: 'MailingEditPreview',
+        data: function () {
+            return {
+                email:''
+            }
+        },
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean,
+            mailing: Object
+        },
+        methods: {
+            test() {
+                _yemon[this.moduleid].service.postData("/SendTest", {
+                    context: this.context.context,
+                    guid: this.id,
+                    email: this.email
+                }, (r) => {
+                    toastr["success"]("Message de test envoyé à "+this.email );
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            next() {
+                this.$router.push({ name: 'send', params: { id: this.id } });
+            }
+        },
+        mounted() {
+            this.mailing.step = 30;
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: "instant",
+            });
+        }
+    };
+    const MailingEditSend = {
+        template: '#mailingeditsend-template',
+        name: 'MailingEditSend',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean,
+            mailing: Object
+        },
+        data: function () {
+            return {
+                recipients: RECIPIENTS,
+                blocks: []
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            destinataires() {
+                let dests = '';
+                if (!this.mailing.recipients)
+                    return '';
+                this.mailing.recipients.forEach(d => {
+                    this.recipients.forEach(s => {
+                        if (s.guid == d) {
+                            dests += s.name + ', ';
+                        }
+                    })
+                })
+                if (dests.endsWith(', '))
+                    dests = dests.substring(0, dests.length - 2);
+                return dests;
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            send() {
+                if (confirm('Voulez vous vraiment envoyer le message aux destinataires ?'))
+                {
+                    _yemon[this.moduleid].service.postData("/SendMailing", {
+                        guid: this.id,
+                        date: new Date()
+                    }, (r) => {
+                        this.$router.push('/');
+
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    });
+                }
+            }
+        },
+        mounted() {
+            this.mailing.step = 40;
+            this.getBlocks();
+        }
+    };
+
+    const MailingEdit = {
+        template: '#mailingedit-template',
+        name: 'MailingEdit',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean
+        },
+        data: function () {
+            return {
+                blocks: [],
+                mailing: {},
+                blocks: [],
+                fichiers: [],
+                categories: CATEGORIES,
+                recipients: RECIPIENTS,
+                step: 0,
+                default_senders: DEFAULT_SENDERS
+            }
+        },
+        filters: {
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            }
+        },
+        components: {
+            BlocksEditor
+        },
+        methods: {
+            isValid() {
+                return this.mailing.title && this.mailing.dt && this.mailing.tag1 && this.mailing.visible;
+
+            },
+            deleteMailing() {
+                if (confirm("Supprimer le message ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteMailing", {
+                        guid: this.mailing.guid
+                    }, (r) => {
+                        this.$router.push("/");
+
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    })
+
+
+                }
+            },
+            back() {
+                switch (this.$route.name) {
+                    case 'dest':
+                        this.$router.push('/');
+                        break;
+                    case 'content':
+                        this.$router.push('dest');
+                        break;
+                    case 'preview':
+                        this.$router.push('content');
+                        break;
+                    case 'send':
+                        this.$router.push('preview');
+                        break;
+                }
+            },
+
+            cancel() {
+                this.$router.push("/");
+            },
+
+            getMailingDetail() {
+                _yemon[this.moduleid].service.getData("/GetMailingDetail", {
+                    guid: this.id
+                }, (r) => {
+                    this.mailing = {};
+                    if (r.data == 'null') {
+                        this.$router.push("/");
+                    }
+                    else if (r.data) {
+                        this.mailing = JSON.parse(r.data);
+                        this.mailing.dt = new Date(this.mailing.dt).toISOString().substring(0, 10);
+                        if (!this.mailing.sender_email)
+                            this.mailing['sender_email'] = this.default_senders[0].email;
+                        if (!this.mailing.sender_name)
+                            this.mailing['sender_name'] = this.default_senders[0].name;
+
+                        if (!this.mailing.recipients)
+                            this.mailing['recipients'] = [];
+                        else
+                            this.mailing['recipients'] = JSON.parse(this.mailing.recipients);
+                        switch (this.$route.name) {
+                            case 'dest':
+                                this.mailing.step = 10;
+                                break;
+                            case 'content':
+                                this.mailing.step = 20;
+                                break;
+                            case 'preview':
+                                this.mailing.step = 30;
+                                break;
+                            case 'send':
+                                this.mailing.step = 40;
+                                break;
+                            default:
+                                this.$router.push("dest");
+                        }
+                        
+                    }
+                    else {
+                        this.$router.push("/");
+                    }
+                    this.$forceUpdate();
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+          
+
+        },
+        mounted() {
+  
+            if (!this.editable || this.recipients.length == 0) {
+                this.$router.push("/");
+                return;
+            }
+
+            this.getMailingDetail();
+
+            window.scrollTo(window.scrollX, 0);
+        }
+    }
+</script>

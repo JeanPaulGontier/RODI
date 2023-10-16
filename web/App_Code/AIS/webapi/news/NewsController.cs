@@ -22,6 +22,11 @@ namespace AIS.controller
 {
     public class NewsController : DnnApiController
     {
+        [HttpGet]
+        public HttpResponseMessage Hello()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

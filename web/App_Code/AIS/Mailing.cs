@@ -62,9 +62,18 @@
 #endregion Copyrights
 
 
+using AIS;
+using AIS.controller;
+using DotNetNuke.Services.Mail;
+using MimeKit.Encodings;
+using Stripe;
 using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 
@@ -96,13 +105,283 @@ public class Mailing
     public string template_url { get; set; }
     public int portalid { get; set; }
     
-    public string content { get; set; }
-
+    
     public Mailing()
     {
         guid = Guid.NewGuid();
         dt = DateTime.Now;
     }
+    public class Recipient
+    {
+        public Guid guid;
+        public string name;
+    }
+    public class Contact
+    {
+        public string name { get; set; }
+        public string email { get; set; }
+        public int nim { get; set; }
+    }
+    public class Out
+    {
+        public const string PENDING = "N";
+        public const string DELIVERED = "D";
+        public const string ERROR = "E";
+        public const string TEST = "T";
 
-   
+        public enum PRIORITY
+        {
+            LOW=0,
+            NORMAL=10, 
+            HIGH=20
+        }
+
+        public int id { get; set; }
+        public Guid mailing_guid { get; set; }
+        public Guid guid { get; set; }
+        public int nim { get; set; }
+        public string email { get; set; }
+        public string status { get; set; }
+        public string error { get; set; }
+        public string read { get; set; }
+        public int portalid { get; set; }
+        public int priority { get; set;}
+    }
+
+    public static string DoPrepare()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        SqlConnection conn = null;
+        SqlTransaction trans = null;
+        try
+        {
+            conn = Yemon.dnn.DataMapping.GetOpenedConn();
+            trans = conn.BeginTransaction();
+
+            var sql = new SqlCommand("SELECT TOP 1 * FROM " + Const.TABLE_PREFIX + "mailings WHERE step='"+(int)STEPS.PREPARE+"' AND dt_start<getdate()");
+            DataTable table = Yemon.dnn.DataMapping.ExecSql(sql, conn, trans);
+            if(table!=null && table.Rows.Count>0)
+            {
+                Mailing mailing = Yemon.dnn.DataMapping.RowToObject<Mailing>(table.Rows[0]);
+                sb.AppendLine("" + mailing.guid + " ... preparing");
+                var recipients = Yemon.dnn.Functions.Deserialize<List<string>>(mailing.recipients);
+                var contacts = MailingHelper.GetContactsFromRecipients(mailing.cric, recipients);
+                sb.AppendLine("" +contacts.Count+" contact(s) found");
+                foreach (Mailing.Contact contact in contacts)
+                {
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "mailing_out " +
+                        "(guid,mailing_guid,nim,email,status,portalid,priority,read) VALUES " +
+                        "(@guid,@mailing_guid,@nim,@email,@status,@portalid,@priority,@read)");
+                    sql.Parameters.AddWithValue("mailing_guid", "" + mailing.guid);
+                    sql.Parameters.AddWithValue("guid", "" + Guid.NewGuid());
+                    sql.Parameters.AddWithValue("nim", contact.nim);
+                    sql.Parameters.AddWithValue("email",contact.email);
+                    sql.Parameters.AddWithValue("status", Out.PENDING);
+                    sql.Parameters.AddWithValue("read", Const.NO) ;
+                    sql.Parameters.AddWithValue("priority", Out.PRIORITY.NORMAL);
+                    sql.Parameters.AddWithValue("portalid", mailing.portalid);
+                    if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql, conn, trans) > 0)
+                        sb.AppendLine("" + contact.email + " ... out");
+                    else
+                        sb.AppendLine("" + contact.email + " ... error");
+
+
+                }
+
+                sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "mailings SET step='"+ (int)STEPS.SENDING+"' WHERE guid=@guid");
+                sql.Parameters.AddWithValue("guid", mailing.guid);
+                if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql, conn, trans) > 0)
+                    sb.AppendLine("" + mailing.guid + " ... prepared");
+                else
+                    sb.AppendLine("" + mailing.guid + " ... error");
+
+            }
+
+            trans.Commit();
+        }
+        catch (Exception ex)
+        {
+            Functions.Error(ex);
+        }
+        finally { 
+            
+            if(conn != null)
+                conn.Close();
+            conn.Dispose();
+        }
+
+        return sb.ToString();
+    }
+
+    public static string DoSend()
+    {
+        string mailings_debug_dest = Const.MAILINGS_DEBUG_DEST;
+
+        StringBuilder sb = new StringBuilder();
+
+        SqlConnection conn = null;
+        SqlTransaction trans = null;
+        try
+        {
+            conn = Yemon.dnn.DataMapping.GetOpenedConn();
+            trans = conn.BeginTransaction();
+
+            var sql = new SqlCommand(   "SELECT * FROM " + Const.TABLE_PREFIX + "mailings " +
+                                        "WHERE step='" + (int)STEPS.SENDING + "' AND dt_start<getdate() " +
+                                        "ORDER BY dt_start");
+
+            DataTable table = Yemon.dnn.DataMapping.ExecSql(sql, conn, trans);
+            if (table != null && table.Rows.Count > 0)
+            {
+                foreach(DataRow row in table.Rows)
+                {
+
+
+                    //try
+                    //{
+                        Mailing mailing = Yemon.dnn.DataMapping.RowToObject<Mailing>(row);
+                        sb.AppendLine("" + mailing.guid + " ... sending");
+
+                        sql = new SqlCommand(   "SELECT TOP 50 * FROM " + Const.TABLE_PREFIX + "mailing_out " +
+                                                "WHERE mailing_guid=@mailing_guid AND status='" + Out.PENDING+"' " +
+                                                "ORDER BY priority DESC, id ASC");
+                        sql.Parameters.AddWithValue("mailing_guid", mailing.guid);
+                        
+                        List<Mailing.Out> mailsout = Yemon.dnn.DataMapping.ExecSql<Mailing.Out>(sql,conn,trans);
+                        if(mailsout.Count> 0 )
+                        {
+                            foreach (Mailing.Out mailout in mailsout)
+                            {
+                                Dictionary<string, object> data = new Dictionary<string, object>();
+                                data.Add("mailout_nim", "" + mailout.nim);
+                                data.Add("mailing_guid", "" + mailing.guid);
+                                data.Add("mailing_subject", "" + mailing.subject);
+                                data.Add("mailing_from", "" + mailing.sender_name);
+                                data.Add("mailing_email", "" + mailing.sender_email);
+                                if (mailings_debug_dest != "")
+                                    data.Add("mailout_email", "" + mailings_debug_dest);
+                                else
+                                    data.Add("mailout_email", "" + mailout.email);
+
+                                if (Yemon.dnn.SIPro.SIPro.AddMessage(0, 0, "mailingsend", "" + mailout.guid, Yemon.dnn.Functions.Serialize(data), conn: conn, trans: trans) > 0)
+                                {
+                                    Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("UPDATE  " + Const.TABLE_PREFIX + "mailing_out SET status='" + Out.DELIVERED + "' WHERE id='" + mailout.id + "'"), conn, trans);
+                                    sb.AppendLine("" + data["mailout_email"] + " ... out");
+                                }
+                                else
+                                {
+                                    Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("UPDATE  " + Const.TABLE_PREFIX + "mailing_out SET status='" + Out.ERROR + "',error='Error add message' WHERE id='" + mailout.id + "'"), conn, trans);
+                                    sb.AppendLine("" + data["mailout_email"] + " ... error");
+                                }
+                            }
+
+                        } 
+                        else
+                        {
+                            sb.AppendLine("no more mail to send...");
+                            sql = new SqlCommand(   "UPDATE " + Const.TABLE_PREFIX + "mailings " +
+                                                    "SET step='" + (int)STEPS.SENT + "' " +
+                                                    "WHERE guid=@guid");
+                            sql.Parameters.AddWithValue("guid", mailing.guid);
+                            
+                            if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql, conn, trans) > 0)
+                                sb.AppendLine("" + mailing.guid + " ... sent");
+                            else
+                                sb.AppendLine("" + mailing.guid + " ... error");
+
+                        }
+
+                    //}
+                    //catch(Exception ex)
+                    //{
+                    //    Functions.Error(new Exception("Mailing Send Error " + ex.Message));
+
+                    //}
+                    
+                }                                           
+
+            }
+
+            trans.Commit();
+        }
+        catch (Exception ex)
+        {
+            Functions.Error(ex);
+        }
+        finally
+        {
+
+            if (conn != null)
+                conn.Close();
+            conn.Dispose();
+        }
+
+        return sb.ToString();
+    }
+
+    public static string DoTest()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        SqlConnection conn = null;
+        SqlTransaction trans = null;
+        try
+        {
+            conn = Yemon.dnn.DataMapping.GetOpenedConn();
+            trans = conn.BeginTransaction();
+
+            var sql = new SqlCommand(           "SELECT TOP 50 *," +
+                                                "   (SELECT subject FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as subject, " +
+                                                "   (SELECT sender_name FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_name, " +
+                                                "   (SELECT sender_email FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_email " +
+                                                "FROM " + Const.TABLE_PREFIX + "mailing_out M " +
+                                                "WHERE status='" + Out.TEST + "' " +
+                                                "ORDER BY priority DESC, id ASC");
+            
+            DataTable mailsout = Yemon.dnn.DataMapping.ExecSql(sql, conn, trans);
+            if (mailsout!=null && mailsout.Rows.Count > 0)
+            {
+                foreach (DataRow row in mailsout.Rows)
+                {
+                    sb.AppendLine("" + row["guid"] + "");
+                    Dictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("mailout_nim", "" + row["nim"]);
+                    data.Add("mailout_email", "" + row["email"]);
+                    data.Add("mailing_guid", "" + row["mailing_guid"]);
+                    data.Add("mailing_subject", "[TEST] " + row["subject"]);
+                    data.Add("mailing_from", "" + row["sender_name"]);
+                    data.Add("mailing_email", "" + row["sender_email"]);
+
+                    if (Yemon.dnn.SIPro.SIPro.AddMessage(0, 0, "mailingsend", "" + row["guid"], Yemon.dnn.Functions.Serialize(data), conn: conn, trans: trans) > 0)
+                    {
+                        Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("UPDATE  " + Const.TABLE_PREFIX + "mailing_out SET status='" + Out.DELIVERED + "' WHERE id='" + row["id"] + "'"), conn, trans);
+                        sb.AppendLine("TEST : " + row["email"] + " ... out");
+                    }
+                    else
+                    {
+                        Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("UPDATE  " + Const.TABLE_PREFIX + "mailing_out SET status='" + Out.ERROR + "',error='Error add message' WHERE id='" + row["id"] + "'"), conn, trans);
+                        sb.AppendLine("TEST : " + row["email"] + " ... error");
+                    }
+                }
+
+            }
+
+            trans.Commit();
+        }
+        catch (Exception ex)
+        {
+            Functions.Error(ex);
+        }
+        finally
+        {
+
+            if (conn != null)
+                conn.Close();
+            conn.Dispose();
+        }
+
+        return sb.ToString();
+    }
+
 }

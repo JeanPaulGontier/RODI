@@ -1,11 +1,9 @@
 ﻿
 #region Copyrights
 
-//
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
-// supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2023
+// Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
 //Version 3, 29 June 2007 Copyright (C) 2007
@@ -63,119 +61,146 @@
 #endregion Copyrights
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using DotNetNuke.Entities.Modules;
+using System.IO;
+using System.Drawing;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Entities.Users;
+using AIS;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
 
-namespace AIS
+public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 {
-    public static class Const
+    string param = "";
+
+    DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
+    public string[] categories
     {
-        public const string NO = "N";
-        public const string YES = "O";
-        public const string NO_UF = "Non";
-        public const string YES_UF = "Oui";
-        public static DateTime NO_DATE = new DateTime(1900, 1, 1);
-        public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
-        
-        public static string DISTRICT_GUID = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictGuid"];
-        public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
-        public static string DISTRICT_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictTitle"]);
-        public static string DISTRICT_LOGO_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictLogoTitle"]);
-
-        public static int MENU_CLUB_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuClubRootTabId"]);
-        public static int MENU_MEMBER_ROOT_TABID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["MenuMemberRootTabId"]);
-
-        public static string NOTIFICATIONS_DEBUG_DEST = "" + System.Configuration.ConfigurationManager.AppSettings["NotificationsDebugDest"];
-        public static string MAILINGS_DEBUG_DEST = "" + System.Configuration.ConfigurationManager.AppSettings["MailingsDebugDest"];
-
-        public static bool CLUB_SATELLITE_APART = (""+ System.Configuration.ConfigurationManager.AppSettings["ClubSatelliteApart"]).Equals("true");
-        public static int[,] CLUB_SATELLITE_PARENT_CHILD
+        get
         {
-            get
-            {
-                var parent = new int[0,0];
-               
-                string t = "" + System.Configuration.ConfigurationManager.AppSettings["ClubSatelliteParentChild"];
-                if (t != "")
-                {
-                    try
-                    {
-
-                        parent = Yemon.dnn.Functions.Deserialize<int[,]>(t);
-                    }
-                    catch (Exception e)
-                    {
-                        Functions.Error(e);
-                    }
-
-                }
-
-                return parent;
-            }
+            return ("" + Settings["categories"]).Replace("\r", "").Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
-
-        public const string GoogleMapsKey = "AIzaSyBdbBwqDZJ2_E0UZ3m84pIgWd9Q4LXwQjU";
-        public const string ZOOM = "7";
-        public const string Coord_Centre_carte = "42.871938,7.002869";
-        public static string MARQUEUR = System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
-        public static string Max_Width_InfoBulle = "0";
-
-        public const string ROLE_MEMBERS = "Membres";
-        public const string ROLE_ADMIN_DISTRICT = "Administrateur District";
-        public const string ROLE_ADMIN_CLUB = "Administrateur Club";
-        public const string ROLE_ADMIN_ROTARACT = "Administrateur Rotaract";
-        public static string AFFECTATIONS_ADMIN_CLUB = ""+System.Configuration.ConfigurationManager.AppSettings["AffectationsAdminClub"];
-
-        public const string no_image = "/images/1x1.gif";
-        public const string TABLE_PREFIX = "ais_";
-        public const string IMG_VIEWER_URL = "/AIS/AISMediaViewer.ashx";
-        public const string MEDIA_DOWNLOAD_URL = "/AIS/download.aspx";
-        public const string MEDIA_VIEW_URL = "/AIS/mediaview.aspx";
-        public const string ORDER_VIEW_URL = "/AIS/commandeview.aspx";
-        public const string ORDER_PAY_URL = "/EspaceMembre/MonClub/PaiementCommande.aspx";
-        public const string MERCANET_RETURN_URL = "/Mercanet/response.aspx";
-        public const string MEMBERS_AREA_URL = "/Espace-Membre";
-
-        public static string IMG_PREFIX = "images/";
-        public static string DOCUMENT_PREFIX = "documents/";
-        public static string PENNANT_PREFIX = "fanions/";
-        public static int PENNANT_PHOTOS_WIDTH = 200;
-
-        public static string CLUBS_PREFIX = "clubs/";
-        public static string CLUBS_MEDIA_PREFIX = "clubs/media/";
-        public static string DISTRICT_PREFIX = "district/";
-
-        public static string MEMBERS_NOPHOTO_H = "/images/no_avatar.gif";
-        public static string MEMBERS_NOPHOTO_F = "/images/no_avatar.gif";
-
-        public static string MEMBERS_CARTES_RECTO_MODELE = "/modeles/Carte_Membre_Recto.docx";
-        public static string MEMBERS_CARTES_VERSO_MODELE = "/modeles/Carte_Membre_Verso.docx";
-        public static string ORDER_MODELE = "/modeles/Commande.docx";
-
-
-        public static string MEDIA_URL = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
-
-        public static string MEMBERS_PHOTOS_PREFIX = "membres/photos/";
-        public static int MEMBERS_PHOTOS_WIDTH = 200;
-
-        public static int NEWS_PHOTOS_WIDTH = 699;
-
-        public static string ADMIN_ROLE = "Administrators";
-        
-        public static string[] cultures = new string[] { "FR" };
-        public static string[] cultures2 = new string[] { "fr-FR" };
-
-        public static string CONTENT_ANNOUNCEMENT_PREFIX = "Media/Annonces/";
-        public static int CONTENT_PHOTOS_WIDTH = 200;
-        public static string CONTENT_PRESENTATION_PREFIX = "Media/Presentations/";
-
-        public static string Price_Presentation = "50";
-        public static int Duration_Presentation = 12; //En mois
-
-        public static string Price_Announcement = "20";
-        public static int Duration_Announcement = 2;//En mois
-
-        public static string Club_Rotaract = "rotaract";
-        public static string Club_Rotary = "rotary";
-        public static string Club_Interact = "interact";
     }
+    public List<Mailing.Recipient> recipients
+    {
+        get
+        {
+            return MailingHelper.GetRecipients(cric);
+        }
+    }
+    public List<object> default_senders 
+    {
+        get 
+        {
+            List<object> list = new List<object>();
+            Club club = Functions.CurrentClub;
+            if (club!=null)
+            {
+                string email = sender_email;
+                if (club.email != "")
+                    email = club.email;
+
+                list.Add(new
+                {
+                    name = "RC "+ club.name,
+                    email = email
+                   
+                });
+              
+            }
+            list.Add(new
+            {
+                name = UserInfo.DisplayName,
+                email = UserInfo.Email
+            });
+            return list;
+        }
+    }
+    public string sender_email
+    {
+        get
+        {
+            return PortalSettings.Email;
+        }
+    }
+
+    
+    public string mode
+    {
+        get
+        {
+            return "" + Settings["mode"];
+
+        }
+    }
+
+    public bool editable
+    {
+        get
+        {
+            return (UserInfo.IsSuperUser ||
+                UserInfo.IsInRole(Const.ADMIN_ROLE) ||
+                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) ||
+                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+
+        }
+    }
+    public int cric
+    {
+        get
+        {
+            return Functions.CurrentCric;
+
+        }
+    }
+
+    public string context
+    {
+        get
+        {
+            if (ContextGuid.Value != "")
+            {
+
+            }
+            else
+            {
+                ContextGuid.Value = Guid.NewGuid().ToString();
+                Application[ContextGuid.Value + ":mode"] = mode;
+                Application[ContextGuid.Value + ":cric"] = Functions.CurrentCric;
+
+            }
+            return ContextGuid.Value;
+        }
+    }
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        ServicesFramework.Instance.RequestAjaxScriptSupport();
+        ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+    }
+
+    /// <summary>
+    /// Définit à quel groupe l'utilisateur appartient et affiche les éléments en fonction
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        
+         
+    }
+
+
+   
+
 }
