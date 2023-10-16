@@ -1,6 +1,9 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+```
+```###### 16/10/2023
+```txt
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Club News Article\Control.ascx
 DesktopModules\AIS\Club News Article\Control.ascx.cs
