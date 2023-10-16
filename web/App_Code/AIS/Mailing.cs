@@ -143,7 +143,7 @@ public class Mailing
         public string email { get; set; }
         public string status { get; set; }
         public string error { get; set; }
-        public string read { get; set; }
+        public string lu { get; set; }
         public int portalid { get; set; }
         public int priority { get; set;}
     }
@@ -171,14 +171,14 @@ public class Mailing
                 foreach (Mailing.Contact contact in contacts)
                 {
                     sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "mailing_out " +
-                        "(guid,mailing_guid,nim,email,status,portalid,priority,read) VALUES " +
-                        "(@guid,@mailing_guid,@nim,@email,@status,@portalid,@priority,@read)");
+                        "(guid,mailing_guid,nim,email,status,portalid,priority,lu) VALUES " +
+                        "(@guid,@mailing_guid,@nim,@email,@status,@portalid,@priority,@lu)");
                     sql.Parameters.AddWithValue("mailing_guid", "" + mailing.guid);
                     sql.Parameters.AddWithValue("guid", "" + Guid.NewGuid());
                     sql.Parameters.AddWithValue("nim", contact.nim);
                     sql.Parameters.AddWithValue("email",contact.email);
                     sql.Parameters.AddWithValue("status", Out.PENDING);
-                    sql.Parameters.AddWithValue("read", Const.NO) ;
+                    sql.Parameters.AddWithValue("lu", Const.NO) ;
                     sql.Parameters.AddWithValue("priority", Out.PRIORITY.NORMAL);
                     sql.Parameters.AddWithValue("portalid", mailing.portalid);
                     if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql, conn, trans) > 0)
