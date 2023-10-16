@@ -49,7 +49,6 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.min.html
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_mail.mailing.email.cshtml
