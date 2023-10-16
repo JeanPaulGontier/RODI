@@ -318,8 +318,6 @@ public class Meeting
                             }
                         }
                     }
-
-
                 }
                 meeting.dtnotif1 = DateTime.Now;
                 meeting.notif1done = Const.YES;
@@ -345,6 +343,5 @@ public class Meeting
 
         return sb.ToString();
     }
-
 
 }
