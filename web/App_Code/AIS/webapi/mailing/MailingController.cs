@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using UnityEngine;
 using Yemon.dnn;
 
 
@@ -303,22 +304,27 @@ namespace AIS.controller
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
                 Mailing m = (Mailing)Yemon.dnn.Functions.Deserialize("" + param["mailing"], typeof(Mailing));
-             
-                
-                Dictionary<string,object> row = new Dictionary<string,object>();
 
+                SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
+                sql.Parameters.AddWithValue("guid", m.guid);
+
+                Dictionary<string, object> row = new Dictionary<string, object>();
+
+                Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
+
+                
                 //SqlCommand sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX + "mailings WHERE cric=@cric AND guid=@guid");
                 //sql.Parameters.AddWithValue("cric", cric);
                 //sql.Parameters.AddWithValue("guid", mailing.guid);
 
                 //Mailing m = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
-                if (m.id == 0)
+                if (mailing==null)
                 {
                     row["id"] = null;
                 }                    
                 else
                 {
-                    row["id"] = m.id;                   
+                    row["id"] = mailing.id;                   
                 }
 
                 row["cric"] = cric;
