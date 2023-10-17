@@ -497,6 +497,19 @@
                         if (!this.mailing.sender_name)
                             this.mailing['sender_name'] = this.default_senders[0].name;
 
+                        let found = false;
+                        this.default_senders.forEach(s => {
+                            if (s.email == this.mailing.sender_email)
+                                found = true;
+                        });
+                        if (!found) {
+                            this.default_senders.push({
+                                email: this.mailing.sender_email,
+                                name: this.mailing.sender_name
+                            })
+                        }
+
+
                         if (!this.mailing.recipients)
                             this.mailing['recipients'] = [];
                         else
