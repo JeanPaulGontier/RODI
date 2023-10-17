@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col-sm-3">
-            <input type="button" v-on:click="back()" class="btn btn-default" value="Retour">
+            <input type="button" v-on:click="cancel()" class="btn btn-default" value="Retour">
         </div>
         <div class="col-sm-7">
         </div>
@@ -23,33 +23,33 @@
         </div>
     </div>
     <div class="pe-spacer size10" ></div>
-        <div>
-            <ul class="nav nav-tabs">
-                <li :class="{ 'active': mailing.step==10 }">
-                    <router-link :to="{name: 'dest', params: {id: $route.params.id}}">Destinataires</router-link>
-                </li>
-                <li :class="{ 'active': mailing.step==20 }" v-if="mailing.step>10">
-                    <router-link :to="{name: 'content', params: {id: $route.params.id}}">Contenu</router-link>
-                </li>
-                <li v-if="mailing.step<20" class="disabled">
-                    <a>Contenu</a>
-                </li>
-                <li :class="{ 'active': mailing.step==30 }" v-if="mailing.step>20">
-                    <router-link :to="{name: 'preview', params: {id: $route.params.id}}">Prévisualisation</router-link>
-                </li>
-                <li v-if="mailing.step<30" class="disabled">
-                    <a>Prévisualisation</a>
-                </li>
-                <li :class="{ 'active': mailing.step==40 }" v-if="mailing.step>30">
-                    <router-link :to="{name: 'send', params: {id: $route.params.id}}">Envoi</router-link>
-                </li>
-                <li v-if="mailing.step<40" class="disabled">
-                    <a>Envoi</a>
-                </li>
-            </ul>
+    <div>
+        <ul class="nav nav-tabs">
+            <li :class="{ 'active': mailing.step==10 }">
+                <router-link :to="{name: 'dest', params: {id: $route.params.id}}">1. Destinataires</router-link>
+            </li>
+            <li :class="{ 'active': mailing.step==20 }" v-if="mailing.step>10">
+                <router-link :to="{name: 'content', params: {id: $route.params.id}}">2. Contenu</router-link>
+            </li>
+            <li v-if="mailing.step<20 && false" class="disabled">
+                <a>Contenu</a>
+            </li>
+            <li :class="{ 'active': mailing.step==30 }" v-if="mailing.step>20">
+                <router-link :to="{name: 'preview', params: {id: $route.params.id}}">3. Prévisualisation</router-link>
+            </li>
+            <li v-if="mailing.step<30 && false" class="disabled">
+                <a>Prévisualisation</a>
+            </li>
+            <li :class="{ 'active': mailing.step==40 }" v-if="mailing.step>30">
+                <router-link :to="{name: 'send', params: {id: $route.params.id}}">4. Envoi</router-link>
+            </li>
+            <li v-if="mailing.step<40 && false" class="disabled">
+                <a>Envoi</a>
+            </li>
+        </ul>
         </div>
 
-    <router-view :id="$route.params.id" :moduleid="moduleid" :context="context" :editable="editable" :mailing="mailing"></router-view>
+        <router-view :id="$route.params.id" :moduleid="moduleid" :context="context" :editable="editable" :mailing="mailing"></router-view>
 </script>
 
 
@@ -92,13 +92,14 @@
     </div>
     <div class="pe-spacer size20"></div>
     <div class="text-center">
-        <input type="button" v-on:click="next()" class="btn btn-primary" value="Valider" v-if="isValid()">
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Continuer" v-if="isValid()">
     </div>
 
 </script>
 
 
 <script type="text/x-template" id="mailingeditcontent-template">
+    <div class="pe-spacer size20"></div>
     <div class="text-center">
         <div style="margin: 0 auto;; width: 50%" class="bc-dotted">
             <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
@@ -106,27 +107,39 @@
     </div>
     <div class="pe-spacer size20"></div>
     <div class="text-center">
-        <input type="button" v-on:click="next()" class="btn btn-primary" value="Valider" v-if="blocks.length>0">
+        <input type="button" v-on:click="back()" class="btn btn-default" value="Précédent">&nbsp;
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Continuer" v-if="blocks.length>0">
     </div>
 </script>
 
 
 <script type="text/x-template" id="mailingeditpreview-template">
+
+
     <div class="pe-spacer size20"></div>
     <div class="row">
-        <div class="col-sm-3">
-            Envoyer un e-mail de test :
+        <div class="col-sm-12 text-center">
+            <div style="margin:0 auto;width:50%" class="bc-dotted">
+                <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="false"></blocks-editor>
+            </div>
         </div>
-        <div class="col-sm-6">
+    </div>
+    <div class="pe-spacer size20"></div>
+    <div class="row">
+        <div class="col-sm-5">
+            Envoyer un e-mail de test (facultatif) :
+        </div>
+        <div class="col-sm-5">
             <input type="text" class="form-control" v-model="email" placeholder="saisir ici l'e-mail qui recevra le test" />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <input type="button" class="btn btn-sm btn-primary" v-on:click="test()" value="Tester">
         </div>
     </div>
     <div class="pe-spacer size20"></div>
     <div class="text-center">
-        <input type="button" v-on:click="next()" class="btn btn-primary" value="Suivant">
+        <input type="button" v-on:click="back()" class="btn btn-default" value="Précédent">&nbsp;
+        <input type="button" v-on:click="next()" class="btn btn-primary" value="Continuer">
     </div>
 </script>
 
@@ -163,17 +176,10 @@
         </div>
 
     </div>
-    <div class="pe-spacer size20"></div>
-    <div class="row">
-        <div class="col-sm-12 text-center">
-            <div style="margin:0 auto;width:50%" class="bc-dotted">
-                <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="false"></blocks-editor>
-            </div>
-        </div>
-      
-    </div>
+    
     <div class="pe-spacer size20"></div>
     <div class="text-center">
+        <input type="button" v-on:click="back()" class="btn btn-default" value="Précédent">&nbsp;
         <button class="btn btn-default" v-if="false">Programmer l'envoi</button>&nbsp;
         <button class="btn btn-success" v-on:click="send()">Envoyer maintenant</button>
     </div>
@@ -208,6 +214,7 @@
                     }
                 })
             },
+         
             next() {
                 let m = JSON.parse(JSON.stringify(this.mailing));
                 m.recipients = JSON.stringify(m.recipients);
@@ -272,6 +279,9 @@
 
 
             },
+            back() {
+                this.$router.push('dest');
+            },
             getBlocks() {
                 _yemon[this.moduleid].service.getData("/GetItem", {
                     name: 'blockscontent:' + this.id
@@ -299,7 +309,8 @@
         name: 'MailingEditPreview',
         data: function () {
             return {
-                email:''
+                email: '',
+                blocks: []
             }
         },
         props: {
@@ -309,6 +320,9 @@
             editable: Boolean,
             mailing: Object
         },
+        components: {
+            BlocksEditor
+        },
         methods: {
             test() {
                 _yemon[this.moduleid].service.postData("/SendTest", {
@@ -317,6 +331,24 @@
                     email: this.email
                 }, (r) => {
                     toastr["success"]("Message de test envoyé à "+this.email );
+                }, (e) => {
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                })
+            },
+            back() {
+                this.$router.push('content');
+            },
+            getBlocks() {
+                _yemon[this.moduleid].service.getData("/GetItem", {
+                    name: 'blockscontent:' + this.id
+                }, (r) => {
+                    this.blocks = [];
+                    if (r.data) {
+                        this.blocks = JSON.parse(r.data);
+                        for (let i = 0; i < this.blocks.length; i++)
+                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
+                    }
+                    this.$forceUpdate();
                 }, (e) => {
                     toastr["error"]("Erreur : " + e.response.data.Message);
                 })
@@ -332,6 +364,7 @@
                 left: 0,
                 behavior: "instant",
             });
+            this.getBlocks();
         }
     };
     const MailingEditSend = {
@@ -347,12 +380,10 @@
         data: function () {
             return {
                 recipients: RECIPIENTS,
-                blocks: []
+              
             }
         },
-        components: {
-            BlocksEditor
-        },
+     
         methods: {
             destinataires() {
                 let dests = '';
@@ -369,20 +400,8 @@
                     dests = dests.substring(0, dests.length - 2);
                 return dests;
             },
-            getBlocks() {
-                _yemon[this.moduleid].service.getData("/GetItem", {
-                    name: 'blockscontent:' + this.id
-                }, (r) => {
-                    this.blocks = [];
-                    if (r.data) {
-                        this.blocks = JSON.parse(r.data);
-                        for (let i = 0; i < this.blocks.length; i++)
-                            this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
-                    }
-                    this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+            back() {
+                this.$router.push('preview');
             },
             send() {
                 if (confirm('Voulez vous vraiment envoyer le message aux destinataires ?'))
@@ -401,7 +420,7 @@
         },
         mounted() {
             this.mailing.step = 40;
-            this.getBlocks();
+            
         }
     };
 
@@ -456,23 +475,8 @@
 
                 }
             },
-            back() {
-                switch (this.$route.name) {
-                    case 'dest':
-                        this.$router.push('/');
-                        break;
-                    case 'content':
-                        this.$router.push('dest');
-                        break;
-                    case 'preview':
-                        this.$router.push('content');
-                        break;
-                    case 'send':
-                        this.$router.push('preview');
-                        break;
-                }
-            },
-
+          
+          
             cancel() {
                 this.$router.push("/");
             },

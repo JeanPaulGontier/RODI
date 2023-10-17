@@ -9,6 +9,7 @@
 - correction d'un bug d'affichage dans la lettre du gouverneur apparu à la dernière maj
 - nouveau module de mailing club
 - nouveau moteur d'envoi de mailing intégré au plannificateur de taches DNN (MailingScheduler)
+- modification des styles des icones blockcontent afin de les rendre plus discrets
 
 ###### 07/09/2023
 - ajout de paramétrages pour permettre aux districts qui gèrent les clubs satellites de manière indépendante des clubs parents, d'affecter automatiquement les membres aux clubs correspondants, auparavant ce traitement était spécifique au D1770

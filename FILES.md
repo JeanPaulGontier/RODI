@@ -52,6 +52,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_mail.mailing.email.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
 Portals\_default\Skins\Rodi2017\skin.css
 Portals\_default\Skins\Rodi2017\mail.ascx

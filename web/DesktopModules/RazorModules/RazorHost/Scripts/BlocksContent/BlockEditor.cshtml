@@ -1,12 +1,12 @@
 ﻿<script type="text/x-template" id="blockseditor-template">
     <div v-for="(b,index) in blocks" v-if="blocks" :class="{'bc-dotted': editable}">
         <div class="bc-buttonBar" v-if="editing==-1 && editable">
-            <button type="button" v-on:click="deleteBlock(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button>
-            <button type="button" v-if="index>0" v-on:click="firstBlock(index)" class="btn btn-default" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
-            <button type="button" v-if="index>0" v-on:click="upBlock(index)" class="btn btn-default" title="Monter"><i class="fa fa-angle-up"></i></button>
-            <button type="button" v-if="index<blocks.length-1" v-on:click="downBlock(index)" class="btn btn-default" title="Descendre"><i class="fa fa-angle-down"></i></button>
-            <button type="button" v-if="index<blocks.length-1" v-on:click="lastBlock(index)" class="btn btn-default" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
-            <button type="button" v-on:click="editBlock(index)" class="btn btn-primary">Editer</button>
+            <button type="button" v-on:click="deleteBlock(index)" class="btn btn-xs btn-warning" title="Supprimer"><i class="fa fa-trash-o"></i></button>
+            <button type="button" v-if="index>0" v-on:click="firstBlock(index)" class="btn btn-default  btn-xs " title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
+            <button type="button" v-if="index>0" v-on:click="upBlock(index)" class="btn btn-default  btn-xs " title="Monter"><i class="fa fa-angle-up"></i></button>
+            <button type="button" v-if="index<blocks.length-1" v-on:click="downBlock(index)" class="btn btn-default  btn-xs " title="Descendre"><i class="fa fa-angle-down"></i></button>
+            <button type="button" v-if="index<blocks.length-1" v-on:click="lastBlock(index)" class="btn btn-default  btn-xs " title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
+            <button type="button" v-on:click="editBlock(index)" class="btn btn-info  btn-xs ">Editer</button>
         </div>
 
         <component :ref="b.Guid"
