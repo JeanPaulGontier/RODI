@@ -85,6 +85,11 @@ public class MailingHelper
             });
             recipients.Add(new Mailing.Recipient()
             {
+                guid = new Guid(CLUB_SUBSCRIBERS),
+                name = "Abonnés autres clubs "
+            });
+            recipients.Add(new Mailing.Recipient()
+            {
                 guid = new Guid(CLUB_ADG),
                 name = "ADG " + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1)
             });
@@ -98,11 +103,7 @@ public class MailingHelper
                 guid = new Guid(CLUBS_SECRETARIES),
                 name = "Secrétaires autres clubs " + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1)
             });
-            recipients.Add(new Mailing.Recipient()
-            {
-                guid = new Guid(CLUB_SUBSCRIBERS),
-                name = "Abonnés autres clubs "
-            });
+           
         }
         return recipients;
     }
