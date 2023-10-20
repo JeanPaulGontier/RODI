@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)
 
 ###### 16/10/2023
 - news panel (informations club, lettre du gouverneur, nouvelles clubs et district) :

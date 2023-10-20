@@ -1,6 +1,9 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 ```
 ```###### 16/10/2023
 ```txt
