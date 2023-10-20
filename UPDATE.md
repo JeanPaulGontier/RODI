@@ -8,7 +8,7 @@
 - suppression du champ password inutile dans la fonctionnalité mailing, les password ne sont plus récupérables depuis longtemps, cette fonctionnalité ne pouvait plus fonctionner.
 - correction d'un bug d'affichage dans la lettre du gouverneur apparu à la dernière maj
 - nouveau module de mailing club
-- nouveau moteur d'envoi de mailing intégré au plannificateur de taches DNN (MailingScheduler)
+- nouveau moteur d'envoi de mailing intégré au planificateur de taches DNN (MailingScheduler)
 - modification des styles des icones blockcontent afin de les rendre plus discrets
 
 ###### 07/09/2023

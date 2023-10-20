@@ -242,19 +242,19 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                     "if (!resize) {" +
                                     "var resize = [];" +
                                     "}" +
-                                        "resize['@block.Guid'] = function() {" +
+                                        "resize['"+block.Guid+"'] = function() {" +
 
 
                                     "var ratio = 16 / 9;" +
-                                    "const videoIFrame = document.getElementById('video@(block.Guid)');" +
-                                    "const videoContainer = document.getElementById('container@(block.Guid)');" +
+                                    "const videoIFrame = document.getElementById('video"+block.Guid+"');" +
+                                    "const videoContainer = document.getElementById('container"+block.Guid+"');" +
                                     "var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);" +
                                     "videoIFrame.style.height = Math.ceil(width / ratio) + 'px';" +
                                     "videoContainer.style.height = (width / ratio) + 'px';" +
                                     "}" +
-                                    "$(window).resize(resize['@block.Guid']);" +
+                                    "$(window).resize(resize['"+block.Guid+"']);" +
                                     "$(document).ready(function () {" +
-                                        "resize['@block.Guid']();" +
+                                        "resize['"+block.Guid+"']();" +
                                     "});" +
                                     "</script>");
                                 break;

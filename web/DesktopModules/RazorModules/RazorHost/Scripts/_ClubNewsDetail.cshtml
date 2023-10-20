@@ -1,4 +1,4 @@
-@using System.Collections;
+﻿@using System.Collections;
 @using System.IO;
 @using System.Collections.Generic;
 @using System.Data.SqlClient;
@@ -200,7 +200,7 @@
                     break;
                 case "Raw":
                     Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
-                    <div v-html="r.Html"></div>
+                    <div>@Html.Raw(r.Html)</div>
                     break;
                 case "Video":
                     Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
