@@ -152,6 +152,7 @@
                 window.scrollTo(window.scrollX, parseInt(lastScroll));
             this.getCategories();
             this.getMailings();
+            setInterval(() => { this.getMailings() }, 10000);
         }
     }
 </script>

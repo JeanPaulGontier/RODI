@@ -132,7 +132,13 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             return PortalSettings.Email;
         }
     }
-
+    public string default_test_email
+    {
+        get
+        {
+            return UserInfo.Email.ToLower();
+        }
+    }
     
     public string mode
     {

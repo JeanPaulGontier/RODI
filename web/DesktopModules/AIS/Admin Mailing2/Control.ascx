@@ -38,7 +38,8 @@
 
     var SENDER_EMAIL = '<%= sender_email%>';
     var DEFAULT_SENDERS = <%= Yemon.dnn.Functions.Serialize(default_senders) %>;
-   
+
+    var DEFAULT_TEST_EMAIL = '<%=default_test_email%>';
 
 $(document).ready(function () {
 

@@ -1041,6 +1041,56 @@ namespace AIS
             return affectation;
         }
 
+        /// <summary>
+        /// Get an affectation
+        /// </summary>
+        /// <param name="nim">Member nim</param>
+        /// <param name="year">Rotary year</param>
+        /// <returns></returns>
+        public static List<Affectation> GetAffectations(int nim, int year)
+        {
+            List<Affectation> affectations = new List<Affectation>();
+            SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+            try
+            {
+                DataSet ds = new DataSet();
+
+                conn.Open();
+
+                SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "rya WHERE nim = @nim and rotary_year = @year", conn);
+                sql.Parameters.AddWithValue("year", year);
+                sql.Parameters.AddWithValue("nim", nim);
+
+                SqlDataAdapter da = new SqlDataAdapter(sql);
+                da.Fill(ds);
+
+                
+
+               foreach(DataRow rd in ds.Tables[0].Rows)
+                {
+                    Affectation affectation = new Affectation();
+                    affectation.function = "" + rd["function"];
+                    affectation.cric = (int)rd["cric"];
+                    affectation.nim = (int)rd["nim"];
+                    affectation.name = "" + rd["name"];
+                    
+                    affectations.Add(affectation);
+                }
+                   
+                    
+               
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return affectations;
+        }
+
         #endregion Affectation
 
         #region Functions

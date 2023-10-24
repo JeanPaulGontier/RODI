@@ -17,12 +17,13 @@
     var moduleID = PageData["moduleID"];
     var blocksSuffix = PageData["blocksSuffix"];
     var Html = PageData["HTML"];
+    var GUID = PageData["GUID"];
 
-    var mediaPrefix = AIS.Const.DISTRICT_URL+ "/DesktopModules/BlocksContent/API/Blocks/getMedia";
+    var mediaPrefix = AIS.Const.DISTRICT_URL + "/DesktopModules/BlocksContent/API/Blocks/getMedia";
 
     List<Block> blocks = PageData["blocks"];
-    if(blocks==null)
-    {        
+    if (blocks == null)
+    {
         blocks = new List<Block>();
     }
     try
@@ -38,6 +39,44 @@
     {
 
     }
+
+    var mustShowOnlineLink = false;
+    if (("" + Request["purgednnscripts"]) != "")
+    {
+
+        foreach (Block block in blocks)
+        {
+            switch (block.Type)
+            {
+                case "ImageText":
+                    Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                    if (p.Image != null)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+                case "FileCollection":
+                    Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                    if (fc.Files.Count > 0)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+                case "ImageCollection":
+                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));                    
+                    if (ic.Images.Count > 0)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+            }
+        }
+    }
+    if (mustShowOnlineLink)
+    {
+        <small><a href="@AIS.Const.DISTRICT_URL/mail/mailing/email?guid=@GUID">Consulter ce message en ligne</a></small>
+    }
+
 
     foreach (Block block in blocks)
     {
@@ -151,40 +190,7 @@
 
                 }
                 break;
-            case "Raw":
-                Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
-                <div>@Html.Raw(r.Html)</div>
-                break;
-            case "Video":
-                Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
-                if (v.Title != null)
-                {
-                    <h2>@v.Title</h2>
-                }
-                <div id="@("container" + block.Guid)">
-                    <iframe width="100%" id="@("video" + block.Guid)" class="video" src="@v.Url" allowfullscreen=""></iframe>
-                </div>
-                <script>
-                    if (!resize) {
-                        var resize = [];
-                    }
-                    resize['@block.Guid'] = function() {
-
-
-                        var ratio = 16 / 9;
-                        const videoIFrame = document.getElementById('video@(block.Guid)');
-                        const videoContainer = document.getElementById('container@(block.Guid)');
-                        var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);
-                        videoIFrame.style.height = Math.ceil(width / ratio) + "px";
-                        videoContainer.style.height = (width / ratio) + "px";
-                    }
-                    $(window).resize(resize['@block.Guid']);
-                    $(document).ready(function () {
-                        resize['@block.Guid']();
-                    });
-
-                </script>
-                break;
+            
         }
     }
 }

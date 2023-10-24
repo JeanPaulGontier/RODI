@@ -127,13 +127,13 @@
     <div class="pe-spacer size20"></div>
     <div class="row">
         <div class="col-sm-5">
-            Envoyer un e-mail de test (facultatif) :
+            Envoyer un e-mail (facultatif) de test :
         </div>
         <div class="col-sm-5">
             <input type="text" class="form-control" v-model="email" placeholder="saisir ici l'e-mail qui recevra le test" />
         </div>
         <div class="col-sm-2">
-            <input type="button" class="btn btn-sm btn-primary" v-on:click="test()" value="Tester">
+            <input type="button" class="btn btn-sm btn-primary" v-on:click="test()" v-if="validateEmail(this.email)" value="Tester">
         </div>
     </div>
     <div class="pe-spacer size20"></div>
@@ -335,6 +335,9 @@
                     toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             },
+            validateEmail() {
+                return _yemon[this.moduleid].service.validateEmail(this.email);
+            },
             back() {
                 this.$router.push('content');
             },
@@ -365,6 +368,7 @@
                 behavior: "instant",
             });
             this.getBlocks();
+            this.email = DEFAULT_TEST_EMAIL;
         }
     };
     const MailingEditSend = {

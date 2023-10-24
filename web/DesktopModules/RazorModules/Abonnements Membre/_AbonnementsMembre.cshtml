@@ -1,0 +1,179 @@
+@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using Yemon.dnn.BlocksContent;
+@using AIS;
+@{
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+    var appID = "app" + Dnn.Module.ModuleID;
+    var moduleID = Dnn.Module.ModuleID;
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+    var portalId = Dnn.Portal.PortalId;
+}
+<script src="@(libPath)vue/3.2.23/vue.js"></script>
+<script src="@(libPath)axios/0.24.0/axios.min.js"></script>
+<script src="@(libPath)toastr/toastr.min.js"></script>
+<link href="@(libPath)toastr/toastr.min.css" rel="stylesheet" />
+@{
+
+    Member member = AIS.Functions.GetCurrentMember();
+    if (member == null)
+    {
+        <div class="alert alert-info">Les abonnements ne sont disponibles que pour les membres ...</div>
+        return;
+    }
+
+    List<Club> clubs = AIS.DataMapping.ListClubs("", "", "name ASC");
+    for (int i = clubs.Count-1;i>0;i--)
+    {
+        Club club = clubs[i];
+        if (club.cric == member.cric)
+        {
+            clubs.RemoveAt(i);
+        }
+    }
+
+    bool ispresidentorsecretary = false;
+    foreach(Affectation affectation in DataMapping.GetAffectations(member.nim, Functions.GetRotaryYear()))
+    {
+        if(affectation.function=="Président" || affectation.function == "Secrétaire") {
+            ispresidentorsecretary = true;
+            break;
+        }
+    }
+
+}
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<div class="admin" id='@appID' v-cloak>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <select class="form-control" v-model="select">
+                <option v-for="c in getClubs" :value="c.cric">{{c.name}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <a @@click="addSub()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true" title="S'abonner"></i></a>
+        </div>
+    </div>
+    @if (ispresidentorsecretary)
+    {
+        <div class="pe-spacer size20"></div>
+        if (member.IsWoman())
+        {
+            <div class="alert alert-info">En tant que présidente ou secrétaire de votre club, vous êtes automatiquement abonnée à tous les clubs, peut importe les clubs pour lesquels vous avez choisi de vous abonner</div>
+        }
+        else
+        { 
+            <div class="alert alert-info">En tant que président ou secrétaire de votre club, vous êtes automatiquement abonné à tous les clubs, peut importe les clubs pour lesquels vous avez choisi de vous abonner</div>                
+        }
+    }
+
+    <div class="pe-spacer size20"></div>
+    <div v-if="subs.length>0">
+        <div v-if="subs.length>1">Vos abonnements actifs :</div>
+        <div v-else>Votre abonnement actif :</div>
+        <div class="pe-spacer size10"></div>
+
+        <ul>
+            <li v-for="s in getSubs">
+                <div>{{s.name}} <a @@click="delSub(s.cric)" title="Se désabonner" class="btn btn-link"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></a></div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        if (typeof _yemon =='undefined')
+            _yemon = [];
+        _yemon[@moduleID] = new Yemon(@moduleID, '/Desktopmodules/AIS/API/Mailing');
+
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    clubs: @Html.Raw(@Yemon.dnn.Functions.Serialize(clubs)), 
+                    subs: @Html.Raw(@Yemon.dnn.Functions.Serialize(MailingHelper.GetSubs(userInfo.UserID))),
+                    select: null,
+                    moduleid: @moduleID
+               }
+            },
+            components: {
+            },
+            methods: {
+                addSub() {
+                    this.subs.push(this.select);
+                    this.saveSubs();
+                  
+                },
+                delSub(cric) {
+                    this.subs = this.subs.filter(function (e) { return e !== cric });
+
+                    this.saveSubs();
+                   
+                },
+                saveSubs() {
+                    _yemon[this.moduleid].service.postData('/setsubs', { subs: this.subs }, (r) => {
+                        this.loadSubs();
+                    })
+                },
+                loadSubs() {
+                    _yemon[this.moduleid].service.getData('/getsubs', {}, (r) => {
+                        this.subs = r.data;
+                        if (this.getClubs.length > 0)
+                            this.select = this.getClubs[0].cric
+                    })
+                }
+
+            },
+            computed: {
+                getClubs() {
+                    let clubs = [];
+                    this.clubs.forEach(c => {
+                        if (!this.subs.includes(c.cric))
+                            clubs.push({ cric: c.cric, name: c.name })
+                    })
+                    return clubs;
+                },
+                getSubs() {
+                    let clubs = [];
+                    this.clubs.forEach(c => {
+                        if (this.subs.includes(c.cric))
+                            clubs.push({ cric: c.cric, name: c.name })
+                    })
+                    return clubs;
+                }
+            },
+            mounted() {
+                this.$nextTick(() => {
+                    if (this.clubs.length > 0)
+                        this.select = this.getClubs[0].cric;
+                });
+                
+            }
+        });
+
+        app.mount('#@appID');
+    });
+
+
+</script>

@@ -160,19 +160,25 @@ namespace AIS.controller
         [DnnAuthorize]
         public HttpResponseMessage GetMailingDetail(string guid)
         {
-            SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
-            sql.Parameters.AddWithValue("guid", guid);
+            try { 
+                SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
+                sql.Parameters.AddWithValue("guid", guid);
 
-            Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
-            if (mailing == null)
+                Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
+                if (mailing == null)
+                {
+                    return Request.CreateResponse(Yemon.dnn.Functions.Serialize(new Mailing() { guid = new Guid(guid) }));
+                }
+
+
+                // mailing.content = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
+
+                return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(mailing));
+            }catch(Exception ex)
             {
-                return Request.CreateResponse(Yemon.dnn.Functions.Serialize(new Mailing() { guid=new Guid(guid)}));
+                Functions.Error(ex);
             }
-                
-
-           // mailing.content = ""+Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
-
-            return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(mailing));
+            return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
         [HttpGet]
@@ -183,9 +189,9 @@ namespace AIS.controller
             SqlCommand sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
             sql.Parameters.AddWithValue("guid", guid);
 
-            if(Yemon.dnn.DataMapping.ExecSqlNonQuery(sql)>0)
-               Yemon.dnn.Helpers.DeleteItem("blockscontent:" + guid,purgeHistory:true);
-            
+            if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql) > 0)
+                Yemon.dnn.Helpers.DeleteItem("blockscontent:" + guid, purgeHistory: true);
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -201,12 +207,12 @@ namespace AIS.controller
 
                 DateTime dt_start = DateTime.Now;
 
-                SqlCommand sql = new SqlCommand("update " + Const.TABLE_PREFIX + "mailings set step="+(int)Mailing.STEPS.PREPARE+",dt_start=@dt_start where guid=@guid");
+                SqlCommand sql = new SqlCommand("update " + Const.TABLE_PREFIX + "mailings set step=" + (int)Mailing.STEPS.PREPARE + ",dt_start=@dt_start where guid=@guid");
                 sql.Parameters.AddWithValue("guid", guid);
                 sql.Parameters.AddWithValue("dt_start", dt_start);
 
-                int nb=Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
-                if(nb>0)
+                int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                if (nb > 0)
                     return Request.CreateResponse(HttpStatusCode.OK);
 
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -240,7 +246,7 @@ namespace AIS.controller
                 sql.Parameters.AddWithValue("priority", Mailing.Out.PRIORITY.NORMAL);
                 sql.Parameters.AddWithValue("portalid", 0);
                 if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql) > 0)
-                   return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK);
 
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
@@ -253,20 +259,27 @@ namespace AIS.controller
         [HttpGet]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
-        public HttpResponseMessage GetMailings(string context,string categorie)
+        public HttpResponseMessage GetMailings(string context, string categorie)
         {
-            var application = ActionContext.Request.GetHttpContext().Application;
+            try { 
+                var application = ActionContext.Request.GetHttpContext().Application;
 
-            string mode = "" + application[context + ":mode"];
-            int cric = (int)application[context + ":cric"];
-            categorie = "" + categorie;
+                string mode = "" + application[context + ":mode"];
+                int cric = (int)application[context + ":cric"];
+                categorie = "" + categorie;
 
-            SqlCommand sql = new SqlCommand("select * from "+Const.TABLE_PREFIX+"mailings where cric=@cric order by dt desc");
-            sql.Parameters.AddWithValue("cric", cric);
-            sql.Parameters.AddWithValue("category", categorie);
-            List<Mailing> mailings = Yemon.dnn.DataMapping.ExecSql<Mailing>(sql);
-           
-            return Request.CreateResponse(HttpStatusCode.OK,Yemon.dnn.Functions.Serialize(mailings));
+                SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where cric=@cric order by dt desc");
+                sql.Parameters.AddWithValue("cric", cric);
+                sql.Parameters.AddWithValue("category", categorie);
+                List<Mailing> mailings = Yemon.dnn.DataMapping.ExecSql<Mailing>(sql);
+
+                return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(mailings));
+            }catch(Exception ee)
+            {
+                Functions.Error(ee);
+
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         [HttpGet]
@@ -274,19 +287,27 @@ namespace AIS.controller
         [DnnAuthorize]
         public HttpResponseMessage GetCategories(string context)
         {
-            var application = ActionContext.Request.GetHttpContext().Application;
+            try
+            {
+                var application = ActionContext.Request.GetHttpContext().Application;
 
-            string mode = "" + application[context + ":mode"];
-            int cric = (int)application[context + ":cric"];
-
-            
-            SqlCommand sql = new SqlCommand("select distinct category from " + Const.TABLE_PREFIX + "mailings where cric=@cric order by category");
-            sql.Parameters.AddWithValue("cric", cric);
-
-            List<string> categories = new List<string>();
+                string mode = "" + application[context + ":mode"];
+                int cric = (int)application[context + ":cric"];
 
 
-            return Request.CreateResponse(HttpStatusCode.OK, categories);
+                SqlCommand sql = new SqlCommand("select distinct category from " + Const.TABLE_PREFIX + "mailings where cric=@cric order by category");
+                sql.Parameters.AddWithValue("cric", cric);
+
+                List<string> categories = new List<string>();
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, categories);
+            }catch(Exception ee)
+            {
+                Functions.Error(ee);
+
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]
@@ -312,19 +333,19 @@ namespace AIS.controller
 
                 Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
 
-                
+
                 //SqlCommand sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX + "mailings WHERE cric=@cric AND guid=@guid");
                 //sql.Parameters.AddWithValue("cric", cric);
                 //sql.Parameters.AddWithValue("guid", mailing.guid);
 
                 //Mailing m = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
-                if (mailing==null)
+                if (mailing == null)
                 {
                     row["id"] = null;
-                }                    
+                }
                 else
                 {
-                    row["id"] = mailing.id;                   
+                    row["id"] = mailing.id;
                 }
 
                 row["cric"] = cric;
@@ -345,10 +366,10 @@ namespace AIS.controller
                 row["portalid"] = ps.PortalId;
 
                 var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "mailings", "id", row);
-                if(result.Key=="error")
+                if (result.Key == "error")
                     throw new Exception("Erreur de mise a jour");
 
-                return Request.CreateResponse(HttpStatusCode.OK, ""+ m.guid);
+                return Request.CreateResponse(HttpStatusCode.OK, "" + m.guid);
 
             }
             catch (Exception ee)
@@ -357,9 +378,47 @@ namespace AIS.controller
             }
         }
 
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage GetSubs()
+        {
+            if (UserInfo.UserID == 0)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-        
-        
+            try
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, MailingHelper.GetSubs(UserInfo.UserID));
+            }
+            catch (Exception ee)
+            {
 
+                Functions.Error(ee);
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage SetSubs(dynamic param)
+        {
+            if (UserInfo.UserID == 0)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            try
+            {
+                int[] subs = (int[])Yemon.dnn.Functions.Deserialize("" + param["subs"], typeof(int[]));
+
+                if (MailingHelper.SetSubs(subs, UserInfo.UserID))
+                    return Request.CreateResponse(HttpStatusCode.OK, subs);
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
     }
 }

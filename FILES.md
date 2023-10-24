@@ -1,9 +1,22 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+```
+```###### 24/10/2023
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\mailing\MailingHelper.cs
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Mailing2\Control.ascx
+DesktopModules\AIS\Admin Mailing2\Control.ascx.cs
+DesktopModules\AIS\Admin Mailing2\Mailing.html
+DesktopModules\AIS\Admin Mailing2\MailingEdit.html
+DesktopModules\RazorModules\Abonnements Membre\_AbonnementsMembre.cshtml
+DesktopModules\RazorModules\Abonnements Membre\AbonnementsMembre.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_mail.mailing.email.cshtml
 ```
 ```###### 16/10/2023
 ```txt
