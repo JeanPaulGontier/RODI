@@ -198,6 +198,8 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
             else // Member CLUB
             {
+                BT_Ajouter.Visible = false;
+                P_Info.Visible = true;
                 //Member m = Functions.GetCurrentMember();
                 //if (m != null)
                 //{

@@ -7,7 +7,7 @@
 
 <asp:Panel ID="Panel1" runat="server">
     <p><asp:Button runat="server" Text="Ajouter un message" ID="BT_Ajouter" CssClass="btn btn-primary" OnClick="BT_Ajouter_Click" /></p>
-
+    <asp:Panel runat="server" CssClass="alert alert-info" ID="P_Info" Visible="false">Ce module vous permet de consulter les anciens messages envoyés par le club mais pas d'en créer de nouveaux</asp:Panel>
     <asp:GridView ID="GridView1" runat="server" CssClass="table table-striped"  AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting">
         <Columns>
             <asp:BoundField DataField="dt" HeaderText="Date" SortExpression="dt" DataFormatString="{0:d}" />

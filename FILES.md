@@ -1,6 +1,8 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 ```
 ```###### 24/10/2023
 DesktopModules\AIS\News Detail\Control.ascx.cs
