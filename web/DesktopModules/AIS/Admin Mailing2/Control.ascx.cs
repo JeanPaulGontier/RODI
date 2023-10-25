@@ -153,11 +153,8 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
     {
         get
         {
-            return (UserInfo.IsSuperUser ||
-                UserInfo.IsInRole(Const.ADMIN_ROLE) ||
-                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
-                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) ||
-                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+            return MailingHelper.Editable(UserInfo);
+
 
         }
     }

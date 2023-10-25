@@ -78,6 +78,9 @@ namespace AIS.controller
         {
             try
             {
+                if(!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 var httpRequest = HttpContext.Current.Request;
                 if (httpRequest.Files.Count > 0)
                 {
@@ -167,6 +170,9 @@ namespace AIS.controller
                 Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
                 if (mailing == null)
                 {
+                    if (!MailingHelper.Editable(UserInfo) && mailing.step<Mailing.STEPS.PREPARE)
+                        return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                     return Request.CreateResponse(Yemon.dnn.Functions.Serialize(new Mailing() { guid = new Guid(guid) }));
                 }
 
@@ -186,13 +192,21 @@ namespace AIS.controller
         [DnnAuthorize]
         public HttpResponseMessage DeleteMailing(string guid)
         {
-            SqlCommand sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
-            sql.Parameters.AddWithValue("guid", guid);
+            try { 
+                if (!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql) > 0)
-                Yemon.dnn.Helpers.DeleteItem("blockscontent:" + guid, purgeHistory: true);
+                SqlCommand sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
+                sql.Parameters.AddWithValue("guid", guid);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+                if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql) > 0)
+                    Yemon.dnn.Helpers.DeleteItem("blockscontent:" + guid, purgeHistory: true);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }catch(Exception ee) { 
+                Functions.Error(ee); 
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]
@@ -202,6 +216,9 @@ namespace AIS.controller
         {
             try
             {
+                if (!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 string guid = "" + param["guid"];
                 string date = "" + param["date"];
 
@@ -230,6 +247,9 @@ namespace AIS.controller
         {
             try
             {
+                if (!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
                 string guid = "" + param["guid"];
                 string email = "" + param["email"];
 
@@ -268,7 +288,11 @@ namespace AIS.controller
                 int cric = (int)application[context + ":cric"];
                 categorie = "" + categorie;
 
-                SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where cric=@cric order by dt desc");
+                int minstep = 0;
+                if (!MailingHelper.Editable(UserInfo))
+                    minstep = (int)Mailing.STEPS.PREPARE;
+
+                SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where step>="+minstep+" AND cric=@cric order by dt desc");
                 sql.Parameters.AddWithValue("cric", cric);
                 sql.Parameters.AddWithValue("category", categorie);
                 List<Mailing> mailings = Yemon.dnn.DataMapping.ExecSql<Mailing>(sql);
@@ -317,6 +341,10 @@ namespace AIS.controller
         {
             try
             {
+                if (!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+
                 var application = ActionContext.Request.GetHttpContext().Application;
                 string ctx = "" + param["context"];
                 string mode = "" + application[ctx + ":mode"];

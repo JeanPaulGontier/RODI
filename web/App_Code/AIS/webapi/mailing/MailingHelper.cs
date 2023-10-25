@@ -218,4 +218,14 @@ public class MailingHelper
             return false;
         }
     }
+
+
+    public static bool Editable(UserInfo userInfo)
+    {
+        return userInfo.IsSuperUser ||
+                userInfo.IsInRole(Const.ADMIN_ROLE) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+    }
 }

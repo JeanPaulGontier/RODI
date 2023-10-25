@@ -3,6 +3,9 @@
 ```txt
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\mailing\MailingHelper.cs
+DesktopModules\AIS\Admin Mailing2\Control.ascx.cs
 ```
 ```###### 24/10/2023
 DesktopModules\AIS\News Detail\Control.ascx.cs
