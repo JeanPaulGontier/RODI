@@ -34,6 +34,9 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockRaw.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\ImageEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+
+
 
 ```
 ```###### 24/10/2023
