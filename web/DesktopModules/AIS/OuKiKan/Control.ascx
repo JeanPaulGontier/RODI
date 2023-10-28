@@ -18,6 +18,9 @@
 <script src="<%=libPath %>toastr/toastr.min.js"></script>
 <link href="<%=libPath %>toastr/toastr.min.css" rel="stylesheet" />
 <script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
+<script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js"></script>
+<link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css" rel="stylesheet" />
+<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/ImageEditor.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockFileCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageText.cshtml" -->
@@ -27,6 +30,8 @@
 <link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <%--<link href="/desktopmodules/ais/oukikan/styles.css" rel="stylesheet" />--%>
+
+
 <style>
     [v-cloak] {
         display: none;
@@ -38,7 +43,7 @@
 <script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
 <!-- #include virtual ="/DesktopModules/AIS/OuKiKan/Meetings.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/OuKiKan/MeetingEdit.html" -->
-<script src="/DesktopModules/AIS/OuKiKan/app.js"></script>
+<script src="/DesktopModules/AIS/OuKiKan/app.min.js"></script>
 <script>
     $(document).ready(function () {
         if (typeof _yemon == 'undefined')

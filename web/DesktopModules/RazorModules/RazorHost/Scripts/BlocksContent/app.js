@@ -1,5 +1,4 @@
-﻿function InitApp(appid,MODULEID,BLOCKSSUFFIX,EDITABLE) {
-   
+﻿function InitApp(appid, MODULEID, BLOCKSSUFFIX, EDITABLE) {
     const app = Vue.createApp({
         data() {
             return {
@@ -45,6 +44,7 @@
             this.getBlocks();
         }
     });
-    
+    app.component('cropper', VueAdvancedCropper.Cropper);
+
     app.mount('#' + appid);
 }

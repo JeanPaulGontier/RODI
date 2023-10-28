@@ -1,5 +1,10 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)
+- nouveau module permettant de recadrer les images dans les blocs (images et texte & accroche des nouvelles) utilisable pour : 
+	- les mailings clubs
+	- les nouvelles
+	- les réunions
+	- le contenu libre blockcontent dans les clubs et le district
 
 ###### 24/10/2023
 - nouveau module de gestion des abonnements membres pour le mailing

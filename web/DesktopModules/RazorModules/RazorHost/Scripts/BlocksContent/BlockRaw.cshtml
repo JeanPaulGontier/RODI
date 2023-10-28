@@ -16,58 +16,62 @@
     </div>
 </script>
 <script>
-    let BlockRaw =  {
-        template: '#blockraw-template',
-        name: 'BlockRaw',
-        props: [
-            'content'
-        ],
-        emits: [
-            'changed',
-            'cancel'
-        ],
-        data() {
-            return {
-                editing: false,
-                c: {
+    if (typeof BlockRaw == 'undefined')
+    {
+
+         BlockRaw =  {
+            template: '#blockraw-template',
+            name: 'BlockRaw',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {
                    
-                },
-                fichiers: [],
-                e: {
+                    },
+                    fichiers: [],
+                    e: {
                   
-                },
+                    },
          
 
               
-            }
-        },
-        components: {           
+                }
+            },
+            components: {           
             
-        },
-        methods: {
-            edit() {
-                this.editing = true;
-                this.e = JSON.parse(JSON.stringify(this.c));
             },
-            validate() {
-                this.c = JSON.parse(JSON.stringify(this.e));
-                this.editing = false;
-                this.onChange();
-            },
-            cancel() {
-                this.editing = false;
-                this.$emit('cancel');
-            },
-            onChange() {
-                this.$emit('changed', this.c);
-            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
 
            
-        },
-        mounted() {
-            this.c = this.content;
-        }
-     }
-
+            },
+            mounted() {
+                this.c = this.content;
+            }
+         }
+    }
+    
 
 </script>

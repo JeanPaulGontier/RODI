@@ -37,123 +37,124 @@
 
 <script>
 
+    if (typeof BlocksEditor == 'undefined') {
+        BlocksEditor = {
+            template: '#blockseditor-template',
+            name: 'BlocksEditor',
+            props: [
+                'blocks', 'moduleid', 'editable'
+            ],
+            emits: [
+                'changed'
+            ],
+            components: {
+                BlockImageText, BlockImageCollection, BlockFileCollection, BlockRaw, BlockVideo
+            },
+            data() {
+                return {
+                    adding: false,
+                    editing: -1
+                }
+            },
+            methods: {
+                addBlock(type) {
+                    if (!this.blocks)
+                        this.blocks = [];
+                    switch (type) {
+                        case 'ImageText':
+                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Position: 'H' } });
+                            break
+                        case 'FileCollection':
+                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Files: [] } });
+                            break;
+                        case 'ImageCollection':
+                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Images: [] } });
+                            break;
+                        case 'Raw':
+                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Html: '' } });
+                            break;
+                        case 'Video':
+                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Type: 'youtube', Url: '' } });
+                            break;
 
-    let BlocksEditor = {
-        template: '#blockseditor-template',
-        name: 'BlocksEditor',
-        props: [
-            'blocks', 'moduleid','editable'
-        ],
-        emits: [
-            'changed'
-        ],
-        components: {
-            BlockImageText, BlockImageCollection, BlockFileCollection, BlockRaw, BlockVideo
-        },
-        data() {
-            return {
-                adding: false,
-                editing: -1
+
+                    }
+                    this.adding = false;
+                },
+                editBlock(i) {
+                    this.editing = i;
+                    this.$refs[this.blocks[i].Guid].edit();
+                },
+                deleteBlock(i) {
+                    if (confirm('Supprimer le bloc ?')) {
+                        this.blocks.splice(i, 1);
+                        this.blocks = JSON.parse(JSON.stringify(this.blocks));
+                    }
+                },
+                firstBlock(i) {
+                    const b = this.blocks.splice(i, 1)[0];
+                    this.blocks.splice(0, 0, b);
+                },
+                upBlock(i) {
+                    const b = this.blocks.splice(i, 1)[0];
+                    this.blocks.splice(i - 1, 0, b);
+                },
+                downBlock(i) {
+                    const b = this.blocks.splice(i, 1)[0];
+                    this.blocks.splice(i + 1, 0, b);
+                },
+                lastBlock(i) {
+                    const b = this.blocks.splice(i, 1)[0];
+                    this.blocks.push(b);
+                },
+                blockChanged(i, e) {
+                    this.blocks[i].Content = e;
+                },
+                blockCancel() {
+                    this.editing = -1;
+                },
+                onChange() {
+                    this.editing = -1;
+                    this.$emit('changed', this.blocks);
+
+
+
+                }
+
+            },
+            mounted() {
+
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+
+            },
+            watch: {
+                blocks: {
+                    deep: true,
+
+                    handler() {
+
+                        this.onChange();
+                    }
+                },
+
             }
-        },
-        methods: {
-            addBlock(type) {
-                if (!this.blocks)
-                    this.blocks = [];
-                switch (type) {
-                    case 'ImageText':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Position: 'H' } });
-                        break
-                    case 'FileCollection':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Files: [] } });
-                        break;
-                    case 'ImageCollection':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Images: [] } });
-                        break;
-                    case 'Raw':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Html: '' } });
-                        break;
-                    case 'Video':
-                        this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Type: 'youtube', Url: '' } });
-                        break;
-
-
-                }
-                this.adding = false;
-            },
-            editBlock(i) {
-                this.editing = i;
-                this.$refs[this.blocks[i].Guid].edit();
-            },
-            deleteBlock(i) {
-                if (confirm('Supprimer le bloc ?')) {
-                    this.blocks.splice(i, 1);
-                    this.blocks = JSON.parse(JSON.stringify(this.blocks));
-                }
-            },
-            firstBlock(i) {
-                const b = this.blocks.splice(i, 1)[0];
-                this.blocks.splice(0, 0, b);
-            },
-            upBlock(i) {
-                const b = this.blocks.splice(i, 1)[0];
-                this.blocks.splice(i - 1, 0, b);
-            },
-            downBlock(i) {
-                const b = this.blocks.splice(i, 1)[0];
-                this.blocks.splice(i + 1, 0, b);
-            },
-            lastBlock(i) {
-                const b = this.blocks.splice(i, 1)[0];
-                this.blocks.push(b);
-            },
-            blockChanged(i, e) {
-                this.blocks[i].Content = e;
-            },
-            blockCancel() {
-                this.editing = -1;
-            },
-            onChange() {
-                this.editing = -1;
-                this.$emit('changed', this.blocks);
-
-
-
-            }
-
-        },
-        mounted() {
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            };
-
-
-        },
-        watch: {
-            blocks: {
-                deep: true,
-
-                handler() {
-
-                    this.onChange();
-                }
-            },
-
         }
     }
 

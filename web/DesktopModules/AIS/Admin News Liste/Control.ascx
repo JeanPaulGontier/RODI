@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - https://rodi-platform.org                                                 -->
-<!-- Copyright (c) 2012-2022                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_News_List_Control" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_News_List_Control" %>
 <% 
     string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     string appID = "app" + ModuleId;
@@ -19,6 +12,10 @@
 <script src="<%=libPath %>toastr/toastr.min.js"></script>
 <link href="<%=libPath %>toastr/toastr.min.css" rel="stylesheet" />
 <script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
+<script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js"></script>
+<link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css" rel="stylesheet" />
+
+<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/ImageEditor.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockFileCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageText.cshtml" -->
@@ -41,7 +38,7 @@
 <!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/News.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsEdit.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsView.html" -->
-<script src="/DesktopModules/AIS/Admin News Liste/app.js"></script>
+<script src="/DesktopModules/AIS/Admin News Liste/app.min.js"></script>
 <script>
 
     var CATEGORIES =  <%=Yemon.dnn.Functions.Serialize(categories)%>;

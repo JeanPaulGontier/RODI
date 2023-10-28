@@ -23,76 +23,77 @@
     </div>
 </script>
 <script>
-    let BlockVideo =  {
-        template: '#blockvideo-template',
-        name: 'BlockVideo',
-        props: [
-            'content'
-        ],
-        emits: [
-            'changed',
-            'cancel'
-        ],
-        data() {
-            return {
-                editing: false,
-                c: {
+    if (typeof BlockVideo == 'undefined') {
+        BlockVideo = {
+            template: '#blockvideo-template',
+            name: 'BlockVideo',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {
 
-                },
-                fichiers: [],
-                e: {
+                    },
+                    fichiers: [],
+                    e: {
 
-                },
+                    },
 
 
 
-            }
-        },
-        components: {
-
-        },
-        methods: {
-            edit() {
-                this.editing = true;
-                this.e = JSON.parse(JSON.stringify(this.c));
-            },
-            validate() {
-                if (this.e.Url.startsWith('https://youtu.be/')) {
-                    this.e.Url= this.e.Url.replace('https://youtu.be/','https://www.youtube.com/embed/');
                 }
-                this.c = JSON.parse(JSON.stringify(this.e));
-                this.editing = false;
-                this.onChange();
             },
-            cancel() {
-                this.editing = false;
-                this.$emit('cancel');
-            },
-            onChange() {
-                this.$emit('changed', this.c);
-                this.$nextTick(() => {
-                    this.resizevideo();
-                });
-            },
+            components: {
 
-            resizevideo() {
-                var ratio = 16 / 9;
-                const videoIFrame = this.$refs.videoIFrame;
-                const videoContainer = this.$refs.videoContainer;
-                var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);
-                videoIFrame.style.height= Math.ceil(width / ratio) + "px";
-                videoContainer.style.height = (width / ratio) + "px";              
-            }                
-        },
-        mounted() {
-            window.addEventListener('resize', this.resizevideo);
-            this.resizevideo();
-            this.c = this.content;
-        },
-         unmounted() {
-            window.removeEventListener('resize', this.getDimensions);
-        },
-     }
+            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    if (this.e.Url.startsWith('https://youtu.be/')) {
+                        this.e.Url = this.e.Url.replace('https://youtu.be/', 'https://www.youtube.com/embed/');
+                    }
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                    this.$nextTick(() => {
+                        this.resizevideo();
+                    });
+                },
 
+                resizevideo() {
+                    var ratio = 16 / 9;
+                    const videoIFrame = this.$refs.videoIFrame;
+                    const videoContainer = this.$refs.videoContainer;
+                    var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);
+                    videoIFrame.style.height = Math.ceil(width / ratio) + "px";
+                    videoContainer.style.height = (width / ratio) + "px";
+                }
+            },
+            mounted() {
+                window.addEventListener('resize', this.resizevideo);
+                this.resizevideo();
+                this.c = this.content;
+            },
+            unmounted() {
+                window.removeEventListener('resize', this.getDimensions);
+            },
+        }
+    }
 
 </script>

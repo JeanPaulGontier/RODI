@@ -19,19 +19,21 @@
 
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
                 <div v-if="e.Image">
-                    <div class="bc-photo"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+e.Image.GUID" :title="e.Image.Name" /></div>
-                    <span class="bc-label">Nom de la photo (s'affiche au survol de l'image avec la souris) : </span>
-                    <input type="text" v-model="e.Image.Name" class="form-control" />
-                    <span class="bc-label">Position de la photo :</span>
-                    <select v-model="e.Position" class="form-control">
-                        <option value="G">à gauche du texte</option>
-                        <option value="H">au dessus du texte</option>
-                        <option value="D">à droite du texte</option>
-                        <option value="B">en dessous du texte</option>
-                    </select>
-                    <br />
-                    <button type="button" v-on:click="e.Image=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
-                </div>
+                    <div class="bc-photo">
+                        <image-editor :image="e.Image" :moduleid="moduleid" v-on:changed="imageChanged($event)"></image-editor>
+                    </div>
+                <span class="bc-label">Nom de la photo (s'affiche au survol de l'image avec la souris) : </span>
+                <input type="text" v-model="e.Image.Name" class="form-control" />
+                <span class="bc-label">Position de la photo :</span>
+                <select v-model="e.Position" class="form-control">
+                    <option value="G">à gauche du texte</option>
+                    <option value="H">au dessus du texte</option>
+                    <option value="D">à droite du texte</option>
+                    <option value="B">en dessous du texte</option>
+                </select>
+                <br />
+                <button type="button" v-on:click="e.Image=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
+            </div>
 
             </div>
             <div style="text-align:center;margin-top:1em;">
@@ -61,120 +63,131 @@
     </div>
 </script>
 <script>
-    let BlockImageText =  {
-        template: '#blockimagetext-template',
-        name: 'BlockImageText',
-        props: [
-            'content','moduleid'
-        ],
-        emits: [
-            'changed',
-            'cancel'
-        ],
-        data() {
-            return {
-                editing: false,
-                c: {
+    if (typeof BlockImageText == 'undefined') {
+
+        BlockImageText = {
+            template: '#blockimagetext-template',
+            name: 'BlockImageText',
+            props: [
+                'content','moduleid'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {
                    
-                },
-                fichiers: [],
-                e: {
+                    },
+                    fichiers: [],
+                    e: {
                   
-                },
+                    },
          
 
-                editorPlugins: [
-                    'autoresize advlist autolink lists link charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code directionality template textpattern'
-                ],
+                    editorPlugins: [
+                        'autoresize advlist autolink lists link charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code directionality template textpattern'
+                    ],
 
-                editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | forecolor backcolor | bullist numlist | removeformat',
-                editorOptions: {
-                    //height: 200,
-                    relative_urls: false,
-                    document_base_url: '/',
-                    remove_script_host: false,
-                    images_upload_url: this.serviceurl,
-                    automatic_uploads: false,
-                    menubar: false,
-                    statusbar: false,
-                    language: 'fr_FR',
-                    table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
+                    editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | forecolor backcolor | bullist numlist | removeformat',
+                    editorOptions: {
+                        //height: 200,
+                        relative_urls: false,
+                        document_base_url: '/',
+                        remove_script_host: false,
+                        images_upload_url: this.serviceurl,
+                        automatic_uploads: false,
+                        menubar: false,
+                        statusbar: false,
+                        language: 'fr_FR',
+                        table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
 
-                }
-            }
-        },
-        components: {           
-            'tinymce': VueEasyTinyMCE
-        },
-        methods: {
-            edit() {
-                this.editing = true;
-                this.e = JSON.parse(JSON.stringify(this.c));
-            },
-            validate() {
-                this.e.Html = this.$refs.editor.objTinymce.getContent();
-                this.c = JSON.parse(JSON.stringify(this.e));
-                this.editing = false;
-                this.onChange();
-            },
-            cancel() {
-                this.editing = false;
-                this.$emit('cancel');
-            },
-            onChange() {
-                this.$emit('changed', this.c);
-            },
-
-            addDocument(event) {
-                event.preventDefault();
-                this.$refs.document.click();
-            },
-            onChangeDocumentUpload() {
-                if (this.$refs.document.files.length == 0)
-                    return;
-                this.fichiers.push({
-                    file: this.$refs.document.files[0],
-                    uploaded: false
-                });
-                this.uploadMedia({
-                    type: 'photo'
-                }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
-            },
-            onDocumentUploaded(r) {
-
-                console.log('onDocumentUploaded', r);
-                this.e.Image = r.data;
-                this.e.Image.Name = this.e.Image.Filename;
-                this.fichiers = [];
-            },
-            uploadMedia(meta, callbackok, callbackerror) {
-                let fichier = this.fichiers[this.fichiers.length - 1];
-                if (fichier.file.size > 5 * 1024 * 1024) {
-                    alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
-                    this.fichiers = [];
-                    return;
-                }
-                let formData = new FormData();
-                formData.append('file', fichier.file);
-                if (meta) {
-                    for (let p in meta) {
-                        formData.append(p, meta[p]);
                     }
                 }
-                _yemon[this.moduleid].service.postFile('/setMedia',
-                    formData,
-                    (r) => callbackok(r),
-                    (r) => callbackerror(r)
-                );
-
             },
-        },
-        mounted() {
-            this.c = this.content;
-        }
-        }
+            components: {           
+                'tinymce': VueEasyTinyMCE,
+                'image-editor': ImageEditor
+            },
+            methods: {           
+                imageChanged(e) {
+                    this.e.Image = e;
+                },
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    this.e.Html = this.$refs.editor.objTinymce.getContent();
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
 
+                addDocument(event) {
+                    event.preventDefault();
+                    this.$refs.document.click();
+                },
+                onChangeDocumentUpload() {
+                    if (this.$refs.document.files.length == 0)
+                        return;
+                    this.fichiers.push({
+                        file: this.$refs.document.files[0],
+                        uploaded: false
+                    });
+                    this.uploadMedia({
+                        type: 'photo'
+                    }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+                },
+                onDocumentUploaded(r) {
+
+                    console.log('onDocumentUploaded', r);
+                    this.e.Image = r.data;
+                    this.e.Image.Name = this.e.Image.Filename;
+                    this.fichiers = [];
+                },
+                uploadMedia(meta, callbackok, callbackerror) {
+                    let fichier = this.fichiers[this.fichiers.length - 1];
+                    if (fichier.file.size > 5 * 1024 * 1024) {
+                        alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                        this.fichiers = [];
+                        return;
+                    }
+                    let formData = new FormData();
+                    formData.append('file', fichier.file);
+                    if (meta) {
+                        for (let p in meta) {
+                            formData.append(p, meta[p]);
+                        }
+                    }
+                    _yemon[this.moduleid].service.postFile('/setMedia',
+                        formData,
+                        (r) => callbackok(r),
+                        (r) => callbackerror(r)
+                    );
+
+                },
+            },
+       
+            mounted() {
+               
+                this.c = this.content;
+                this.imageEditor = false;
+
+                
+            }
+        }
+    }
 
 </script>

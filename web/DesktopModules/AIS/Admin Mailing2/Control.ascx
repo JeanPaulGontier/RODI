@@ -12,6 +12,8 @@
 <script src="<%=libPath %>toastr/toastr.min.js"></script>
 <link href="<%=libPath %>toastr/toastr.min.css" rel="stylesheet" />
 <script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
+<script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js"></script>
+<link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css" rel="stylesheet" />
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/Init.mailing.html" -->
 <link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.min.css" rel="stylesheet" />
 

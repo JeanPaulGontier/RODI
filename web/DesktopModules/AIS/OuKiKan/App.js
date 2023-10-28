@@ -38,5 +38,6 @@ function InitApp(appid, MODULEID, CONTEXT, CRIC, MODE, EDITABLE) {
         }
     });
     app.use(router);
+    app.component('cropper', VueAdvancedCropper.Cropper);
     app.mount('#' + appid);
 }

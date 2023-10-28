@@ -1,0 +1,88 @@
+﻿<script type="text/x-template" id="imageeditor-template">
+   
+        <div v-if="!imageEditor">
+            <div class="btn-group-xs text-center">
+                <a v-on:click="imageEdit()" class="btn btn-xs btn-accept"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a>
+            </div>
+            <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+image.GUID" :title="image.Name" />
+        </div>
+        <div v-if="imageEditor">
+            <div class="btn-group-xs text-center">
+                <a v-on:click="imageCancel()" class="btn btn-xs btn-cancel"><i class="fa fa-angle-left" aria-hidden="true"></i> Annuler</a>&nbsp;
+                <!--<a v-on:click="imageRotate(-90)" class="btn btn-xs btn-accept"><i class="fa fa-undo" aria-hidden="true"></i> Tourner à gauche</a>
+            <a v-on:click="imageRotate(90)" class="btn btn-xs btn-accept"><i class="fa fa-repeat" aria-hidden="true"></i> Tourner à droite</a>-->
+                <a v-on:click="imageCrop()" class="btn btn-xs btn-accept"><i class="fa fa-crop" aria-hidden="true"></i> Recadrer</a>
+            </div>
+            <cropper :ref="'cropper-' + this.moduleid + '-' + this.image.GUID"  :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+image.GUID" :title="image.Name"></cropper>
+        </div>
+    
+</script>
+<script>
+    if (typeof ImageEditor == 'undefined') {
+        
+        ImageEditor = {
+            template: '#imageeditor-template',
+            name: 'ImageEditor',
+            props: [
+                'moduleid',
+                'image'
+                
+            ],
+            emits: [
+                'changed',
+            ],
+           
+            data() {
+                return {
+                    imageEditor: false,                   
+                }
+            },
+            
+            methods: {
+                imageEdit() {
+                    this.imageEditor = true;
+                },
+                imageCancel() {
+                    this.imageEditor = false;
+                },
+                imageCrop() {
+                    this.imageUpload((r) => {
+                        this.$emit('changed', r.data);
+
+                        this.imageEditor = false;
+                    },
+                        (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') }
+                    )
+
+                },
+                imageUpload(callbackok, callbackerror) {
+                    const { canvas } = this.$refs['cropper-' + this.moduleid + '-' + this.image.GUID].getResult();
+                    if (canvas) {
+                        let formData = new FormData();
+                        canvas.toBlob(blob => {
+                            var file = new File([blob], this.image.Name, { type: "image/jpeg", lastModified: new Date(0) })
+                            formData.append('file', file);
+
+                            formData.append('type', 'photo');
+                            _yemon[this.moduleid].service.postFile('/setMedia',
+                                formData,
+                                (r) => callbackok(r),
+                                (r) => callbackerror(r)
+                            );
+
+                        }, "image/jpeg", 0.95);
+
+                    }
+                },
+            },
+            mounted() {
+                this.imageEditor = false;
+               
+            }
+        }
+
+
+    }
+
+    
+</script>

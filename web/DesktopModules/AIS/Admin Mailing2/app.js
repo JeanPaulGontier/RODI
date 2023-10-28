@@ -64,5 +64,6 @@
         }
     });
     app.use(router);
+    app.component('cropper', VueAdvancedCropper.Cropper);
     app.mount('#' + appid);
 }

@@ -37,7 +37,7 @@
             <div class="col-sm-3" v-if="context.mode=='clubs'">
                 <p>
                     <select v-model="news.tag1" class="form-control">
-                        <option v-for="c in categories">{{c}}</option>                        
+                        <option v-for="c in categories">{{c}}</option>
                     </select>
                 </p>
             </div>
@@ -80,7 +80,9 @@
 
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
                 <div v-if="news.photo">
-                    <div class="bc-photo"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+news.photo" /></div>
+                    <div class="bc-photo">
+                        <image-editor :image="{GUID:news.photo,Name:'accroche'}" :moduleid="moduleid" v-on:changed="imageChanged($event)"></image-editor>
+                    </div>
 
                     <br />
                     <button type="button" v-on:click="news.photo=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
@@ -94,7 +96,7 @@
         </div>
         <div class="col-sm-12">
             <p><em v-if="this.blocks.length==0">L'image d'accroche est utilis&eacute;e dans le d&eacute;tail de la nouvelle s'il n'a pas de contenu d&eacute;taill&eacute;...</em></p>
-            
+
         </div>
         <div class="col-sm-12">
             <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
@@ -130,9 +132,13 @@
             }
         },
         components: {
-            BlocksEditor
+            BlocksEditor,
+            ImageEditor
         },
         methods: {
+            imageChanged(e) {
+                this.news.photo = e.GUID;
+            },
             isValid() {
                 return this.news.title && this.news.dt && this.news.tag1 && this.news.visible;
 

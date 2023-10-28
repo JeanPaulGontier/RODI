@@ -6,6 +6,35 @@ DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 App_Code\AIS\webapi\mailing\MailingController.cs
 App_Code\AIS\webapi\mailing\MailingHelper.cs
 DesktopModules\AIS\Admin Mailing2\Control.ascx.cs
+DesktopModules\AIS\Admin Mailing2\app.js
+DesktopModules\AIS\Admin Mailing2\app.min.js
+DesktopModules\AIS\Admin Mailing2\Control.ascx
+DesktopModules\AIS\Admin News Liste\app.js
+DesktopModules\AIS\Admin News Liste\app.min.js
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
+DesktopModules\AIS\OuKiKan\App.js
+DesktopModules\AIS\OuKiKan\App.min.js
+DesktopModules\AIS\OuKiKan\Control.ascx
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\index.global.js
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\style.css
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.bubble.css
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.bubble.scss
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.classic.css
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.classic.scss
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.compact.css
+Portals\_default\Skins\Rodi2017\EChoppe\vue-advanced-cropper\2.8.8\theme.compact.scss
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockFileCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockRaw.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\ImageEditor.cshtml
+
 ```
 ```###### 24/10/2023
 DesktopModules\AIS\News Detail\Control.ascx.cs

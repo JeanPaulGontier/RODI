@@ -27,91 +27,94 @@
     </div>
 </script>
 <script>
-    let BlockFileCollection = {
-        template: '#blockfilecollection-template',
-        name: 'BlockFileCollection',
-        props: [
-            'content','moduleid'
-        ],
-        emits: [
-            'changed',
-            'cancel'
-        ],
-        data() {
-            return {
-                editing: false,
-                c: {},
-                fichiers: [],
-                e: {},
-            }
-        },
-        methods: {
-            edit() {
-                this.editing = true;
-                this.e = JSON.parse(JSON.stringify(this.c));
-            },
-            validate() {
-                this.c = JSON.parse(JSON.stringify(this.e));
-                this.editing = false;
-                this.onChange();
-            },
-            cancel() {
-                this.editing = false;
-                this.$emit('cancel');
-            },
-            onChange() {
-                this.$emit('changed', this.c);
-            },
-            deleteFile(i) {
-                this.e.Files.splice(i, 1);
-            },
-            addDocument(event) {
-                event.preventDefault();
-                this.$refs.document.click();
-            },
-            onChangeDocumentUpload() {
-                if (this.$refs.document.files.length == 0)
-                    return;
-                this.fichiers.push({
-                    file: this.$refs.document.files[0],
-                    uploaded: false
-                });
-                this.uploadMedia({
-                    type: 'photo'
-                }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
-            },
-            onDocumentUploaded(r) {
+    if (typeof BlockFileCollection == 'undefined') {
 
-                console.log('onDocumentUploaded', r);
-                const file = r.data;
-                file.Name = file.Filename;
-                this.e.Files.push(file);
-                this.fichiers = [];
+        BlockFileCollection = {
+            template: '#blockfilecollection-template',
+            name: 'BlockFileCollection',
+            props: [
+                'content', 'moduleid'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {},
+                    fichiers: [],
+                    e: {},
+                }
             },
-            uploadMedia(meta, callbackok, callbackerror) {
-                let fichier = this.fichiers[this.fichiers.length - 1];
-                if (fichier.file.size > 28 * 1024 * 1024) {
-                    alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+                deleteFile(i) {
+                    this.e.Files.splice(i, 1);
+                },
+                addDocument(event) {
+                    event.preventDefault();
+                    this.$refs.document.click();
+                },
+                onChangeDocumentUpload() {
+                    if (this.$refs.document.files.length == 0)
+                        return;
+                    this.fichiers.push({
+                        file: this.$refs.document.files[0],
+                        uploaded: false
+                    });
+                    this.uploadMedia({
+                        type: 'photo'
+                    }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+                },
+                onDocumentUploaded(r) {
+
+                    console.log('onDocumentUploaded', r);
+                    const file = r.data;
+                    file.Name = file.Filename;
+                    this.e.Files.push(file);
                     this.fichiers = [];
-                    return;
-                }
-                let formData = new FormData();
-                formData.append('file', fichier.file);
-                if (meta) {
-                    for (let p in meta) {
-                        formData.append(p, meta[p]);
+                },
+                uploadMedia(meta, callbackok, callbackerror) {
+                    let fichier = this.fichiers[this.fichiers.length - 1];
+                    if (fichier.file.size > 28 * 1024 * 1024) {
+                        alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                        this.fichiers = [];
+                        return;
                     }
-                }
-                _yemon[this.moduleid].service.postFile('/setMedia',
-                    formData,
-                    (r) => callbackok(r),
-                    (r) => callbackerror(r)
-                );
+                    let formData = new FormData();
+                    formData.append('file', fichier.file);
+                    if (meta) {
+                        for (let p in meta) {
+                            formData.append(p, meta[p]);
+                        }
+                    }
+                    _yemon[this.moduleid].service.postFile('/setMedia',
+                        formData,
+                        (r) => callbackok(r),
+                        (r) => callbackerror(r)
+                    );
 
+                },
             },
-        },
-        mounted() {
-            this.c = this.content;
+            mounted() {
+                this.c = this.content;
+            }
         }
     }
 
