@@ -11,15 +11,15 @@
             
 %>
 <asp:HiddenField ID="ContextGuid" runat="server" />
-<script src="<%=libPath %>tinymce/tinymce.min.js"></script>
-<script src="<%=libPath %>vue/3.2.23/vue.js"></script>
-<script src="<%=libPath %>vue-router/4.0.12/vue-router.js"></script>
-<script src="<%=libPath %>axios/0.24.0/axios.min.js"></script>
-<script src="<%=libPath %>toastr/toastr.min.js"></script>
-<link href="<%=libPath %>toastr/toastr.min.css" rel="stylesheet" />
-<script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js"></script>
-<script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js"></script>
-<link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css" rel="stylesheet" />
+<script src="<%=libPath %>tinymce/tinymce.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<script src="<%=libPath %>vue/3.2.23/vue.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<script src="<%=libPath %>vue-router/4.0.12/vue-router.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<script src="<%=libPath %>axios/0.24.0/axios.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<script src="<%=libPath %>toastr/toastr.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<link href="<%=libPath %>toastr/toastr.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
+<script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
+<link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/ImageEditor.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockFileCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageCollection.cshtml" -->
@@ -27,8 +27,8 @@
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockRaw.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockVideo.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockEditor.cshtml" -->
-<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet">
 <%--<link href="/desktopmodules/ais/oukikan/styles.css" rel="stylesheet" />--%>
 
 
