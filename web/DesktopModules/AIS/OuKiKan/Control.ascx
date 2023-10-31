@@ -43,7 +43,7 @@
 <script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
 <!-- #include virtual ="/DesktopModules/AIS/OuKiKan/Meetings.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/OuKiKan/MeetingEdit.html" -->
-<script src="/DesktopModules/AIS/OuKiKan/app.min.js"></script>
+<script src="/DesktopModules/AIS/OuKiKan/app.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <script>
     $(document).ready(function () {
         if (typeof _yemon == 'undefined')

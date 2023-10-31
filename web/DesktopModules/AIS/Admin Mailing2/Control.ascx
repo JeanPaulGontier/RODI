@@ -15,7 +15,7 @@
 <script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js"></script>
 <link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css" rel="stylesheet" />
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/Init.mailing.html" -->
-<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.min.css" rel="stylesheet" />
+<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
 
 
 <style>
@@ -31,7 +31,7 @@
 <!-- #include virtual ="/DesktopModules/AIS/Admin Mailing2/Mailing.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/Admin Mailing2/MailingEdit.html" -->
 <!-- #include virtual ="/DesktopModules/AIS/Admin Mailing2/MailingView.html" -->
-<script src="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.min.js"></script>
+<script src="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <script src="/DesktopModules/AIS/Admin Mailing2/app.min.js"></script>
 <script>
 
