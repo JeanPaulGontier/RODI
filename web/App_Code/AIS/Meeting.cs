@@ -155,7 +155,7 @@ public class Meeting
                             {
                                 if((int)startdate.DayOfWeek==daynum && GetWeekOfMonth(startdate)==period.num)
                                 {
-                                    if (period.start!="")
+                                    if (period.start!="" && period.end!="")
                                     {
                                         Meeting nextMeeting = null;
                                         foreach(Meeting m in unitmeetings)

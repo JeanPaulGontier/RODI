@@ -5,6 +5,7 @@
 	- les nouvelles
 	- les réunions
 	- le contenu libre blockcontent dans les clubs et le district
+- ajout d'une fonction de duplication de message dans le module mailing
 
 ###### 24/10/2023
 - nouveau module de gestion des abonnements membres pour le mailing

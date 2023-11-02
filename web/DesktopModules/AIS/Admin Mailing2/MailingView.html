@@ -3,7 +3,10 @@
         <div class="col-sm-3">
             <router-link to="/" class="btn btn-default">Retour</router-link>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-7">
+        </div>
+         <div class="col-sm-2">
+            <button type="button" v-on:click="duplicateMailing()" class="btn btn-sm btn-default" title="Dupliquer" v-if="editable">Dupliquer</button>            
         </div>
     </div>
     <div class="pe-spacer size20"></div>
@@ -99,6 +102,20 @@
             BlocksEditor
         },
         methods: {
+             duplicateMailing() {
+                if (confirm("Dupliquer le message ?")) {
+                    _yemon[this.moduleid].service.getData("/DuplicateMailing", {
+                        guid: this.mailing.guid
+                    }, (r) => {
+                        this.$router.push("/edit/"+r.data+"/dest/");
+
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    })
+
+
+                }
+            },
             statut(n) {
                 switch (n.step) {
                     case 10:

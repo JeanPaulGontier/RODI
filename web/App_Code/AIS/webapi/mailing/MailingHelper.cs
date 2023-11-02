@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using DotNetNuke.Entities.Users;
 using System.Data;
 using DotNetNuke.Security.Roles;
+using Yemon.dnn.BlocksContent;
+using DotNetNuke.Services.Mail;
 
 /// <summary>
 /// Description résumée de MailingHelper
@@ -227,5 +229,94 @@ public class MailingHelper
                 userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
                 userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
                 AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+    }
+
+    public static int SetMailing(Mailing mailing,SqlConnection conn,SqlTransaction trans)
+    {
+        Dictionary<string, object> row = new Dictionary<string, object>();
+        if (mailing.id == 0)
+        {
+            row["id"] = null;
+        }
+        else
+        {
+            row["id"] = mailing.id;
+        }
+        row["cric"] = mailing.cric;
+        row["guid"] = mailing.guid;
+        row["step"] = mailing.step;
+        row["category"] = mailing.category;
+        row["dt"] = DateTime.Now;
+        if (mailing.dt_start > DateTime.MinValue)
+            row["dt_start"] = mailing.dt_start;
+        else
+            row["dt_start"] = null;
+        row["subject"] = mailing.subject;
+        row["sender_email"] = mailing.sender_email;
+        row["sender_name"] = mailing.sender_name;
+        row["recipients"] = mailing.recipients;
+        row["portalid"] = mailing.portalid;
+
+        var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "mailings", "id", row,conn,trans);
+        if (result.Key == "error")
+            throw new Exception("Erreur de mise a jour");
+
+        return int.Parse(result.Value);
+    }
+
+    public static Guid? DuplicateMailing(Guid guid,UserInfo userInfo)
+    {
+        SqlConnection conn=null;
+        SqlTransaction trans=null;
+        Guid? newguid = null;
+        try
+        {
+            conn = Yemon.dnn.DataMapping.GetOpenedConn();
+            trans = conn.BeginTransaction();
+
+            SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "mailings where guid=@guid");
+            sql.Parameters.AddWithValue("guid", guid);
+
+            Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql, conn, trans);
+            if (mailing == null)
+            {
+                throw new Exception("Mailing not found");
+            }
+
+            newguid = Guid.NewGuid();
+            mailing.id = 0;
+            mailing.guid = (Guid)newguid;
+            mailing.subject += " (copie)";
+            mailing.dt = DateTime.Now;
+            mailing.step = Mailing.STEPS.DEST;
+
+            if(SetMailing(mailing, conn, trans) == 0)
+            {
+                throw new Exception("Erreur de duplication");
+            }
+
+           
+
+            trans.Commit();
+
+            string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
+            if (sblocks != "")
+            {
+                Yemon.dnn.Helpers.SetItem("blockscontent:" + newguid, sblocks, "" + userInfo.UserID);
+            }
+
+        }
+        catch(Exception ex)
+        {
+            Functions.Error(ex);
+            if (trans != null)
+                trans.Rollback();
+        }
+        finally
+        {
+            conn.Close();
+            conn.Dispose();
+        }
+        return newguid;
     }
 }

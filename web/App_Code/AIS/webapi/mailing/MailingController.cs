@@ -209,6 +209,29 @@ namespace AIS.controller
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage DuplicateMailing(string guid)
+        {
+            try
+            {
+                if (!MailingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                Guid? newguid = MailingHelper.DuplicateMailing(new Guid(guid), UserInfo);
+                if (newguid == null)
+                    throw new Exception("Erreur de duplication");
+                
+                return Request.CreateResponse(HttpStatusCode.OK,(Guid)newguid);
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
@@ -362,42 +385,28 @@ namespace AIS.controller
                 Mailing mailing = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
 
 
-                //SqlCommand sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX + "mailings WHERE cric=@cric AND guid=@guid");
-                //sql.Parameters.AddWithValue("cric", cric);
-                //sql.Parameters.AddWithValue("guid", mailing.guid);
-
-                //Mailing m = Yemon.dnn.DataMapping.ExecSqlFirst<Mailing>(sql);
                 if (mailing == null)
                 {
-                    row["id"] = null;
+                    mailing = new Mailing();         
                 }
-                else
+                mailing.cric = cric;
+                mailing.guid = m.guid;
+                mailing.step = m.step;
+                mailing.category = m.category;
+                mailing.dt = DateTime.Now;
+                mailing.dt_start = m.dt_start;
+                mailing.subject = m.subject;
+                mailing.sender_email = m.sender_email;
+                mailing.sender_name = m.sender_name;
+                mailing.recipients = m.recipients;
+                mailing.portalid = ps.PortalId;
+
+                if (MailingHelper.SetMailing(mailing, null, null) == 0)
                 {
-                    row["id"] = mailing.id;
-                }
-
-                row["cric"] = cric;
-                row["guid"] = m.guid;
-                row["step"] = m.step;
-
-                row["category"] = m.category;
-                row["dt"] = DateTime.Now;
-                if (m.dt_start > DateTime.MinValue)
-                    row["dt_start"] = m.dt_start;
-                else
-                    row["dt_start"] = null;
-                row["subject"] = m.subject;
-                row["sender_email"] = m.sender_email;
-                row["sender_name"] = m.sender_name;
-                row["recipients"] = m.recipients;
-
-                row["portalid"] = ps.PortalId;
-
-                var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "mailings", "id", row);
-                if (result.Key == "error")
                     throw new Exception("Erreur de mise a jour");
-
-                return Request.CreateResponse(HttpStatusCode.OK, "" + m.guid);
+                }
+              
+                return Request.CreateResponse(HttpStatusCode.OK, "" + mailing.guid);
 
             }
             catch (Exception ee)

@@ -35,6 +35,15 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\ImageEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+DesktopModules\AIS\Admin Mailing2\Control.ascx
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\mailing\MailingHelper.cs
+App_Code\AIS\Meeting.cs
+DesktopModules\AIS\Admin Mailing2\MailingEdit.html
+DesktopModules\AIS\Admin Mailing2\MailingView.html
 
 
 
