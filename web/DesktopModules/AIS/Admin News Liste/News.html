@@ -156,6 +156,8 @@
                 window.scrollTo(window.scrollX, parseInt(lastScroll));
             this.getNewsCategories();
             this.getNews();
+
+            setInterval(() => { this.getNews() }, 10000);
         }
     }
 </script>

@@ -140,7 +140,7 @@ public class Meeting
                     sb.Append("<div>Meeting : " + meeting.guid + "</div>");
                     List<Meeting> unitmeetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(new SqlCommand("" +
                         "SELECT * FROM ais_meetings WHERE " +
-                        "dtstart>getdate() AND " +
+                        "dtstart>getdate()-1 AND " +
                         "type='unitary' AND " +
                         "templateguid='" + meeting.guid + "' " +
                         "ORDER BY dtstart"
@@ -151,6 +151,8 @@ public class Meeting
                             
 
                             DateTime startdate = DateTime.Now;
+                            startdate = new DateTime(startdate.Year, startdate.Month, startdate.Day, startdate.Hour, startdate.Minute, startdate.Second);
+                            
                             while(startdate< DateTime.Now.AddDays(31))
                             {
                                 if((int)startdate.DayOfWeek==daynum && GetWeekOfMonth(startdate)==period.num)
@@ -160,7 +162,7 @@ public class Meeting
                                         Meeting nextMeeting = null;
                                         foreach(Meeting m in unitmeetings)
                                         {
-                                            if( m.dtstart.ToString("yyyyMMdd")==startdate.ToString("yyyyMMdd") && 
+                                            if( m.dtstart.ToString("yyyy-MM-dd")==startdate.ToString("yyyy-MM-dd") && 
                                                 m.templateguid==meeting.guid && 
                                                 m.periodguid == period.guid)
                                             {

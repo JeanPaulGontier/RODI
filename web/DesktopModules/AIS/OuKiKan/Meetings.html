@@ -115,7 +115,7 @@
                 return '- ' + dd + ' min';
             },
             getMeetings() {
-                this.meetings = [];
+               // this.meetings = [];
 
                 _yemon[this.moduleid].service.getData('/GetMeetings',
                     {
@@ -164,7 +164,7 @@
             }
             this.getMeetings();
 
-         
+            setInterval(() => { this.getMeetings() }, 10000);
         }
     };
 </script>

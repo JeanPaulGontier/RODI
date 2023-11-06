@@ -44,6 +44,9 @@ App_Code\AIS\webapi\mailing\MailingHelper.cs
 App_Code\AIS\Meeting.cs
 DesktopModules\AIS\Admin Mailing2\MailingEdit.html
 DesktopModules\AIS\Admin Mailing2\MailingView.html
+DesktopModules\AIS\Admin News Liste\News.html
+DesktopModules\AIS\OuKiKan\Meetings.html
+App_Code\AIS\Meeting.cs
 
 
 

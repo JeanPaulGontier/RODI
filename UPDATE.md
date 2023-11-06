@@ -6,6 +6,8 @@
 	- les réunions
 	- le contenu libre blockcontent dans les clubs et le district
 - ajout d'une fonction de duplication de message dans le module mailing
+- correction du bug de multiplication des réunions périodiques
+- ajout d'un rechargement de la liste des réunions et des nouvelles quand la liste change (exemple quand on modifie une reunion périodique qui entraine la création automatique quelques secondes après de la réunion, maintenant la liste se rafraichit automatiquement ce qui évite d'avoir à recharger la page plusieurs fois jusqu'à ce qu'elle apparaisse)
 
 ###### 24/10/2023
 - nouveau module de gestion des abonnements membres pour le mailing
