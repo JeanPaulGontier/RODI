@@ -8,6 +8,14 @@
 - ajout d'une fonction de duplication de message dans le module mailing
 - correction du bug de multiplication des réunions périodiques
 - ajout d'un rechargement de la liste des réunions et des nouvelles quand la liste change (exemple quand on modifie une reunion périodique qui entraine la création automatique quelques secondes après de la réunion, maintenant la liste se rafraichit automatiquement ce qui évite d'avoir à recharger la page plusieurs fois jusqu'à ce qu'elle apparaisse)
+- ajout de la gestion de la taille dynamique des images pour les accroches des nouvelles de l'app mobile
+- correction du bug de reautentification sur l'app mobile (perte de l'état loggué et non renouvellement du jeton de sécurité au bout d'une heure)
+- ajouts sur l'app mobile : 
+	- lien rodi platform
+	- lien vers site district
+	- s'il n'y a pas d'image d'accroche dans une nouvelle le logo du district est affiché pour la nouvelle
+	- ajout du nom du club dans le détail de fiche membre
+	- affichage de tous les types de nouvelles publiques dans l'app mobile 
 
 ###### 24/10/2023
 - nouveau module de gestion des abonnements membres pour le mailing

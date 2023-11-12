@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -181,6 +183,29 @@ namespace AIS.controller
             return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
         }
 
+        public Size GetImageSize(string imageUrl)
+        {
+            try { 
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead(imageUrl);
+                Bitmap bitmap; bitmap = new Bitmap(stream);
+
+                stream.Flush();
+                stream.Close();
+                client.Dispose();
+
+                if (bitmap != null && bitmap.Width>1 && bitmap.Height>1)
+                {
+                    return new Size(bitmap.Width, bitmap.Height);
+                }
+            } catch(Exception ex)
+            {
+                Functions.Error(ex);
+            }
+
+            return new Size(0, 0);
+        }
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -191,7 +216,7 @@ namespace AIS.controller
             List<object> news1 = new List<object>();
          
                 
-            news = DataMapping.ListNews_EN(onlyvisible: true, category: "Clubs", tri: "dt asc", tags_included: "Actions", tags_excluded: "", max: 100, where:" dt > getdate()-1");
+            news = DataMapping.ListNews_EN(onlyvisible: true, category: "Clubs", tri: "dt asc", tags_included: "", tags_excluded: "Bulletins", max: 100, where:" dt > getdate()-1");
             foreach (News n in news)
             {
                 if (n.id != null)
@@ -199,17 +224,20 @@ namespace AIS.controller
 
 
                     n.photo = Const.DISTRICT_URL + n.GetPhoto();
+                    Size size = GetImageSize(n.photo);
                     news1.Add(new
                     {
                         id = n.id,
                         dt = n.dt.ToLongDateString(),
                         newsColor = "blue",
-                        category=n.category,
+                        category = n.category,
                         title = n.title,
                         photo = n.photo,
                         tag1 = n.tag1,
-                        clubname=n.club_name
-                    });
+                        clubname = n.club_name,
+                        width = size.Width,
+                        height = size.Height
+                    }) ;
                 }
             }
             news = DataMapping.ListNews_EN(onlyvisible: true, category: "District", tri: "dt asc", tags_excluded: "", max: 100, where: " dt > getdate()-1");
@@ -220,6 +248,7 @@ namespace AIS.controller
 
 
                     n.photo = Const.DISTRICT_URL + n.GetPhoto();
+                    Size size = GetImageSize(n.photo);
                     news1.Add(new
                     {
                         id = n.id,
@@ -228,8 +257,10 @@ namespace AIS.controller
                         category = n.category,
                         title = n.title,
                         photo = n.photo,
-                        tag1 = n.tag1,
-                        clubname = ""
+                        tag1 = n.tag1,  
+                        clubname = "",
+                        width = size.Width,
+                        height = size.Height
                     });
                 }
             }
@@ -246,6 +277,14 @@ namespace AIS.controller
         {
             try
             {
+                string[] auth = Request.GetHttpContext().Request.Headers.GetValues("Authorization");
+                if(auth!=null && auth.Length>0)
+                {
+                    if (auth[0].StartsWith("Bearer") && UserInfo.UserID<0)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                    }
+                }
 
                 List<AIS.Member> list = DataMapping.ListMembers(max: int.MaxValue, onlyvisible: UserInfo.UserID < 0, sort: "surname asc");
                 List<Member> list1 = new List<Member>();

@@ -47,6 +47,7 @@ DesktopModules\AIS\Admin Mailing2\MailingView.html
 DesktopModules\AIS\Admin News Liste\News.html
 DesktopModules\AIS\OuKiKan\Meetings.html
 App_Code\AIS\Meeting.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
 
 
 
