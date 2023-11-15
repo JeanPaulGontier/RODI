@@ -291,12 +291,15 @@ namespace AIS.controller
                 foreach (AIS.Member m in list)
                 {
                     Member member = new Member(m);
-                    if(UserInfo.UserID<0)
-                    {
-                        member = new Member(m.guid,m.name,m.surname,m.club_name);
+                    if(!member.Honorary)
+                    { 
+                        if(UserInfo.UserID<0)
+                        {
+                            member = new Member(m.guid,m.name,m.surname,m.club_name);
 
+                        }
+                        list1.Add(member);
                     }
-                    list1.Add(member);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(list1));
