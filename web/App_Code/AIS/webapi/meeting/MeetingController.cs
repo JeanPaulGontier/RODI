@@ -33,7 +33,7 @@ namespace AIS.controller
         [AllowAnonymous]
         public HttpResponseMessage Test()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, Meeting.DoPeriodics());
+            return Request.CreateResponse(HttpStatusCode.OK, MeetingHelper.DoPeriodics());
             //return Request.CreateResponse(HttpStatusCode.OK, Meeting.DoNotifications());
         }
 

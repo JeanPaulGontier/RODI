@@ -52,7 +52,7 @@ public partial class DesktopModules_Contact : DotNetNuke.Entities.Modules.Portal
 
             if (club != null && !club.email.Equals(""))
             {
-                Functions.SendMail(tbx_mail.Text, club.email, subject, sb.ToString());
+                Functions.SendMail(tbx_mail.Text, club.email, subject, sb.ToString(),tbx_nom.Text.Replace("<","").Replace(">",""));
             }
            
 

@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)
 - nouveau module permettant de recadrer les images dans les blocs (images et texte & accroche des nouvelles) utilisable pour : 
 	- les mailings clubs
@@ -16,6 +18,9 @@
 	- s'il n'y a pas d'image d'accroche dans une nouvelle le logo du district est affiché pour la nouvelle
 	- ajout du nom du club dans le détail de fiche membre
 	- affichage de tous les types de nouvelles publiques dans l'app mobile 
+	- ajout d'un bouton pour accéder à la réinitialisation du mot de passe sur le site de district
+	- ajout d'une information dans le détail d'un membre qui indique qu'il faut être identifié pour voir le contenu détaillé
+- création d'un nouveau module d'envoi de mail qui résout le pb du nom d'expéditeur qui affichait systématiquement le nom du district au lieux du nom du club et pouvait entrainer la confusion auprès des destinataires (avec le module standard du CMS il n'était pas possible de résoudre ce pb) ceci concerne les mailings, contacts mais aussi les notifications de réunions
 
 ###### 24/10/2023
 - nouveau module de gestion des abonnements membres pour le mailing

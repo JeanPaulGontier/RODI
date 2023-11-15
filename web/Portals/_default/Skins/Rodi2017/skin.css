@@ -45,6 +45,11 @@
  */
 /*--------- Global CSS Reset & Standards ----------*/
 
+
+.dnnSendPasswordContent {
+    width:100%!important
+}
+ 
 .list-img {
     display: flex;
     flex-wrap: wrap;

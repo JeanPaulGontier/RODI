@@ -48,8 +48,14 @@ DesktopModules\AIS\Admin News Liste\News.html
 DesktopModules\AIS\OuKiKan\Meetings.html
 App_Code\AIS\Meeting.cs
 App_Code\AIS\webapi\mobile\MobileController.cs
-
-
+AIS\Contact.aspx.cs
+App_Code\AIS\Functions.cs
+App_Code\AIS\Meeting.cs
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\schedulers\MeetingScheduler.cs
+DesktopModules\AIS\Club Contact Form\Contact.ascx.cs
+Portals\_default\Skins\Rodi2017\skin.css
 
 ```
 ```###### 24/10/2023

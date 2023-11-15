@@ -3,7 +3,7 @@
 
 //
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2018
+// Copyright (c) 2012-2023
 // by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -93,6 +93,7 @@ using System.Globalization;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Data;
+
 using Lucene.Net.Analysis;
 //using Org.BouncyCastle.Asn1.Ocsp;
 //using System.Web.Http;
@@ -490,21 +491,20 @@ namespace AIS
         {
             try
             {
-                PortalSettings ps = Globals.GetPortalSettings();
-                Mail.SendEmail(ps.Email, email, subject, body);
+                SendMail("", email, subject, body);
             }
             catch (Exception ee)
             {
                 Error(ee);
             }
         }
-        public static void SendMail(string from, string email, string subject, string body)
+        public static void SendMail(string from, string email, string subject, string body, string sendername="")
         {
             try
             {
                 PortalSettings ps = Globals.GetPortalSettings();
                 string[] att = new string[0];
-                Mail.SendMail(ps.Email, email, "", "", from, DotNetNuke.Services.Mail.MailPriority.Normal, subject, MailFormat.Html, Encoding.UTF8, body,att, "", "", "", "", false);  
+                Yemon.dnn.Functions.SendMail("",email,subject,body,new List<System.Net.Mail.Attachment>(),from,sendername);  
             }
             catch (Exception ee)
             {

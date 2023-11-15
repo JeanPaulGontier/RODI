@@ -30,7 +30,7 @@ public class MeetingScheduler : SchedulerClient
 
             // do some work
             this.ScheduleHistoryItem.AddLogNote("<div>Doing periodics</div>");
-            string result = Meeting.DoPeriodics();
+            string result = MeetingHelper.DoPeriodics();
             this.ScheduleHistoryItem.AddLogNote(result);            
             this.ScheduleHistoryItem.Succeeded = true;
 
@@ -68,7 +68,7 @@ public class MeetingNotifications : SchedulerClient
 
             // do some work           
             this.ScheduleHistoryItem.AddLogNote("<div>Doing notifications</div>");
-            string result = Meeting.DoNotifications();
+            string result = MeetingHelper.DoNotifications();
             this.ScheduleHistoryItem.AddLogNote(result);
             this.ScheduleHistoryItem.Succeeded = true;
 

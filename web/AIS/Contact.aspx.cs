@@ -485,9 +485,7 @@ public partial class AIS_Contact : System.Web.UI.Page
                     message += "<p><pre>"+TXT_Message.Text+"</pre></p>";
                     message +="";
 
-                    //Mail.SendEmail( TXT_Email.Text,ps.Email, member.email, "Contact à partir du site du district", message);
-                    //Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district "+Const.DISTRICT_ID, message);
-                    Yemon.dnn.Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district " + Const.DISTRICT_ID, message);
+                    Functions.SendMail(TXT_Email.Text, member.email, "[RODI] Contact à partir du site du district " + Const.DISTRICT_ID, message, TXT_Nom.Text.Replace("<", "").Replace(">", ""));
                     P1.Visible = false;
                     P2.Visible = true;
                 }
