@@ -242,6 +242,7 @@
         },
         mounted() {
             this.mailing.step = 10;
+            window.scrollTo({ left: window.scrollX, top: 0, behavior: 'instant' });
         }
 
     };
@@ -304,6 +305,7 @@
         mounted() {
             this.mailing.step = 20;
             this.getBlocks();
+            window.scrollTo({ left: window.scrollX, top: 0, behavior: 'instant' });
         }
 
     };
@@ -365,11 +367,7 @@
         },
         mounted() {
             this.mailing.step = 30;
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: "instant",
-            });
+            window.scrollTo({ left: window.scrollX, top: 0, behavior: 'instant' });
             this.getBlocks();
             this.email = DEFAULT_TEST_EMAIL;
         }
@@ -427,7 +425,7 @@
         },
         mounted() {
             this.mailing.step = 40;
-            
+            window.scrollTo({ left: window.scrollX, top: 0, behavior: 'instant' });
         }
     };
 
@@ -590,7 +588,7 @@
 
             this.getMailingDetail();
 
-            window.scrollTo(window.scrollX, 0);
+            window.scrollTo({ left: window.scrollX, top: 0, behavior: 'instant' });
         },
         watch: {
             id: {

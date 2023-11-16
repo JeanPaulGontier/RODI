@@ -18,9 +18,6 @@
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/MenuClub.ascx" %>
 <%@ Register TagPrefix="ais1" TagName="NAME" Src="~/AIS/ClubName.ascx" %>
 
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
 <dnn:STYLES runat="server" ID="StylesIE8" Name="IE8Minus" StyleSheet="css/ie8style.css" Condition="IE 8" UseSkinPath="true" />
@@ -204,7 +201,7 @@
     </div>
   </footer>
   <!--end footer-->
-  <a href="#top" id="top-link" title="Top"> </a> </div>
+<a onclick="window.scroll({top:0,left:0,behavior:'smooth'})" id="top-link" title="Top"> </a> </div>
 <!--#include file="commonparts/StyleCustom.ascx"-->
 <!--#include file="commonparts/AddScripts.ascx"-->
 <dnn:DnnCssInclude runat="server" FilePath="commonparts/PatternHeader.css" PathNameAlias="SkinPath" />

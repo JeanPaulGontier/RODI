@@ -9,6 +9,7 @@
 @import url(js/colorpicker/css/colorpicker.css);
 @import url(css/font-awesome.css);
 
+
 @-webkit-viewport {
     width: device-width;
 }
@@ -49,6 +50,53 @@
 .dnnSendPasswordContent {
     width:100%!important
 }
+
+.partager{
+    display: flex;
+    align-items:center;
+    margin-top:1.5em;
+}
+
+.partager ul{
+    display: flex;
+    flex-wrap:wrap;
+    margin:0;
+}
+.partager li{
+    list-style: none;
+}
+.partager li a {
+    align-items: center;
+    display: flex;
+    height: 30px;
+    place-content: center;
+    width: 40px;
+}
+.partager li > a > span{
+    width:20px;
+    height:20px;
+    text-align:center;
+}
+.partager button {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 0 0 0;
+    border:0;
+    background-color: transparent;
+}
+.partager path {
+    fill: #0067c8;
+    transition: all .3s ease-in-out;
+}
+.partager path:hover {
+    fill: #00246c;
+    transition:all .3s ease-in-out;
+}
+.partager li > a span + span{
+    display:none;
+}
+
  
 .list-img {
     display: flex;

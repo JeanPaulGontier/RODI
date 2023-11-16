@@ -1,4 +1,8 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile
+- suppression de la compatibilité avec les vieux navigateurs
+- correction du bouton remonter vers le haut qui apparait 
+- ajout liens de partage réseaux sociaux dans détail nouvelle club
 
 ###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)

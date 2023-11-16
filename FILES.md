@@ -1,6 +1,20 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
+App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\AIS\Admin Mailing2\MailingEdit.html
+Portals\_default\Skins\Rodi2017\commonparts\AddScripts.ascx
+Portals\_default\Skins\Rodi2017\Club.ascx
+Portals\_default\Skins\Rodi2017\home2021.ascx
+Portals\_default\Skins\Rodi2017\Membres.ascx
+Portals\_default\Skins\Rodi2017\Public.ascx
+Portals\_default\Skins\Rodi2017\Public_2020.ascx
+Portals\_default\Skins\Rodi2017\skin.css
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+
+```
+###### 15/11/2023
+```txt
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 App_Code\AIS\webapi\mailing\MailingController.cs

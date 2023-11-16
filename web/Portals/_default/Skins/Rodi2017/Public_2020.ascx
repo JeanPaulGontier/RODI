@@ -17,13 +17,9 @@
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/Menu.ascx" %>
 
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
-<dnn:STYLES runat="server" ID="StylesIE8" Name="IE8Minus" StyleSheet="css/ie8style.css" Condition="IE 8" UseSkinPath="true" />
 <dnn:Meta runat="server" Name="viewport" Content="width=device-width, minimum-scale=1.0, maximum-scale=2.0" />
 <div id="ControlPanelWrapper">
   <dnn:CONTROLPANEL runat="server" id="cp" IsDockable="True" />
@@ -151,7 +147,7 @@
     </div>
   </footer>
   <!--end footer-->
-  <a href="#top" id="top-link" title="Top"> </a>
+<a onclick="window.scroll({top:0,left:0,behavior:'smooth'})" id="top-link" title="Top"> </a> </div>
 </div>
 <!--#include file="commonparts/StyleCustom.ascx"-->
 <!--#include file="commonparts/AddScripts.ascx"-->
