@@ -16,56 +16,56 @@
 @using AIS;
 @using System.Web.UI.HtmlControls;
 @{
-    var newsID = "" + Request["newsid"];
-    if (newsID == "")
-    {
-        string seo = Request.QueryString["sn"];
-        if (seo != null && seo != "")
+        var newsID = "" + Request["newsid"];
+        if (newsID == "")
         {
-            Club club = DataMapping.GetClubBySeo(seo);
-            if (club == null)
+            string seo = Request.QueryString["sn"];
+            if (seo != null && seo != "")
             {
-                return;
+                Club club = DataMapping.GetClubBySeo(seo);
+                if (club == null)
+                {
+                    return;
+                }
+                List<News> newslist = DataMapping.ListNews(club.cric, tags_included: "Actions", onlyvisible: true, category: "Clubs", sort: "dt desc");
+                if (newslist.Count > 0)
+                {
+                    newsID = newslist[0].id;
+                }
             }
-            List<News> newslist = DataMapping.ListNews(club.cric, tags_included: "Actions", onlyvisible: true, category: "Clubs", sort: "dt desc");
-            if (newslist.Count > 0)
-            {
-                newsID = newslist[0].id;
-            }
+
         }
 
-    }
-
-    News news = null;
-    try
-    {
-        news = DataMapping.GetNews(newsID);
-    }
-    catch
-    {
-
-    }
-    if (news == null)
-    {
-        return;
-    }
-
-    List<Block> blocks = new List<Block>();
-    try
-    {
-        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
-        if (sblocks != "")
+        News news = null;
+        try
         {
-            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+            news = DataMapping.GetNews(newsID);
+        }
+        catch
+        {
+
+        }
+        if (news == null)
+        {
+            return;
         }
 
-    }
-    catch
-    {
+        List<Block> blocks = new List<Block>();
+        try
+        {
+            string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
+            if (sblocks != "")
+            {
+                blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+            }
 
-    }
+        }
+        catch
+        {
 
-    string page_title = news.club_type.ToUpper() + " CLUB " + news.club_name;
+        }
+
+        string page_title = (news.club_type == "rotary" ? news.club_type.ToUpper()+" CLUB ":"") + news.club_name;
 
     <h1>@news.title</h1>
     <h3>@page_title</h3>
@@ -134,48 +134,48 @@
                             </div>
                             break;
                         case "B":
-                            if (p.Title != null)
-                            {
+        if (p.Title != null)
+        {
                                 <h2>@p.Title</h2>
                             }
-                            if (p.Html != null)
-                            {
+        if (p.Html != null)
+        {
                                 <div>@Html.Raw(p.Html)</div>
                             }
-                            if (p.Image != null)
-                            {
+        if (p.Image != null)
+        {
                                 <div>
                                     <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
 
-                            break;
-                        default:
-                            if (p.Title != null)
-                            {
+        break;
+    default:
+        if (p.Title != null)
+        {
                                 <h2>@p.Title</h2>
                             }
-                            if (p.Image != null)
-                            {
+        if (p.Image != null)
+        {
                                 <div>
                                     <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
-                            if (p.Html != null)
-                            {
+        if (p.Html != null)
+        {
                                 <div>@Html.Raw(p.Html)</div>
                             }
-                            break;
-                    }
-                    break;
+        break;
+    }
+    break;
                 case "FileCollection":
-                    Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
-                    if (fc.Title != null)
-                    {
+        Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+        if (fc.Title != null)
+        {
                         <h2>@fc.Title</h2>
                     }
-                    if (fc.Files.Count > 0)
-                    {
+        if (fc.Files.Count > 0)
+        {
                         <ul>
                             @foreach (var f in fc.Files)
                             {
@@ -185,30 +185,30 @@
                     }
                     break;
                 case "ImageCollection":
-                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
-                    if (ic.Title != null)
-                    {
+        Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+        if (ic.Title != null)
+        {
                         <h2>@ic.Title</h2>
                     }
-                    if (ic.Images.Count > 0)
-                    {
-                        foreach (var i in ic.Images)
-                        {
+        if (ic.Images.Count > 0)
+        {
+            foreach (var i in ic.Images)
+            {
                             <span>
                                 <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID" width="100%" title="@i.Name" />
                             </span>
                         }
 
-                    }
-                    break;
-                case "Raw":
-                    Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
+        }
+        break;
+    case "Raw":
+        Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
                     <div>@Html.Raw(r.Html)</div>
                     break;
-                case "Video":
-                    Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
-                    if (v.Title != null)
-                    {
+    case "Video":
+        Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
+        if (v.Title != null)
+        {
                         <h2>@v.Title</h2>
                     }
                     <div id="@("container" + block.Guid)">
@@ -216,22 +216,22 @@
                     </div>
                     <script>
                         if (!resize) {
-                            var resize = [];
-                        }
-                        resize['@block.Guid'] = function() {
+        var resize = [];
+    }
+    resize['@block.Guid'] = function() {
 
 
-                            var ratio = 16 / 9;
-                            const videoIFrame = document.getElementById('video@(block.Guid)');
-                            const videoContainer = document.getElementById('container@(block.Guid)');
-                            var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);
-                            videoIFrame.style.height = Math.ceil(width / ratio) + "px";
-                            videoContainer.style.height = (width / ratio) + "px";
-                        }
+        var ratio = 16 / 9;
+        const videoIFrame = document.getElementById('video@(block.Guid)');
+        const videoContainer = document.getElementById('container@(block.Guid)');
+        var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);
+        videoIFrame.style.height = Math.ceil(width / ratio) + "px";
+        videoContainer.style.height = (width / ratio) + "px";
+    }
                         $(window).resize(resize['@block.Guid']);
                         $(document).ready(function () {
-                            resize['@block.Guid']();
-                        });
+        resize['@block.Guid']();
+    });
 
                     </script>
                     break;
@@ -253,7 +253,7 @@
 
     HtmlMeta metaTag = new HtmlMeta();
     metaTag.Attributes.Add("property", "og:title");
-    metaTag.Content = news.title;
+    metaTag.Content = page_title;
     pageObj.Header.Controls.Add(metaTag);
 
     metaTag = new HtmlMeta();
@@ -271,7 +271,7 @@
     metaTag = new HtmlMeta();
     metaTag.Name = "description";
     metaTag.Attributes.Add("property", "og:description");
-    metaTag.Content = Context.Server.HtmlEncode(news.title);
+    metaTag.Content = Context.Server.HtmlEncode(page_title);
     pageObj.Header.Controls.Add(metaTag);
 
 
@@ -284,7 +284,7 @@
     {
       "@@context": "https://schema.org",
       "@@type": "NewsArticle",
-      "headline": "@news.title",
+      "headline": "@page_title",
       "datePublished": "@news.dt"
     }
 </script>
@@ -320,7 +320,7 @@
                 </button>                
             </li>
             <li>
-                <a aria-label="Partager via e-mail" title="Partager via e-mail" data-share-type="mail" href="mailto:?subject=@(Uri.EscapeUriString(news.title))&body=@(Uri.EscapeUriString(Const.DISTRICT_URL+Request.RawUrl))">
+                <a aria-label="Partager via e-mail" title="Partager via e-mail" data-share-type="mail" href="mailto:?subject=@(Uri.EscapeUriString(page_title))&body=@(Uri.EscapeUriString(Const.DISTRICT_URL+Request.RawUrl))">
                     <span >
                         <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M18.75 4.5H5.25A2.25 2.25 0 0 0 3 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 17.25V6.75a2.25 2.25 0 0 0-2.25-2.25zm-.23 3.6l-6 5.25a1.39 1.39 0 0 1-.52.15 1.39 1.39 0 0 1-.53-.15l-6-5.25a.74.74 0 1 1 .98-1.13l5.47 4.8 5.48-4.8a.73.73 0 0 1 1.05.08.68.68 0 0 1 .07 1.05z"></path>
