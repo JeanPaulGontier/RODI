@@ -36,7 +36,7 @@ public partial class DesktopModules_Contact : DotNetNuke.Entities.Modules.Portal
            
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<html><body>");
+         //   sb.AppendLine("<html><body>");
             sb.AppendLine("<p>Un message vous a été envoyé par : <strong>" + tbx_nom.Text+"</strong></p>");
             sb.AppendLine("<p></p>");
             if(!string.IsNullOrEmpty(tbx_Tel.Text))
@@ -48,7 +48,7 @@ public partial class DesktopModules_Contact : DotNetNuke.Entities.Modules.Portal
             sb.AppendLine("<p></p>");
             sb.AppendLine("<p>Voici son message :</p>");
             sb.AppendLine("<p><pre>" + tbx_message.Text+"</pre></p>");
-            sb.AppendLine("</body></html>");
+         //   sb.AppendLine("</body></html>");
 
             string subject = "Message envoyé depuis la page contact du club " +(club!=null?club.name:"") ;
 
