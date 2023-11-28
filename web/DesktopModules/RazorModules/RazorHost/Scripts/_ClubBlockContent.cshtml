@@ -31,7 +31,8 @@
     PageData["PortalId"] = Dnn.Portal.PortalId;
     PageData["moduleID"] = Dnn.Module.ModuleID;
     PageData["HTML"] = Html;
-    PageData["blocksSuffix"] = Dnn.Module.ModuleID + ":" + cric;
+    string blocksSuffix = Dnn.Module.ModuleID + ":" + cric;
+    PageData["blocksSuffix"] = blocksSuffix;
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
 
@@ -52,8 +53,18 @@
     }
     else
     {
-        @RenderPage("BlocksContent/View.cshtml")
-        if (PageData["blocks"] == null || (PageData["blocks"] as List<Block>).Count==0)
+        List<Block> blocks = new List<Block>();
+        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix);
+        if (sblocks != "")
+        {
+            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+            PageData["blocks"] = blocks;
+        }
+        if (blocks.Count > 0)
+        {
+            @RenderPage("BlocksContent/View.cshtml")
+        }
+        else
         {
             <script>
                 var m = document.getElementsByClassName('DnnModule-@Dnn.Module.ModuleID');
