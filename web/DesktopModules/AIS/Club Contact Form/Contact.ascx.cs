@@ -36,17 +36,19 @@ public partial class DesktopModules_Contact : DotNetNuke.Entities.Modules.Portal
            
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Un message vous a été envoyé par : " + tbx_nom.Text);
-            sb.AppendLine("");
+            sb.AppendLine("<html><head><meta charset=\"UTF-8\"></head><body>");
+            sb.AppendLine("<p>Un message vous a été envoyé par : <strong>" + tbx_nom.Text+"</strong></p>");
+            sb.AppendLine("<p></p>");
             if(!string.IsNullOrEmpty(tbx_Tel.Text))
             {
-                sb.AppendLine("Téléphone : " + tbx_Tel.Text);
-                sb.AppendLine("");
+                sb.AppendLine("<p>Téléphone : <strong>" + tbx_Tel.Text+"</strong></p>");
+                sb.AppendLine("<p></p>");
             }
-            sb.AppendLine("E-mail : " + tbx_mail.Text);
-            sb.AppendLine("");
-            sb.AppendLine("Voici son message :");
-            sb.AppendLine("" + tbx_message.Text);
+            sb.AppendLine("<p>E-mail : <strong>" + tbx_mail.Text+"</strong></p>");
+            sb.AppendLine("<p></p>");
+            sb.AppendLine("<p>Voici son message :</p>");
+            sb.AppendLine("<p><pre>" + tbx_message.Text+"</pre></p>");
+            sb.AppendLine("</body></html>");
 
             string subject = "Message envoyé depuis la page contact du club " +(club!=null?club.name:"") ;
 

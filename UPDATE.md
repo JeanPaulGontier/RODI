@@ -4,6 +4,7 @@
 - correction du bouton remonter vers le haut qui apparait 
 - ajout liens de partage réseaux sociaux dans détail nouvelle club
 - sur la page d'accueil d'un club, les modules de blockcontent se masquent tous seuls s'il n'y a rien dedans
+- le formulaire de contact club envoie maintenant les messages en html pour plus de lisibilité
 
 ###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)

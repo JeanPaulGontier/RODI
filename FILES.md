@@ -14,6 +14,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 DesktopModules\AIS\Club Bureau\Bureau.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\AIS\Club Contact Form\Contact.ascx.cs
 
 ```
 ###### 15/11/2023
