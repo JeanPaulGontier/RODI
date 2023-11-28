@@ -13,6 +13,7 @@
 @using DotNetNuke.Entities.Modules;
 @using DotNetNuke.Security.Permissions;
 @using AIS;
+@using Yemon.dnn.BlocksContent;
 @{
     string seo = Request.QueryString["sn"];
     int cric = 0;
@@ -28,11 +29,12 @@
 
     PageData["appID"] = "app" + Dnn.Module.ModuleID;
     PageData["PortalId"] = Dnn.Portal.PortalId;
-    PageData["moduleID"] = Dnn.Module.ModuleID ;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
     PageData["HTML"] = Html;
-    PageData["blocksSuffix"] = Dnn.Module.ModuleID+":"+cric;
+    PageData["blocksSuffix"] = Dnn.Module.ModuleID + ":" + cric;
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
+
     bool editable = false;
     Member m = Functions.GetCurrentMember();
     var userInfo = UserController.Instance.GetCurrentUserInfo();
@@ -40,6 +42,7 @@
     {
         editable = true;
     }
+
     PageData["editable"] = editable;
 
 
@@ -50,6 +53,15 @@
     else
     {
         @RenderPage("BlocksContent/View.cshtml")
+        if (PageData["blocks"] == null || (PageData["blocks"] as List<Block>).Count==0)
+        {
+            <script>
+                var m = document.getElementsByClassName('DnnModule-@Dnn.Module.ModuleID');
+                if (m && m.length > 0) {
+                    m[0].style.display="none";
+                }
+            </script>
+        }
     }
 }
 

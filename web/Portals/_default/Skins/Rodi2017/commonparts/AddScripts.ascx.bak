@@ -28,4 +28,3 @@
         End If
     End Function
 </script>
-<script type="text/javascript" src="<%= TemplateSourceDirectory %>/js/custom.js"></script>
