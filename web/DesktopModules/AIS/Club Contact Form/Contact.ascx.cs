@@ -36,7 +36,7 @@ public partial class DesktopModules_Contact : DotNetNuke.Entities.Modules.Portal
            
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<html><head><meta charset=\"UTF-8\"></head><body>");
+            sb.AppendLine("<html><body>");
             sb.AppendLine("<p>Un message vous a été envoyé par : <strong>" + tbx_nom.Text+"</strong></p>");
             sb.AppendLine("<p></p>");
             if(!string.IsNullOrEmpty(tbx_Tel.Text))
