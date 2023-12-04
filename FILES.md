@@ -15,6 +15,8 @@ DesktopModules\AIS\Club Bureau\Bureau.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\AIS\Club Contact Form\Contact.ascx.cs
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 
 ```
 ###### 15/11/2023

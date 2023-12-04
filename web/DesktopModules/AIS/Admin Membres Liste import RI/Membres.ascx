@@ -32,7 +32,7 @@
 
 <asp:GridView ID="GridView1"  runat="server" CssClass="table table-striped"  PagerStyle-CssClass="GVPager" AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting" OnRowDataBound="GridView1_RowDataBound">
 <Columns>
-    <asp:BoundField DataField="nim" HeaderText="NIM" SortExpression="nim" />
+    <%--<asp:BoundField DataField="nim" HeaderText="NIM" SortExpression="nim" />--%>
     <asp:BoundField DataField="civility" SortExpression="civility"  />
     <asp:TemplateField ItemStyle-Width="32"> 
         <ItemTemplate>
@@ -45,7 +45,11 @@
     <asp:TemplateField HeaderText="Email" SortExpression="email"  ItemStyle-Width="32">
         <ItemTemplate><a href="mailto:<%# Eval("email") %>"><%# Eval("email") %></a></ItemTemplate>
     </asp:TemplateField>
-    <asp:BoundField DataField="club_name" HeaderText="Club" SortExpression="club_name"  />
+     <asp:TemplateField HeaderText="Fonction" >
+        <ItemTemplate><%# Eval("fonction_rotarienne").ToString().Replace(Environment.NewLine,"<br/>") %></ItemTemplate>
+    </asp:TemplateField>
+   
+    <%--<asp:BoundField DataField="club_name" HeaderText="Club" SortExpression="club_name"  />--%>
     <asp:ButtonField ButtonType="Link" runat="server" Text="Détail" CommandName="detail" />
 </Columns>    
    <PagerSettings Mode="NumericFirstLast" Position="Bottom"  /> 

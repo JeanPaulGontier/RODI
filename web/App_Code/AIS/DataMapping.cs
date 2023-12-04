@@ -87,6 +87,7 @@ using Newtonsoft.Json;
 using System.Web.Security;
 using System.Web;
 using DotNetNuke.Security;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace AIS
 {
@@ -1091,6 +1092,69 @@ namespace AIS
             return affectations;
         }
 
+
+        public static List<Affectation> GetAffectations(int year)
+        {
+            List<Affectation> affectations = new List<Affectation>();
+            SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+            try
+            {
+                DataSet ds = new DataSet();
+
+                conn.Open();
+
+                SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "rya WHERE rotary_year = @year", conn);
+                sql.Parameters.AddWithValue("year", year);
+
+                SqlDataAdapter da = new SqlDataAdapter(sql);
+                da.Fill(ds);
+
+
+
+                foreach (DataRow rd in ds.Tables[0].Rows)
+                {
+                    Affectation affectation = new Affectation();
+                    affectation.function = "" + rd["function"];
+                    affectation.cric = (int)rd["cric"];
+                    affectation.nim = (int)rd["nim"];
+                    affectation.name = "" + rd["name"];
+
+                    affectations.Add(affectation);
+                }
+
+
+
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return affectations;
+        }
+
+        /// <summary>
+        /// Get a string of a member affectations in the current year
+        /// </summary>
+        /// <param name="affectations"></param>
+        /// <param name="nim"></param>
+        /// <returns></returns>
+        public static string GetAffectations(List<Affectation> affectations,int nim)
+        {
+            var aff = affectations.FindAll(m => m.nim == nim);
+            string result = "";
+            foreach(var a in aff)
+            {
+                result += a.function + Environment.NewLine;
+            }
+            if(result.Length>Environment.NewLine.Length)
+                result=result.Substring(0,result.Length-Environment.NewLine.Length);
+            return result;
+        }
+
         #endregion Affectation
 
         #region Functions
@@ -1988,6 +2052,9 @@ namespace AIS
             string[] keywords = criterion.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             try
             {
+
+                List<Affectation> affectations = GetAffectations(Functions.GetRotaryYear());
+
                 DataSet ds = new DataSet();
                 string where = "";
                 if (criterion != "")
@@ -2043,6 +2110,9 @@ namespace AIS
                 //else
                 //{
                 conn.Open();
+
+                
+
                 SqlCommand sql = new SqlCommand(query, conn);
                 if (keywords.Length > 0)
                     for (int ii = 0; ii < keywords.Length; ii++)
@@ -2063,7 +2133,9 @@ namespace AIS
                     {
                         if (court == false)
                         {
-                            list.Add(GetMemberByRD(rd));
+                            var o = GetMemberByRD(rd);
+                            o.fonction_rotarienne = GetAffectations(affectations, o.nim);
+                            list.Add(o);
                         }
                         else
                         {
@@ -2084,7 +2156,7 @@ namespace AIS
                             if (rd["userid"] == DBNull.Value) obj.userid = 0; else obj.userid = (int)rd["userid"];
                             // obj.photo = "" + rd["photo"];
                             // obj.visible = "" + rd["visible"];
-
+                            obj.fonction_rotarienne = GetAffectations(affectations, obj.nim);
                             list.Add(obj);
                         }
                     }
