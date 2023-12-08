@@ -173,6 +173,7 @@
                 }
                 let formData = new FormData();
                 formData.append('file', fichier.file);
+                formData.append('allowPdf2Image', true);
                 if (meta) {
                     for (let p in meta) {
                         formData.append(p, meta[p]);
