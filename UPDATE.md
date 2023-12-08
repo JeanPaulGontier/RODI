@@ -7,6 +7,10 @@
 - le formulaire de contact club envoie maintenant les messages en html pour plus de lisibilité
 - ajout des fonctions rotariennes d'un membres dans la liste des membres du club (suppression du n° nim afin de garder une mise en page correcte)
 - correction d'un bug aléatoire lors de l'envoi final d'un mailing club qui pouvait empecher l'envoi lors du click et revenait à l'écran mailing sans rien faire
+- nouvelles fonctionnalités dans le gestionnaire de blocs (nouvelles, mailing, reunion, accueil club) 
+	- quand on ajoute un nouveau bloc il s'ouvre directement en édition pour enlever une étape (avant il fallait cliquer sur edit sur le bloc ajouté)
+	- dans la liste de fichiers, le click sur le lien ouvre le fichier au lieu de proposer le téléchargement, un nouveau bouton télécharger a été ajouté
+	- quand on doit sélectionner une image et qu'on choisit un PDF, la 1ere page est automatiquement convertie en image (attention, le rendu de l'image peut différer du pdf original, par exemple différence de polices de caractères)
 
 ###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)

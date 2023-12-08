@@ -7,8 +7,10 @@
             <div>
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
                 <div v-if="e.Files" v-for="(i,index) in e.Files">
-                    Nom affiché : <input type="text" v-model="i.Name" /><a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-link" target="_blank">Télécharger</a> <button type="button" v-on:click="deleteFile(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button> <br />
-                  
+                    Nom affiché : <input type="text" v-model="i.Name" style="width:50%" />&nbsp;
+                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID+'&noattach=true'" class="btn btn-link" target="_blank"><i class="fa fa-eye" aria-hidden="true"> Ouvrir</i></a>&nbsp;
+                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-link" target="_blank"><i class="fa fa-download" aria-hidden="true"> Télécharger</i></a>&nbsp;
+                    <button type="button" v-on:click="deleteFile(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button> <br />
                 </div>
                 <br /><br />
                 <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir un fichier</button><br />
@@ -20,8 +22,7 @@
         </div>
         <div v-if="!editing">
             <h2>{{c.Title}}</h2>
-            <div v-if="c.Files" v-for="i in c.Files"><a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-link" target="_blank">{{i.Name}}</a></div>
-          
+            <div v-if="c.Files" v-for="i in c.Files"><a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=' + i.GUID+ '&noattach=true'" class="btn btn-link" target="_blank">{{i.Name}}</a>&nbsp;<a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=' + i.GUID " title="Télécharger" class="btn btn-link" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></div>          
 
         </div>
     </div>
@@ -47,7 +48,7 @@
                     e: {},
                 }
             },
-            methods: {
+            methods: {              
                 edit() {
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
@@ -79,21 +80,20 @@
                         uploaded: false
                     });
                     this.uploadMedia({
-                        type: 'photo'
+                        type: 'document'
                     }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
                 },
                 onDocumentUploaded(r) {
-
-                    console.log('onDocumentUploaded', r);
                     const file = r.data;
                     file.Name = file.Filename;
                     this.e.Files.push(file);
                     this.fichiers = [];
+                    Array.from(this.$refs.document.files).splice(1, 1);
                 },
                 uploadMedia(meta, callbackok, callbackerror) {
                     let fichier = this.fichiers[this.fichiers.length - 1];
                     if (fichier.file.size > 28 * 1024 * 1024) {
-                        alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
                         this.fichiers = [];
                         return;
                     }

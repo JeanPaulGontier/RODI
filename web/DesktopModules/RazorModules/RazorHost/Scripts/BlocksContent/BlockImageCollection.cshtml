@@ -5,16 +5,16 @@
             <span class="bc-label">Titre :</span>
             <input type="text" v-model="e.Title" class="form-control" />
             <div>
-                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
                 <div v-if="e.Images" v-for="(i,index) in e.Images">
-                    <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" width="100%" />
-                    Nom de la photo : <input type="text" v-model="i.Name" />
+                    <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" style="width:100%" />
+                    Nom de la photo : <input type="text" v-model="i.Name" style="width:50%" />
                     <br />
                     <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
                 </div>
                 <br />
                 <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
-                <em class="stxt">Le fichier doit être une photo et ne doit pas dépasser 5 Mo</em><br />
+                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br/>(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
             </div>
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
@@ -95,13 +95,15 @@
                 },
                 uploadMedia(meta, callbackok, callbackerror) {
                     let fichier = this.fichiers[this.fichiers.length - 1];
-                    if (fichier.file.size > 5 * 1024 * 1024) {
-                        alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                    if (fichier.file.size > 28 * 1024 * 1024) {
+                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
                         this.fichiers = [];
                         return;
                     }
                     let formData = new FormData();
                     formData.append('file', fichier.file);
+                    formData.append('allowPdf2Image', true);
+
                     if (meta) {
                         for (let p in meta) {
                             formData.append(p, meta[p]);

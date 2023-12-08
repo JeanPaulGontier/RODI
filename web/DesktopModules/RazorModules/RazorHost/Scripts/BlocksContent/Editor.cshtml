@@ -32,8 +32,6 @@
 <script src="@(libPath)vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script src="@(libPath)vue-advanced-cropper/2.8.8/index.global.js?cdv=@Yemon.dnn.Functions.CDV"></script>
 <link href="@(libPath)vue-advanced-cropper/2.8.8/style.css?cdv=@Yemon.dnn.Functions.CDV" rel="stylesheet" />
-
-
 <link href="~/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css?cdv=@Yemon.dnn.Functions.CDV" rel="stylesheet" />
 
 <style>
@@ -52,7 +50,7 @@
     <blocks-editor v-on:changed="changed" :blocks="blocks" :moduleID="@moduleID" :editable="editable"></blocks-editor>
 </div>
 
-<script src="/DesktopModules/Yemon/API/Services/VueJS"></script>
+<script src="/DesktopModules/Yemon/API/Services/VueJS?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script src="~/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script>
 
@@ -65,7 +63,7 @@
 
         //Yemon = new Yemon(@moduleID, '/DesktopModules/Yemon/API/Services');
         InitApp('@appID',@moduleID,'@blocksSuffix',@editable.ToString().ToLower());
-        });
+    });
         //$("form").keypress(function (e) {
         ////Enter key
         //if (e.which == 13) {

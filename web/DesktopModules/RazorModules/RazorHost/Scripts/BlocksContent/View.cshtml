@@ -127,7 +127,10 @@
                     <ul>
                         @foreach (var f in fc.Files)
                         {
-                            <li><a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID" class="btn btn-link">@f.Name</a></li>
+                            <li>
+                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;                        
+                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
+                            </li>                                                          
                         }
                     </ul>
                 }

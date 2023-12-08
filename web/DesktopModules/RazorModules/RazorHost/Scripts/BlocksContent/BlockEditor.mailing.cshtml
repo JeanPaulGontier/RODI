@@ -73,6 +73,7 @@
 
                 }
                 this.adding = false;
+                this.$nextTick(() => this.editBlock(this.blocks.length - 1));
             },
             editBlock(i) {
                 this.editing = i;

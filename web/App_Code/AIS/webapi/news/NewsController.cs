@@ -5,6 +5,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Web.Api;
+using GemBox.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,8 +75,11 @@ namespace AIS.controller
         [DnnAuthorize]
         public HttpResponseMessage SetMedia()
         {
+
             try
             {
+             
+
                 var httpRequest = HttpContext.Current.Request;
                 if (httpRequest.Files.Count > 0)
                 {
@@ -85,6 +89,38 @@ namespace AIS.controller
                         string type = httpRequest.Form["type"];
                         string folder = "";
                         string name = "";
+                        var postedFile = httpRequest.Files[file];
+                        Yemon.dnn.core.Media media = new Yemon.dnn.core.Media(postedFile);
+                        name = "media:" + media.GUID + ":" + type;
+
+                        if (type == "photo")
+                        {
+                            bool allowPdf2Image = ("" + httpRequest.Form["allowPdf2Image"]).ToLower() == "true";
+                            if (allowPdf2Image && media.MimeType == "application/pdf")
+                            {
+
+
+                                MemoryStream ms = new MemoryStream(media.Content);
+                                ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+                                GemBox.Pdf.PdfDocument pdfDocument = PdfDocument.Load(ms);
+                                GemBox.Pdf.ImageSaveOptions options = new GemBox.Pdf.ImageSaveOptions();
+                                ms = new MemoryStream();
+                                options.Format = GemBox.Pdf.ImageSaveFormat.Jpeg;
+                                options.PageCount = 1;
+                                options.PageNumber = 0;
+                                pdfDocument.Save(ms, options);
+
+                                media.Content = ms.GetBuffer();
+                                media.MimeType = "image/jpeg";
+                                media.ContentSize = media.Content.Length;
+
+                            }
+                            else if (!media.MimeType.Contains("image"))
+                            {
+                                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "Le fichier fourni n'est pas une image " + (allowPdf2Image ? "ni un fichier PDF" : ""));
+                            }
+
+                        }
                         //switch (type)
                         //{
                         //    case "photo":
@@ -98,10 +134,8 @@ namespace AIS.controller
                         //name = ":" + type;
                         //        break;
                         //}
-                        var postedFile = httpRequest.Files[file];
 
-                        Yemon.dnn.core.Media media = new Yemon.dnn.core.Media(postedFile);
-                        name = "media:" + media.GUID + ":" + type;
+
 
 
                         string guid = Yemon.dnn.Helpers.SetMedia(media, "" + UserInfo.UserID, folder: folder, name: name);
