@@ -17,6 +17,17 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\AIS\Club Contact Form\Contact.ascx.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\news\NewsController.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockFileCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+
 
 ```
 ###### 15/11/2023
