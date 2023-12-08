@@ -10,7 +10,7 @@
 - nouvelles fonctionnalités dans le gestionnaire de blocs (nouvelles, mailing, reunion, accueil club) 
 	- quand on ajoute un nouveau bloc il s'ouvre directement en édition pour enlever une étape (avant il fallait cliquer sur edit sur le bloc ajouté)
 	- dans la liste de fichiers, le click sur le lien ouvre le fichier au lieu de proposer le téléchargement, un nouveau bouton télécharger a été ajouté
-	- quand on doit sélectionner une image et qu'on choisit un PDF, la 1ere page est automatiquement convertie en image (attention, le rendu de l'image peut différer du pdf original, par exemple différence de polices de caractères)
+	- quand on doit sélectionner une image et qu'on choisit un PDF, la 1ere page est automatiquement convertie en image (attention, le rendu de l'image peut différer du pdf original, par exemple différence de polices de caractères) ce principe est aussi appliqué aux images d'accroche des nouvelles club et district
 
 ###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)

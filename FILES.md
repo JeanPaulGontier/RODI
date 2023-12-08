@@ -27,6 +27,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
 
 
 ```

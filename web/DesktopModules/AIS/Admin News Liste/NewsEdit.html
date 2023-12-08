@@ -76,9 +76,9 @@
             </div>
             <div class="col-sm-9">
                 <button type="button" class="btn btn-sm btn-primary" v-on:click="addDocument">Choisir une photo</button>
-                <em class="small"> Le fichier doit être une photo et ne doit pas dépasser 5 Mo</em>
+                <em class="small"> Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em>
 
-                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" maxlength="52428" style="display:none">
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
                 <div v-if="news.photo">
                     <div class="bc-photo">
                         <image-editor :image="{GUID:news.photo,Name:'accroche'}" :moduleid="moduleid" v-on:changed="imageChanged($event)"></image-editor>
@@ -166,8 +166,8 @@
             },
             uploadMedia(meta, callbackok, callbackerror) {
                 let fichier = this.fichiers[this.fichiers.length - 1];
-                if (fichier.file.size > 5 * 1024 * 1024) {
-                    alert('Le fichier est trop gros, taille maximum 5Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                if (fichier.file.size > 28 * 1024 * 1024) {
+                    alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
                     this.fichiers = [];
                     return;
                 }
