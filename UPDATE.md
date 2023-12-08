@@ -6,6 +6,7 @@
 - sur la page d'accueil d'un club, les modules de blockcontent se masquent tous seuls s'il n'y a rien dedans
 - le formulaire de contact club envoie maintenant les messages en html pour plus de lisibilité
 - ajout des fonctions rotariennes d'un membres dans la liste des membres du club (suppression du n° nim afin de garder une mise en page correcte)
+- correction d'un bug aléatoire lors de l'envoi final d'un mailing club qui pouvait empecher l'envoi lors du click et revenait à l'écran mailing sans rien faire
 
 ###### 15/11/2023
 - correction d'un bug d'affichage des bloc de type html pour les nouvelles club (exemple : google map ou helloasso)

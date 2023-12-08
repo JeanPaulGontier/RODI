@@ -183,8 +183,8 @@
     <div class="pe-spacer size20"></div>
     <div class="text-center">
         <input type="button" v-on:click="back()" class="btn btn-default" value="Précédent">&nbsp;
-        <button class="btn btn-default" v-if="false">Programmer l'envoi</button>&nbsp;
-        <button class="btn btn-success" v-on:click="send()">Envoyer maintenant</button>
+        <button type="button" class="btn btn-default" v-if="false">Programmer l'envoi</button>&nbsp;
+        <button type="button" class="btn btn-success" v-on:click="send()">Envoyer maintenant</button>
     </div>
 </script>
 
@@ -408,17 +408,18 @@
             back() {
                 this.$router.push('preview');
             },
-            send() {
+            send() {                
                 if (confirm('Voulez vous vraiment envoyer le message aux destinataires ?'))
                 {
+                    
                     _yemon[this.moduleid].service.postData("/SendMailing", {
                         guid: this.id,
                         date: new Date()
-                    }, (r) => {
+                    }, (r) => {                       
                         this.$router.push('/');
 
                     }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data.Message);
+                        toastr["error"]("Erreur : " + e);
                     });
                 }
             }
