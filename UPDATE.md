@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile
 - suppression de la compatibilité avec les vieux navigateurs
 - correction du bouton remonter vers le haut qui apparait 
