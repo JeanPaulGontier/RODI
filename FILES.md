@@ -1,7 +1,10 @@
 ##### Modified files per commit
 ###### en cours
 ```txt
-
+App_Code\ClubRewriter.cs
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
+DesktopModules\AIS\Agenda Gouverneur\Settings.ascx
+DesktopModules\AIS\Agenda Gouverneur\Settings.ascx.cs
 ```
 ###### 12/12/2023
 ```txt

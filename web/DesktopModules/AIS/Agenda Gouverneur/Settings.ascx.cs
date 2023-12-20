@@ -14,7 +14,10 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Settings : ModuleSetti
         {
             username.Text = "" + Settings["username"];
             password.Text = "" + Settings["password"];
-            host.Text = "" + Settings["host"];           
+            host.Text = "" + Settings["host"];
+            int n = 0;
+            int.TryParse("" + Settings["num"], out n);
+            num.Text = "" + n;
         }
     }
 
@@ -24,8 +27,12 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Settings : ModuleSetti
 
         var mc = new ModuleController();
         mc.UpdateModuleSetting(this.ModuleId, "username", "" + username.Text.Trim().ToLower());
-        mc.UpdateModuleSetting(this.ModuleId, "password", "" + password.Text.Trim());
+        if (!password.Text.Trim().ToLower().Equals(""))
+            mc.UpdateModuleSetting(this.ModuleId, "password", "" + password.Text.Trim());
         if (!host.Text.Trim().ToLower().Equals(""))
             mc.UpdateModuleSetting(this.ModuleId, "host", "" + host.Text.Trim().ToLower());
+        int n = 0;
+        int.TryParse("" + num.Text, out n);
+        mc.UpdateModuleSetting(this.ModuleId, "num", "" + n);
     }
 }

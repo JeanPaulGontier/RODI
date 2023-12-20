@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile

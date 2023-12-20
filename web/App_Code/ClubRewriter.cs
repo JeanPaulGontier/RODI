@@ -145,7 +145,15 @@ public class ClubRewriter : IHttpModule
             if (url.StartsWith("/m-"))
             {
                 string link = url.Substring(3);
-                context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"], true);
+                link = "/oukikan?m=" + link + "&";
+                if (request["useridguid"] != null)
+                    link += "userguid=" + request["useridguid"] + "&";
+                if (request["print"] != null)
+                    link += "print=" + request["print"] + "&";
+                if (request["popup"] != null)
+                    link += "popup=" + request["popup"] + "&";
+
+                context.Server.TransferRequest(link, true);
                 return;
             }
             if (url.StartsWith("/mail") && request.RawUrl.Contains("purgednnscripts"))

@@ -10,6 +10,11 @@
     </div>
     <div class="dnnFormItem">
         <div class="dnnLabel">Password : </div>
-        <asp:TextBox runat="server" ID="password" TextMode="Password"></asp:TextBox>
+        <asp:TextBox runat="server" ID="password" TextMode="Password"   ToolTip="Laisser vide pour ne pas le remplacer"></asp:TextBox>
+      
     </div>
+     <div class="dnnFormItem">
+     <div class="dnnLabel">N° calendrier : </div>
+     <asp:TextBox runat="server" ID="num" TextMode="Number"></asp:TextBox>
+ </div>
 </fieldset>

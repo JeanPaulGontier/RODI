@@ -10,6 +10,15 @@ using System.Web.UI.WebControls;
 using Yemon.dnn;
 public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalModuleBase
 {
+    public int CalendarNum {
+        get
+        {
+            int num = 0;
+            int.TryParse("" + Settings["num"], out num);
+            return num;
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         appJS.FilePath = AppJsPath ;      
@@ -53,10 +62,11 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
                
                 o = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(s);
                 var calendars = o.GetValue("calendars");
+                
                 if (calendars.Count<JToken>() > 0)
                 {
-                    string user = calendars[0]["owner"].ToString();
-                    string calendarid = calendars[0]["id"].ToString();
+                    string user = calendars[CalendarNum]["owner"].ToString();
+                    string calendarid = calendars[CalendarNum]["id"].ToString();
                     string startdate = DateTime.Now.AddDays(-1).ToUniversalTime().ToString("yyyy-MM-ddThh:mm:ss");
                     s = client.DownloadString(Settings["host"] + "/api/v1/calendars/events/" + user + "/" + calendarid + "?startDate=" + startdate);
                    
