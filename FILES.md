@@ -5,6 +5,12 @@ App_Code\ClubRewriter.cs
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Agenda Gouverneur\Settings.ascx
 DesktopModules\AIS\Agenda Gouverneur\Settings.ascx.cs
+DesktopModules\AIS\Création Courrier\CreationCourrier.ascx.cs
+DesktopModules\AIS\Création Courrier\Settings.ascx
+DesktopModules\AIS\Création Courrier\Settings.ascx.cs
+DesktopModules\AIS\News Panel\News.ascx
+DesktopModules\AIS\News Panel\News.ascx.cs
+
 ```
 ###### 12/12/2023
 ```txt

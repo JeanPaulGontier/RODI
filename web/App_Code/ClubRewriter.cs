@@ -145,15 +145,7 @@ public class ClubRewriter : IHttpModule
             if (url.StartsWith("/m-"))
             {
                 string link = url.Substring(3);
-                link = "/oukikan?m=" + link + "&";
-                if (request["useridguid"] != null)
-                    link += "userguid=" + request["useridguid"] + "&";
-                if (request["print"] != null)
-                    link += "print=" + request["print"] + "&";
-                if (request["popup"] != null)
-                    link += "popup=" + request["popup"] + "&";
-
-                context.Server.TransferRequest(link, true);
+                context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"], true);
                 return;
             }
             if (url.StartsWith("/mail") && request.RawUrl.Contains("purgednnscripts"))
@@ -250,6 +242,37 @@ public class ClubRewriter : IHttpModule
                                     context.Server.TransferRequest(url, true);
                                     return;
 
+                                }
+                            }
+                            else
+                            {
+                                if (url.Equals("/" + line + "/") || url.Equals("/" + line) )
+                                {
+                                    Club c = DataMapping.GetClubBySeo(line);
+                                    if(c!=null)
+                                    {
+                                        context.Response.Redirect(c.web, true);
+                                        return;
+                                    }
+                                        
+                                    string suburl = url.Substring(line.Length + 1);
+                                    url = Functions.UrlAddParam("/Club/Card?" + request.QueryString, "sn", line);
+                                    context.Server.TransferRequest(url, true);
+                                    return;
+                                }
+                                if (url.StartsWith("/" + line + "/"))
+                                {
+                                    Club c = DataMapping.GetClubBySeo(line);
+                                    if (c != null)
+                                    {
+                                        context.Response.Redirect(c.web, true);
+                                        return;
+                                    }
+                                    string suburl = url.Substring(line.Length + 2);
+
+                                    url = Functions.UrlAddParam("/Club/Card?" + request.QueryString, "sn", line);
+                                    context.Server.TransferRequest(url, true);
+                                    return;
                                 }
                             }
                         }

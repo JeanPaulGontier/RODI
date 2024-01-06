@@ -1,5 +1,9 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)
+- modifications et correction module création lettre du gouverneur
+	- correction pb de création de lettre quand on renommait la lettre (exemple : lettres de la gouverneure), les pages se créaient à la racine au lieu de correctement se créer sous la page principale
+	- ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
+	- ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin des la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile
