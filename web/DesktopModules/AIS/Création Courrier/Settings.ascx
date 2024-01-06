@@ -2,7 +2,7 @@
 
 <table>
     <tr>
-        <td><asp:Label Text="Nom de la page : " runat="server"></asp:Label></td>
+        <td><asp:Label Text="Nom de la page parente : " runat="server"></asp:Label></td>
         <td><asp:TextBox ID="tbx_page" runat="server"></asp:TextBox></td>
     </tr>
     <tr>
@@ -26,7 +26,7 @@
         <td><asp:TextBox ID="tbx_impress" runat="server"></asp:TextBox></td>
     </tr>
     <tr>
-        <td><asp:Label Text="Chemin de redirection : " runat="server"></asp:Label></td>
+        <td><asp:Label Text="Chemin racine de redirection : " runat="server"></asp:Label></td>
         <td><asp:TextBox ID="tbx_redirect" runat="server"></asp:TextBox></td>
     </tr>
     <tr>
@@ -53,4 +53,10 @@
         <td>
             <asp:TextBox ID="tbx_article_detail_droite" runat="server"></asp:TextBox></td>
     </tr>
+    <tr>
+        <td></td>
+        <td>    <asp:Button runat="server" CssClass="dnnSecondaryAction" Text="Paramètres par défaut"  ID="tb_reset" OnClick="tb_reset_Click"/>
+</td>
+    </tr>
 </table>
+

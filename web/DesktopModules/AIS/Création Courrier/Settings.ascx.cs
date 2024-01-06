@@ -17,17 +17,17 @@ public partial class DesktopModules_AIS_Création_Courrier_Settings : ModuleSett
         int portalId = portalSettings.PortalId;
         DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
 
-        tbx_page.Text = "" + objModules.GetModuleSettings(ModuleId)["page"];
-        tbx_role.Text = "" + objModules.GetModuleSettings(ModuleId)["role"];
-        tbx_role_readonly.Text = "" + objModules.GetModuleSettings(ModuleId)["role_readonly"];
-        tbx_path.Text = "" + objModules.GetModuleSettings(ModuleId)["path"];
-        tbx_style.Text = "" + objModules.GetModuleSettings(ModuleId)["style"];
-        tbx_impress.Text = "" + objModules.GetModuleSettings(ModuleId)["impress"];
-        tbx_redirect.Text = "" + objModules.GetModuleSettings(ModuleId)["redirect"];
-        tbx_article_gauche.Text = "" + objModules.GetModuleSettings(ModuleId)["article_gauche"];
-        tbx_article_droite.Text = "" + objModules.GetModuleSettings(ModuleId)["article_droite"];
-        tbx_article_detail_gauche.Text = "" + objModules.GetModuleSettings(ModuleId)["article_detail_gauche"];
-        tbx_article_detail_droite.Text = "" + objModules.GetModuleSettings(ModuleId)["article_detail_droite"];
+        tbx_page.Text = "" + Settings["page"];
+        tbx_role.Text = "" + Settings["role"];
+        tbx_role_readonly.Text = "" + Settings["role_readonly"];
+        tbx_path.Text = "" + Settings["path"];
+        tbx_style.Text = "" + Settings["style"];
+        tbx_impress.Text = "" + Settings["impress"];
+        tbx_redirect.Text = "" + Settings["redirect"];
+        tbx_article_gauche.Text = "" + Settings["article_gauche"];
+        tbx_article_droite.Text = "" + Settings["article_droite"];
+        tbx_article_detail_gauche.Text = "" + Settings["article_detail_gauche"];
+        tbx_article_detail_droite.Text = "" + Settings["article_detail_droite"];
 
     }
 
@@ -50,5 +50,20 @@ public partial class DesktopModules_AIS_Création_Courrier_Settings : ModuleSett
         objModules4.UpdateModuleSetting(ModuleId, "article_detail_gauche", tbx_article_detail_gauche.Text);
         objModules4.UpdateModuleSetting(ModuleId, "article_detail_droite", tbx_article_detail_droite.Text);
 
+    }
+
+    protected void tb_reset_Click(object sender, EventArgs e)
+    {
+        tbx_page.Text = "Lettre du gouverneur";
+        tbx_role.Text = "Rédacteur courrier District";
+        tbx_role_readonly.Text = "Lecteur courrier District";
+        tbx_path.Text = "District/LettreduGouverneur";
+        tbx_style.Text = "MiniNews";
+        tbx_impress.Text = "/lettre-du-gouverneur/print";
+        tbx_redirect.Text = "/lettre-du-gouverneur/";
+        tbx_article_gauche.Text = "FourGrid8";
+        tbx_article_droite.Text = "FourGrid4";
+        tbx_article_detail_gauche.Text = "FourGrid8";
+        tbx_article_detail_droite.Text = "FourGrid4";
     }
 }

@@ -69,6 +69,9 @@ using System.Web.UI.WebControls;
 using AIS;
 using DotNetNuke.Common;
 using System.IO;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Common.Utilities;
 
 
 public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
@@ -138,6 +141,8 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
                 LI_News.Visible = false;
                 btn_add.Visible = false;
                 pnl_add.Visible = true;
+                bt_publish.Visible = PublishVisible();
+                bt_unpublish.Visible = UnPublishVisible();
                 News theNews = DataMapping.GetNews_EN(Request.QueryString["id"]);
                 if (tbx_titre.Text == "")
                     tbx_titre.Text = ""+theNews.title;
@@ -218,9 +223,10 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
             }
             LI_News.DataBind();
             btn_add.Visible = HasPermission() && LI_News.Visible && (Request.QueryString["modif"] == null || Request.QueryString["modif"] == "") && (Request.QueryString["delete"] == null || Request.QueryString["delete"] == "");
+            bt_publish.Visible = PublishVisible();
+            bt_unpublish.Visible = UnPublishVisible();
 
 
-            
         }
 
 
@@ -305,13 +311,35 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         
     }
 
+    public bool IsPublic()
+    {
+        foreach (TabPermissionInfo p in PortalSettings.ActiveTab.TabPermissions)
+        {
+            if(p.PermissionKey == "VIEW" && p.RoleID==-1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public bool PublishVisible()
+    {        
+        return categorie == "courrierdistrict" && LI_News.Visible && HasPermission() && !IsPublic();
+    }
+    public bool UnPublishVisible()
+    {
+        return categorie == "courrierdistrict" && LI_News.Visible && HasPermission() && IsPublic();
+    }
 
     protected void btn_add_Click(object sender, EventArgs e)
     {
+        
         LI_News.Visible = false;
         btn_add.Visible = false;
         pnl_add.Visible = HasPermission();
+        bt_publish.Visible = PublishVisible();
+        bt_unpublish.Visible = UnPublishVisible();
     }
 
     protected void btn_cancel_Click(object sender, EventArgs e)
@@ -319,6 +347,8 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         LI_News.Visible = true;
         btn_add.Visible = HasPermission();
         pnl_add.Visible = false;
+        bt_publish.Visible = PublishVisible();
+        bt_unpublish.Visible = UnPublishVisible();
         Response.Redirect(url);
     }
 
@@ -444,6 +474,8 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         tbx_url.Text = "";
         hfd_image.Value = "";
         LI_News.Visible = true;
+        bt_publish.Visible = PublishVisible();
+        bt_unpublish.Visible = UnPublishVisible();
         Response.Redirect(url);
     }
 
@@ -555,5 +587,82 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         news = AIS.DataMapping.ListNews_EN(tri: "ord", onlyvisible: true, category: categorie, tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
         LI_News.DataSource = news;
         LI_News.DataBind();
+    }
+
+    protected void bt_publish_Click(object sender, EventArgs e)
+    {
+        addViewPermission(PortalSettings.ActiveTab);
+        var subTabs = TabController.GetTabsByParent(TabId, PortalId);
+        foreach (var tab in subTabs)
+        {
+            addViewPermission(tab);
+        }
+        bt_publish.Visible = PublishVisible();
+        bt_unpublish.Visible = UnPublishVisible();
+    }
+
+    protected void bt_unpublish_Click(object sender, EventArgs e)
+    {
+        removeViewPermission(PortalSettings.ActiveTab);
+        var subTabs = TabController.GetTabsByParent(TabId, PortalId);
+        foreach (var tab in subTabs)
+        {
+            removeViewPermission(tab);
+        }
+        bt_publish.Visible = PublishVisible();
+        bt_unpublish.Visible = UnPublishVisible();
+    }
+
+    private void addViewPermission(TabInfo tabInfo)
+    {
+        var permissions = TabPermissionController.GetTabPermissions(tabInfo.TabID,PortalId);
+        bool hasviewpermission = false;
+        foreach(TabPermissionInfo p in permissions)
+        {
+            if(p.PermissionKey=="VIEW" && p.RoleID==-1)
+            {
+                hasviewpermission = true;
+                break;
+            }
+        }
+        if(!hasviewpermission)
+        {
+            foreach (PermissionInfo p in PermissionController.GetPermissionsByTab())
+            {
+                if (p.PermissionKey == "VIEW")
+                {
+
+                    TabPermissionInfo tpi = new TabPermissionInfo();
+                    tpi.PermissionID = p.PermissionID;
+                    tpi.PermissionKey = p.PermissionKey;
+                    tpi.PermissionName = p.PermissionName;
+                    tpi.AllowAccess = true; ;
+                    tpi.RoleID = -1;
+                    tabInfo.TabPermissions.Add(tpi);
+                    break;
+                }
+            }
+        }
+        
+        TabPermissionController.SaveTabPermissions(tabInfo);
+        DataCache.ClearModuleCache(tabInfo.TabID);
+        DataCache.ClearCache();
+    }
+
+    private void removeViewPermission(TabInfo tabInfo)
+    {
+        var permissions = TabPermissionController.GetTabPermissions(tabInfo.TabID,PortalId);
+        for (int i = permissions.Count - 1; i >= 0; i--)
+        {
+            var p = permissions[i];
+            if (p.PermissionKey == "VIEW" && p.RoleID == -1)
+            {
+                tabInfo.TabPermissions.RemoveAt(i);
+
+            }
+        }
+        TabPermissionController.SaveTabPermissions(tabInfo);
+        DataCache.ClearModuleCache(tabInfo.TabID);
+        DataCache.ClearCache();
     }
 }

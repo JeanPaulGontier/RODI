@@ -165,13 +165,13 @@ public partial class DesktopModules_AIS_Création_Courrier_CreationCourrier : Po
             {
                 pnl_page.Visible = false;
                 pnl_error.Visible = true;
-                hlk_pageExists.NavigateUrl = redirect + url + ".aspx";
+                hlk_pageExists.NavigateUrl = redirect + url ;
             }
             else if (!createPage(pageName + "_article", permissions, false, false, pageName))
             {
                 pnl_page.Visible = false;
                 pnl_error.Visible = true;
-                hlk_pageExists.NavigateUrl = redirect + url + "_article.aspx";
+                hlk_pageExists.NavigateUrl = redirect + url + "_article";
             }
             else
             {
@@ -217,10 +217,10 @@ public partial class DesktopModules_AIS_Création_Courrier_CreationCourrier : Po
 
                 pnl_success.Visible = true;
                 pnl_page.Visible = false;
-                String[] splits = pageName.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                pageName = splits[0] + splits[1];
-                Response.Redirect(redirect + pageName + ".aspx");
-
+                //String[] splits = pageName.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                //pageName = splits[0] + splits[1];
+                //Response.Redirect(redirect + pageName + ".aspx");
+                Response.Redirect(redirect+url);
             }
 
 

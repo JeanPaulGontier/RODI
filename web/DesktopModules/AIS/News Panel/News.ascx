@@ -19,7 +19,8 @@
     }
 </style>
 <asp:Repeater runat="server" ID="LI_News" OnItemDataBound="LI_News_ItemDataBound" OnItemCommand="LI_News_ItemCommand" >
-<HeaderTemplate></HeaderTemplate>
+<HeaderTemplate>
+</HeaderTemplate>
 <ItemTemplate>
     <asp:Panel ID="P_Main" runat="server">
         <asp:Panel ID="Panel1" runat="server">
@@ -49,7 +50,10 @@
 
 
 
-<asp:Button runat="server" ID="btn_add" CssClass="btn btn-primary" OnClick="btn_add_Click" Text="Ajouter un article" />
+<asp:Button runat="server" ID="btn_add" CssClass="btn btn-primary" OnClick="btn_add_Click" Text="Ajouter un article" /> &nbsp;
+<asp:Button runat="server" ID="bt_publish" Text="Publier" CssClass="dnnSecondaryAction" OnClick="bt_publish_Click" OnClientClick="if(!confirm('Rendre visible au public ?')) return false" />
+<asp:Button runat="server" ID="bt_unpublish" Text="Dépublier" CssClass="dnnSecondaryAction" OnClick="bt_unpublish_Click" OnClientClick="if(!confirm('Rendre invisible au public ?')) return false" />
+
 <br />
 <asp:Panel ID="pnl_add" runat="server" Visible="false">
     <h1>Ajout ou modification de l'accroche</h1>
