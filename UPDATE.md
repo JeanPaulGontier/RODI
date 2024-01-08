@@ -5,6 +5,7 @@
 	- correction pb de création de lettre quand on renommait la lettre (exemple : lettres de la gouverneure), les pages se créaient à la racine au lieu de correctement se créer sous la page principale
 	- ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
 	- ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin des la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
+- modification de l'affectation du role rotarien Club Executive Secretary/Director(Facultatif) lors de l'import des affectations RI maintenant ce role devient en francais : Secrétaire Exécutif, avant c'était Administration
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile

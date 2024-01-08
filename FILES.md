@@ -10,6 +10,7 @@ DesktopModules\AIS\Création Courrier\Settings.ascx
 DesktopModules\AIS\Création Courrier\Settings.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
 
 ```
 ###### 12/12/2023
