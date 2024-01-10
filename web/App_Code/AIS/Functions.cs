@@ -2255,6 +2255,8 @@ namespace AIS
         /// <returns></returns>
         public static string FormatNumber(string number)
         {
+            if (number == null)
+                return "";
             if (number.Length == 10 && number.StartsWith("0"))
                 return number.Substring(0, 2) + " " +
                     number.Substring(2, 2) + " " +
