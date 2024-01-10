@@ -338,4 +338,30 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
     {
         return Functions.GetSEO(nom);
     }
+
+    protected void BT_CorrigerNumerosTelephones_Click(object sender, EventArgs e)
+    {
+        TXT_Result.Text = "";
+        pnl_success.Visible = false;
+        pnl_error.Visible = false;
+        try
+        {
+            List<Member> members = DataMapping.ListMembers(max: int.MaxValue);
+            foreach (Member m in members)
+            {
+                if (!DataMapping.UpdateMember(m))
+                {
+                    TXT_Result.Text = "Erreur maj membre : " + m.nim + " " + m.name + " " + m.surname; 
+                    throw new Exception("Erreur maj membre : " + m.nim + " " + m.name + " " + m.surname);
+                }
+            }
+            pnl_success.Visible = true;
+        }
+        catch(Exception ex)
+        {
+            pnl_error.Visible = true;
+            
+        }
+        
+    }
 }

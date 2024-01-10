@@ -6,6 +6,15 @@
 	- ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
 	- ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin des la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
 - modification de l'affectation du role rotarien Club Executive Secretary/Director(Facultatif) lors de l'import des affectations RI maintenant ce role devient en francais : Secrétaire Exécutif, avant c'était Administration
+- creation de fonctionnalités de normalisation des n° de téléphones mal formés (surtout issus du RI) afin de rendre les n° utilisables pour une numérotation directe (exemple : dans le cas de l'app mobile)
+	- n° Francais : 0000000000 (sans le +33 devant)
+	- n° Etranger : +0000000000
+	- un n° de moins de 10 chiffres est remplacé par une chaine vide
+    - tout caractère non numérique est supprimé (il y a parfois des adresses emails dans les n° venant du RI !!!)
+- la fonctionnalité de normalization est utilisée dans les cas suivants :
+	- lors de l'import membres district et clubs
+	- par l'écran outil webmaster (pour faire une correction immédiate sur tous les membres)
+	- dans l'écran de saisie / modification des informations d'un membre
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile

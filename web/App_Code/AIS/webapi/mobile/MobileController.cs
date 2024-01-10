@@ -125,7 +125,7 @@ namespace AIS.controller
                     this.Phones.Add(new Phone
                     {
                         Type = "home",
-                        Value = member.telephone,
+                        Value = Functions.FormatNumber(member.telephone),
                         Kind= "phone"
                     });
 
@@ -133,7 +133,7 @@ namespace AIS.controller
                     this.Phones.Add(new Phone
                     {
                         Type = "home",
-                        Value = member.gsm,
+                        Value = Functions.FormatNumber(member.gsm),
                         Kind= "gsm"
                     });
 
@@ -141,7 +141,7 @@ namespace AIS.controller
                     this.Phones.Add(new Phone
                     {
                         Type = "work",
-                        Value = member.professionnal_mobile,
+                        Value = Functions.FormatNumber(member.professionnal_mobile),
                         Kind = "gsm"
                     });
 
@@ -149,7 +149,7 @@ namespace AIS.controller
                     this.Phones.Add(new Phone
                     {
                         Type = "work",
-                        Value = member.professionnal_tel,
+                        Value = Functions.FormatNumber(member.professionnal_tel),
                         Kind="phone"
                     });
 

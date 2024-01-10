@@ -504,7 +504,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                                 sql.Parameters.AddWithValue("@club_name", club.name);
                                 sql.Parameters.AddWithValue("@sexe", row["sexe"]);
                                 sql.Parameters.AddWithValue("@admission", row["admission"]);
-                                sql.Parameters.AddWithValue("@telephone", row["telephone"]);
+                                sql.Parameters.AddWithValue("@telephone", Functions.NormalizeNumber(""+ row["telephone"]));
                                 //sql.Parameters.AddWithValue("@ad1", row["ad1"]);
                                 //sql.Parameters.AddWithValue("@ad2", row["ad2"]);
                                 //sql.Parameters.AddWithValue("@ad3", row["ad3"]);

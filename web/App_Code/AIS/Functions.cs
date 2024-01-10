@@ -2245,5 +2245,146 @@ namespace AIS
 
             
         }
+
+        /// <summary>
+        /// Formatage du numero 
+        /// n° Francais : 00 00 00 00 00
+        /// n° Etranger : +0000000000000
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static string FormatNumber(string number)
+        {
+            if (number.Length == 10 && number.StartsWith("0"))
+                return number.Substring(0, 2) + " " +
+                    number.Substring(2, 2) + " " +
+                    number.Substring(4, 2) + " " +
+                    number.Substring(6, 2) + " " +
+                    number.Substring(8, 2);
+
+            return number;
+        }
+
+
+        /// <summary>
+        /// Corrige et normalize un n° de téléphone venant du RI
+        /// afin que le n° soit utilisable pour une numérotation directe (exemple : APP Mobile)
+        /// n° Francais : 0000000000 (sans le +33 devant)
+        /// n° Etranger : +0000000000
+        /// un n° de moins de 10 chiffres est remplacé par une chaine vide
+        /// tout caractère non numérique est supprimé
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static string NormalizeNumber(string number)
+        {
+            string n = number.Replace(" ", "");
+            n = n.Replace("-", "");
+            n = n.Replace("(", "");
+            n = n.Replace(")", "");
+            n = n.Replace(".", "");
+            n = n.Replace("?", "");
+            n = n.Replace("/", "");
+            if (n.IndexOf(",") > 8)
+                n = n.Substring(0, n.IndexOf(","));
+
+            string n1 = "";
+            if (n.StartsWith("+"))
+                n1 = "+";
+            foreach (char c in n.ToCharArray())
+            {
+                if ("0123456789".Contains(c))
+                    n1 += c;
+            }
+            n = n1;
+
+
+            // correction n° francais
+            bool isfrench = false;
+            if (n.StartsWith("+33"))
+            {
+                n = n.Substring(3);
+                isfrench = true;
+            }
+
+            if (n.StartsWith("33"))
+            {
+                n = n.Substring(2);
+                isfrench = true;
+            }
+
+            if (n.StartsWith("0033"))
+            {
+                n = n.Substring(4);
+                isfrench = true;
+            }
+
+            if (n.StartsWith("33"))
+            {
+                n = n.Substring(2);
+                isfrench = true;
+            }
+
+
+            if (n.StartsWith("+33"))
+            {
+                n = n.Substring(3);
+                isfrench = true;
+            }
+
+
+            // correction n° andorre
+            if (n.StartsWith("37600376"))
+                n = "376" + n.Substring(8);
+            if (n.StartsWith("376376"))
+                n = "376" + n.Substring(6);
+
+            // correction n° belgique
+            if (n.StartsWith("320032"))
+                n = "+32" + n.Substring(6);
+
+
+            if (!n.StartsWith("0") && !n.StartsWith("376") && n.Length == 9)
+            {
+                n = "0" + n;
+                isfrench = true;
+            }
+
+
+            if (!n.StartsWith("0") && !n.StartsWith("+") && n.Length > 10 && !isfrench)
+                n = "+" + n;
+
+            if (n.StartsWith("0") && n.Length > 10)
+                n = n.Substring(0, 10);
+
+            if (!n.StartsWith("0") && n.Length >= 10 && isfrench)
+                n = "0" + n.Substring(0, 9);
+
+            if (n.StartsWith("+") && n.Length == 10 && isfrench)
+                n = "0" + n.Substring(1);
+
+            if (!n.StartsWith("0") && !n.StartsWith("+") && n.Length == 10 && !isfrench)
+                n = "+" + n;
+
+            if (n.StartsWith("376") && n.Length == 9 && !isfrench)
+                n = "+" + n;
+
+
+            if (n.StartsWith("+4141"))
+                n = "+41" + n.Substring(5);
+
+
+
+
+
+
+            if (n.Length < 10)
+                n = "";
+
+            if (n == "0000000000")
+                n = "";
+
+            return n;
+        }
     }
 }

@@ -1241,23 +1241,27 @@ namespace AIS
             if (membre == null)
                 return false;
             if (String.IsNullOrEmpty(membre.email))
-                return false;
+                return true;
             return UpdateOrCreateUser(membre, password);
         }
         public static bool UpdateOrCreateUser(Member membre, string password = "", SqlConnection conn = null,SqlTransaction trans=null) 
         {
             int lastuserid = membre.userid;
-           
-            UserInfo ui = UserController.GetUserById(Globals.GetPortalSettings().PortalId, membre.userid);
-            if(ui==null)
-            { 
-                ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
 
-                // il n'y pas d'email ni utilisateur alors pas de pb
-                if (String.IsNullOrEmpty(membre.email))
-                    return false;
+            //UserInfo ui = UserController.GetUserById(Globals.GetPortalSettings().PortalId, membre.userid);
+            //if(ui==null)
+            //{
 
-            }
+            // il n'y pas d'email ni utilisateur alors pas de pb
+            if (String.IsNullOrEmpty(membre.email))
+                return true;
+
+            UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+
+
+
+
+            //}
             if (ui == null)
             {
                 ui = new UserInfo();
@@ -2708,10 +2712,59 @@ namespace AIS
 
             try
             {
+                m.telephone = Functions.NormalizeNumber(m.telephone);
+                m.fax = Functions.NormalizeNumber(m.fax);
+                m.gsm = Functions.NormalizeNumber(m.gsm);
+                m.professionnal_tel = Functions.NormalizeNumber(m.professionnal_tel);
+                m.professionnal_fax =  Functions.NormalizeNumber(m.professionnal_fax);
+                m.professionnal_mobile = Functions.NormalizeNumber(m.professionnal_mobile);
+
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET [nim]=@nim,[honorary_member]=@honorary_member,[surname]=@surname,[name]=@name,[cric]=@cric,[active_member]=@active_member,[civility]=@civility,[maiden_name]=@maiden_name,[spouse_name]=@spouse_name,[title]=@title,[birth_year]=@birth_year,[year_membership_rotary]=@year_membership_rotary,[email]=@email,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip_code]=@zip_code,[town]=@town,[telephone]=@telephone,[fax]=@fax,[gsm]=@gsm,[country]=@country,[job]=@job,[industry]=@industry,[biography]=@biography,[base_dtupdate]=@base_dtupdate,[professionnal_adress]=@professionnal_adress,[professionnal_zip_code]=@professionnal_zip_code,[professionnal_town]=@professionnal_town,[professionnal_tel]=@professionnal_tel,[professionnal_fax]=@professionnal_fax,[professionnal_mobile]=@professionnal_mobile,[professionnal_email]=@professionnal_email,[retired]=@retired,[removed]=@removed,[district_id]=@district_id,[club_name]=@club_name, [userid]=@userid, [photo]=@photo,[visible]=@visible,[satellite_member]=@satellite_member,[presentation]=@presentation WHERE [id]=@id", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "members SET " +
+                    "[nim]=@nim," +
+                    "[honorary_member]=@honorary_member," +
+                    "[surname]=@surname," +
+                    "[name]=@name," +
+                    "[cric]=@cric," +
+                    "[active_member]=@active_member," +
+                    "[civility]=@civility," +
+                    "[maiden_name]=@maiden_name," +
+                    "[spouse_name]=@spouse_name," +
+                    "[title]=@title," +
+                    "[birth_year]=@birth_year," +
+                    "[year_membership_rotary]=@year_membership_rotary," +
+                    "[email]=@email,[adress_1]=@adress_1," +
+                    "[adress_2]=@adress_2," +
+                    "[adress_3]=@adress_3," +
+                    "[zip_code]=@zip_code," +
+                    "[town]=@town," +
+                    "[telephone]=@telephone," +
+                    "[fax]=@fax," +
+                    "[gsm]=@gsm," +
+                    "[country]=@country," +
+                    "[job]=@job," +
+                    "[industry]=@industry," +
+                    "[biography]=@biography," +
+                    "[base_dtupdate]=@base_dtupdate," +
+                    "[professionnal_adress]=@professionnal_adress," +
+                    "[professionnal_zip_code]=@professionnal_zip_code," +
+                    "[professionnal_town]=@professionnal_town," +
+                    "[professionnal_tel]=@professionnal_tel," +
+                    "[professionnal_fax]=@professionnal_fax," +
+                    "[professionnal_mobile]=@professionnal_mobile," +
+                    "[professionnal_email]=@professionnal_email," +
+                    "[retired]=@retired," +
+                    "[removed]=@removed," +
+                    "[district_id]=@district_id," +
+                    "[club_name]=@club_name, " +
+                    "[userid]=@userid, " +
+                    "[photo]=@photo," +
+                    "[visible]=@visible," +
+                    "[satellite_member]=@satellite_member," +
+                    "[presentation]=@presentation " +
+                    "WHERE [id]=@id", conn, trans);
                 sql.Parameters.AddWithValue("@id", m.id);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
@@ -2748,7 +2801,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@zip_code", m.zip_code);
                 sql.Parameters.AddWithValue("@town", m.town);
                 sql.Parameters.AddWithValue("@telephone", m.telephone);
-                sql.Parameters.AddWithValue("@fax", m.fax);
+                sql.Parameters.AddWithValue("@fax",m.fax);
                 sql.Parameters.AddWithValue("@gsm", m.gsm);
                 sql.Parameters.AddWithValue("@country", m.country);
                 sql.Parameters.AddWithValue("@job", m.job);
@@ -2775,10 +2828,12 @@ namespace AIS
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);
 
-                if(!UpdateOrCreateUser(m,conn:conn,trans:trans))
+                ClearMemberCache();
+                
+                if (!UpdateOrCreateUser(m,conn:conn,trans:trans))
                     throw new Exception("Erreur update membre login : "+m.id);
 
-                ClearMemberCache();
+                
 
                 trans.Commit();
 

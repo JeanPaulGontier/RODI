@@ -11,6 +11,12 @@ DesktopModules\AIS\Création Courrier\Settings.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
+App_Code\AIS\Functions.cs
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
+DesktopModules\AIS\Admin Maj AAR\Control.ascx
+DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
 
 ```
 ###### 12/12/2023
