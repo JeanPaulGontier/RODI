@@ -1,11 +1,29 @@
 ﻿@using AIS;
 @using System.Data;
+<script>
+    function PostBack() {
+        window.location.assign("?paymentselect=" + document.getElementById('paymentselect').selectedIndex)
+    }
+</script>
 @{ 
-    List<Payment> payments = DataMapping.ListPayments(index: 0, max: int.MaxValue, sort:"dt desc");
+    int index = 0;
+    int.TryParse("" + Request["paymentselect"], out index);
+
+    List<Payment> payments = DataMapping.ListPayments(index: 0, top:"top 6", sort:"dt desc");
     if (payments.Count > 0)
     {
-        Payment payment = payments[0];
-        <h3>@payment.title</h3>
+        Payment payment = payments[index];
+        <h3>
+            
+            <select id="paymentselect" class="form-control" onchange="PostBack()">                
+                @{ int i = 0; }
+                @foreach(var p in payments)
+                {
+                <option @Html.Raw(i == index ? "selected" : "")>@p.title</option>
+                    i++;
+                }
+            </select>
+        </h3>
 
 
         DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +

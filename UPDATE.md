@@ -15,6 +15,9 @@
 	- lors de l'import membres district et clubs
 	- par l'écran outil webmaster (pour faire une correction immédiate sur tous les membres)
 	- dans l'écran de saisie / modification des informations d'un membre
+- le module d'affichage de la liste des nouvelles clubs, utilisé dans les sites de clubs, affiche maintenant toutes les nouvelles publiques et plus seulement les actions, il est conseillé de renommer la page "Nos actions" en "Nouvelles", et le titre du module liste en "Nouvelles du club", ceci permet d'étendre les possibilités pour le public et rend plus compréhensible la page 
+- ajout d'un lien vers les sites de club dans la page d'administration district : /Espace-Membre/Administration-District/Gestion/Les-clubs
+- ajout d'un sélection d'appel de cotisation de district : /Espace-Membre/Administration-District/Comptabilité/Suivi-des-factures-des-clubs, permettant de sélectionner un des 6 derniers appels de cotisations de district, donc les 3 dernières années (par défaut, l'écran se positionne sur l'appel le plus récent)
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile

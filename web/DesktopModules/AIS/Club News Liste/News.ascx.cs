@@ -110,7 +110,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             if (seo != null && seo != "")
             {
                 Club club = DataMapping.GetClubBySeo(seo);
-                List<News> newslist = DataMapping.ListNews(club.cric, onlyvisible: true, category: "Clubs", tags_included:"Actions", sort: "dt desc") ;
+                List<News> newslist = DataMapping.ListNews(club.cric, onlyvisible: true, category: "Clubs", sort: "dt desc") ;
                 if (newslist.Count > 0)
                 {
                     newsid = newslist[0].id;
@@ -127,7 +127,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             
 
 
-            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, tags_included: "Actions", category: "Clubs", tri: "dt desc");
+            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, category: "Clubs", tri: "dt desc");
 
 
         

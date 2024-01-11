@@ -17,6 +17,9 @@ DesktopModules\AIS\Admin Import RI\Import RI.ascx.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\AIS\Club News Liste\News.ascx.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
 
 ```
 ###### 12/12/2023

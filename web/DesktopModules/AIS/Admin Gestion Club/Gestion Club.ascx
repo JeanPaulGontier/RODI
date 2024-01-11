@@ -25,7 +25,7 @@
             </asp:TemplateField>
              <asp:TemplateField HeaderText="Présentation">
                 <ItemTemplate>
-                    <asp:Label ID="lbl_seo_mode" runat="server" Text='<%# GetPresentation(""+Eval("seo_mode")) %>'></asp:Label>
+                    <asp:HyperLink ID="lbl_seo_mode" runat="server" Text='<%# GetPresentation(""+Eval("seo_mode")) %>' NavigateUrl='<%# "/"+Eval("seo") %>' Target="_blank" ToolTip="Voir le site"></asp:HyperLink>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
