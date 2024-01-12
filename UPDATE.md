@@ -18,6 +18,7 @@
 - le module d'affichage de la liste des nouvelles clubs, utilisé dans les sites de clubs, affiche maintenant toutes les nouvelles publiques et plus seulement les actions, il est conseillé de renommer la page "Nos actions" en "Nouvelles", et le titre du module liste en "Nouvelles du club", ceci permet d'étendre les possibilités pour le public et rend plus compréhensible la page 
 - ajout d'un lien vers les sites de club dans la page d'administration district : /Espace-Membre/Administration-District/Gestion/Les-clubs
 - ajout d'un sélection d'appel de cotisation de district : /Espace-Membre/Administration-District/Comptabilité/Suivi-des-factures-des-clubs, permettant de sélectionner un des 6 derniers appels de cotisations de district, donc les 3 dernières années (par défaut, l'écran se positionne sur l'appel le plus récent)
+- correction d'un pb de lien dans les nouvelles pour les partages réseaux sociaux quand le site de club est sur un nom de domaine indépendant du district, et ajout d'information dans les paramètres schema.org pour un meilleur référencement
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile
