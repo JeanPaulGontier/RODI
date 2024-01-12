@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2023
-// by SAS AIS : https://www.aisdev.net
+// Copyright (c) 2012-2024
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -533,7 +533,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     /// <param name="e"></param>
     protected void BT_Export_Orders_Click(object sender, EventArgs e)
     {
-        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no facture',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
             "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
             "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg,"+
             "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
@@ -541,7 +541,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des factures au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -558,7 +558,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "List des transactions au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des transactions au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -688,7 +688,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
     protected void BT_Export_Only_Transfers_Click(object sender, EventArgs e)
     {
-        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
+        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no facture',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
            "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
            "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
            "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
@@ -696,7 +696,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes par prélèvement au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
+        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des factures par prélèvement au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);

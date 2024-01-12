@@ -15,12 +15,12 @@ public partial class AIS_CommandeView : System.Web.UI.Page
             string id = "" + Request.QueryString["id"];
 
             if (id == "")
-                 throw new Exception("La commande est introuvable sans parametre id (querystring : "+Request.QueryString+")");
+                 throw new Exception("La facture est introuvable sans parametre id (querystring : "+Request.QueryString+")");
 
            
             Order order = DataMapping.GetOrderByGuid(id);
             if (order == null)
-                throw new Exception("La commande "+id+" est introuvable");
+                throw new Exception("La facture "+id+" est introuvable");
 
             Payment payment = DataMapping.GetPayment(order.id_payment);
             if(payment==null)
@@ -34,7 +34,7 @@ public partial class AIS_CommandeView : System.Web.UI.Page
             if (!payment.model.Equals(""))
                 model = payment.model;
 
-            Media media = DataMapping.ProductionDocumentOrderPdf(model, order, payment, club, Functions.ClearFileName("Commande "+order.id+".pdf"));
+            Media media = DataMapping.ProductionDocumentOrderPdf(model, order, payment, club, Functions.ClearFileName("Facture."+order.id+".pdf"));
 
 
             Response.Buffer = true;
