@@ -310,11 +310,11 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_Adresse.Text += "<br/>" + membre.zip_code + " " + membre.town;
                     LBL_Email.Text = membre.email;
                     LBL_Emailt.Visible = membre.email != "";
-                    LBL_Tel.Text = membre.telephone;
+                    LBL_Tel.Text = Functions.FormatNumber(membre.telephone);
                     LBL_Telt.Visible = membre.telephone != "";
-                    LBL_Gsm.Text = membre.gsm;
+                    LBL_Gsm.Text = Functions.FormatNumber(membre.gsm);
                     LBL_GSMt.Visible = membre.gsm != "";
-                    LBL_Fax.Text = membre.fax;
+                    LBL_Fax.Text = Functions.FormatNumber(membre.fax);
                     LBL_Faxt.Visible = membre.fax != "";
 
                     Panel_Coord_Pro.Visible = (membre.professionnal_adress + membre.professionnal_zip_code + membre.professionnal_town + membre.professionnal_tel + membre.professionnal_fax + membre.professionnal_mobile).Trim() != "";
@@ -322,11 +322,11 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_Adresse_Pro.Text += "<br/>" + membre.professionnal_zip_code + " " + membre.professionnal_town;
                     LBL_Email_Pro.Text = membre.professionnal_email;
                     LBL_Email_Prot.Visible = membre.professionnal_email != "";
-                    LBL_Tel_Pro.Text = membre.professionnal_tel;
+                    LBL_Tel_Pro.Text = Functions.FormatNumber(membre.professionnal_tel);
                     LBL_Tel_Prot.Visible = membre.professionnal_tel != "";
-                    LBL_FAX_Pro.Text = membre.professionnal_fax;
+                    LBL_FAX_Pro.Text = Functions.FormatNumber(membre.professionnal_fax);
                     LBL_Fax_Prot.Visible = membre.professionnal_fax != "";
-                    LBL_GSM_Pro.Text = membre.professionnal_mobile;
+                    LBL_GSM_Pro.Text = Functions.FormatNumber(membre.professionnal_mobile);
                     LBL_GSM_Prot.Visible = membre.professionnal_mobile != "";
 
 

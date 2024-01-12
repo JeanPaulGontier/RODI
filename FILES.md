@@ -21,6 +21,8 @@ DesktopModules\AIS\Club News Liste\News.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+AIS\Contact.aspx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 
 ```
 ###### 12/12/2023

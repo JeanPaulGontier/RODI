@@ -5,6 +5,7 @@
 	- correction pb de création de lettre quand on renommait la lettre (exemple : lettres de la gouverneure), les pages se créaient à la racine au lieu de correctement se créer sous la page principale
 	- ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
 	- ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin des la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
+	- l'affichage dans l'annuaire des membres tient compte du formatage des n°
 - modification de l'affectation du role rotarien Club Executive Secretary/Director(Facultatif) lors de l'import des affectations RI maintenant ce role devient en francais : Secrétaire Exécutif, avant c'était Administration
 - creation de fonctionnalités de normalisation des n° de téléphones mal formés (surtout issus du RI) afin de rendre les n° utilisables pour une numérotation directe (exemple : dans le cas de l'app mobile)
 	- n° Francais : 0000000000 (sans le +33 devant)

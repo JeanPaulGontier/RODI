@@ -200,7 +200,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.professionnal_tel;
+                            l.Text = Functions.FormatNumber(member.professionnal_tel);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
@@ -220,7 +220,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.professionnal_fax;
+                            l.Text = Functions.FormatNumber(member.professionnal_fax);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
@@ -240,7 +240,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.professionnal_mobile;
+                            l.Text = Functions.FormatNumber(member.professionnal_mobile);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
@@ -385,7 +385,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.telephone;
+                            l.Text = Functions.FormatNumber(member.telephone);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
@@ -405,7 +405,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.fax;
+                            l.Text = Functions.FormatNumber(member.fax);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
@@ -425,7 +425,7 @@ public partial class AIS_Contact : System.Web.UI.Page
 
                             TableCell td = new TableCell();
                             Label l = new Label();
-                            l.Text = member.gsm;
+                            l.Text = Functions.FormatNumber(member.gsm);
                             td.Controls.Add(l);
                             tr.Controls.Add(td);
 
