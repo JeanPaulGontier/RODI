@@ -12,7 +12,7 @@
             <span>Année rotarienne : <asp:RadioButtonList AutoPostBack="true" RepeatLayout="Flow" OnSelectedIndexChanged="rbl_rotaryYear_SelectedIndexChanged" ID="rbl_rotaryYear" runat="server" RepeatDirection="Horizontal" ></asp:RadioButtonList></span>
         </div>
         <div class="col-sm-3">
-            <p>
+            
                 <script>
                     function uploadForImport() {
                         if (document.getElementById('<%=FL_Import.ClientID%>').files.length > 0) {
@@ -21,9 +21,10 @@
                     }
                 </script>
                 <asp:FileUpload runat="server" id="FL_Import" style="display:none" AllowMultiple="false" onchange="uploadForImport()" />
-                <button type="button" class="btn btn-xs btn-default" Text="Importer en Excel" onclick="document.getElementById('<%=FL_Import.ClientID%>').click()">Importer en Excel</button>             
-                <asp:Button ID="BT_Export_XLS" runat="server" CssClass="btn btn-xs btn-default" Text="Exporter en Excel" OnClick="BT_Export_XLS_Click" />
-            </p>
+                <p><button type="button" class="btn btn-xs btn-default" Text="Importer en Excel" onclick="document.getElementById('<%=FL_Import.ClientID%>').click()">Importer en Excel</button> &nbsp;     
+                <asp:Button ID="BT_Export_XLS" runat="server" CssClass="btn btn-xs btn-default" Text="Exporter en Excel" OnClick="BT_Export_XLS_Click" /></p>
+                <p><asp:Button ID="BT_Affectations_Roles" runat="server" CssClass="btn btn-xs btn-default" OnClick="BT_Affectations_Roles_Click" /></p>
+            
         </div>
     </div>
     <asp:Panel runat="server" ID="P_Import" Visible="false"><asp:Literal runat="server" ID="TXT_Import"></asp:Literal></asp:Panel>

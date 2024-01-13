@@ -71,6 +71,7 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
+using FiftyOne.Foundation.Mobile.Detection.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -88,6 +89,9 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
+        BT_Affectations_Roles.Text = "MAJ Rôles année rotarienne " + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1);
+
         P_Import.Visible = false;
         TXT_Import.Text = "";
         P_Import.CssClass = "alert alert-success";
@@ -255,14 +259,11 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         BindRBL(rbl_rotaryYear.SelectedIndex<0? 0 : rbl_rotaryYear.SelectedIndex);
 
         if (section == null || section == "")
-            section = "Gouverneur";
+            section = "éGouverneur";
 
 
         BindDDLSection();
-        
-
-       
-
+   
 
         RefreshList_Grid();
     }
@@ -579,8 +580,8 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
         List<DataTable> liste = new List<DataTable>();
-        DataSet ds_ = DataMapping.ExecSql("SELECT section as Section, surname as Nom, name as Prénom, job as Poste, role as Role, [description] as 'Description',nim as NIM,  cric as Cric, club as 'Nom du club', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
-        liste.Add(ds_.Tables[0]);
+        var ds = DataMapping.ExecSql("SELECT section as Section, surname as Nom, name as Prénom, job as Poste, role as Role, [description] as 'Description',nim as NIM,  cric as Cric, club as 'Nom du club', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
+        liste.Add(ds.Tables[0]);
 
         Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
@@ -593,5 +594,53 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
 
 
+
+    protected void BT_Affectations_Roles_Click(object sender, EventArgs e)
+    {
+        string[] sections = ("" + Settings["sections"]).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+        var year = Functions.GetRotaryYear();
+        
+        RoleController roleController = new RoleController();
+        List<string> subroles = new List<string>();
+        foreach (string s in sections)
+        {
+            RoleInfo roleInfo = roleController.GetRoleByName(PortalId, s);
+            if (roleInfo != null)
+            {
+                var users = roleController.GetUsersByRole(PortalId, roleInfo.RoleName);
+                foreach (var user in users)
+                {
+                    RoleController.DeleteUserRole(user, roleInfo, PortalSettings, false);
+                }
+            }
+
+            var dryas = DataMapping.GetListDRYA(Functions.GetRotaryYear(), s);
+            foreach (var d in dryas)
+            {
+                if (!String.IsNullOrEmpty(d.role) && !subroles.Contains(d.role))
+                {
+                    roleInfo = roleController.GetRoleByName(PortalId, d.role);
+                    if (roleInfo != null)
+                    {
+                        subroles.Add(roleInfo.RoleName);
+                        var users = roleController.GetUsersByRole(PortalId, roleInfo.RoleName);
+                        foreach (var user in users)
+                        {
+                            RoleController.DeleteUserRole(user, roleInfo, PortalSettings, false);
+                        }
+                    }
+                }
+
+            }
+
+            DataMapping.UpdateDRYARoles(s);
+        }
+
+        P_Import.Visible = true;
+        TXT_Import.Text = "Mise à jour des rôles effectuée";
+        P_Import.CssClass = "alert alert-success";
+    }
+    
 }
  
