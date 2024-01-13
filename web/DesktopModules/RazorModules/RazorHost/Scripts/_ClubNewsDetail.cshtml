@@ -1,4 +1,4 @@
-﻿@using System.Collections;
+@using System.Collections;
 @using System.IO;
 @using System.Collections.Generic;
 @using System.Data.SqlClient;
@@ -13,7 +13,6 @@
 @using DotNetNuke.Entities.Modules;
 @using DotNetNuke.Security.Permissions;
 @using Yemon.dnn.BlocksContent;
-@using AIS;
 @using System.Web.UI.HtmlControls;
 @{
     var HOST = Yemon.dnn.Functions.GetHostUrl(HttpContext.Current.Request);
@@ -23,12 +22,12 @@
         string seo = Request.QueryString["sn"];
         if (seo != null && seo != "")
         {
-            Club club = DataMapping.GetClubBySeo(seo);
+            AIS.Club club = AIS.DataMapping.GetClubBySeo(seo);
             if (club == null)
             {
                 return;
             }
-            List<News> newslist = DataMapping.ListNews(club.cric, tags_included: "Actions", onlyvisible: true, category: "Clubs", sort: "dt desc");
+            List<AIS.News> newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "Actions", onlyvisible: true, category: "Clubs", sort: "dt desc");
             if (newslist.Count > 0)
             {
                 newsID = newslist[0].id;
@@ -37,10 +36,10 @@
 
     }
 
-    News news = null;
+    AIS.News news = null;
     try
     {
-        news = DataMapping.GetNews(newsID);
+        news = AIS.DataMapping.GetNews(newsID);
     }
     catch
     {
@@ -383,6 +382,7 @@
         </ul>
     </div>
 }
+
 
 
 

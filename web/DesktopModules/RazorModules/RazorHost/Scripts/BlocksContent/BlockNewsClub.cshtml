@@ -1,0 +1,127 @@
+﻿<script type="text/x-template" id="blocknewsclub-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Nb de nouvelles à afficher :</span>
+            <select v-model="e.NbToShow" class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            <span class="bc-label">Nouvelles à afficher :</span>
+            <select v-model="e.DateBehavior" class="form-control">
+                <option value="future">Futures</option>
+                <option value="past">Passées</option>
+            </select>
+            <span class="bc-label">Afficher l'image d'accroche :</span>
+            <select v-model="e.ShowImage" class="form-control">
+                <option :value=true>Oui</option>
+                <option :value=false>Non</option>
+            </select>
+            <span class="bc-label">Afficher le titre :</span>
+            <select v-model="e.ShowTitle" class="form-control">
+                <option :value=true>Oui</option>
+                <option :value=false>Non</option>
+            </select>
+            <span class="bc-label">Afficher la date :</span>
+            <select v-model="e.ShowDate" class="form-control">
+                <option :value=true>Oui</option>
+                <option :value=false>Non</option>
+            </select>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing">
+            <h3>{{c.Title}}</h3>
+            <div>
+                Afficher {{c.NbToShow}} nouvelle{{c.NbToShow>1?'s':''}} ... {{c.DateBehavior=='future'?'futures':'passées'}}
+            </div>
+            <div v-if="c.ShowImage">
+                Afficher les images d'accroches
+            </div>
+            <div v-if="!c.ShowImage">
+                Ne pas afficher les images d'accroches
+            </div>
+            <div v-if="c.ShowTitle">
+                Afficher les titres
+            </div>
+            <div v-if="!c.ShowTitle">
+                Ne pas afficher les titres
+            </div>
+            <div v-if="c.ShowDate">
+                Afficher les dates
+            </div>
+            <div v-if="!c.ShowDate">
+                Ne pas afficher les dates
+            </div>
+
+
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockNewsClub == 'undefined') {
+        BlockNewsClub = {
+            template: '#blocknewsclub-template',
+            name: 'BlockNewsClub',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {
+
+                    },
+                    fichiers: [],
+                    e: {
+
+                    },
+
+
+
+                }
+            },
+            components: {
+
+            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+              
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+               
+            },
+            mounted() {
+                this.c = this.content;
+            },
+            unmounted() {
+            },
+        }
+    }
+
+</script>

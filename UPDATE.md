@@ -31,6 +31,13 @@
 
 MAJ BDD : ALTER TABLE ais_drya ADD role NVARCHAR(500) NULL 
 
+- Nouveau type de bloc pour les pages d'accueil des sites de clubs
+	- permet de visualiser les nouvelles passées ou futures
+	- possibilité de combiner les paramètres (afficher la photo, juste le titre)
+	- le bloc disparait s'il n'y a pas de nouvelle pour les critères
+	- ATTENTION : il faut que la page qui affiche les nouvelles s'appelle bien /Nouvelles et pas /Nos Actions
+	
+
 
 
 ###### 12/12/2023

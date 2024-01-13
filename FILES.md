@@ -31,7 +31,13 @@ DesktopModules\AIS\Admin District Board\District Board.ascx.cs
 DesktopModules\AIS\District Board View\District Board View.ascx.cs
 DesktopModules\AIS\Menu\Menu.ascx
 DesktopModules\AIS\Menu\Menu.ascx.cs
-
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsClub.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
+App_Code\AIS\Block.cs
 ```
 ###### 12/12/2023
 ```txt
