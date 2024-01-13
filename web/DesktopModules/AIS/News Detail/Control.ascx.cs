@@ -71,7 +71,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
-using Yemon.dnn.BlocksContent;
+
 using System.Text;
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase

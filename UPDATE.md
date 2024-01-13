@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 13/01/2024
 - ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)
 - quand on crée un site de club avec domaine sur RODI, le mini site est désactivé, c'est la carte de club qui prend le pas, ce qui évite un double référencement du site : nom de domaine district/club et le domaine du club, pour activer la redirection du district /nomclub vers le domaine du club il faut ajouter l'url du site dans site web externe ce qui permet alors de rediriger vers le site du club et plus vers la carte de visite
 - modifications et correction module création lettre du gouverneur
@@ -37,7 +39,6 @@ MAJ BDD : ALTER TABLE ais_drya ADD role NVARCHAR(500) NULL
 	- le bloc disparait s'il n'y a pas de nouvelle pour les critères
 	- ATTENTION : il faut que la page qui affiche les nouvelles s'appelle bien /Nouvelles et pas /Nos Actions
 	
-
 
 
 ###### 12/12/2023
