@@ -146,6 +146,8 @@ namespace AIS
 
         #region Payments / Orders
 
+        
+
         /// <summary>
         /// Create a payments list
         /// </summary>
@@ -7783,7 +7785,7 @@ namespace AIS
         /// </summary>
         /// <param name="drya"></param>
         /// <returns></returns>
-        public static int InsertDRYA(DRYA drya)
+        public static int InsertDRYA(DRYA drya,bool updateRoles=true)
         {
             SqlConnection conn = new SqlConnection(Config.GetConnectionString());
             SqlTransaction trans = null;
@@ -7796,32 +7798,32 @@ namespace AIS
 
                 if (drya.id != 0)
                 {
-                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "drya SET [nim]=@nim,[surname]=@surname, [name]=@name, [job]=@job, [description]=@description, [cric]=@cric,[club]=@club, [section]=@section, [rank]=@rank, [rotary_year]=@rotary_year WHERE [id]=@id", conn, trans);
+                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "drya SET [nim]=@nim,[surname]=@surname, [name]=@name, [job]=@job,[role]=@role, [description]=@description, [cric]=@cric,[club]=@club, [section]=@section, [rank]=@rank, [rotary_year]=@rotary_year WHERE [id]=@id", conn, trans);
                     sql.Parameters.AddWithValue("@id", drya.id);
-                    sql.Parameters.AddWithValue("@rank", drya.rank);
+                   
 
                 }
                 else if (drya.id == 0 && drya.rank != 0)
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "drya ([nim],[surname],[name],[job], [description], [cric],[club],[section], [rank], [rotary_year]) VALUES (@nim,@surname,@name,@job,@description,@cric,@club,@section,@rank,@rotary_year)", conn, trans);
-                    sql.Parameters.AddWithValue("@rank", drya.rank);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "drya ([nim],[surname],[name],[job],[role], [description], [cric],[club],[section], [rank], [rotary_year]) VALUES (@nim,@surname,@name,@job,@role,@description,@cric,@club,@section,@rank,@rotary_year)", conn, trans);                   
 
                 }
                 else
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "drya ([nim],[surname],[name],[job],[description],[cric],[club],[section],[rank],[rotary_year]) VALUES (@nim,@surname,@name,@job,@description@cric,@club,@section,1000000000,@rotary_year)", conn, trans);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "drya ([nim],[surname],[name],[job],[role],[description],[cric],[club],[section],[rank],[rotary_year]) VALUES (@nim,@surname,@name,@job,@role,@description,@cric,@club,@section,@rank,@rotary_year)", conn, trans);
                 }
 
                 sql.Parameters.AddWithValue("@nim", drya.nim);
                 sql.Parameters.AddWithValue("@surname", drya.surname);
                 sql.Parameters.AddWithValue("@name", drya.name);
                 sql.Parameters.AddWithValue("@job", drya.job);
+                sql.Parameters.AddWithValue("@role", drya.role);
                 sql.Parameters.AddWithValue("@description", drya.description);
                 sql.Parameters.AddWithValue("@cric", drya.cric);
                 sql.Parameters.AddWithValue("@club", drya.club);
                 sql.Parameters.AddWithValue("@section", drya.section);
                 sql.Parameters.AddWithValue("@rotary_year", drya.rotary_year);
-
+                sql.Parameters.AddWithValue("@rank", drya.rank);
 
 
 
@@ -7844,6 +7846,9 @@ namespace AIS
 
 
                 UpdateDRYARank(drya.rotary_year, drya.section);
+
+                if(updateRoles)
+                    UpdateDRYARoles(drya.section);
 
                 return id;
 
@@ -7868,61 +7873,27 @@ namespace AIS
         /// <summary>
         /// Get a list of DRYAs
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="year"></param>
+        /// <param name="section"></param>
         /// <returns></returns>
-        public static List<DRYA> GetListDRYA(string query)
+        public static List<DRYA> GetListDRYA(int year,string section)
         {
-            List<DRYA> architecture = null;
-            SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-            try
+            List<DRYA> dryas = null;
+             try
             {
-                conn.Open();
-                SqlCommand sql;
-                if (!string.IsNullOrEmpty(query))
-                {
-                    sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "drya WHERE " + query + " ORDER BY rank, id", conn);
-                }
-                else
-                {
-                    sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "drya ORDER BY rank, id", conn);
-                }
+               
+                SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "drya WHERE rotary_year=@year AND section=@section ORDER BY rank, id");
+                sql.Parameters.AddWithValue("year", year);
+                sql.Parameters.AddWithValue("section", section);
 
-                SqlDataAdapter da = new SqlDataAdapter(sql);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                {
-                    architecture = new List<DRYA>();
-                    foreach (DataRow rd in ds.Tables[0].Rows)
-                    {
-                        DRYA archi = new DRYA();
-
-                        if (rd["id"] != DBNull.Value) archi.id = (int)rd["id"];
-                        if (rd["nim"] != DBNull.Value) archi.nim = (int)rd["nim"];
-                        if (rd["surname"] != DBNull.Value) archi.surname = (string)rd["surname"];
-                        if (rd["name"] != DBNull.Value) archi.name = (string)rd["name"];
-                        if (rd["job"] != DBNull.Value) archi.job = (string)rd["job"];
-                        if (rd["description"] != DBNull.Value) archi.description = (string)rd["description"];
-                        if (rd["cric"] != DBNull.Value) archi.cric = (int)rd["cric"];
-                        if (rd["club"] != DBNull.Value) archi.club = (string)rd["club"];
-                        if (rd["section"] != DBNull.Value) archi.section = (string)rd["section"];
-                        if (rd["rank"] != DBNull.Value) archi.rank = (int)rd["rank"];
-                        if (rd["rotary_year"] != DBNull.Value) archi.rotary_year = (int)rd["rotary_year"];
-
-
-                        architecture.Add(archi);
-                    }
-                }
+                dryas = Yemon.dnn.DataMapping.ExecSql<DRYA>(sql);
             }
             catch (Exception ee)
             {
                 Functions.Error(ee);
             }
-            finally
-            {
-                conn.Close();
-            }
-            return architecture;
+            
+            return dryas;
         }
 
         public static bool UpdateDRYAPosition(int year, string section, int id, bool up)
@@ -8012,6 +7983,83 @@ namespace AIS
                 conn.Close();
             }
             return false;
+        }
+
+        public static bool IsDRYARoleAuthorized(string role)
+        {
+            return ("[Unauthenticated Users][Superusers][All Users][Administrators][Registered Users][Subscribers][Unverified Users][Membres][Administrateur District][Administrateur Club]").IndexOf("["+role+"]") < 0;
+        }
+
+        public static string UpdateDRYARoles(string section)
+        {
+            var year = Functions.GetRotaryYear();
+            var members = GetListDRYA(year, section);
+            var ps = PortalSettings.Current;
+            var portalid = PortalSettings.Current.PortalId;
+
+            RoleController roleController = new RoleController();
+           
+            StringBuilder sb = new StringBuilder();
+            RoleInfo roleInfo = roleController.GetRoleByName(portalid,section);
+
+            if (roleInfo != null)
+            {
+                var users = roleController.GetUsersByRole(portalid, section);
+                foreach (var user in users)
+                {
+                    RoleController.DeleteUserRole(user, roleInfo, ps, false);
+                }
+            }
+            foreach(var m in members)
+            {
+                var member = GetMemberByNim(m.nim);
+                if(member==null)
+                {
+                    sb.AppendLine("Membre " + m.name + " " + m.surname + " introuvable");
+
+                }
+                else
+                {
+                    var email = member.email;
+                    if(String.IsNullOrEmpty(email))
+                        sb.AppendLine("Le membre " + m.name + " " + m.surname + " n'a pas d'email, impossible de lui attribuer le rôle "+section);
+                    else
+                    {
+                        var userinfo = UserController.GetUserByEmail(portalid, email);
+                        if (userinfo == null)
+                        {
+                            sb.AppendLine("Le membre " + m.name + " " + m.surname + " ne dispose pas d'utilisateur, impossible de lui attribuer le rôle " + section);
+                        }
+                        else
+                        {
+                            if (roleInfo!=null && IsDRYARoleAuthorized(roleInfo.RoleName))
+                                roleController.AddUserRole(portalid, userinfo.UserID, roleInfo.RoleID, new DateTime(year, 7, 1), new DateTime(year + 1, 6, 30));
+
+
+                            if (!String.IsNullOrEmpty(m.role))
+                            {
+                                RoleInfo role = roleController.GetRoleByName(portalid, m.role);
+                                if (role != null && IsDRYARoleAuthorized(role.RoleName))
+                                {
+                                    roleController.AddUserRole(portalid, userinfo.UserID, role.RoleID, new DateTime(year, 7, 1), new DateTime(year + 1, 6, 30));
+                                }
+
+
+                            }
+
+
+                        }
+                                
+                    }
+                }
+
+                   
+            }
+            
+            
+
+
+            return sb.ToString();
         }
 
         /// <summary>

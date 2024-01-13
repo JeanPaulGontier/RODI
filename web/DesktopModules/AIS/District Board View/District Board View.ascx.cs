@@ -82,7 +82,7 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
     {
         get
         {
-            return "" + objModules.GetModuleSettings(ModuleId)["section"];
+            return "" + Settings["section"];
         }
     }
     int rotary_year;
@@ -116,7 +116,7 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
         HyperLink HL_Contact = (HyperLink)e.Item.FindControl("HL_Contact");
         if (member != null)
         {
-            PortalSettings ps = PortalController.GetCurrentPortalSettings();
+            PortalSettings ps = PortalSettings;
             if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
             {
                 HL_Contact.NavigateUrl = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,850,false);";
@@ -146,13 +146,9 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
         da.Fill(ds);
         foreach (DataRow rd in ds.Tables[0].Rows)
         {
-            //if ((int)rd["rotary_year"] <= Functions.GetRotaryYear())
-            //{
-                int year = (int)rd["rotary_year"];
-                ddl_rotaryYear.Items.Add(new ListItem(""+ year +"-"+ (year+1) , ""+year));
-                
-            //}
-                
+            int year = (int)rd["rotary_year"];
+            ddl_rotaryYear.Items.Add(new ListItem(""+ year +"-"+ (year+1) , ""+year));
+                 
         }
 
         foreach(ListItem li in ddl_rotaryYear.Items)
@@ -166,7 +162,7 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
     public void RefreshList()
     {
         rotary_year = int.Parse(ddl_rotaryYear.SelectedValue);
-        List<DRYA> list = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
+        List<DRYA> list = DataMapping.GetListDRYA(rotary_year, section);
         dataList_Members.DataSource = list;
         dataList_Members.DataBind();
     }

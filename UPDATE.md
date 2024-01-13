@@ -22,6 +22,16 @@
 - correction d'un pb de lien dans les nouvelles pour les partages réseaux sociaux quand le site de club est sur un nom de domaine indépendant du district, et ajout d'information dans les paramètres schema.org pour un meilleur référencement
 - quand on télécharge une facture club, le nom de fichier devient Facture.####.pdf au lieu de Commande...
 
+- nouvelles fonctionnalités pour la gestion de l'organigramme district
+	- Possibilité d'importer l'organigramme à partir d'un fichier Excel (Pour avoir le modèle il suffit d'exporter l'organigramme actuel)
+	- Les membres affectés aux sections se voient attribuer le rôle DNN automatiquement pour l'année rotarienne en cours
+	- Lors de l'import du fichier excel, si le n° nim du membre n'est pas renseigné alors la recherche du membre pour affectation de rôle se fait sur le prénom et le nom
+	- pour copier l'organigramme d'une année à l'autre il suffit d'exporter en fichier Excel, procéder aux éventuelles modifications puis réimporter le fichier après avoir sélectionné la nouvelle année
+	- un bouton permet maintenant de mettre a jour automatiquement les affectations de rôles pour les membres (attention, il faut utiliser cette fonction pour chaque nouvelle année rotarienne)
+
+MAJ BDD : ALTER TABLE ais_drya ADD role NVARCHAR(500) NULL 
+
+
 
 ###### 12/12/2023
 - les membres d'honneur ne sont plus affichés dans l'annuaire de l'app mobile

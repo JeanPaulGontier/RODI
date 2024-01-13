@@ -25,6 +25,12 @@ AIS\Contact.aspx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 AIS\CommandeView.aspx.cs
 DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+App_Code\AIS\DRYA.cs
+DesktopModules\AIS\Admin District Board\District Board.ascx
+DesktopModules\AIS\Admin District Board\District Board.ascx.cs
+DesktopModules\AIS\District Board View\District Board View.ascx.cs
+DesktopModules\AIS\Menu\Menu.ascx
+DesktopModules\AIS\Menu\Menu.ascx.cs
 
 ```
 ###### 12/12/2023

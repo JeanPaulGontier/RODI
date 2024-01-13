@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2024
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -80,7 +80,7 @@ public partial class DesktopModules_AIS_Menu_Menu : PortalModuleBase
         get
         {
             int t = 0;
-            int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["tabid"], out t);
+            int.TryParse("" + Settings["tabid"], out t);
             return t;
         }
     }
@@ -90,7 +90,7 @@ public partial class DesktopModules_AIS_Menu_Menu : PortalModuleBase
         get
         {
             int t = 0;
-            int.TryParse("" + objModules2.GetModuleSettings(ModuleId)["rank"], out t);
+            int.TryParse("" + Settings["rank"], out t);
             return t;
         }
     }
@@ -118,27 +118,20 @@ public partial class DesktopModules_AIS_Menu_Menu : PortalModuleBase
         foreach(TabInfo tab in tabs)
         {
             
-            bool visible = false;
-            foreach(TabPermissionInfo p in tab.TabPermissions)
-            {
-                if (p.PermissionKey == "VIEW" && p.RoleName == "All Users")
-                {
-                    visible = true;
-                    break;
-                }
-                    
-                
-            }
+            bool visible = tab.IsVisible;
 
+         
             if (!tab.HasChildren && visible)
             {
-                res += "<li><a href='" + tab.FullUrl + "'>" + tab.TabName + "</a>";
-                
-                res += "</li>";
+                if(tab.TabID==TabId)
+                    res += "<li style='line-height:1.5em'><strong>" + tab.TabName + "</strong></li>";
+                else
+                    res += "<li style='line-height:1.5em'><a href='" + tab.FullUrl + "'>" + tab.TabName + "</a></li>";
+
             }
             else if(tab.HasChildren)
             {
-                res += "<li><i>"+ tab.TabName + "</i>";
+                res += "<li style='line-height:2em'>" + tab.TabName ;
                 if (tab.HasChildren)
                 {
                     List<TabInfo> children = new List<TabInfo>();

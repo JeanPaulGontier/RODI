@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://www.rodi-platform.org
-// Copyright (c) 2012-2023
+// Copyright (c) 2012-2024
 // by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -62,14 +62,21 @@
 #endregion Copyrights
 
 using AIS;
+using Aspose.Cells;
+using Dnn.PersonaBar.Roles.Components;
+using Dnn.PersonaBar.Users.Components;
+using Dnn.PersonaBar.Users.Services;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -81,9 +88,168 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        P_Import.Visible = false;
+        TXT_Import.Text = "";
+        P_Import.CssClass = "alert alert-success";
+
         if (IsPostBack)
-            return;
+        {
+            if (FL_Import.PostedFile != null)
+            {
+
+                if(FL_Import.PostedFile.ContentType!= "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                {
+                    TXT_Import.Text = "Le fichier doit être au format Excel (.XLSX)";
+                    P_Import.CssClass = "alert alert-danger";
+                }
+                else
+                {
+                    try { 
+                        Workbook xls = new Workbook(FL_Import.FileContent);
+                        Worksheet worksheet = xls.Worksheets[0];
+                        string colsnames = "" + worksheet.Cells["A1"].Value + ":" +
+                                worksheet.Cells["B1"].Value + ":" +
+                                worksheet.Cells["C1"].Value + ":" +
+                                worksheet.Cells["D1"].Value + ":" +
+                                worksheet.Cells["E1"].Value + ":" +
+                                worksheet.Cells["F1"].Value + ":" +
+                                worksheet.Cells["G1"].Value + ":" +
+                                worksheet.Cells["H1"].Value + ":" +
+                                worksheet.Cells["I1"].Value + ":" +
+                                worksheet.Cells["J1"].Value;
+
+                        if (colsnames != "Section:Nom:Prénom:Poste:Role:Description:NIM:Cric:Nom du club:Email")
+                            throw new Exception("Le format de fichier n'est pas correct, veuillez utiliser le même format que le fichier export");
+
+                        int year = int.Parse(rbl_rotaryYear.SelectedValue);
+
+
+               
+                        // nettoyage des roles de sections et des sous roles des membres de la section avant effacement de la liste des membres
+                        // seulement si l'année d'import est l'année courante
+                        string[] sections = ("" + Settings["sections"]).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (year==Functions.GetRotaryYear())
+                        {
+                            RoleController roleController = new RoleController();
+                            List<string> subroles = new List<string>();
+                            foreach (string s in sections)
+                            {
+                                RoleInfo roleInfo = roleController.GetRoleByName(PortalId, s);
+                                if (roleInfo != null)
+                                {
+                                    var users = roleController.GetUsersByRole(PortalId, roleInfo.RoleName);
+                                    foreach (var user in users)
+                                    {
+                                        RoleController.DeleteUserRole(user, roleInfo, PortalSettings, false);
+                                    }
+                                }
+                            
+                                var dryas = DataMapping.GetListDRYA(Functions.GetRotaryYear(), s);
+                                foreach(var d in dryas)
+                                {
+                                    if(!String.IsNullOrEmpty(d.role) && !subroles.Contains(d.role))
+                                    {
+                                        roleInfo = roleController.GetRoleByName(PortalId, d.role);
+                                        if (roleInfo != null)
+                                        {
+                                            subroles.Add(roleInfo.RoleName);
+                                            var users= roleController.GetUsersByRole(PortalId, roleInfo.RoleName);
+                                            foreach(var user in users)
+                                            {
+                                                RoleController.DeleteUserRole(user, roleInfo, PortalSettings, false);
+                                            }
+                                        }
+                                    }
+                                
+                                }
+                            }
+                        }
+                        Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM " + Const.TABLE_PREFIX + "drya WHERE rotary_year='" + year + "'");
+
+
+
+                        StringBuilder sb = new StringBuilder();
+                        int row = 1;
+                        TXT_Import.Text += "<br/>";
+                        while (!String.IsNullOrEmpty(""+worksheet.Cells[row,0].Value))
+                        {
+                            DRYA drya = new DRYA();
+                            drya.section = "" + worksheet.Cells[row, 0].Value;
+                            drya.surname = "" + worksheet.Cells[row, 1].Value;
+                            drya.name = "" + worksheet.Cells[row, 2].Value;
+                            drya.job = "" + worksheet.Cells[row, 3].Value;
+                            drya.role = "" + worksheet.Cells[row, 4].Value;
+                            drya.description = "" + worksheet.Cells[row, 5].Value;
+                            drya.nim = int.Parse("0" + worksheet.Cells[row, 6].Value);
+                            drya.cric = int.Parse("0" + worksheet.Cells[row, 7].Value);
+                            drya.club = "" + worksheet.Cells[row, 8].Value;
+                            drya.rank = row;
+                            drya.rotary_year = year;
+
+                            if (drya.nim == 0)
+                            {
+                                SqlCommand sql = new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE name=@name AND surname=@surname");
+                                sql.Parameters.AddWithValue("name", drya.name);
+                                sql.Parameters.AddWithValue("surname", drya.surname);
+                                Member member = Yemon.dnn.DataMapping.ExecSqlFirst<Member>(sql);
+                                if(member!= null)
+                                {
+                                    drya.nim=member.nim;
+                                    drya.cric=member.cric;
+                                    drya.club = member.club_name;                                    
+                                }
+
+                            }
+
+                            if (DataMapping.InsertDRYA(drya,false)==0)
+                            {
+                                sb.Append("ERREUR : " + worksheet.Cells[row, 0].Value + " : " + worksheet.Cells[row, 1].Value + " : " + worksheet.Cells[row, 2].Value + "<br/>");                               
+                            }
+                            
+                            
+                            row++;
+                        }
+                        if(year==Functions.GetRotaryYear())
+                        {
+                            foreach (string s in sections)
+                            {
+                                string r = DataMapping.UpdateDRYARoles(s);
+                                if(r.Length>0)
+                                    sb.Append(r.Replace(Environment.NewLine,"<br/>") + "<br/>");
+                            }
+                        }
+
+                        if (sb.Length > 0)
+                        {
+                            TXT_Import.Text = "L'import s'est déroulé pour " + (row - 1) + " membres avec quelques erreurs :<br/>"+sb.ToString();
+                            P_Import.CssClass = "alert alert-warning";
+                        }
+                        else
+                        {
+                            TXT_Import.Text = "L'import s'est correctement déroulé pour " + (row - 1) + " membres";
+                        }
+
+
+                    }
+                    catch (Exception ee)
+                    {
+                        TXT_Import.Text = "Erreur lors du traitement de l'import : "+ee.Message ;
+                        P_Import.CssClass = "alert alert-danger";
+                    }
+
+                }
+                P_Import.Visible = true;
+            }
+            else
+            {
+                return;
+            }
+
+          
+            
+        }
+            
 
         btn_modif.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
         BindRBL(rbl_rotaryYear.SelectedIndex<0? 0 : rbl_rotaryYear.SelectedIndex);
@@ -105,7 +271,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     {
         rbl_rotaryYear.Items.Clear();
         for (int i = 0; i < 3; i++)
-            rbl_rotaryYear.Items.Add(new ListItem("" + (Functions.GetRotaryYear() + i)));
+            rbl_rotaryYear.Items.Add(new ListItem(""+ (Functions.GetRotaryYear() + i)+"-"+ (Functions.GetRotaryYear() + i+1) , "" + (Functions.GetRotaryYear() + i)));
 
         rbl_rotaryYear.Items[selectedIndex].Selected = true;
     }
@@ -151,7 +317,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
         section = ddl_section.SelectedValue;
         rotary_year = int.Parse(rbl_rotaryYear.SelectedValue);
-        List<DRYA> list = DataMapping.GetListDRYA("section='"+section+"' and rotary_year='" + rotary_year + "'");
+        List<DRYA> list = DataMapping.GetListDRYA(rotary_year,section);
         hfd_count.Value = list!=null? list.Count + "" : "0";
         lbl_noMember.Visible = hfd_count.Value == "0";
         dataList_members.DataSource = list;
@@ -179,7 +345,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
             Image Image1 = (Image)e.Item.FindControl("Image1");
             Image1.ImageUrl = member.GetPhoto();
 
-            PortalSettings ps = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings ps = PortalSettings.Current;
             if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
             {
                 hlContact.NavigateUrl = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,850,false);";
@@ -211,6 +377,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     {
         section = ddl_section.SelectedValue;
         rotary_year = int.Parse(rbl_rotaryYear.SelectedValue);
+        lbl_section.Text = "Section : " + ddl_section.SelectedValue;
         pnl_grid.Visible = true;
         pnl_display.Visible = false;
     }
@@ -220,20 +387,25 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         if (e.CommandName == "Editer")
         {
             pnl_edit.Visible = true;
-            DRYA drya = DataMapping.GetListDRYA("section ='" + section + "' and rotary_year='" + rbl_rotaryYear.SelectedValue + "'").Where(x => x.id == int.Parse(""+e.CommandArgument)).FirstOrDefault();
+            
+            DRYA drya = DataMapping.GetListDRYA(int.Parse(rbl_rotaryYear.SelectedValue), section).Where(x => x.id == int.Parse(""+e.CommandArgument)).FirstOrDefault();
             lbl_nomEdit.Text = drya.name + " " + drya.surname;
             tbx_desc.Text = drya.description;
             tbx_job.Text = drya.job;
+            tbx_role.Text = drya.role;
+            tbx_previousrole.Value = drya.role;
+            tbx_rank.Text = ""+drya.rank;
             hfd_id.Value = ""+drya.id;
+          
             pnl_buttons.Visible = false;
             pnl_add.Visible = false;
             gvw_archi.Visible = false;
 
         }
-        if(e.CommandName == "Deleter")
+        if(e.CommandName == "Delete")
         {
-            List<DRYA> list = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
-            DRYA d = DataMapping.GetListDRYA("id = " + e.CommandArgument).First();
+            List<DRYA> list = DataMapping.GetListDRYA(rotary_year,section);
+            DRYA d = list.Where(x => x.id == int.Parse("" + e.CommandArgument)).FirstOrDefault();
             foreach(DRYA drya in list)
             {
                 if(drya.rank>d.rank)
@@ -264,12 +436,28 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
 
     protected void lbt_apply_Click(object sender, EventArgs e)
     {
-        DRYA drya = DataMapping.GetListDRYA("section ='" + section + "' and rotary_year='" + rbl_rotaryYear.SelectedValue + "'").Where(x => x.id == int.Parse("" + hfd_id.Value)).FirstOrDefault();
+        DRYA drya = DataMapping.GetListDRYA(int.Parse(rbl_rotaryYear.SelectedValue), section).Where(x => x.id == int.Parse("" + hfd_id.Value)).FirstOrDefault();
         drya.job = tbx_job.Text.Trim();
+        drya.role = tbx_role.Text.Trim();
+        if (!DataMapping.IsDRYARoleAuthorized(drya.role))
+            drya.role = "";
+        if(!String.IsNullOrEmpty(tbx_previousrole.Value) && drya.role!= tbx_previousrole.Value && drya.nim>0)
+        {
+            Member member = DataMapping.GetMemberByNim(drya.nim);
+            if (member != null && !String.IsNullOrEmpty(member.email)) {
+                var userInfo = UserController.GetUserByEmail(PortalId, member.email);
+                if(userInfo!=null)
+                {
+                    var roleController = new RoleController();
+                    var role = roleController.GetRoleByName(PortalId, tbx_previousrole.Value);
+                    if(role!=null)
+                        RoleController.DeleteUserRole(userInfo, role, PortalSettings, false);
+                }
+            }
+        }
         drya.description = tbx_desc.Text.Trim();
         int rank = 0;
         int.TryParse("" + tbx_rank.Text,out rank);
-        rank = int.MaxValue;
         drya.rank = rank;
         DataMapping.InsertDRYA(drya);
         RefreshList_Grid();
@@ -307,7 +495,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
         
         pnl_postSearch.Visible = true;
         btn_add.Visible = true;
-        List<DRYA> list = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
+        List<DRYA> list = DataMapping.GetListDRYA(rotary_year,section);
         tbx_rank.Text = list!=null?"" + (list.Count + 1) : "1";
     }
     
@@ -315,10 +503,11 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     protected void btn_add_Click(object sender, EventArgs e)
     {
         DRYA drya = new DRYA();
-        List<DRYA> actuel = DataMapping.GetListDRYA("section='" + section + "' and rotary_year='" + rotary_year + "'");
+        List<DRYA> actuel = DataMapping.GetListDRYA(rotary_year,section);
         drya.section = section;
         drya.rotary_year = rotary_year;
         drya.job = tbx_job2.Text.Trim(); ;
+        drya.role = tbx_role2.Text.Trim(); ;
         drya.description = tbx_desc2.Text;
         drya.rank = int.Parse(tbx_rank.Text);
         //String nomPrenom = ddl_name.SelectedValue;
@@ -390,16 +579,8 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
         List<DataTable> liste = new List<DataTable>();
-        //foreach (ListItem laSection in ddl_section.Items)
-        //{
-            DataSet ds_ = DataMapping.ExecSql("SELECT section as Section, nim as NIM, surname as Nom, name as Prénom, job as Poste, cric as Cric, club as 'Nom du club', [description] as 'Description', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
-           // ds_.Tables[0].TableName = "Organigramme "+ rbl_rotaryYear.SelectedValue + "/" + (1+int.Parse(rbl_rotaryYear.SelectedValue));
-            liste.Add(ds_.Tables[0]);
-  //      }
-
-        //DataSet ds = DataMapping.ExecSql("SELECT name as 'Nom de la commission', memberName as Membre, job as 'Poste' FROM "+Const.TABLE_PREFIX+"commission where rotary_year ='" + rbl_rotaryYear.SelectedValue + "' order by name");
-        //ds.Tables[0].TableName = "Commissions";
-        //liste.Add(ds.Tables[0]);
+        DataSet ds_ = DataMapping.ExecSql("SELECT section as Section, surname as Nom, name as Prénom, job as Poste, role as Role, [description] as 'Description',nim as NIM,  cric as Cric, club as 'Nom du club', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
+        liste.Add(ds_.Tables[0]);
 
         Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
@@ -411,52 +592,6 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     }
 
 
-    /// <summary>
-    /// Permet d'exporter le GridView en CSV
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    protected void BT_Export_CSV_Click(object sender, EventArgs e)
-    {
-        List<DataTable> liste = new List<DataTable>();
-        
-        DataSet ds = DataMapping.ExecSql("SELECT nim as NIM, section as Section, surname as Nom, name as Prenom, job as Poste, cric as Cric, club as 'Nom du club', [description] as 'Description', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX + "drya  WHERE rotary_year = '" + rbl_rotaryYear.SelectedValue + "' order by section, rank");
-        liste.Add(ds.Tables[0]);
-        
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".csv", Aspose.Cells.SaveFormat.CSV);
 
-
-        List<DataTable> liste2 = new List<DataTable>();
-        DataSet dsCom = DataMapping.ExecSql("SELECT name as 'Nom de la commission', memberName as Membre, job as 'Poste' FROM " + Const.TABLE_PREFIX + "commission where rotary_year ='" + rbl_rotaryYear.SelectedValue + "' order by name");
-        dsCom.Tables[0].TableName = "Commissions";
-        liste2.Add(dsCom.Tables[0]);
-
-        Media media2 = DataMapping.ExportDataTablesToXLS(liste2, "Commission " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".csv", Aspose.Cells.SaveFormat.CSV);
-
-        
-
-
-        Media media3 = new Media();
-        media3.content_size = media.content_size + media2.content_size;
-        media3.content = new byte[media3.content_size];
-
-        for(int i=0; i<media3.content_size; i++)
-        {
-            if (i < media.content_size)
-                media3.content[i] = media.content[i];
-            else
-                media3.content[i] = media2.content[i - media.content_size];
-        }
-        media3.dt = media.dt;
-        media3.name = media.name;
-
-
-        string guid = Guid.NewGuid().ToString();
-        Session[guid] = media3;
-
-        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
-    }
-
-    
 }
  

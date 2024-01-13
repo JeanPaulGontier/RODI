@@ -78,6 +78,7 @@ namespace AIS
         public string surname { get; set; }
         public string name { get; set; }
         public string job { get; set; }
+        public string role { get; set; }
         public string description { get; set; }
         public int cric { get; set; }
         public string club { get; set; }
