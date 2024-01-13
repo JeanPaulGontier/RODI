@@ -38,6 +38,9 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsClub.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 App_Code\AIS\Block.cs
+DesktopModules\AIS\Club News Detail\Control.ascx
+DesktopModules\AIS\Club News Detail\Control.ascx.cs
+
 ```
 ###### 12/12/2023
 ```txt
