@@ -40,7 +40,9 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 App_Code\AIS\Block.cs
 DesktopModules\AIS\Club News Detail\Control.ascx
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
-
+DesktopModules\AIS\News Detail\Control.ascx
+DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 ```
 ###### 12/12/2023
 ```txt
