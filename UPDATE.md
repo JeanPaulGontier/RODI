@@ -4,20 +4,20 @@
 - ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)
 - quand on crée un site de club avec domaine sur RODI, le mini site est désactivé, c'est la carte de club qui prend le pas, ce qui évite un double référencement du site : nom de domaine district/club et le domaine du club, pour activer la redirection du district /nomclub vers le domaine du club il faut ajouter l'url du site dans site web externe ce qui permet alors de rediriger vers le site du club et plus vers la carte de visite
 - modifications et correction module création lettre du gouverneur
-	- correction pb de création de lettre quand on renommait la lettre (exemple : lettres de la gouverneure), les pages se créaient à la racine au lieu de correctement se créer sous la page principale
-	- ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
-	- ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin des la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
-	- l'affichage dans l'annuaire des membres tient compte du formatage des n°
-- modification de l'affectation du role rotarien Club Executive Secretary/Director(Facultatif) lors de l'import des affectations RI maintenant ce role devient en francais : Secrétaire Exécutif, avant c'était Administration
-- creation de fonctionnalités de normalisation des n° de téléphones mal formés (surtout issus du RI) afin de rendre les n° utilisables pour une numérotation directe (exemple : dans le cas de l'app mobile)
-	- n° Francais : 0000000000 (sans le +33 devant)
-	- n° Etranger : +0000000000
-	- un n° de moins de 10 chiffres est remplacé par une chaine vide
+    - correction pb de création de lettre quand on renommait la lettre (exemple : lettres de la gouverneure), les pages se créaient à la racine au lieu de correctement se créer sous la page principale
+    - ajout d'une fonction dans les réglages du module permettant de remettre les paramètres par défaut
+    - ajout de fonctions pour publier ou dépublier directement une lettre sans avoir besoin de la barre d'administration DNN ce qui permet à un rédacteur de la lettre de la publier directement
+    - l'affichage dans l'annuaire des membres tient compte du formatage des n°
+- modification de l'affectation du rôle rotarien Club Executive Secretary/Director(Facultatif) lors de l'import des affectations RI maintenant ce rôle devient en français : Secrétaire Exécutif, avant c'était Administration
+- création de fonctionnalités de normalisation des n° de téléphones mal formés (surtout issus du RI) afin de rendre les n° utilisables pour une numérotation directe (exemple : dans le cas de l'app mobile)
+    - n° Français : 0000000000 (sans le +33 devant)
+    - n° Etranger : +0000000000
+    - un n° de moins de 10 chiffres est remplacé par une chaine vide
     - tout caractère non numérique est supprimé (il y a parfois des adresses emails dans les n° venant du RI !!!)
-- la fonctionnalité de normalization est utilisée dans les cas suivants :
-	- lors de l'import membres district et clubs
-	- par l'écran outil webmaster (pour faire une correction immédiate sur tous les membres)
-	- dans l'écran de saisie / modification des informations d'un membre
+- la fonctionnalité de normalisation est utilisée dans les cas suivants :
+    - lors de l'import membres district et clubs
+    - par l'écran outil webmaster (pour faire une correction immédiate sur tous les membres)
+    - dans l'écran de saisie / modification des informations d'un membre
 - le module d'affichage de la liste des nouvelles clubs, utilisé dans les sites de clubs, affiche maintenant toutes les nouvelles publiques et plus seulement les actions, il est conseillé de renommer la page "Nos actions" en "Nouvelles", et le titre du module liste en "Nouvelles du club", ceci permet d'étendre les possibilités pour le public et rend plus compréhensible la page 
 - ajout d'un lien vers les sites de club dans la page d'administration district : /Espace-Membre/Administration-District/Gestion/Les-clubs
 - ajout d'un sélection d'appel de cotisation de district : /Espace-Membre/Administration-District/Comptabilité/Suivi-des-factures-des-clubs, permettant de sélectionner un des 6 derniers appels de cotisations de district, donc les 3 dernières années (par défaut, l'écran se positionne sur l'appel le plus récent)
@@ -25,20 +25,20 @@
 - quand on télécharge une facture club, le nom de fichier devient Facture.####.pdf au lieu de Commande...
 
 - nouvelles fonctionnalités pour la gestion de l'organigramme district
-	- Possibilité d'importer l'organigramme à partir d'un fichier Excel (Pour avoir le modèle il suffit d'exporter l'organigramme actuel)
-	- Les membres affectés aux sections se voient attribuer le rôle DNN automatiquement pour l'année rotarienne en cours
-	- Lors de l'import du fichier excel, si le n° nim du membre n'est pas renseigné alors la recherche du membre pour affectation de rôle se fait sur le prénom et le nom
-	- pour copier l'organigramme d'une année à l'autre il suffit d'exporter en fichier Excel, procéder aux éventuelles modifications puis réimporter le fichier après avoir sélectionné la nouvelle année
-	- un bouton permet maintenant de mettre a jour automatiquement les affectations de rôles pour les membres (attention, il faut utiliser cette fonction pour chaque nouvelle année rotarienne)
+    - Possibilité d'importer l'organigramme à partir d'un fichier Excel (Pour avoir le modèle il suffit d'exporter l'organigramme actuel)
+    - Les membres affectés aux sections se voient attribuer le rôle DNN automatiquement pour l'année rotarienne en cours
+    - Lors de l'import du fichier excel, si le n° nim du membre n'est pas renseigné alors la recherche du membre pour affectation de rôle se fait sur le prénom et le nom
+    - pour copier l'organigramme d'une année à l'autre il suffit d'exporter en fichier Excel, procéder aux éventuelles modifications puis réimporter le fichier après avoir sélectionné la nouvelle année
+    - un bouton permet maintenant de mettre a jour automatiquement les affectations de rôles pour les membres (attention, il faut utiliser cette fonction pour chaque nouvelle année rotarienne)
 
 MAJ BDD : ALTER TABLE ais_drya ADD role NVARCHAR(500) NULL 
 
 - Nouveau type de bloc pour les pages d'accueil des sites de clubs
-	- permet de visualiser les nouvelles passées ou futures
-	- possibilité de combiner les paramètres (afficher la photo, juste le titre)
-	- le bloc disparait s'il n'y a pas de nouvelle pour les critères
-	- ATTENTION : il faut que la page qui affiche les nouvelles s'appelle bien /Nouvelles et pas /Nos Actions
-	
+    - permet de visualiser les nouvelles passées ou futures
+    - possibilité de combiner les paramètres (afficher la photo, juste le titre)
+    - le bloc disparait s'il n'y a pas de nouvelle pour les critères
+    - ATTENTION : il faut que la page qui affiche les nouvelles s'appelle bien /Nouvelles et pas /Nos Actions
+
 
 
 ###### 12/12/2023

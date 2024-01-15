@@ -27,7 +27,7 @@
             {
                 return;
             }
-            List<AIS.News> newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "Actions", onlyvisible: true, category: "Clubs", sort: "dt desc");
+            List<AIS.News> newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "", onlyvisible: true, category: "Clubs", sort: "dt desc");
             if (newslist.Count > 0)
             {
                 newsID = newslist[0].id;
