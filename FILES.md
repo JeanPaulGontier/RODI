@@ -1,4 +1,8 @@
 ##### Modified files per commit
+```txt
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+```
 ###### en cours
 ```txt
 App_Code\ClubRewriter.cs
