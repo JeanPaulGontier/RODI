@@ -2,6 +2,11 @@
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+App_Code\AIS\Video.cs
+DesktopModules\AIS\News Panel\News.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 ```
 ###### en cours
 ```txt

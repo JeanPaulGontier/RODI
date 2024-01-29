@@ -418,7 +418,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         {
             Video vid = new Video();
             vid.Url = tbx_url.Text;
-            if (vid.Url.Contains("youtube"))
+            if (vid.Url.Contains("youtube") || vid.Url.Contains("youtu.be"))
                 vid.Type = "youtube";
             else if (vid.Url.Contains("vimeo"))
                 vid.Type = "vimeo";

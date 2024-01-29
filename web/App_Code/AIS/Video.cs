@@ -118,8 +118,12 @@ namespace AIS
         
         public String getCorrectUrlYT()
         {
-            if(Url.Contains("watch?v="))
+            if (Url.Contains("watch?v="))
                 return Url.Replace("watch?v=", "embed/");
+            else if (Url.StartsWith("https://youtu.be/"))
+                return Url.Replace("https://youtu.be/", "https://www.youtube.com/embed/");
+            else if (Url.StartsWith("https://youtube.com/shorts/"))
+                return Url.Replace("https://youtube.com/shorts/", "https://www.youtube.com/embed/");
             return Url;
         }
 

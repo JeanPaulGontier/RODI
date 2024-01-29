@@ -60,6 +60,8 @@
                 validate() {
                     if (this.e.Url.startsWith('https://youtu.be/')) {
                         this.e.Url = this.e.Url.replace('https://youtu.be/', 'https://www.youtube.com/embed/');
+                    } else if (this.e.Url.startsWith('https://youtube.com/shorts/')) {
+                        this.e.Url = this.e.Url.replace('https://youtube.com/shorts/', 'https://www.youtube.com/embed/');
                     }
                     this.c = JSON.parse(JSON.stringify(this.e));
                     this.editing = false;
