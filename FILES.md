@@ -7,6 +7,8 @@ DesktopModules\AIS\News Panel\News.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
+DesktopModules\AIS\Club News Detail\Control.ascx.cs
+DesktopModules\AIS\News Detail\Control.ascx.cs
 ```
 ###### en cours
 ```txt

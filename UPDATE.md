@@ -1,6 +1,7 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube
 - modification du module agenda du gouverneur, qui permet maintenant d'avoir plusieurs agendas différents sur la même page
+- correction d'un bug de redimensionnement automatique des vidéos youtube dans module news panel et club news panel
 
 ###### 13/01/2024
 - ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)

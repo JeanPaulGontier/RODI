@@ -251,8 +251,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                                     "var width = Math.min(window.innerWidth, videoIFrame.offsetWidth);" +
                                     "videoIFrame.style.height = Math.ceil(width / ratio) + 'px';" +
                                     "videoContainer.style.height = (width / ratio) + 'px';" +
-                                    "}" +
-                                    "$(window).resize(resize['"+block.Guid+"']);" +
+                                    "};$(window).resize(resize['" + block.Guid+"']);" +
                                     "$(document).ready(function () {" +
                                         "resize['"+block.Guid+"']();" +
                                     "});" +
