@@ -12,6 +12,7 @@ DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 Portals\_default\Skins\Rodi2017\skin.css
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
 ```
 ###### en cours
 ```txt
