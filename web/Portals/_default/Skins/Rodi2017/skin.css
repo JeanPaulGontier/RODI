@@ -2353,20 +2353,21 @@ gold: #febd11
     }
 
 
+}
 
-    /* photo galleries */
+/* photo galleries */
 
-    .Grow {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 4px;
-    }
+.Grow {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
 
-    .Lrow {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0 4px;
-    }
+.Lrow {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
 
     .Lrow img {
         margin-top: 8px;
@@ -2375,16 +2376,14 @@ gold: #febd11
     }
 
 
-    .Gcolumn {
-        flex: 25%;
-        max-width: 25%;
-        padding: 0 4px;
-    }
+.Gcolumn {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+}
 
     .Gcolumn img {
         margin-top: 8px;
         vertical-align: middle;
         width: 100%;
     }
-
-}
