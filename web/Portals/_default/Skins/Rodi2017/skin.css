@@ -2351,4 +2351,40 @@ gold: #febd11
     .home_2020 .DnnModule-2633 .RoyalBlue_ct2_style {
         min-height: 250px;
     }
+
+
+
+    /* photo galleries */
+
+    .Grow {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 4px;
+    }
+
+    .Lrow {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 4px;
+    }
+
+    .Lrow img {
+        margin-top: 8px;
+        vertical-align: middle;
+        width: 100%;
+    }
+
+
+    .Gcolumn {
+        flex: 25%;
+        max-width: 25%;
+        padding: 0 4px;
+    }
+
+    .Gcolumn img {
+        margin-top: 8px;
+        vertical-align: middle;
+        width: 100%;
+    }
+
 }
