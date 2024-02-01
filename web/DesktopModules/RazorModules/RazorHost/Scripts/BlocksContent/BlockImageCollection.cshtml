@@ -2,8 +2,16 @@
     <div v-if="c">
         <div v-if="editing" class="bc-editing">
             <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
-            <span class="bc-label">Titre :</span>
-            <input type="text" v-model="e.Title" class="form-control" />
+            <div class="row">
+                <span>Présentation : </span>
+                <label class="radio-inline"><input type="radio" name="type"  :value="''" v-model="e.Type" />Liste</label>
+                <label class="radio-inline"><input type="radio" name="type"  :value="'gallery'" v-model="e.Type" />Galerie</label>
+                <label class="radio-inline"><input type="radio" name="type"  :value="'slider'" v-model="e.Type" />Caroussel</label>
+            </div>
+            <div class="row">
+                <span>Titre :</span>
+                <input type="text" v-model="e.Title" class="form-control" />
+            </div>
             <div>
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
                 <div v-if="e.Images" v-for="(i,index) in e.Images">
@@ -14,7 +22,7 @@
                 </div>
                 <br />
                 <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
-                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br/>(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
+                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
             </div>
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
@@ -22,8 +30,14 @@
         </div>
         <div v-if="!editing">
             <h2>{{c.Title}}</h2>
-            <div v-if="c.Images" v-for="i in c.Images"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" style="width:100%" :title="i.Name" /></div>
-          
+            <div class="Grow" ref="imagescollection" v-if="c.Type=='gallery'">
+                <div class="Gcolumn" v-for="(c,index) in columns()" :style="getColumnStyle()">
+                    <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+                </div>
+            </div>
+            <div class="Lrow" v-if="!c.Type">
+                <img v-for="i in c.Images" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+            </div>
 
         </div>
     </div>
@@ -44,6 +58,8 @@
                 return {
                     editing: false,
                     c: {},
+                    width: 0,
+                    pct: 100,
                     fichiers: [],
                     e: {
                         Images: []
@@ -51,6 +67,60 @@
                 }
             },
             methods: {
+                getColumnStyle() {
+                    return 'flex:' + this.pct + '%;max-width:' + this.pct + '%;';
+                },
+                updateWidth() { 
+                    if (!this.$refs.imagescollection)
+                        return;
+                    this.$nextTick(() => {
+                        var rect = this.$refs.imagescollection.getBoundingClientRect();
+                        this.width = rect.width;
+                    });
+
+                },
+                columns() {
+                    var cols = [];
+                    if (!this.c.Images || this.width==0 || this.c.Type!='gallery')
+                        return cols;
+                    const padding = 8;
+                    const marginv = 8;
+                    var y = [];
+                    var col = 0;
+                    var maxcol = Math.round(this.width / 300, 0);
+                    this.pct = Math.round(100 / maxcol, 0);
+                    var colWidth = Math.round((this.width - (padding *maxcol)) / maxcol, 0);
+                    for (var i = 0; i < maxcol; i++) {
+                        cols.push([]);
+                        y.push(0);
+                    }
+                    this.c.Images.forEach((c) => {
+                        if (c.Height) {
+                            let ratio = c.Height/ c.Width;
+                            let height = Math.round(colWidth * ratio, 0) + marginv;
+                            let max = Number.MAX_SAFE_INTEGER;
+                            col = 0;
+                            for (var i = 0; i < maxcol; i++)
+                            {
+                                if (y[i] < max)
+                                {
+                                    col = i;
+                                    max = y[i];
+                                }
+                            }
+                            y[col] += height;
+                            cols[col].push(c);
+                        } else {
+                            cols[col].push(c);
+                            col++;
+                            if (col == maxcol)
+                                col = 0;
+                        }
+                       
+                    });
+                    this.y = y;
+                    return cols;
+                },
                 edit() {
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
@@ -117,9 +187,19 @@
 
                 },
             },
+            created() {
+                window.addEventListener("resize", this.updateWidth);
+            },
+            destroyed() {
+                window.removeEventListener("resize", this.updateWidth);
+            },
             mounted() {
                 this.c = this.content;
-            }
+                this.$nextTick(() => {
+                    this.updateWidth();
+                });
+            },
+           
         }
     }
 

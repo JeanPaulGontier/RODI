@@ -9,6 +9,8 @@ DesktopModules\AIS\Agenda Gouverneur\Control.ascx
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 ```
 ###### en cours
 ```txt
