@@ -1,12 +1,14 @@
-﻿<script type="text/x-template" id="blockimagecollection-template">
+﻿
+<script type="text/x-template" id="blockimagecollection-template">
+    <a ref="top"></a>
     <div v-if="c">
         <div v-if="editing" class="bc-editing">
             <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
             <div class="row">
                 <span>Présentation : </span>
-                <label class="radio-inline"><input type="radio" name="type"  :value="''" v-model="e.Type" />Liste</label>
-                <label class="radio-inline"><input type="radio" name="type"  :value="'gallery'" v-model="e.Type" />Galerie</label>
-                <label class="radio-inline"><input type="radio" name="type"  :value="'slider'" v-model="e.Type" />Caroussel</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="''" v-model="e.Type" />Liste</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="'gallery'" v-model="e.Type" />Galerie</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="'slider'" v-model="e.Type" />Caroussel</label>
             </div>
             <div class="row">
                 <span>Titre :</span>
@@ -14,11 +16,17 @@
             </div>
             <div>
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
-                <div v-if="e.Images" v-for="(i,index) in e.Images">
-                    <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" style="width:100%" />
-                    Nom de la photo : <input type="text" v-model="i.Name" style="width:50%" />
-                    <br />
-                    <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
+                <div v-if="e.Images" v-for="(i,index) in e.Images" class="row">
+                    <div class="col-sm-4">
+                        <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" />
+
+                    </div>
+                    <div class="col-sm-8">
+                        <span> Légende :</span>
+                        <input type="text" v-model="i.Name" class="form-control" /><br />
+                        <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
+                    </div>
+                    <div class="col-sm-12 pe-spacer size10"></div>
                 </div>
                 <br />
                 <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
@@ -35,8 +43,19 @@
                     <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
                 </div>
             </div>
+
             <div class="Lrow" v-if="!c.Type">
                 <img v-for="i in c.Images" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+            </div>
+
+            <div v-html="slickStyles()">
+
+            </div>
+            <div :class="sliderName" :id="sliderName">
+                <a href="#" v-for="i in c.Images" v-if="c.Type=='slider'">
+                    <div :class="evenBox" :style="{ backgroundImage: 'url(/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID }">
+                    </div>
+                </a>
             </div>
 
         </div>
@@ -47,8 +66,8 @@
         BlockImageCollection = {
             template: '#blockimagecollection-template',
             name: 'BlockImageCollection',
-            props: [
-                'content', 'moduleid'
+           props: [
+                'content', 'moduleid', 'guid'
             ],
             emits: [
                 'changed',
@@ -64,13 +83,28 @@
                     e: {
                         Images: []
                     },
+                    sliderName: 'slider' + this.guid.substr(0, 6),
+                    evenBox: 'evenbox' + this.guid.substr(0, 6),
+                    lastY: window.screenY,
+                    slickOptions: {
+                        dots: true,
+                        slidesToShow: 1,
+                        autoplay: true,
+                        autoplaySpeed: 2000,
+                        pauseOnFocus: true,
+                        pauseOnHover: true,
+                        pauseOnDotsHover: true,
+                    },
                 }
             },
             methods: {
+                slickStyles() {
+                    return "<style>." + this.evenBox + "{position:relative;width:100%;min-height:425px;background-size:cover;background-position:center}." + this.evenBox + " img{position:absolute;z-index:2;display:block;top:0;left:0;width:100%}." + this.evenBox + " h3{position:absolute;z-index:3;display:block;top:0;left:15px;width:auto;text-align:left;color:#fff;background-color:#000;padding:15px 15px 15px 10px;max-width:calc(100% - 30px);border-radius:4px}." + this.sliderName + " .slick-next{right:5px;z-index:9}." + this.sliderName + " .slick-prev{left:5px;z-index:9}." + this.sliderName + " .slick-dots{position:absolute;bottom:3px;width:60%;left:50%;transform:translateX(-50%);border-radius:3px}." + this.sliderName + " .slick-dots li button:before{color:#fff;opacity:1;border-radius:50%;border:1px solid #00246c;background-color:#fff}." + this.sliderName + " .slick-dots li.slick-active button:before{opacity:1;color:#00246c;background-color:#00246c}." + this.sliderName + " .slick-prev:before,.slick-next:before{font-size:40px}." + this.sliderName + " .slick-prev,.slick-next{width:40px;height:40px}." + this.sliderName + " .slick-dots li button:before{font-family:'slick';font-size:16px}." + this.sliderName + " .slick-dots li{margin:7px 5px 3px 5px}." + this.sliderName + " .slick-dots li button:before{width:10px;height:10px;content:' '}." + this.sliderName + "{margin:3px}</style>";
+                },
                 getColumnStyle() {
                     return 'flex:' + this.pct + '%;max-width:' + this.pct + '%;';
                 },
-                updateWidth() { 
+                updateWidth() {
                     if (!this.$refs.imagescollection)
                         return;
                     this.$nextTick(() => {
@@ -116,22 +150,33 @@
                             if (col == maxcol)
                                 col = 0;
                         }
-                       
+
                     });
                     this.y = y;
                     return cols;
                 },
                 edit() {
+                    this.lastY = window.scrollY;
+                    $('.' + this.sliderName).slick('unslick');
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
                 },
                 validate() {
+                    window.scrollTo(window.scrollX, this.lastY);
+
                     this.c = JSON.parse(JSON.stringify(this.e));
                     this.editing = false;
+                    
                     this.onChange();
+
+                    this.$nextTick(() => {          
+                        this.updateWidth();
+                        $('.' + this.sliderName).slick(this.slickOptions);                    
+                    });
                 },
                 cancel() {
                     this.editing = false;
+                
                     this.$emit('cancel');
                 },
                 onChange() {
@@ -142,6 +187,7 @@
                 },
                 addDocument(event) {
                     event.preventDefault();
+
                     this.$refs.document.click();
                 },
                 onChangeDocumentUpload() {
@@ -195,11 +241,18 @@
             },
             mounted() {
                 this.c = this.content;
+
                 this.$nextTick(() => {
                     this.updateWidth();
+                
+                   $('.' + this.sliderName).slick(this.slickOptions);
+
+             
+                  
                 });
+               
             },
-           
+
         }
     }
 

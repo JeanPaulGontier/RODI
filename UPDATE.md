@@ -4,6 +4,8 @@
 - correction d'un bug de redimensionnement automatique des vidéos youtube dans module news panel et club news panel
 - ajout du choix de présentation dans le bloc de type 'liste d'images' (liste, galerie ou caroussel)
 - changement des libellés d'options de visibilité pour les nouvelles 
+- amélioration de l'ergonomie de la gestion des listes d'images
+
 
 ###### 13/01/2024
 - ajout du choix du calendrier dans le module agenda du gouverneur (ce qui permet la synchronisation avec un Agenda Google)

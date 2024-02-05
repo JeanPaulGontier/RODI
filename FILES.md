@@ -13,6 +13,15 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 Portals\_default\Skins\Rodi2017\skin.css
 DesktopModules\AIS\Admin News Liste\NewsEdit.html
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.css
+Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.min.js
+Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.woff
+Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick-theme.css
+Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\ajax-loader.gif
 ```
 ###### en cours
 ```txt
