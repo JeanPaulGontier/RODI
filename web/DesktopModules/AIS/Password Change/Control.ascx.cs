@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2024
+// by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -107,9 +107,10 @@ public partial class DesktopModules_AIS_Password_Change_Control : PortalModuleBa
         string UserName = HttpContext.Current.User.Identity.Name;
         DotNetNuke.Entities.Users.UserInfo userInfo = DotNetNuke.Entities.Users.UserController.GetUserByName(PortalId, UserName);
         DotNetNuke.Security.Membership.MembershipProvider membershipProvider = DotNetNuke.Security.Membership.MembershipProvider.Instance();
-       
-        string oldPassword = DotNetNuke.Entities.Users.UserController.GetPassword(ref userInfo, userInfo.Membership.PasswordAnswer);
-        if (DotNetNuke.Entities.Users.UserController.ChangePassword(userInfo, oldPassword, pass1))
+
+        
+
+        if (DotNetNuke.Entities.Users.UserController.ChangePassword(userInfo, null, pass1))
         {
             P1.Visible = false;
             P2.Visible = true;

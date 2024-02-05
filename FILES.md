@@ -22,6 +22,7 @@ Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.min.js
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.woff
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick-theme.css
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\ajax-loader.gif
+DesktopModules\AIS\Password Change\Control.ascx.cs
 ```
 ###### en cours
 ```txt
