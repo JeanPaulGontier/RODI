@@ -233,7 +233,7 @@
                             .even_box {
                                 position: relative;
                                 width: 100%;
-                                min-height: 425px;
+                                /*min-height: 400px;*/
                                 background-size: cover;
                                 background-position: center;
                             }
@@ -311,11 +311,47 @@
                                 margin:3px;
                             }
                             </style>
-                            <div class="@slider_name">
+
+                            var ratios = new List<object>(); ;
+                            foreach (var i in ic.Images)
+                            {
+                                ratios.Add(new
+                                {
+                                    g = ("image" + ("" + i.GUID).Substring(0, 6)),
+                                    r = ((float)i.Height / (float)i.Width)
+                                });
+                            }
+
+                            <script>
+                                if (typeof resizeslider == 'undefined')
+                                    resizeslider = [];
+;                                var name = '@Html.Raw(slider_name)'; 
+                                 resizeslider[name] = function () {
+                                    var container = document.getElementById('@slider_name');
+                                    var width = container.getBoundingClientRect().width;
+                                    var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
+                                     var height = Number.MAX_SAFE_INTEGER;
+                                     ratios.forEach((d) => {
+                                         var h = Math.round(width * d.r, 0);
+                                         height = Math.min(height, h);
+                                     });
+                                    ratios.forEach((d) => {
+                                        var el = document.getElementById(d.g);
+                                        el.style.minHeight = height + 'px';
+                                    //    el.style.height = height + 'px';
+
+                                    });
+                                    container.style.height = height + 'px';
+                                    console.log('@slider_name',ratios);
+                                }
+                                window.addEventListener("resize", resizeslider[name]);
+                                $(document).ready(resizeslider[name]);
+                            </script>
+                            <div class="@slider_name" id="@slider_name">
                                 @foreach (var i in ic.Images)
                                 {
-                                    <a href="#">
-                                        <div class="even_box" style="background-image: url('/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID'" );">
+                                    <a>
+                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID'" );">
                                         </div>
                                     </a>
                                 }
@@ -323,6 +359,7 @@
                             <script>
                                 $('.@slider_name').slick({
                                     dots: true,
+                                    infinite: false,
                                     slidesToShow: 1,
                                     autoplay: true,
                                     autoplaySpeed: 2000,

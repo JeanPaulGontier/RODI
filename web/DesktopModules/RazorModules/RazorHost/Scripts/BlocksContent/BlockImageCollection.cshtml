@@ -51,8 +51,8 @@
             <div v-html="slickStyles()">
 
             </div>
-            <div :class="sliderName" :id="sliderName">
-                <a href="#" v-for="i in c.Images" v-if="c.Type=='slider'">
+            <div :class="sliderName" :id="sliderName"  ref="imagesslider" v-show="c.Type=='slider'">
+                <a v-for="i in c.Images">
                     <div :class="evenBox" :style="{ backgroundImage: 'url(/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID }">
                     </div>
                 </a>
@@ -78,6 +78,7 @@
                     editing: false,
                     c: {},
                     width: 0,
+                    height: 452,
                     pct: 100,
                     fichiers: [],
                     e: {
@@ -89,6 +90,7 @@
                     slickOptions: {
                         dots: true,
                         slidesToShow: 1,
+                        infinite: false,
                         autoplay: true,
                         autoplaySpeed: 2000,
                         pauseOnFocus: true,
@@ -99,20 +101,35 @@
             },
             methods: {
                 slickStyles() {
-                    return "<style>." + this.evenBox + "{position:relative;width:100%;min-height:425px;background-size:cover;background-position:center}." + this.evenBox + " img{position:absolute;z-index:2;display:block;top:0;left:0;width:100%}." + this.evenBox + " h3{position:absolute;z-index:3;display:block;top:0;left:15px;width:auto;text-align:left;color:#fff;background-color:#000;padding:15px 15px 15px 10px;max-width:calc(100% - 30px);border-radius:4px}." + this.sliderName + " .slick-next{right:5px;z-index:9}." + this.sliderName + " .slick-prev{left:5px;z-index:9}." + this.sliderName + " .slick-dots{position:absolute;bottom:3px;width:60%;left:50%;transform:translateX(-50%);border-radius:3px}." + this.sliderName + " .slick-dots li button:before{color:#fff;opacity:1;border-radius:50%;border:1px solid #00246c;background-color:#fff}." + this.sliderName + " .slick-dots li.slick-active button:before{opacity:1;color:#00246c;background-color:#00246c}." + this.sliderName + " .slick-prev:before,.slick-next:before{font-size:40px}." + this.sliderName + " .slick-prev,.slick-next{width:40px;height:40px}." + this.sliderName + " .slick-dots li button:before{font-family:'slick';font-size:16px}." + this.sliderName + " .slick-dots li{margin:7px 5px 3px 5px}." + this.sliderName + " .slick-dots li button:before{width:10px;height:10px;content:' '}." + this.sliderName + "{margin:3px}</style>";
+                    return "<style>." + this.evenBox + "{position:relative;width:100%;min-height:"+this.height+"px;background-size:cover;background-position:center}." + this.evenBox + " img{position:absolute;z-index:2;display:block;top:0;left:0;width:100%}." + this.evenBox + " h3{position:absolute;z-index:3;display:block;top:0;left:15px;width:auto;text-align:left;color:#fff;background-color:#000;padding:15px 15px 15px 10px;max-width:calc(100% - 30px);border-radius:4px}." + this.sliderName + " .slick-next{right:5px;z-index:9}." + this.sliderName + " .slick-prev{left:5px;z-index:9}." + this.sliderName + " .slick-dots{position:absolute;bottom:3px;width:60%;left:50%;transform:translateX(-50%);border-radius:3px}." + this.sliderName + " .slick-dots li button:before{color:#fff;opacity:1;border-radius:50%;border:1px solid #00246c;background-color:#fff}." + this.sliderName + " .slick-dots li.slick-active button:before{opacity:1;color:#00246c;background-color:#00246c}." + this.sliderName + " .slick-prev:before,.slick-next:before{font-size:40px}." + this.sliderName + " .slick-prev,.slick-next{width:40px;height:40px}." + this.sliderName + " .slick-dots li button:before{font-family:'slick';font-size:16px}." + this.sliderName + " .slick-dots li{margin:7px 5px 3px 5px}." + this.sliderName + " .slick-dots li button:before{width:10px;height:10px;content:' '}." + this.sliderName + "{margin:3px}</style>";
                 },
                 getColumnStyle() {
                     return 'flex:' + this.pct + '%;max-width:' + this.pct + '%;';
                 },
-                updateWidth() {
-                    if (!this.$refs.imagescollection)
+                updateWidthHeight() {
+                    var images = null;
+                    if (this.$refs.imagescollection)
+                        images = this.$refs.imagescollection;
+                    else if (this.$refs.imagesslider)
+                        images = this.$refs.imagesslider;
+                    else
                         return;
+
                     this.$nextTick(() => {
-                        var rect = this.$refs.imagescollection.getBoundingClientRect();
+                        var rect = images.getBoundingClientRect();
                         this.width = rect.width;
+
+                        this.height = Number.MAX_SAFE_INTEGER;
+                        this.c.Images.forEach((i) => {
+                            let ratio = i.Height / i.Width;
+                            let height = Math.round(this.width * ratio, 0);
+                            this.height = Math.min(this.height, height);
+                        })
+                        
                     });
 
                 },
+                
                 columns() {
                     var cols = [];
                     if (!this.c.Images || this.width==0 || this.c.Type!='gallery')
@@ -166,11 +183,12 @@
 
                     this.c = JSON.parse(JSON.stringify(this.e));
                     this.editing = false;
+
                     
                     this.onChange();
 
                     this.$nextTick(() => {          
-                        this.updateWidth();
+                        this.updateWidthHeight();
                         $('.' + this.sliderName).slick(this.slickOptions);                    
                     });
                 },
@@ -234,16 +252,16 @@
                 },
             },
             created() {
-                window.addEventListener("resize", this.updateWidth);
+                window.addEventListener("resize", this.updateWidthHeight);
             },
             destroyed() {
-                window.removeEventListener("resize", this.updateWidth);
+                window.removeEventListener("resize", this.updateWidthHeight);
             },
             mounted() {
                 this.c = this.content;
 
                 this.$nextTick(() => {
-                    this.updateWidth();
+                    this.updateWidthHeight();
                 
                    $('.' + this.sliderName).slick(this.slickOptions);
 
