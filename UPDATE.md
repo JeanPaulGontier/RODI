@@ -5,6 +5,7 @@
 - ajout du choix de présentation dans le bloc de type 'liste d'images' (liste, galerie ou caroussel)
 - changement des libellés d'options de visibilité pour les nouvelles 
 - amélioration de l'ergonomie de la gestion des listes d'images
+- correction bug de mise à jour de mot de passe membre
 
 
 ###### 13/01/2024

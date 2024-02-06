@@ -54,12 +54,12 @@
                 Visibilité :
             </div>
             <div class="col-sm-9">
-                <p v-if="news.category=='district'">
+                <p v-if="context.mode=='district'">
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="N">Personne</label>
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="O">Tout le monde (public)</label>
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="D">Membres des clubs</label>
                 </p>
-                <p v-if="news.category=='clubs'">
+                <p v-if="context.mode=='clubs'">
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="N">Personne</label>
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="O">Tout le monde (public)</label>
                     <label class="radio-inline"><input type="radio" name="visibilite" v-model="news.visible" value="M">Membres du club</label>
