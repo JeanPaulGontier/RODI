@@ -28,7 +28,9 @@ DesktopModules\AIS\OuKiKan\Control.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
-
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 ```
 ###### en cours
 ```txt

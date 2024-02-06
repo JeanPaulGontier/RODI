@@ -18,7 +18,6 @@
     var blocksSuffix = PageData["blocksSuffix"];
     var Html = PageData["HTML"];
     var GUID = PageData["GUID"];
-
     var mediaPrefix = AIS.Const.DISTRICT_URL + "/DesktopModules/BlocksContent/API/Blocks/getMedia";
 
     List<Block> blocks = PageData["blocks"];
@@ -63,7 +62,7 @@
                     }
                     break;
                 case "ImageCollection":
-                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));                    
+                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
                     if (ic.Images.Count > 0)
                     {
                         mustShowOnlineLink = true;

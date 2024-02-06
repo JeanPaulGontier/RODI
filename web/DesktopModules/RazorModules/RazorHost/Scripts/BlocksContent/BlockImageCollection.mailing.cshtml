@@ -1,0 +1,152 @@
+﻿
+<script type="text/x-template" id="blockimagecollection-template">
+    <a ref="top"></a>
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>           
+            <div class="row">
+                <span>Titre :</span>
+                <input type="text" v-model="e.Title" class="form-control" />
+            </div>
+            <div>
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
+                <div v-if="e.Images" v-for="(i,index) in e.Images" class="row">
+                    <div class="col-sm-4">
+                        <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" />
+
+                    </div>
+                    <div class="col-sm-8">
+                        <span> Légende :</span>
+                        <input type="text" v-model="i.Name" class="form-control" /><br />
+                        <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
+                    </div>
+                    <div class="col-sm-12 pe-spacer size10"></div>
+                </div>
+                <br />
+                <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
+                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
+            </div>
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing">
+            <h2>{{c.Title}}</h2>
+
+            <div class="Lrow" v-if="!c.Type">
+                <img v-for="i in c.Images" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockImageCollection == 'undefined') {
+        BlockImageCollection = {
+           template: '#blockimagecollection-template',
+           name: 'BlockImageCollection',
+           props: [
+                'content', 'moduleid', 'guid'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {},
+                    width: 0,
+                    pct: 100,
+                    fichiers: [],
+                    e: {
+                        Images: []
+                    },
+                    lastY: window.screenY                    
+                }
+            },
+            methods: {
+                getColumnStyle() {
+                    return 'flex:' + this.pct + '%;max-width:' + this.pct + '%;';
+                },                
+                edit() {
+                    this.lastY = window.scrollY;
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    window.scrollTo(window.scrollX, this.lastY);
+
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+
+                    
+                    this.onChange();
+
+                },
+                cancel() {
+                    this.editing = false;
+                
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+                deleteImage(i) {
+                    this.e.Images.splice(i, 1);
+                },
+                addDocument(event) {
+                    event.preventDefault();
+
+                    this.$refs.document.click();
+                },
+                onChangeDocumentUpload() {
+                    if (this.$refs.document.files.length == 0)
+                        return;
+                    this.fichiers.push({
+                        file: this.$refs.document.files[0],
+                        uploaded: false
+                    });
+                    this.uploadMedia({
+                        type: 'photo'
+                    }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+                },
+                onDocumentUploaded(r) {
+
+                    console.log('onDocumentUploaded', r);
+                    const image = r.data;
+                    image.Name = image.Filename;
+                    this.e.Images.push(image);
+                    this.fichiers = [];
+                },
+                uploadMedia(meta, callbackok, callbackerror) {
+                    let fichier = this.fichiers[this.fichiers.length - 1];
+                    if (fichier.file.size > 28 * 1024 * 1024) {
+                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                        this.fichiers = [];
+                        return;
+                    }
+                    let formData = new FormData();
+                    formData.append('file', fichier.file);
+                    formData.append('allowPdf2Image', true);
+
+                    if (meta) {
+                        for (let p in meta) {
+                            formData.append(p, meta[p]);
+                        }
+                    }
+                    _yemon[this.moduleid].service.postFile('/setMedia',
+                        formData,
+                        (r) => callbackok(r),
+                        (r) => callbackerror(r)
+                    );
+
+                },
+            },           
+            mounted() {
+                this.c = this.content;
+            },
+
+        }
+    }
+
+</script>
