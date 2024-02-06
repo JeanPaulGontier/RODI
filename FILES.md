@@ -1,7 +1,5 @@
 ##### Modified files per commit
 ```txt
-DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 App_Code\AIS\Video.cs
 DesktopModules\AIS\News Panel\News.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
@@ -9,15 +7,21 @@ DesktopModules\AIS\Agenda Gouverneur\Control.ascx
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 Portals\_default\Skins\Rodi2017\skin.css
 DesktopModules\AIS\Admin News Liste\NewsEdit.html
 DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.css
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.min.js
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.woff
@@ -25,12 +29,6 @@ Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick-theme.css
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\ajax-loader.gif
 DesktopModules\AIS\Password Change\Control.ascx.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
-DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 ```
 ###### en cours
 ```txt
