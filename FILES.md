@@ -15,6 +15,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.club.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html

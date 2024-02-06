@@ -1,8 +1,10 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube
 - modification du module agenda du gouverneur, qui permet maintenant d'avoir plusieurs agendas différents sur la même page
 - correction d'un bug de redimensionnement automatique des vidéos youtube dans module news panel et club news panel
-- ajout du choix de présentation dans le bloc de type 'liste d'images' (liste, galerie ou caroussel)
+- ajout du choix de présentation dans le bloc de type 'liste d'images' liste, galerie ou caroussel, pour les nouvelles, les clubs, le contenu du site mais pas pour les mailings
 - changement des libellés d'options de visibilité pour les nouvelles 
 - amélioration de l'ergonomie de la gestion des listes d'images
 - correction bug de mise à jour de mot de passe membre
