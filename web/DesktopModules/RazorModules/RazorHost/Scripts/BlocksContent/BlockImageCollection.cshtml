@@ -174,7 +174,8 @@
                 },
                 edit() {
                     this.lastY = window.scrollY;
-                    $('.' + this.sliderName).slick('unslick');
+                    if(this.c.Type=='slider')
+                        $('.' + this.sliderName).slick('unslick');
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
                 },
@@ -189,7 +190,8 @@
 
                     this.$nextTick(() => {          
                         this.updateWidthHeight();
-                        $('.' + this.sliderName).slick(this.slickOptions);                    
+                        if (this.c.Type == 'slider')
+                            $('.' + this.sliderName).slick(this.slickOptions);                    
                     });
                 },
                 cancel() {
@@ -262,8 +264,8 @@
 
                 this.$nextTick(() => {
                     this.updateWidthHeight();
-                
-                   $('.' + this.sliderName).slick(this.slickOptions);
+                    if (this.c.Type == 'slider')
+                        $('.' + this.sliderName).slick(this.slickOptions);
 
              
                   

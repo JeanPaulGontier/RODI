@@ -15,6 +15,7 @@ Portals\_default\Skins\Rodi2017\skin.css
 DesktopModules\AIS\Admin News Liste\NewsEdit.html
 DesktopModules\AIS\Admin News Liste\Control.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick.css
@@ -24,6 +25,10 @@ Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\slick-theme.css
 Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\ajax-loader.gif
 DesktopModules\AIS\Password Change\Control.ascx.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
+
 ```
 ###### en cours
 ```txt

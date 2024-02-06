@@ -17,6 +17,13 @@
     var moduleID = PageData["moduleID"];
     var blocksSuffix = PageData["blocksSuffix"];
     var Html = PageData["HTML"];
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+    var mediaPath = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
+}
+<link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css" />
+<link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css" />
+<script type="text/javascript" src="@(libPath)slick-carousel-1.8.1/slick.min.js"></script>
+@{
 
     string club_url = Request.Url.ToString();
     string seo = Request.QueryString["sn"];
@@ -77,7 +84,7 @@
                             @if (p.Image != null)
                             {
                                 <div class="col-sm-6">
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
                             @if (p.Html != null)
@@ -99,7 +106,7 @@
                             @if (p.Image != null)
                             {
                                 <div class="col-sm-6">
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
 
@@ -117,7 +124,7 @@
                         if (p.Image != null)
                         {
                             <div>
-                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                             </div>
                         }
                         break;
@@ -129,7 +136,7 @@
                         if (p.Image != null)
                         {
                             <div>
-                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                             </div>
                         }
                         if (p.Html != null)
@@ -151,8 +158,8 @@
                         @foreach (var f in fc.Files)
                         {
                             <li>
-                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;
-                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                <a href="@mediaPath@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;
+                                <a href="@mediaPath@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
                             </li>
 
                         }
@@ -167,11 +174,247 @@
                 }
                 if (ic.Images.Count > 0)
                 {
-                    foreach (var i in ic.Images)
+                    List<Block.Image> imgs = new List<Block.Image>();
+                    foreach (var image in ic.Images)
                     {
-                        <span>
-                            <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID" width="100%" title="@i.Name" />
-                        </span>
+                        if (!image.IsBitmap && image.MimeType.StartsWith("image/"))
+                        {
+                            var media = Yemon.dnn.Helpers.CorrectBitmapMediaSizes((Yemon.dnn.core.Media)image);
+                            if (media != null)
+                            {
+                                image.Width = media.Width;
+                                image.IsBitmap = media.IsBitmap;
+                                image.Height = media.Height;
+                            }
+                        }
+                        imgs.Add(new Block.Image()
+                        {
+                            GUID = image.GUID,
+                            Width = image.Width,
+                            Height = image.Height,
+                            Name = image.Name
+                        });
+                    }
+
+                    switch ("" + ic.Type)
+                    {
+                        case "":
+                            foreach (var i in imgs)
+                            {
+                                <span>
+                                    <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />
+                                </span>
+                                <div class="pe-spacer size10"></div>
+                            }
+                            break;
+                        case "gallery":
+
+                            var images = Yemon.dnn.Functions.Serialize(imgs);
+
+                            <script>
+                                     if (!resize) {
+                                    var resize = [];
+                                }
+                                resize['@block.Guid'] = function () {
+                                    var gallery = document.getElementById('@("gallery"+block.Guid)');
+                                    var rect = gallery.getBoundingClientRect();
+                                    var width = rect.width;
+                                    const padding = 8;
+                                    const marginv = 8;
+
+                                    var y = [];
+                                    var col = 0;
+                                    var maxcol = Math.round(width / 300, 0);
+                                    var pct = Math.round(100 / maxcol, 0);
+                                    var colWidth = Math.round(width/ maxcol, 0);
+                                    for (var i = 0; i < maxcol; i++) {
+                                        y.push(0);
+                                    }
+
+                                    var images = @Html.Raw(images);
+                                    var maxheight = 0;
+                                    for (var i = 0; i < images.length; i++) {
+                                        var c = document.getElementById(images[i].GUID);
+                                        var im = images[i];
+                                        let ratio = im.Height / im.Width;
+                                        let height = Math.round(colWidth * ratio, 0) + marginv;
+                                        let max = Number.MAX_SAFE_INTEGER;
+                                        col = 0;
+                                        for (var j = 0; j < maxcol; j++) {
+                                            if (y[j] < max) {
+                                                col = j;
+                                                max = y[j];
+                                            }
+                                        }
+
+                                        c.style.top = y[col]+'px';
+                                        c.style.left = col * colWidth + 'px';
+                                        c.style.width = colWidth + 'px';
+                                        c.style.height = height + 'px';
+                                        c.style.padding = marginv + 'px ' + (padding / 2) + 'px 0px '+ (padding / 2) + 'px';
+                                        y[col] += height;
+                                        if (y[col] > maxheight)
+                                            maxheight = y[col];
+
+                                    };
+                                    gallery.style.height = maxheight+ 'px';
+                                };
+                                $(window).resize(resize['@block.Guid']);
+                                $(document).ready(function () {
+                                    resize['@block.Guid']();
+                                });
+
+                            </script>
+                            <div id='@("gallery"+block.Guid)' style="position:relative">
+                                @foreach (var i in imgs)
+                                {
+                                    <img id="@i.GUID" src="@mediaPath@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
+                                }
+
+                            </div>
+                            break;
+                        case "slider":
+                            var slider_name = "slider_name_" + ("" + block.Guid).Substring(0, 5);
+                            <style>
+                            .even_box {
+                                position: relative;
+                                width: 100%;
+                                /*min-height: 400px;*/
+                                background-size: cover;
+                                background-position: center;
+                            }
+                            .even_box img {
+                                position: absolute;
+                                z-index: 2;
+                                display: block;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                            }
+                            .even_box h3 {
+                                position: absolute;
+                                z-index: 3;
+                                display: block;
+                                top: 0;
+                                left: 15px;
+                                width: auto;
+                                text-align: left;
+                                color: white;
+                                background-color: black;
+                                padding: 15px 15px 15px 10px;
+                                max-width: calc(100% - 30px);
+                                border-radius: 4px;
+                            }
+                            .@slider_name .slick-next {
+                                right: 5px;
+                                z-index: 9;
+                            }
+                            .@slider_name .slick-prev {
+                                left: 5px;
+                                z-index: 9;
+                            }
+                            .@slider_name .slick-dots {
+                                position: absolute;
+                                bottom: 3px;
+                                width: 60%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                border-radius: 3px;
+                            }
+                            .@slider_name .slick-dots li button:before{
+                                color: white;
+                                opacity: 1;
+                                border-radius: 50%;
+                                border: 1px solid #00246c;
+                                background-color: white;
+                            }
+                            .@slider_name .slick-dots li.slick-active button:before {
+                                opacity: 1;
+                                color: #00246c;
+                                background-color: #00246c;
+                            }
+                            .@slider_name .slick-prev:before, .slick-next:before {
+                                font-size: 40px;
+                            }
+                            .@slider_name .slick-prev, .slick-next {
+                                width: 40px;
+                                height: 40px;
+                            }
+                            .@slider_name .slick-dots li button:before {
+                                font-family: 'slick';
+                                font-size: 16px;
+                            }
+                            .@slider_name .slick-dots li {
+                                margin: 7px 5px 3px 5px;
+                            }
+                            .@slider_name .slick-dots li button:before {
+                                width: 10px;
+                                height: 10px;
+                                content: ' ';
+                            }
+                            .@slider_name
+                            {
+                                margin:3px;
+                            }
+                            </style>
+
+                            var ratios = new List<object>(); ;
+                            foreach (var i in imgs)
+                            {
+                                ratios.Add(new
+                                {
+                                    g = ("image" + ("" + i.GUID).Substring(0, 6)),
+                                    r = ((float)i.Height / (float)i.Width)
+                                });
+                            }
+
+                            <script>
+                                    if (typeof resizeslider == 'undefined')
+                                        resizeslider = [];
+;                                   var slfnname = '@Html.Raw(slider_name)';
+                                    resizeslider[slfnname] = function () {
+                                    var container = document.getElementById('@slider_name');
+                                    var width = container.getBoundingClientRect().width;
+                                    var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
+                                     var height = Number.MAX_SAFE_INTEGER;
+                                     ratios.forEach((d) => {
+                                         var h = Math.round(width * d.r, 0);
+                                         height = Math.min(height, h);
+                                     });
+                                    ratios.forEach((d) => {
+                                        var el = document.getElementById(d.g);
+                                        el.style.minHeight = height + 'px';
+                                    //    el.style.height = height + 'px';
+
+                                    });
+                                    container.style.height = height + 'px';
+                                    console.log('@slider_name',ratios);
+                                }
+                                window.addEventListener("resize", resizeslider[slfnname]);
+                                $(document).ready(resizeslider[slfnname]);
+                            </script>
+                            <div class="@slider_name" id="@slider_name">
+                                @foreach (var i in imgs)
+                                {
+                                    <a>
+                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('@mediaPath@i.GUID'" );">
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                            <script>
+                                $('.@slider_name').slick({
+                                    dots: true,
+                                    infinite: false,
+                                    slidesToShow: 1,
+                                    autoplay: true,
+                                    autoplaySpeed: 2000,
+                                    pauseOnFocus: true,
+                                    pauseOnHover: true,
+                                    pauseOnDotsHover: true,
+                                });
+                            </script>
+                            break;
                     }
 
                 }
@@ -224,12 +467,12 @@
                     List<News> newslistsrc = DataMapping.ListNews(club.cric, onlyvisible: true, category: "Clubs", sort: sort);
 
                     List<News> newslist = new List<News>();
-                    var today = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day);
-                    foreach(var n in newslistsrc)
+                    var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    foreach (var n in newslistsrc)
                     {
                         if (nc.DateBehavior == "past")
                         {
-                            if (DateTime.Compare(n.dt,today) < 0)
+                            if (DateTime.Compare(n.dt, today) < 0)
                             {
                                 newslist.Add(n);
                             }
@@ -251,25 +494,25 @@
                             <h2>@nc.Title</h2>
                         }
                         <ul style="list-style:none;margin:0;padding:0">
-                            @{ 
+                            @{
                                 int i = 0;
-                                while (i <nc.NBToShow && i<newslist.Count)
+                                while (i < nc.NBToShow && i < newslist.Count)
                                 {
                                     var n = newslist[i];
 
-                                   <li  style="list-style:none" class="BlocBlanc">
+                                    <li style="list-style:none" class="BlocBlanc">
                                         <a href="@club_url/nouvelles?newsid=@n.id">
-                                            @if(nc.ShowImage)
-                                            { 
+                                            @if (nc.ShowImage)
+                                            {
                                                 <div>
-                                                    <img src="@n.GetPhoto()"/>
+                                                    <img src="@n.GetPhoto()" />
                                                 </div>
                                             }
-                                            @if(nc.ShowTitle)
-                                            { 
-                                            <h3>
-                                                <span>@n.title</span>
-                                            </h3>
+                                            @if (nc.ShowTitle)
+                                            {
+                                                <h3>
+                                                    <span>@n.title</span>
+                                                </h3>
                                             }
                                             @if (nc.ShowDate)
                                             {
@@ -281,16 +524,16 @@
                                 }
 
                             }
-                           
 
-                            
+
+
                         </ul>
 
                     }
 
-                                        }
+                }
 
-                                        break;
-                                    }
-                                }
+                break;
+        }
+    }
 }

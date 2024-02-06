@@ -15,7 +15,14 @@
 @using AIS;
 @using System.Web.UI.HtmlControls;
 @{
+    var mediaPath = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     var HOST = Yemon.dnn.Functions.GetHostUrl(HttpContext.Current.Request);
+}
+<link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css" />
+<link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css" />
+<script type="text/javascript" src="@(libPath)slick-carousel-1.8.1/slick.min.js"></script>
+@{ 
     var newsID = "" + Request["newsid"];
     if (newsID == "")
     {
@@ -27,19 +34,20 @@
             {
                 return;
             }
-            List<AIS.News> newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "", onlyvisible: true, category: "Clubs", sort: "dt desc");
-            if (newslist.Count > 0)
-            {
-                newsID = newslist[0].id;
-            }
-        }
+            List<AIS.News>
+    newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "", onlyvisible: true, category: "Clubs", sort: "dt desc");
+    if (newslist.Count > 0)
+    {
+    newsID = newslist[0].id;
+    }
+    }
 
     }
 
     AIS.News news = null;
     try
     {
-        news = AIS.DataMapping.GetNews(newsID);
+    news = AIS.DataMapping.GetNews(newsID);
     }
     catch
     {
@@ -47,174 +55,417 @@
     }
     if (news == null)
     {
-        return;
+    return;
     }
 
-    List<Block> blocks = new List<Block>();
-    try
-    {
-        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
-        if (sblocks != "")
-        {
-            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
-        }
-
-    }
-    catch
-    {
-
-    }
-
-    string page_title = (news.club_type == "rotary" ? news.club_type.ToUpper()+" CLUB ":"") + news.club_name;
-
-    <h1>@news.title</h1>
-    <h3>@page_title</h3>
-    <div class="text-right">
-        <span class="Date Normal">@news.dt.ToShortDateString()</span>
-
-    </div>
-    if (blocks.Count == 0)
-    {
-        if (news.photo != "")
-        {
-            <div>
-                <img src='/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@news.photo' title='@news.title' />
-            </div>
-        }
-        else
-        {
-            <div>Il n'y a pas de détail...</div>
-        }
-    }
-    else
-    {
-        foreach (Block block in blocks)
-        {
-            switch (block.Type)
+    List<Block>
+        blocks = new List<Block>
+            ();
+            try
             {
-                case "ImageText":
+            string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
+            if (sblocks != "")
+            {
+            blocks = (List<Block>
+                )Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>
+                    ));
+                    }
+
+                    }
+                    catch
+                    {
+
+                    }
+
+                    string page_title = (news.club_type == "rotary" ? news.club_type.ToUpper() + " CLUB " : "") + news.club_name;
+
+                    <h1>@news.title</h1>
+                    <h3>@page_title</h3>
+                    <div class="text-right">
+                        <span class="Date Normal">@news.dt.ToShortDateString()</span>
+
+                    </div>
+                    if (blocks.Count == 0)
+                    {
+                    if (news.photo != "")
+                    {
+                    <div>
+                        <img src='@mediaPath@news.photo' title='@news.title' />
+                    </div>
+                    }
+                    else
+                    {
+                    <div>Il n'y a pas de détail...</div>
+                    }
+                    }
+                    else
+                    {
+                    foreach (Block block in blocks)
+                    {
+                    switch (block.Type)
+                    {
+                    case "ImageText":
                     Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
                     switch (p.Position)
                     {
-                        case "G":
-                            <div class="row">
-                                @if (p.Title != null)
-                                {
-                                    <h2 class="col-sm-12">@p.Title</h2>
-                                }
-                                @if (p.Image != null)
-                                {
-                                    <div class="col-sm-6">
-                                        <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
-                                    </div>
-                                }
-                                @if (p.Html != null)
-                                {
-                                    <div class="col-sm-6">@Html.Raw(p.Html)</div>
-                                }
+                    case "G":
+                    <div class="row">
+                        @if (p.Title != null)
+                        {
+                            <h2 class="col-sm-12">@p.Title</h2>
+                        }
+                        @if (p.Image != null)
+                        {
+                            <div class="col-sm-6">
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                             </div>
-                            break;
-                        case "D":
-                            <div class="row">
-                                @if (p.Title != null)
-                                {
-                                    <h2 class="col-sm-12">@p.Title</h2>
-                                }
-                                @if (p.Html != null)
-                                {
-                                    <div class="col-sm-6">@Html.Raw(p.Html)</div>
-                                }
-                                @if (p.Image != null)
-                                {
-                                    <div class="col-sm-6">
-                                        <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
-                                    </div>
-                                }
-
-                            </div>
-                            break;
-                        case "B":
-        if (p.Title != null)
-        {
-                                <h2>@p.Title</h2>
-                            }
-        if (p.Html != null)
-        {
-                                <div>@Html.Raw(p.Html)</div>
-                            }
-        if (p.Image != null)
-        {
-                                <div>
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
-                                </div>
-                            }
-
-        break;
-    default:
-        if (p.Title != null)
-        {
-                                <h2>@p.Title</h2>
-                            }
-        if (p.Image != null)
-        {
-                                <div>
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
-                                </div>
-                            }
-        if (p.Html != null)
-        {
-                                <div>@Html.Raw(p.Html)</div>
-                            }
-        break;
-    }
-    break;
-                case "FileCollection":
-        Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
-        if (fc.Title != null)
-        {
-                        <h2>@fc.Title</h2>
-                    }
-        if (fc.Files.Count > 0)
-        {
-                        <ul>
-                            @foreach (var f in fc.Files)
-                            {
-                                <li><a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID" class="btn btn-link">@f.Name</a></li>
-                            }
-                        </ul>
-                    }
+                        }
+                        @if (p.Html != null)
+                        {
+                            <div class="col-sm-6">@Html.Raw(p.Html)</div>
+                        }
+                    </div>
                     break;
-                case "ImageCollection":
-        Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
-        if (ic.Title != null)
-        {
-                        <h2>@ic.Title</h2>
-                    }
-        if (ic.Images.Count > 0)
-        {
-            foreach (var i in ic.Images)
-            {
-                            <span>
-                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID" width="100%" title="@i.Name" />
-                            </span>
+                    case "D":
+                    <div class="row">
+                        @if (p.Title != null)
+                        {
+                            <h2 class="col-sm-12">@p.Title</h2>
+                        }
+                        @if (p.Html != null)
+                        {
+                            <div class="col-sm-6">@Html.Raw(p.Html)</div>
+                        }
+                        @if (p.Image != null)
+                        {
+                            <div class="col-sm-6">
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                            </div>
                         }
 
-        }
-        break;
-    case "Raw":
-        Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
-                    <div>@Html.Raw(r.Html)</div>
-                    break;
-    case "Video":
-        Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
-        if (v.Title != null)
-        {
-                        <h2>@v.Title</h2>
-                    }
-                    <div id="@("container" + block.Guid)">
-                        <iframe width="100%" id="@("video" + block.Guid)" class="video" src="@v.Url" allowfullscreen=""></iframe>
                     </div>
-                    <script>
+                    break;
+                    case "B":
+                    if (p.Title != null)
+                    {
+                    <h2>@p.Title</h2>
+                    }
+                    if (p.Html != null)
+                    {
+                    <div>@Html.Raw(p.Html)</div>
+                    }
+                    if (p.Image != null)
+                    {
+                    <div>
+                        <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                    </div>
+                    }
+
+                    break;
+                    default:
+                    if (p.Title != null)
+                    {
+                    <h2>@p.Title</h2>
+                    }
+                    if (p.Image != null)
+                    {
+                    <div>
+                        <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                    </div>
+                    }
+                    if (p.Html != null)
+                    {
+                    <div>@Html.Raw(p.Html)</div>
+                    }
+                    break;
+                    }
+                    break;
+                    case "FileCollection":
+                    Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                    if (fc.Title != null)
+                    {
+                    <h2>@fc.Title</h2>
+                    }
+                    if (fc.Files.Count > 0)
+                    {
+                    <ul>
+                        @foreach (var f in fc.Files)
+                        {
+                            <li><a href="@mediaPath@f.GUID" class="btn btn-link">@f.Name</a></li>
+                        }
+                    </ul>
+                    }
+                    break;
+                    case "ImageCollection":
+                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+                    if (ic.Title != null)
+                    {
+                    <h2>@ic.Title</h2>
+                    }
+                    if (ic.Images.Count > 0)
+                    {
+                    List<Block.Image>
+                        imgs = new List<Block.Image>
+                            ();
+                            foreach (var image in ic.Images)
+                            {
+                            if (!image.IsBitmap && image.MimeType.StartsWith("image/"))
+                            {
+                            var media = Yemon.dnn.Helpers.CorrectBitmapMediaSizes((Yemon.dnn.core.Media)image);
+                            if (media != null)
+                            {
+                            image.Width = media.Width;
+                            image.IsBitmap = media.IsBitmap;
+                            image.Height = media.Height;
+                            }
+                            }
+                            imgs.Add(new Block.Image()
+                            {
+                            GUID = image.GUID,
+                            Width = image.Width,
+                            Height = image.Height,
+                            Name = image.Name
+                            });
+                            }
+
+                            switch ("" + ic.Type)
+                            {
+                            case "":
+                            foreach (var i in imgs)
+                            {
+                            <span>
+                                <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />                                
+                            </span>
+                            <div class="pe-spacer size10"></div>
+                            }
+                            break;
+                            case "gallery":
+
+                            var images = Yemon.dnn.Functions.Serialize(imgs);
+
+                            <script>
+                                     if (!resize) {
+                                    var resize = [];
+                                }
+                                resize['@block.Guid'] = function () {
+                                    var gallery = document.getElementById('@("gallery"+block.Guid)');
+                                    var rect = gallery.getBoundingClientRect();
+                                    var width = rect.width;
+                                    const padding = 8;
+                                    const marginv = 8;
+
+                                    var y = [];
+                                    var col = 0;
+                                    var maxcol = Math.round(width / 300, 0);
+                                    var pct = Math.round(100 / maxcol, 0);
+                                    var colWidth = Math.round(width/ maxcol, 0);
+                                    for (var i = 0; i < maxcol; i++) {
+                                        y.push(0);
+                                    }
+
+                                    var images = @Html.Raw(images);
+                                    var maxheight = 0;
+                                    for (var i = 0; i < images.length; i++) {
+                                        var c = document.getElementById(images[i].GUID);
+                                        var im = images[i];
+                                        let ratio = im.Height / im.Width;
+                                        let height = Math.round(colWidth * ratio, 0) + marginv;
+                                        let max = Number.MAX_SAFE_INTEGER;
+                                        col = 0;
+                                        for (var j = 0; j < maxcol; j++) {
+                                            if (y[j] < max) {
+                                                col = j;
+                                                max = y[j];
+                                            }
+                                        }
+
+                                        c.style.top = y[col]+'px';
+                                        c.style.left = col * colWidth + 'px';
+                                        c.style.width = colWidth + 'px';
+                                        c.style.height = height + 'px';
+                                        c.style.padding = marginv + 'px ' + (padding / 2) + 'px 0px '+ (padding / 2) + 'px';
+                                        y[col] += height;
+                                        if (y[col] > maxheight)
+                                            maxheight = y[col];
+
+                                    };
+                                    gallery.style.height = maxheight+ 'px';
+                                };
+                                $(window).resize(resize['@block.Guid']);
+                                $(document).ready(function () {
+                                    resize['@block.Guid']();
+                                });
+
+                            </script>
+                            <div id='@("gallery"+block.Guid)' style="position:relative">
+                                @foreach (var i in imgs)
+                                {
+                                    <img id="@i.GUID" src="@mediaPath@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
+                                }
+
+                            </div>
+                            break;
+                            case "slider":
+                            var slider_name = "slider_name_" + ("" + block.Guid).Substring(0, 5);
+                            <style>
+                            .even_box {
+                                position: relative;
+                                width: 100%;
+                                /*min-height: 400px;*/
+                                background-size: cover;
+                                background-position: center;
+                            }
+                            .even_box img {
+                                position: absolute;
+                                z-index: 2;
+                                display: block;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                            }
+                            .even_box h3 {
+                                position: absolute;
+                                z-index: 3;
+                                display: block;
+                                top: 0;
+                                left: 15px;
+                                width: auto;
+                                text-align: left;
+                                color: white;
+                                background-color: black;
+                                padding: 15px 15px 15px 10px;
+                                max-width: calc(100% - 30px);
+                                border-radius: 4px;
+                            }
+                            .@slider_name .slick-next {
+                                right: 5px;
+                                z-index: 9;
+                            }
+                            .@slider_name .slick-prev {
+                                left: 5px;
+                                z-index: 9;
+                            }
+                            .@slider_name .slick-dots {
+                                position: absolute;
+                                bottom: 3px;
+                                width: 60%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                border-radius: 3px;
+                            }
+                            .@slider_name .slick-dots li button:before{
+                                color: white;
+                                opacity: 1;
+                                border-radius: 50%;
+                                border: 1px solid #00246c;
+                                background-color: white;
+                            }
+                            .@slider_name .slick-dots li.slick-active button:before {
+                                opacity: 1;
+                                color: #00246c;
+                                background-color: #00246c;
+                            }
+                            .@slider_name .slick-prev:before, .slick-next:before {
+                                font-size: 40px;
+                            }
+                            .@slider_name .slick-prev, .slick-next {
+                                width: 40px;
+                                height: 40px;
+                            }
+                            .@slider_name .slick-dots li button:before {
+                                font-family: 'slick';
+                                font-size: 16px;
+                            }
+                            .@slider_name .slick-dots li {
+                                margin: 7px 5px 3px 5px;
+                            }
+                            .@slider_name .slick-dots li button:before {
+                                width: 10px;
+                                height: 10px;
+                                content: ' ';
+                            }
+                            .@slider_name
+                            {
+                                margin:3px;
+                            }
+                            </style>
+
+                            var ratios = new List<object>
+                                (); ;
+                                foreach (var i in imgs)
+                                {
+                                ratios.Add(new
+                                {
+                                g = ("image" + ("" + i.GUID).Substring(0, 6)),
+                                r = ((float)i.Height / (float)i.Width)
+                                });
+                                }
+
+                                <script>
+                                if (typeof resizeslider == 'undefined')
+                                    resizeslider = [];
+;                                var name = '@Html.Raw(slider_name)';
+                                 resizeslider[name] = function () {
+                                    var container = document.getElementById('@slider_name');
+                                    var width = container.getBoundingClientRect().width;
+                                    var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
+                                     var height = Number.MAX_SAFE_INTEGER;
+                                     ratios.forEach((d) => {
+                                         var h = Math.round(width * d.r, 0);
+                                         height = Math.min(height, h);
+                                     });
+                                    ratios.forEach((d) => {
+                                        var el = document.getElementById(d.g);
+                                        el.style.minHeight = height + 'px';
+                                    //    el.style.height = height + 'px';
+
+                                    });
+                                    container.style.height = height + 'px';
+                                    console.log('@slider_name',ratios);
+                                }
+                                window.addEventListener("resize", resizeslider[name]);
+                                $(document).ready(resizeslider[name]);
+                                </script>
+                                <div class="@slider_name" id="@slider_name">
+                                    @foreach (var i in imgs)
+                                    {
+                                        <a>
+                                            <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID'" );">
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                                <script>
+                                $('.@slider_name').slick({
+                                    dots: true,
+                                    infinite: false,
+                                    slidesToShow: 1,
+                                    autoplay: true,
+                                    autoplaySpeed: 2000,
+                                    pauseOnFocus: true,
+                                    pauseOnHover: true,
+                                    pauseOnDotsHover: true,
+                                });
+                                </script>
+                                break;
+                                }
+
+                                }
+                                break;
+                                case "Raw":
+                                Block.Raw r = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
+                                <div>@Html.Raw(r.Html)</div>
+                                break;
+                                case "Video":
+                                Block.Video v = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
+                                if (v.Title != null)
+                                {
+                                <h2>@v.Title</h2>
+                                }
+                                <div id="@("container" + block.Guid)">
+                                    <iframe width="100%" id="@("video" + block.Guid)" class="video" src="@v.Url" allowfullscreen=""></iframe>
+                                </div>
+                                <script>
                         if (!resize) {
         var resize = [];
     }
@@ -233,54 +484,54 @@
         resize['@block.Guid']();
     });
 
-                    </script>
-                    break;
-                    @*case "title":
-                        Bloc.Title t = (Bloc.Title)bloc.content;
-                        <h2>@t.title</h2>
+                                </script>
+                                break;
+                                @*case "title":
+                                    Bloc.Title t = (Bloc.Title)bloc.content;
+                                    <h2>@t.title</h2>
 
 
-                        break;*@
-            }
-        }
-    }
+                                    break;*@
+                                }
+                                }
+                                }
 
 
-    // define page title
-    var pageObj = Context.CurrentHandler as Page;
-    page_title += " > " + news.title;
-    pageObj.Title = page_title;
+                                // define page title
+                                var pageObj = Context.CurrentHandler as Page;
+                                page_title += " > " + news.title;
+                                pageObj.Title = page_title;
 
-    HtmlMeta metaTag = new HtmlMeta();
-    metaTag.Attributes.Add("property", "og:title");
-    metaTag.Content = page_title;
-    pageObj.Header.Controls.Add(metaTag);
+                                HtmlMeta metaTag = new HtmlMeta();
+                                metaTag.Attributes.Add("property", "og:title");
+                                metaTag.Content = page_title;
+                                pageObj.Header.Controls.Add(metaTag);
 
-    metaTag = new HtmlMeta();
-    metaTag.Attributes.Add("property", "og:url");
-    metaTag.Content = HOST + Request.RawUrl;
-    pageObj.Header.Controls.Add(metaTag);
-
-
-    metaTag = new HtmlMeta();
-    metaTag.Attributes.Add("property", "og:image");
-    metaTag.Content = HOST + news.GetPhoto();
-    pageObj.Header.Controls.Add(metaTag);
+                                metaTag = new HtmlMeta();
+                                metaTag.Attributes.Add("property", "og:url");
+                                metaTag.Content = HOST + Request.RawUrl;
+                                pageObj.Header.Controls.Add(metaTag);
 
 
-    metaTag = new HtmlMeta();
-    metaTag.Name = "description";
-    metaTag.Attributes.Add("property", "og:description");
-    metaTag.Content = Context.Server.HtmlEncode(page_title);
-    pageObj.Header.Controls.Add(metaTag);
+                                metaTag = new HtmlMeta();
+                                metaTag.Attributes.Add("property", "og:image");
+                                metaTag.Content = HOST + news.GetPhoto();
+                                pageObj.Header.Controls.Add(metaTag);
 
 
-    string schemacontext = "context";
-    string schemaid = "id";
-    string schematype = "type";
+                                metaTag = new HtmlMeta();
+                                metaTag.Name = "description";
+                                metaTag.Attributes.Add("property", "og:description");
+                                metaTag.Content = Context.Server.HtmlEncode(page_title);
+                                pageObj.Header.Controls.Add(metaTag);
 
 
-<script type="application/ld+json">
+                                string schemacontext = "context";
+                                string schemaid = "id";
+                                string schematype = "type";
+
+
+                                <script type="application/ld+json">
     {
       "@@context": "https://schema.org",
       "@@type": "NewsArticle",
@@ -289,99 +540,99 @@
       "headline": "@page_title",
       "datePublished": "@news.dt"
     }
-</script>
-<script>
-    function ShareCopyLink(event) {
-        event.stopPropagation();
-        navigator.clipboard.writeText(window.location.href);
-        document.getElementById("ShareLinkCopy").style.display = "none";
-        document.getElementById("ShareLinkCopied").style.display = "block";
-        setTimeout(() => {
-            document.getElementById("ShareLinkCopy").style.display = "block";
-            document.getElementById("ShareLinkCopied").style.display = "none";
-        }, 3000);
-    }
-</script>
-    <div class="partager">
-        
-        <ul>
-            <li>
-                <button type="button" onclick="window.ShareCopyLink(event)" aria-label="Copier le lien" title="Copier le lien" data-share-type="copy" rel="noopener">
-                    <span id="ShareLinkCopy" >
-                        <svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
-                            <path d="M13.4 10.6a5.1 5.1 0 0 1 1.6 3.6c0 1.4-.6 2.7-1.6 3.7l-2.6 2.6A5.1 5.1 0 0 1 7.2 22a5.1 5.1 0 0 1-3.7-1.5A5.1 5.1 0 0 1 2 16.8c0-1.4.5-2.7 1.5-3.6l2.6-2.6.2-.2v.4l.3 1.8-1.9 1.8a3.4 3.4 0 0 0-1 2.4c0 1 .4 1.8 1 2.5a3.5 3.5 0 0 0 5 0l2.5-2.6a3.4 3.4 0 0 0 1-2.5c0-.9-.3-1.8-1-2.4a3.5 3.5 0 0 0-.6-.5 1.7 1.7 0 0 1-.1-.5c0-.5.2-1 .5-1.2a5.2 5.2 0 0 1 1.4 1zm6-6A5.1 5.1 0 0 1 21 8.1a5.2 5.2 0 0 1-1.5 3.6l-2.6 2.6-.2.2v-.4a7 7 0 0 0-.3-1.8l1.9-1.8a3.4 3.4 0 0 0 1-2.4c0-1-.4-1.8-1-2.5a3.4 3.4 0 0 0-2.5-1c-.9 0-1.8.4-2.4 1l-2.6 2.6a3.4 3.4 0 0 0-1 2.5 3.4 3.4 0 0 0 1.6 2.9 1.7 1.7 0 0 1-.4 1.7 5.2 5.2 0 0 1-1.4-1A5.1 5.1 0 0 1 8 10.8C8 9.4 8.6 8 9.6 7l2.6-2.6A5.1 5.1 0 0 1 15.8 3c1.4 0 2.7.5 3.7 1.5z"></path>
-                        </svg>
-                        <span aria-hidden="true">Copier le lien</span>
-                    </span>
-                    <span id="ShareLinkCopied"  style="display:none">
-                        <svg width="24" height="18" viewBox="0 0 13 13" aria-hidden="true" focusable="false">
-                            <path d="M13.1 4.26a.82.82 0 0 0-1.17-.03l-5.3 5.08L4.08 6.7a.82.82 0 0 0-1.17-.02.85.85 0 0 0-.02 1.2l3.1 3.2a.82.82 0 0 0 1.17.03l5.9-5.65a.85.85 0 0 0 .04-1.19Z"></path>
-                        </svg>
-                        <span aria-hidden="true">Lien copié</span>
-                    </span>
-                </button>                
-            </li>
-            <li>
-                <a aria-label="Partager via e-mail" title="Partager via e-mail" data-share-type="mail" href="mailto:?subject=@(Uri.EscapeUriString(page_title))&body=@(Uri.EscapeUriString(HOST+Request.RawUrl))">
-                    <span >
-                        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d="M18.75 4.5H5.25A2.25 2.25 0 0 0 3 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 17.25V6.75a2.25 2.25 0 0 0-2.25-2.25zm-.23 3.6l-6 5.25a1.39 1.39 0 0 1-.52.15 1.39 1.39 0 0 1-.53-.15l-6-5.25a.74.74 0 1 1 .98-1.13l5.47 4.8 5.48-4.8a.73.73 0 0 1 1.05.08.68.68 0 0 1 .07 1.05z"></path>
-                        </svg>
-                    </span>
-                    <span aria-hidden="true">Mail</span>
-                </a>
-            </li>
-            <li>
-                <a aria-label="Partager via Facebook" title="Partager via Facebook" data-share-type="facebook" href="https://www.facebook.com/sharer/sharer.php?u=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))&display=popup" rel="noopener" target="_blank">
-                    <span>
-                        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d="M9.3 21v-8.2H6V9.5h3.3v-2c0-3 1.9-4.5 4.6-4.5l2.7.1v3.2h-1.9C13.2 6.3 13 7 13 8v1.5h4.3l-1.7 3.3H13V21H9.3z"></path>
-                        </svg>
-                    </span>
-                    <span aria-hidden="true">Facebook</span>
-                </a>
-            </li>
-            <li>
-                <a aria-label="Partager via X (Twitter)" title="Partager via X (Twitter)" data-share-type="twitter" href="https://twitter.com/intent/tweet?url=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))&text=@(page_title)&display=popup" rel="noopener" target="_blank">
-                    <span>
-                        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-16y2uox r-8kz0gk r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-lrsllp"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>
-                    </span>
-                    <span aria-hidden="true">Twitter</span>
-                </a>
-            </li>
-            <li>
-                <a aria-label="Partager via Linkedin" title="Partager via Linkedin" data-share-type="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))" rel="noopener" target="_blank">
-                    <span>
-                        <svg width="24" height="24" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                            <path d="M17.5 16.67h-3.34v-4.7c0-1.23-.53-2.07-1.68-2.07-.88 0-1.37.57-1.6 1.11-.08.2-.07.47-.07.74v4.92H7.5s.04-8.33 0-9.08h3.31V9c.2-.62 1.26-1.51 2.95-1.51 2.1 0 3.74 1.3 3.74 4.12v5.05Zm-13.34-10h-.02c-1 0-1.64-.74-1.64-1.67 0-.95.66-1.67 1.68-1.67 1.01 0 1.63.72 1.65 1.67a1.6 1.6 0 0 1-1.67 1.67ZM2.5 7.5h3.33v9.17H2.5V7.5Z"></path>
-                        </svg>
-                    </span>
-                    <span aria-hidden="true">Linkedin</span>
-                </a>
-            </li>
-            @*<li>
-                <a aria-label="Partager via Messenger" title="Partager via Messenger" data-share-type="messenger" href="fb-messenger://share/?link=@(Uri.EscapeUriString(HOST+Request.RawUrl))" rel="noopener" target="_blank">
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d="M12 2C6.5 2 2 6.1 2 11.3a9 9 0 0 0 3.7 7.2V22l3.4-1.9c1 .3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.2S17.5 2 12 2zm1 12.5l-2.6-2.7-5 2.7L11 8.7l2.7 2.7 4.9-2.7-5.5 5.8z"></path>
-                        </svg>
-                    </span>
-                    <span aria-hidden="true">Messenger</span>
-                </a>
-            </li>*@
-            <li>
-                <a aria-label="Partager via WhatsApp" title="Partager via WhatsApp" data-share-type="whatsapp" href="whatsapp://send?text=@(Uri.EscapeUriString(news.title+Environment.NewLine+HOST+Request.RawUrl ))" rel="noopener" target="_blank">
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                            <path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1-5.5-1.7l-3.8 1.3 1.2-3.7A10 10 0 0 1 2 12 10 10 0 0 1 12 2zM9.2 7c-.2-.4-.3-.4-.6-.4a5.6 5.6 0 0 0-.4 0c-.3 0-.7 0-1 .3-.3.3-1 1-1 2.5 0 1.4 1 2.8 1.2 3 .1.2 2 3.2 5 4.4 2.3 1 3 .8 3.5.7.7-.1 1.7-.7 2-1.4.2-.7.2-1.2 0-1.4l-.5-.3-2-1c-.2 0-.5 0-.7.3-.3.4-.5.8-.8 1-.1.2-.4.2-.7.1-.3-.1-1.2-.4-2.3-1.4a8.9 8.9 0 0 1-1.6-2c-.2-.3 0-.5 0-.7l.5-.5c.2-.1.3-.2.3-.4v-.6l-.9-2.1z"></path>
-                        </svg>
-                    </span>
-                    <span aria-hidden="true">WhatsApp</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-}
+                                </script>
+                                <script>
+                                    function ShareCopyLink(event) {
+                                        event.stopPropagation();
+                                        navigator.clipboard.writeText(window.location.href);
+                                        document.getElementById("ShareLinkCopy").style.display = "none";
+                                        document.getElementById("ShareLinkCopied").style.display = "block";
+                                        setTimeout(() => {
+                                            document.getElementById("ShareLinkCopy").style.display = "block";
+                                            document.getElementById("ShareLinkCopied").style.display = "none";
+                                        }, 3000);
+                                    }
+                                </script>
+                                <div class="partager">
+
+                                    <ul>
+                                        <li>
+                                            <button type="button" onclick="window.ShareCopyLink(event)" aria-label="Copier le lien" title="Copier le lien" data-share-type="copy" rel="noopener">
+                                                <span id="ShareLinkCopy">
+                                                    <svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+                                                        <path d="M13.4 10.6a5.1 5.1 0 0 1 1.6 3.6c0 1.4-.6 2.7-1.6 3.7l-2.6 2.6A5.1 5.1 0 0 1 7.2 22a5.1 5.1 0 0 1-3.7-1.5A5.1 5.1 0 0 1 2 16.8c0-1.4.5-2.7 1.5-3.6l2.6-2.6.2-.2v.4l.3 1.8-1.9 1.8a3.4 3.4 0 0 0-1 2.4c0 1 .4 1.8 1 2.5a3.5 3.5 0 0 0 5 0l2.5-2.6a3.4 3.4 0 0 0 1-2.5c0-.9-.3-1.8-1-2.4a3.5 3.5 0 0 0-.6-.5 1.7 1.7 0 0 1-.1-.5c0-.5.2-1 .5-1.2a5.2 5.2 0 0 1 1.4 1zm6-6A5.1 5.1 0 0 1 21 8.1a5.2 5.2 0 0 1-1.5 3.6l-2.6 2.6-.2.2v-.4a7 7 0 0 0-.3-1.8l1.9-1.8a3.4 3.4 0 0 0 1-2.4c0-1-.4-1.8-1-2.5a3.4 3.4 0 0 0-2.5-1c-.9 0-1.8.4-2.4 1l-2.6 2.6a3.4 3.4 0 0 0-1 2.5 3.4 3.4 0 0 0 1.6 2.9 1.7 1.7 0 0 1-.4 1.7 5.2 5.2 0 0 1-1.4-1A5.1 5.1 0 0 1 8 10.8C8 9.4 8.6 8 9.6 7l2.6-2.6A5.1 5.1 0 0 1 15.8 3c1.4 0 2.7.5 3.7 1.5z"></path>
+                                                    </svg>
+                                                    <span aria-hidden="true">Copier le lien</span>
+                                                </span>
+                                                <span id="ShareLinkCopied" style="display:none">
+                                                    <svg width="24" height="18" viewBox="0 0 13 13" aria-hidden="true" focusable="false">
+                                                        <path d="M13.1 4.26a.82.82 0 0 0-1.17-.03l-5.3 5.08L4.08 6.7a.82.82 0 0 0-1.17-.02.85.85 0 0 0-.02 1.2l3.1 3.2a.82.82 0 0 0 1.17.03l5.9-5.65a.85.85 0 0 0 .04-1.19Z"></path>
+                                                    </svg>
+                                                    <span aria-hidden="true">Lien copié</span>
+                                                </span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <a aria-label="Partager via e-mail" title="Partager via e-mail" data-share-type="mail" href="mailto:?subject=@(Uri.EscapeUriString(page_title))&body=@(Uri.EscapeUriString(HOST+Request.RawUrl))">
+                                                <span>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                        <path d="M18.75 4.5H5.25A2.25 2.25 0 0 0 3 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 17.25V6.75a2.25 2.25 0 0 0-2.25-2.25zm-.23 3.6l-6 5.25a1.39 1.39 0 0 1-.52.15 1.39 1.39 0 0 1-.53-.15l-6-5.25a.74.74 0 1 1 .98-1.13l5.47 4.8 5.48-4.8a.73.73 0 0 1 1.05.08.68.68 0 0 1 .07 1.05z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span aria-hidden="true">Mail</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a aria-label="Partager via Facebook" title="Partager via Facebook" data-share-type="facebook" href="https://www.facebook.com/sharer/sharer.php?u=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))&display=popup" rel="noopener" target="_blank">
+                                                <span>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                        <path d="M9.3 21v-8.2H6V9.5h3.3v-2c0-3 1.9-4.5 4.6-4.5l2.7.1v3.2h-1.9C13.2 6.3 13 7 13 8v1.5h4.3l-1.7 3.3H13V21H9.3z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span aria-hidden="true">Facebook</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a aria-label="Partager via X (Twitter)" title="Partager via X (Twitter)" data-share-type="twitter" href="https://twitter.com/intent/tweet?url=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))&text=@(page_title)&display=popup" rel="noopener" target="_blank">
+                                                <span>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="r-18jsvk2 r-4qtqp9 r-yyyyoo r-16y2uox r-8kz0gk r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-lrsllp"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>
+                                                </span>
+                                                <span aria-hidden="true">Twitter</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a aria-label="Partager via Linkedin" title="Partager via Linkedin" data-share-type="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=@(HttpUtility.UrlEncode(HOST+Request.RawUrl))" rel="noopener" target="_blank">
+                                                <span>
+                                                    <svg width="24" height="24" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                                                        <path d="M17.5 16.67h-3.34v-4.7c0-1.23-.53-2.07-1.68-2.07-.88 0-1.37.57-1.6 1.11-.08.2-.07.47-.07.74v4.92H7.5s.04-8.33 0-9.08h3.31V9c.2-.62 1.26-1.51 2.95-1.51 2.1 0 3.74 1.3 3.74 4.12v5.05Zm-13.34-10h-.02c-1 0-1.64-.74-1.64-1.67 0-.95.66-1.67 1.68-1.67 1.01 0 1.63.72 1.65 1.67a1.6 1.6 0 0 1-1.67 1.67ZM2.5 7.5h3.33v9.17H2.5V7.5Z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span aria-hidden="true">Linkedin</span>
+                                            </a>
+                                        </li>
+                                        @*<li>
+                                                <a aria-label="Partager via Messenger" title="Partager via Messenger" data-share-type="messenger" href="fb-messenger://share/?link=@(Uri.EscapeUriString(HOST+Request.RawUrl))" rel="noopener" target="_blank">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                            <path d="M12 2C6.5 2 2 6.1 2 11.3a9 9 0 0 0 3.7 7.2V22l3.4-1.9c1 .3 1.9.4 2.9.4 5.5 0 10-4.1 10-9.2S17.5 2 12 2zm1 12.5l-2.6-2.7-5 2.7L11 8.7l2.7 2.7 4.9-2.7-5.5 5.8z"></path>
+                                                        </svg>
+                                                    </span>
+                                                    <span aria-hidden="true">Messenger</span>
+                                                </a>
+                                            </li>*@
+                                        <li>
+                                            <a aria-label="Partager via WhatsApp" title="Partager via WhatsApp" data-share-type="whatsapp" href="whatsapp://send?text=@(Uri.EscapeUriString(news.title+Environment.NewLine+HOST+Request.RawUrl ))" rel="noopener" target="_blank">
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                        <path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1-5.5-1.7l-3.8 1.3 1.2-3.7A10 10 0 0 1 2 12 10 10 0 0 1 12 2zM9.2 7c-.2-.4-.3-.4-.6-.4a5.6 5.6 0 0 0-.4 0c-.3 0-.7 0-1 .3-.3.3-1 1-1 2.5 0 1.4 1 2.8 1.2 3 .1.2 2 3.2 5 4.4 2.3 1 3 .8 3.5.7.7-.1 1.7-.7 2-1.4.2-.7.2-1.2 0-1.4l-.5-.3-2-1c-.2 0-.5 0-.7.3-.3.4-.5.8-.8 1-.1.2-.4.2-.7.1-.3-.1-1.2-.4-2.3-1.4a8.9 8.9 0 0 1-1.6-2c-.2-.3 0-.5 0-.7l.5-.5c.2-.1.3-.2.3-.4v-.6l-.9-2.1z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span aria-hidden="true">WhatsApp</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                }
 
 
 

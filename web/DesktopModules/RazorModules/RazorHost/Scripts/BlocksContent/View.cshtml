@@ -159,8 +159,8 @@
                     {
                         if (!image.IsBitmap && image.MimeType.StartsWith("image/"))
                         {
-                            var media =  Yemon.dnn.Helpers.CorrectBitmapMediaSizes((Yemon.dnn.core.Media)image);
-                            if(media!=null)
+                            var media = Yemon.dnn.Helpers.CorrectBitmapMediaSizes((Yemon.dnn.core.Media)image);
+                            if (media != null)
                             {
                                 image.Width = media.Width;
                                 image.IsBitmap = media.IsBitmap;
@@ -184,10 +184,11 @@
                                 <span>
                                     <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />
                                 </span>
+                                <div class="pe-spacer size10"></div>
                             }
                             break;
                         case "gallery":
-                            
+
                             var images = Yemon.dnn.Functions.Serialize(imgs);
 
                             <script>
@@ -348,10 +349,10 @@
                             }
 
                             <script>
-                                if (typeof resizeslider == 'undefined')
-                                    resizeslider = [];
-;                                var name = '@Html.Raw(slider_name)'; 
-                                 resizeslider[name] = function () {
+                                    if (typeof resizeslider == 'undefined')
+                                         resizeslider = [];
+                                    var slfnname = '@Html.Raw(slider_name)';
+                                    resizeslider[slfnname] = function () {
                                     var container = document.getElementById('@slider_name');
                                     var width = container.getBoundingClientRect().width;
                                     var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
@@ -369,14 +370,14 @@
                                     container.style.height = height + 'px';
                                     console.log('@slider_name',ratios);
                                 }
-                                window.addEventListener("resize", resizeslider[name]);
-                                $(document).ready(resizeslider[name]);
+                                window.addEventListener("resize", resizeslider[slfnname]);
+                                $(document).ready(resizeslider[slfnname]);
                             </script>
                             <div class="@slider_name" id="@slider_name">
                                 @foreach (var i in imgs)
                                 {
                                     <a>
-                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID'" );">
+                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('@mediaPath@i.GUID'" );">
                                         </div>
                                     </a>
                                 }
