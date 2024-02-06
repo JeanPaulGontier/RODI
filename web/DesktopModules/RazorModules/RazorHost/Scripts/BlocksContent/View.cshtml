@@ -18,6 +18,7 @@
     var blocksSuffix = PageData["blocksSuffix"];
     var Html = PageData["HTML"];
     var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+    var mediaPath = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
 }
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css" />
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css" />
@@ -63,7 +64,7 @@
                             @if (p.Image != null)
                             {
                                 <div class="col-sm-6">
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
                             @if (p.Html != null)
@@ -85,7 +86,7 @@
                             @if (p.Image != null)
                             {
                                 <div class="col-sm-6">
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                                 </div>
                             }
 
@@ -103,7 +104,7 @@
                         if (p.Image != null)
                         {
                             <div>
-                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                             </div>
                         }
                         break;
@@ -115,7 +116,7 @@
                         if (p.Image != null)
                         {
                             <div>
-                                <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@p.Image.GUID" title="@p.Image.Name" />
+                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
                             </div>
                         }
                         if (p.Html != null)
@@ -137,8 +138,8 @@
                         @foreach (var f in fc.Files)
                         {
                             <li>
-                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;
-                                <a href="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
+                                <a href="@mediaPath@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;
+                                <a href="@mediaPath@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
                             </li>
 
                         }
@@ -153,18 +154,42 @@
                 }
                 if (ic.Images.Count > 0)
                 {
+                    List<Block.Image> imgs = new List<Block.Image>();
+                    foreach (var image in ic.Images)
+                    {
+                        if (!image.IsBitmap && image.MimeType.StartsWith("image/"))
+                        {
+                            var media =  Yemon.dnn.Helpers.CorrectBitmapMediaSizes((Yemon.dnn.core.Media)image);
+                            if(media!=null)
+                            {
+                                image.Width = media.Width;
+                                image.IsBitmap = media.IsBitmap;
+                                image.Height = media.Height;
+                            }
+                        }
+                        imgs.Add(new Block.Image()
+                        {
+                            GUID = image.GUID,
+                            Width = image.Width,
+                            Height = image.Height,
+                            Name = image.Name
+                        });
+                    }
+
                     switch ("" + ic.Type)
                     {
                         case "":
-                            foreach (var i in ic.Images)
+                            foreach (var i in imgs)
                             {
                                 <span>
-                                    <img src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID" width="100%" title="@i.Name" />
+                                    <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />
                                 </span>
                             }
                             break;
                         case "gallery":
-                            var images = Yemon.dnn.Functions.Serialize(ic.Images);
+                            
+                            var images = Yemon.dnn.Functions.Serialize(imgs);
+
                             <script>
                                      if (!resize) {
                                     var resize = [];
@@ -220,9 +245,9 @@
 
                             </script>
                             <div id='@("gallery"+block.Guid)' style="position:relative">
-                                @foreach (var i in ic.Images)
+                                @foreach (var i in imgs)
                                 {
-                                    <img id="@i.GUID" src="/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
+                                    <img id="@i.GUID" src="@mediaPath@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
                                 }
 
                             </div>
@@ -313,7 +338,7 @@
                             </style>
 
                             var ratios = new List<object>(); ;
-                            foreach (var i in ic.Images)
+                            foreach (var i in imgs)
                             {
                                 ratios.Add(new
                                 {
@@ -348,7 +373,7 @@
                                 $(document).ready(resizeslider[name]);
                             </script>
                             <div class="@slider_name" id="@slider_name">
-                                @foreach (var i in ic.Images)
+                                @foreach (var i in imgs)
                                 {
                                     <a>
                                         <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=@i.GUID'" );">

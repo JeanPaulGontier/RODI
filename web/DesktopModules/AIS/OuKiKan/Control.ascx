@@ -20,6 +20,10 @@
 <script src="<%=libPath %>vue-easy-tinymce-1.0.2/dist/vue-easy-tinymce.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <script src="<%=libPath %>vue-advanced-cropper/2.8.8/index.global.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <link href="<%=libPath %>vue-advanced-cropper/2.8.8/style.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="<%=libPath %>slick-carousel-1.8.1/slick.css" />
+<link rel="stylesheet" type="text/css" href="<%=libPath %>slick-carousel-1.8.1/slick-theme.css" />
+<script type="text/javascript" src="<%=libPath %>slick-carousel-1.8.1/slick.min.js"></script>
+
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/ImageEditor.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockFileCollection.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageCollection.cshtml" -->
@@ -27,7 +31,7 @@
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockRaw.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockVideo.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockEditor.cshtml" -->
-<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
+<link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet">
 <%--<link href="/desktopmodules/ais/oukikan/styles.css" rel="stylesheet" />--%>
 
