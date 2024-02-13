@@ -1,4 +1,7 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :
+https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
+- Le format d'export Excel des bureaux actuels et futurs est maintenant le même que celui des présidents
 
 ###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube

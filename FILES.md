@@ -1,5 +1,16 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.es5.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.es5.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\AIS\Admin Exports\Exports.ascx.cs
+```
+##### 02/02/2024
+```txt
 App_Code\AIS\Video.cs
 DesktopModules\AIS\News Panel\News.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockVideo.cshtml
@@ -31,7 +42,7 @@ Portals\_default\Skins\Rodi2017\EChoppe\slick-carousel-1.8.1\ajax-loader.gif
 DesktopModules\AIS\Password Change\Control.ascx.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
 ```
-###### en cours
+###### 13/01/2024
 ```txt
 App_Code\ClubRewriter.cs
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs

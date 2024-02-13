@@ -191,60 +191,7 @@
 
                             var images = Yemon.dnn.Functions.Serialize(imgs);
 
-                            <script>
-                                     if (!resize) {
-                                    var resize = [];
-                                }
-                                resize['@block.Guid'] = function () {
-                                    var gallery = document.getElementById('@("gallery"+block.Guid)');
-                                    var rect = gallery.getBoundingClientRect();
-                                    var width = rect.width;
-                                    const padding = 8;
-                                    const marginv = 8;
-
-                                    var y = [];
-                                    var col = 0;
-                                    var maxcol = Math.round(width / 300, 0);
-                                    var pct = Math.round(100 / maxcol, 0);
-                                    var colWidth = Math.round(width/ maxcol, 0);
-                                    for (var i = 0; i < maxcol; i++) {
-                                        y.push(0);
-                                    }
-
-                                    var images = @Html.Raw(images);
-                                    var maxheight = 0;
-                                    for (var i = 0; i < images.length; i++) {
-                                        var c = document.getElementById(images[i].GUID);
-                                        var im = images[i];
-                                        let ratio = im.Height / im.Width;
-                                        let height = Math.round(colWidth * ratio, 0) + marginv;
-                                        let max = Number.MAX_SAFE_INTEGER;
-                                        col = 0;
-                                        for (var j = 0; j < maxcol; j++) {
-                                            if (y[j] < max) {
-                                                col = j;
-                                                max = y[j];
-                                            }
-                                        }
-
-                                        c.style.top = y[col]+'px';
-                                        c.style.left = col * colWidth + 'px';
-                                        c.style.width = colWidth + 'px';
-                                        c.style.height = height + 'px';
-                                        c.style.padding = marginv + 'px ' + (padding / 2) + 'px 0px '+ (padding / 2) + 'px';
-                                        y[col] += height;
-                                        if (y[col] > maxheight)
-                                            maxheight = y[col];
-
-                                    };
-                                    gallery.style.height = maxheight+ 'px';
-                                };
-                                $(window).resize(resize['@block.Guid']);
-                                $(document).ready(function () {
-                                    resize['@block.Guid']();
-                                });
-
-                            </script>
+                            <script>if(!resize)var resize=[];resize["@block.Guid"]=function(){for(var e,o,r,h=document.getElementById('@("gallery"+block.Guid)'),w=h.getBoundingClientRect(),c=w.width,l=8,a=8,n=[],t=0,f=Math.round(c/300,0),k=Math.round(100/f,0),s=Math.round(c/f,0),i=0;i<f;i++)n.push(0);for(e=@Html.Raw(images),o=0,i=0;i<e.length;i++){var u=document.getElementById(e[i].GUID),v=e[i],b=v.Height/v.Width,y=Math.round(s*b,0)+a,p=Number.MAX_SAFE_INTEGER;for(t=0,r=0;r<f;r++)n[r]<p&&(t=r,p=n[r]);u.style.top=n[t]+"px";u.style.left=t*s+"px";u.style.width=s+"px";u.style.height=y+"px";u.style.padding=a+"px "+l/2+"px 0px "+l/2+"px";n[t]+=y;n[t]>o&&(o=n[t])}h.style.height=o+"px"};$(window).resize(resize["@block.Guid"]);$(document).ready(function(){resize["@block.Guid"]()});</script>
                             <div id='@("gallery"+block.Guid)' style="position:relative">
                                 @foreach (var i in imgs)
                                 {
@@ -256,86 +203,20 @@
                         case "slider":
                             var slider_name = "slider_name_" + ("" + block.Guid).Substring(0, 5);
                             <style>
-                            .even_box {
-                                position: relative;
-                                width: 100%;
-                                /*min-height: 400px;*/
-                                background-size: cover;
-                                background-position: center;
-                            }
-                            .even_box img {
-                                position: absolute;
-                                z-index: 2;
-                                display: block;
-                                top: 0;
-                                left: 0;
-                                width: 100%;
-                            }
-                            .even_box h3 {
-                                position: absolute;
-                                z-index: 3;
-                                display: block;
-                                top: 0;
-                                left: 15px;
-                                width: auto;
-                                text-align: left;
-                                color: white;
-                                background-color: black;
-                                padding: 15px 15px 15px 10px;
-                                max-width: calc(100% - 30px);
-                                border-radius: 4px;
-                            }
-                            .@slider_name .slick-next {
-                                right: 5px;
-                                z-index: 9;
-                            }
-                            .@slider_name .slick-prev {
-                                left: 5px;
-                                z-index: 9;
-                            }
-                            .@slider_name .slick-dots {
-                                position: absolute;
-                                bottom: 3px;
-                                width: 60%;
-                                left: 50%;
-                                transform: translateX(-50%);
-                                border-radius: 3px;
-                            }
-                            .@slider_name .slick-dots li button:before{
-                                color: white;
-                                opacity: 1;
-                                border-radius: 50%;
-                                border: 1px solid #00246c;
-                                background-color: white;
-                            }
-                            .@slider_name .slick-dots li.slick-active button:before {
-                                opacity: 1;
-                                color: #00246c;
-                                background-color: #00246c;
-                            }
-                            .@slider_name .slick-prev:before, .slick-next:before {
-                                font-size: 40px;
-                            }
-                            .@slider_name .slick-prev, .slick-next {
-                                width: 40px;
-                                height: 40px;
-                            }
-                            .@slider_name .slick-dots li button:before {
-                                font-family: 'slick';
-                                font-size: 16px;
-                            }
-                            .@slider_name .slick-dots li {
-                                margin: 7px 5px 3px 5px;
-                            }
-                            .@slider_name .slick-dots li button:before {
-                                width: 10px;
-                                height: 10px;
-                                content: ' ';
-                            }
-                            .@slider_name
-                            {
-                                margin:3px;
-                            }
+                            .even_box {position: relative;width: 100%;background-size: cover;background-position: center;}
+                            .even_box img {position: absolute;z-index: 2;display: block;top: 0;left: 0;width: 100%;}
+                            .even_box h3 {position: absolute;z-index: 3;display: block;top: 0;left: 15px;width: auto;text-align: left;color: white;background-color: black;padding: 15px 15px 15px 10px;max-width: calc(100% - 30px);border-radius: 4px;}
+                            .@slider_name .slick-next {right: 5px;z-index: 9;}
+                            .@slider_name .slick-prev {left: 5px;z-index: 9;}
+                            .@slider_name .slick-dots {position: absolute;bottom: 3px;width: 60%;left: 50%;transform: translateX(-50%);border-radius: 3px;}
+                            .@slider_name .slick-dots li button:before{color: white;opacity: 1;border-radius: 50%;border: 1px solid #00246c;background-color: white;}
+                            .@slider_name .slick-dots li.slick-active button:before {opacity: 1;color: #00246c;background-color: #00246c;}
+                            .@slider_name .slick-prev:before, .slick-next:before {font-size: 40px;}
+                            .@slider_name .slick-prev, .slick-next {width: 40px;height: 40px;}
+                            .@slider_name .slick-dots li button:before {font-family: 'slick';font-size: 16px;}
+                            .@slider_name .slick-dots li {margin: 7px 5px 3px 5px;}
+                            .@slider_name .slick-dots li button:before {width: 10px;height: 10px;content: ' ';}
+                            .@slider_name {margin:3px;}
                             </style>
 
                             var ratios = new List<object>(); ;
@@ -348,36 +229,12 @@
                                 });
                             }
 
-                            <script>
-                                    if (typeof resizeslider == 'undefined')
-                                         resizeslider = [];
-                                    var slfnname = '@Html.Raw(slider_name)';
-                                    resizeslider[slfnname] = function () {
-                                    var container = document.getElementById('@slider_name');
-                                    var width = container.getBoundingClientRect().width;
-                                    var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
-                                     var height = Number.MAX_SAFE_INTEGER;
-                                     ratios.forEach((d) => {
-                                         var h = Math.round(width * d.r, 0);
-                                         height = Math.min(height, h);
-                                     });
-                                    ratios.forEach((d) => {
-                                        var el = document.getElementById(d.g);
-                                        el.style.minHeight = height + 'px';
-                                    //    el.style.height = height + 'px';
-
-                                    });
-                                    container.style.height = height + 'px';
-                                    console.log('@slider_name',ratios);
-                                }
-                                window.addEventListener("resize", resizeslider[slfnname]);
-                                $(document).ready(resizeslider[slfnname]);
-                            </script>
+                            <script>typeof resizeslider=="undefined"&&(resizeslider=[]);var slfnname="@Html.Raw(slider_name)";resizeslider[slfnname]=function(){var i=document.getElementById("@slider_name"),r=i.getBoundingClientRect().width,t=@Html.Raw(Yemon.dnn.Functions.Serialize(ratios))",n=Number.MAX_SAFE_INTEGER;t.forEach(function(t){var i=Math.round(r*t.r,0);n=Math.min(n,i)});t.forEach(function(t){var i=document.getElementById(t.g);i.style.minHeight=n+"px"});i.style.height=n+"px";console.log("@slider_name",t)};</script>                                  
                             <div class="@slider_name" id="@slider_name">
                                 @foreach (var i in imgs)
                                 {
                                     <a>
-                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('@mediaPath@i.GUID'" );">
+                                        <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('@mediaPath@i.GUID')" );">
                                         </div>
                                     </a>
                                 }

@@ -81,7 +81,7 @@ public partial class DesktopModules_AIS_Admin_Exports_Exports : PortalModuleBase
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
     }
 
-    public void ExportBureauComplet(int annee)
+    public void ExportBureauCompletAvant13022024(int annee)
     {
         SqlConnection conn = new SqlConnection(Config.GetConnectionString());
         conn.Open();
@@ -175,6 +175,28 @@ public partial class DesktopModules_AIS_Admin_Exports_Exports : PortalModuleBase
 
 
         Media media = DataMapping.ExportDataTablesToXLS(tables, "Liste des présidents année " + (annee) + "-" + (annee + 1) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
+        string guid = Guid.NewGuid().ToString();
+        Session[guid] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+    public void ExportBureauComplet(int annee)
+    {
+        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+        conn.Open();
+
+        SqlCommand sql = new SqlCommand("select c.cric, c.name as 'nom club',a.[function] as 'fonction',a.name as 'prenom nom',(select top 1 email from ais_members where nim = a.nim) as email,(select top 1 adress_1 ++' '++ adress_2 ++' '++ adress_3 from ais_members where nim = a.nim) as adresse,(select top 1 zip_code from ais_members where nim = a.nim) as cp,(select top 1 town from ais_members where nim = a.nim) as ville,(select top 1 [gsm] from ais_members where nim = a.nim) as gsm from ais_clubs c,ais_rya a where c.cric=a.cric and a.rotary_year=@rotary_year  order by  c.name", conn);
+        sql.Parameters.AddWithValue("@rotary_year", annee);
+        SqlDataAdapter da = new SqlDataAdapter(sql);
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        List<DataTable> tables = new List<DataTable>();
+        foreach (DataTable table in ds.Tables)
+        {
+            tables.Add(table);
+        }
+
+
+        Media media = DataMapping.ExportDataTablesToXLS(tables, "Bureaux complets clubs année " + (annee) + "-" + (annee + 1) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
