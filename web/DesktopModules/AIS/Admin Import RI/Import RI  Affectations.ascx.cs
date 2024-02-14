@@ -399,6 +399,12 @@ public partial class DesktopModules_AIS_Admin_Import_RI_Affectations : PortalMod
 
                     if (r=="Président")
                     {
+                        sql = new SqlCommand("delete from ais_rya where cric=@cric and rotary_year=@annee and [function]=@role", conn, trans);
+                        sql.Parameters.AddWithValue("cric", cric);
+                        sql.Parameters.AddWithValue("annee", annee-1);
+                        sql.Parameters.AddWithValue("role", "Président élu");
+                        sql.ExecuteNonQuery();
+
                         sql = new SqlCommand("insert into ais_rya (cric,rotary_year,[function],name,nim) values (@cric,@annee,@role,@name,@nim)", conn, trans);
                         sql.Parameters.AddWithValue("cric", cric);
                         sql.Parameters.AddWithValue("annee", annee-1);

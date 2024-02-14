@@ -34,7 +34,12 @@
             <asp:Panel runat="server" ID="panel_rapprochement">
                 <div style="padding: 10px">
                     <asp:Literal runat="server" ID="result_rapprochement"></asp:Literal>
-                    <em>Attention : lors du rapprochement, les données issues du fichier du RI remplaceront les données existantes</em>
+                    <div class="alert alert-info">
+                        <ul>
+                            <li>Lors du rapprochement, les données issues du fichier du RI remplaceront les données existantes seulement pour les rôles indiqués dans le RI, si l'information n'est pas signalée sur le RI pour un rôle alors il ne change pas le rôle déjà renseigné dans RODI</li>
+                            <li>Les présidents sont automatiquement affectés comme présidents élus pour l'année n-1</li>
+                        </ul>
+                    </div>
                 </div>
             </asp:Panel>        
             <asp:Panel runat="server" ID="panel_result" Visible="false">

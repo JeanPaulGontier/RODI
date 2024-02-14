@@ -8,6 +8,9 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.es5.min.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\AIS\Admin Exports\Exports.ascx.cs
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx
+DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
+DesktopModules\AIS\News Panel\News.ascx.cs
 ```
 ##### 02/02/2024
 ```txt

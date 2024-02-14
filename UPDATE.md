@@ -2,6 +2,9 @@
 - Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :
 https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
 - Le format d'export Excel des bureaux actuels et futurs est maintenant le même que celui des présidents
+- Changement du libellé d'aide dans le panneau d'importation des affections RI pour indiquer qu'un rôle inexistant RI ne remplace pas un rôle déjà défini dans RODI
+- Lorsqu’on importait les rôles d’une année à partir du RI, les présidents étaient positionnés comme présidents élus pour l’année n-1, mais dans certains cas ils pouvaient être insérés en double, ce n'est plus le cas
+- La fonction publier, dans la lettre du gouverneur, permet maintenant de rendre la page visible dans le menu
 
 ###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube

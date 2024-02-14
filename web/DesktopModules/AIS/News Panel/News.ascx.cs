@@ -592,6 +592,9 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
     protected void bt_publish_Click(object sender, EventArgs e)
     {
         addViewPermission(PortalSettings.ActiveTab);
+        PortalSettings.ActiveTab.IsVisible = true;
+        TabController tabController = new TabController();
+        tabController.UpdateTab(PortalSettings.ActiveTab);
         var subTabs = TabController.GetTabsByParent(TabId, PortalId);
         foreach (var tab in subTabs)
         {
