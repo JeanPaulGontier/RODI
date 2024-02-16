@@ -24,6 +24,7 @@
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
     bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo);
     PageData["editable"] = editable;
+    PageData["toggleable"] = true;
 
     if (editable)
     {

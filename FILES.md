@@ -11,6 +11,15 @@ DesktopModules\AIS\Admin Exports\Exports.ascx.cs
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx
 DesktopModules\AIS\Admin Import RI\Import RI  Affectations.ascx.cs
 DesktopModules\AIS\News Panel\News.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
+DesktopModules\RazorModules\RazorHost\Scripts\_BlockContent.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
+DesktopModules\RazorModules\Block Content\_BlockContent.cshtml
 ```
 ##### 02/02/2024
 ```txt

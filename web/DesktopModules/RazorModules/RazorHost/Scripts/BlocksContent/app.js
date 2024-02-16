@@ -1,15 +1,24 @@
-﻿function InitApp(appid, MODULEID, BLOCKSSUFFIX, EDITABLE) {
+﻿function InitApp(appid, MODULEID, BLOCKSSUFFIX, EDITABLE, TOGGLEABLE) {
     const app = Vue.createApp({
         data() {
             return {
                 blocks: [],
-                editable: EDITABLE
+                editable: EDITABLE,
+                toggleable: TOGGLEABLE,
+                toggling: false
             }
         },
         components: {
             BlocksEditor
         },
         methods: {
+            isEditable() {
+                console.log(this.toggleable);
+                if (this.toggleable) 
+                    return this.toggling;
+                else 
+                    return this.editable;                
+            },
             getBlocks() {
                 _yemon[MODULEID].service.getData("/GetItem", {
                     name: 'blockscontent:' + BLOCKSSUFFIX

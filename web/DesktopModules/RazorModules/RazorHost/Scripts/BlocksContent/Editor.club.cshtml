@@ -22,6 +22,7 @@
     var portalId = PageData["PortalId"];
     var Html = PageData["HTML"];
     bool editable = PageData["editable"];
+    bool toggleable = PageData["toggleable"] ?? false;   
 }
 <script src="@(libPath)tinymce/tinymce.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script src="@(libPath)vue/3.2.23/vue.js?cdv=@Yemon.dnn.Functions.CDV"></script>
@@ -51,27 +52,19 @@
 @RenderPage("BlockNewsClub.cshtml")
 @RenderPage("BlockEditor.club.cshtml")
 <div class="admin" id='@appID' v-cloak>
-    <blocks-editor v-on:changed="changed" :blocks="blocks" :moduleID="@moduleID" :editable="editable"></blocks-editor>
+    <button type="button" v-on:click="toggling=true" v-if="!toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
+    <button type="button" v-on:click="toggling=false" v-if="toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
+    <blocks-editor v-on:changed="changed" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()"></blocks-editor>
 </div>
 
 <script src="/DesktopModules/Yemon/API/Services/VueJS?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script src="~/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
 <script>
-
     $(document).ready(function () {
         if (typeof _yemon =='undefined')
             _yemon = [];
         _yemon[@moduleID] = new Yemon(@moduleID, '/Desktopmodules/BlocksContent/API/Blocks');
 
-
-
-        //Yemon = new Yemon(@moduleID, '/DesktopModules/Yemon/API/Services');
-        InitApp('@appID',@moduleID,'@blocksSuffix',@editable.ToString().ToLower());
+        InitApp('@appID',@moduleID,'@blocksSuffix',@editable.ToString().ToLower(),@toggleable.ToString().ToLower());
     });
-        //$("form").keypress(function (e) {
-        ////Enter key
-        //if (e.which == 13) {
-        //return false;
-        //}
-  //  });
 </script>

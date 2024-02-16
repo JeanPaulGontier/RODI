@@ -1,4 +1,27 @@
-﻿.bc-buttonBar {
+﻿/* EDITION OFF -------------- */
+
+.close-edit, .open-edit{
+    position:absolute;
+    right:0;
+    top:0;
+    border:none;
+    border-radius:0 0 0 80%;
+    padding:.2em .3em .5em .6em;
+    background-color:#c9dee9;
+    transition:all .3s ease-in-out;
+    color:#ffffff;
+    font-size:1.2em;
+}
+.close-edit:hover, .open-edit:hover{
+    background-color: #01b4e7;
+    transition:all .3s ease-in-out;
+}
+
+
+
+/* EDITION ON -------------- */
+
+.bc-buttonBar {
     display: flex;
     justify-content: center;
     column-gap: 0.5em;
@@ -49,4 +72,3 @@
     max-height:500px;
     margin:.5em 0;
 }
-
