@@ -123,7 +123,7 @@ namespace AIS
         public const string ROLE_ADMIN_DISTRICT = "Administrateur District";
         public const string ROLE_ADMIN_CLUB = "Administrateur Club";
         public const string ROLE_ADMIN_ROTARACT = "Administrateur Rotaract";
-        public const string ROLE_PRESIDENTS_CLUBS = "Présidents Clubs";
+        public const string ROLE_PRESIDENTS_CLUBS = "Président Club";
 
         public static string AFFECTATIONS_ADMIN_CLUB = ""+System.Configuration.ConfigurationManager.AppSettings["AffectationsAdminClub"];
 
