@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2023
+// Copyright (c) 2012-2024
 // by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -344,8 +344,9 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             int annee = Functions.GetRotaryYear();
 
             RoleController rc = new RoleController();
-            
+
             RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
+            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
             IList<UserInfo> users = RoleController.Instance.GetUsersByRole(PortalId, Const.ROLE_ADMIN_CLUB);
             //ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
             
@@ -364,9 +365,12 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                 if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
                 {
                 }
+                if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
+                {
+                }
             }
 
-            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
+            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
 
             if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
                 query += annee + "," + (annee + 1);
@@ -383,6 +387,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             da.Fill(ds);
             foreach (DataRow row in ds.Tables[0].Rows)
             {
+                string function = "" + row["function"];
                 cestbon:
 
                 Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
@@ -409,6 +414,10 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                         {
 
                             rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+                            if(function=="Président")
+                            {
+                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+                            }
                             //TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
                         }
                     }

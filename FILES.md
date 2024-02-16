@@ -20,6 +20,10 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
 DesktopModules\RazorModules\RazorHost\Scripts\_BlockContent.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\RazorModules\Block Content\_BlockContent.cshtml
+App_Code\AIS\Const.cs
+DesktopModules\AIS\Admin Maj AAR\Control.ascx
+DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 ```
 ##### 02/02/2024
 ```txt

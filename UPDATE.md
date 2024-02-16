@@ -6,6 +6,7 @@ https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
 - Lorsqu’on importait les rôles d’une année à partir du RI, les présidents étaient positionnés comme présidents élus pour l’année n-1, mais dans certains cas ils pouvaient être insérés en double, ce n'est plus le cas
 - La fonction publier, dans la lettre du gouverneur, permet maintenant de rendre la page visible dans le menu
 - Amélioration de l'ergonomie du blockcontent club et district, maintenant le blockcontent est en mode visualisation mê  me quand on a le droit de modifier le contenu. Il faut cliquer sur le crayon en haut a droite du module pour passer en modification. Ce nouveau mode de fonctionnement permet d'éviter d'avoir à ouvrir un 2e navigateur pour visualiser le résultat final.
+- Ajout d'un rôle Présidents Clubs dans le cms mis à jour automatiquement à partir des fonctions de présidents des membres
 
 ###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube

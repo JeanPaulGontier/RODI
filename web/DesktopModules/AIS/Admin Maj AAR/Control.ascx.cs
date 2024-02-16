@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
+// Copyright (c) 2012-2024
 // by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -88,87 +88,6 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
     {
     
     }
-    protected void BT_Maj_Click(object sender, EventArgs e)
-    {
-        TXT_Result.Text = "";
-        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-        try
-        {
-            conn.Open();
-            TXT_Result.Text = "<br/>";
-            /****** Script de la commande SelectTopNRows à partir de SSMS  ******/
-            SqlCommand sql = new SqlCommand("SELECT * FROM [admin_club] where open_passwd !='' and fonction like 'new_%' and cric !='' and cric is not null",conn);
-            SqlDataAdapter da = new SqlDataAdapter(sql);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            foreach (DataRow row in ds.Tables[0].Rows)
-            {
-                sql = new SqlCommand("SELECT id FROM " + Const.TABLE_PREFIX + "members WHERE nim=@nim", conn);
-                sql.Parameters.AddWithValue("nim", row["nim"]);
-                string id = ""+sql.ExecuteScalar();
-                int idn = 0;
-                int.TryParse(id, out idn);
-                if (idn != 0)
-                {
-
-                    Member member = DataMapping.GetMember(idn);
-                    if (member.userid == 0)
-                    {
-                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, member.email);
-                        if (ui == null && member != null)
-                        {
-                            TXT_Result.Text += "Creation : " + member.surname + " " + member.name + "<br/>";
-                            ui = new UserInfo();
-                            ui.Username = member.email;
-                            ui.FirstName = member.name;
-                            ui.LastName = member.surname;
-                            ui.DisplayName = member.name + " " + member.surname;
-                            ui.Email = member.email;
-                            ui.IsSuperUser = false;
-                            ui.PortalID = Globals.GetPortalSettings().PortalId;
-
-                            UserMembership mb = new UserMembership(ui);
-                            mb.Approved = true;
-                            mb.CreatedDate = System.DateTime.Now;
-                            mb.IsOnLine = false;
-
-                            string password = "" + DateTime.Now.Ticks;
-                            password = ""+row["open_passwd"];
-                            //password = "rodi1730test";
-                            mb.Password = password;
-
-                            ui.Membership = mb;
-
-
-                            if (UserCreateStatus.Success == UserController.CreateUser(ref ui))
-                            {
-
-                                DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-                                RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
-                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-
-
-                                TXT_Result.Text += DataMapping.UpdateMemberDNNUserID(member.id, ui.UserID)+"<br/>";
-                            }
-                        }
-                    }
-                    
-                }
-                else
-                {
-                    TXT_Result.Text += "NIM inconnu : " + row["nim"] +" "+row["surname"]+" "+row["name"]+ "<br/>";
-                }
-            }
-        }
-        catch (Exception ee)
-        {
-            TXT_Result.Text += ee.ToString();
-        }
-        finally
-        {
-            conn.Close();
-        }
-    }
 
 
     protected void BT_Refresh_AAR_Click(object sender, EventArgs e)
@@ -183,17 +102,24 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
 
             DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
             RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
-            ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
+            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
+            ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_PRESIDENTS_CLUBS);
+            foreach (UserInfo user in users)
+            {
+                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+                {
+                }               
+            }
+            users = rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
             foreach (UserInfo user in users)
             {
                 if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
                 {
                 }
-               // rc.DeleteUserRole(Globals.GetPortalSettings().PortalId, user.UserID,uri.RoleID);
             }
-            
 
-            String query = "SELECT nim,name FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND  rotary_year IN (";
+
+            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND  rotary_year IN (";
 
             if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
                 query += annee + "," + (annee + 1);
@@ -210,15 +136,16 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
             da.Fill(ds);
             foreach (DataRow row in ds.Tables[0].Rows)
             {
+                string function = "" + row["function"];
             cestbon:
                  
                 Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
                 if (membre != null)
                 {
-                    if (membre.userid == 0)
+                    if (membre.userid == 0 )
                     {
                         TXT_Result.Text += "<br/><span class='alert-warning'>Le membre : " + row["name"] + " n'a pas de user DNN</span>";
-                        if (DataMapping.UpdateOrCreateUser(membre))
+                        if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
                         {                            
                             TXT_Result.Text += "<br/><span class='alert-success'>et a été créé</span>";
                             goto cestbon;
@@ -236,7 +163,13 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                         {
 
                             rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-                            TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
+                            TXT_Result.Text += "<br/>Ajout rôle admin club : " + row["name"];
+                            if(function=="Président")
+                            {
+                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+                                TXT_Result.Text += "<br/>Ajout rôle président club : " + row["name"];
+                            }
+                            
                         }
                     }
                 }
@@ -262,7 +195,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
         List<Member> membres = DataMapping.ListMembers(max:10000);
         foreach (Member membre in membres)
         {
-            if (membre.email != "")
+            if (!string.IsNullOrEmpty(membre.email))
             {
                 if (membre.userid != 0)
                 {
@@ -270,7 +203,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                     if (ui == null)
                     {
                         if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
-                            TXT_Result.Text += "<br/>Creation : " + membre.surname + " " + membre.name + " ("+membre.email+")";
+                            TXT_Result.Text += "<br/>Création : " + membre.surname + " " + membre.name + " ("+membre.email+")";
                         else
                             TXT_Result.Text += "<br/>Erreur création user : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
 
