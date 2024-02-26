@@ -24,6 +24,8 @@ App_Code\AIS\Const.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
+App_Code\AIS\Rss.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
 ```
 ##### 02/02/2024
 ```txt

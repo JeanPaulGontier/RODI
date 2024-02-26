@@ -1,0 +1,15 @@
+﻿@using System.Xml;
+@using System.Xml.Serialization;
+@{ 
+    var url = "https://www.rotary.org/fr/rss.xml";
+    var reader = XmlReader.Create(url);
+    var serializer = new XmlSerializer(typeof(AIS.Rotary.Rss));
+    var feed = (AIS.Rotary.Rss)serializer.Deserialize(reader);
+    foreach(var f in feed.Channel.Items)
+    {
+    <a href="@f.Link">
+        <h3>@f.Title</h3>
+        <div>@Html.Raw(f.Description)</div>
+    </a>
+    }
+}
