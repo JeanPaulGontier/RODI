@@ -36,7 +36,7 @@
         {
         <a href="@f.Link">
             <h3>@Html.Raw(f.Title)</h3>
-            <div>@Html.Raw(f.Description.Replace("</p>","<span class=\"btn btn-link\">Voir plus...</span></p>"))</div>
+            <div>@Html.Raw(f.Description.Replace("</p>","<br/><span class=\"btn btn-link\">Voir plus...</span></p>"))</div>
         </a>
         }
     </div>
