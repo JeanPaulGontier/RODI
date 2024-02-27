@@ -9,7 +9,7 @@
         if(HttpContext.Current.Application["rotaryrssdate"]!=null)
         {
             DateTime date = (DateTime)HttpContext.Current.Application["rotaryrssdate"];
-            if(date.Ticks<DateTime.Now.AddHours(-1).Ticks)
+            if(date.Ticks<DateTime.Now.AddHours(-12).Ticks)
             {
                 feed = null;
             }
