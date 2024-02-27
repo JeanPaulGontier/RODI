@@ -2,10 +2,34 @@
 @using System.Xml.Serialization;
 
 @{ 
-    var url = "https://www.rotary.org/fr/rss.xml";
-    var reader = XmlReader.Create(url);
-    var serializer = new XmlSerializer(typeof(AIS.Rotary.Rss));
-    var feed = (AIS.Rotary.Rss)serializer.Deserialize(reader);
+    AIS.Rotary.Rss feed = (AIS.Rotary.Rss)HttpContext.Current.Application["rotaryrss"];
+
+    if (feed != null)
+    {
+        if(HttpContext.Current.Application["rotaryrssdate"]!=null)
+        {
+            DateTime date = (DateTime)HttpContext.Current.Application["rotaryrssdate"];
+            if(date.Ticks<DateTime.Now.AddHours(-1).Ticks)
+            {
+                feed = null;
+            }
+        }
+    }
+    if (feed==null)
+    {
+        var url = "https://www.rotary.org/fr/rss.xml";
+        var reader = XmlReader.Create(url);
+        var serializer = new XmlSerializer(typeof(AIS.Rotary.Rss));
+        feed = (AIS.Rotary.Rss)serializer.Deserialize(reader);
+
+        HttpContext.Current.Application["rotaryrss"] = feed;
+        HttpContext.Current.Application["rotaryrssdate"] = DateTime.Now;
+    }
+
+    if(feed==null)
+    {
+        return;
+    }
 }
     <div class="rirss">
         @foreach(var f in feed.Channel.Items)
