@@ -1,15 +1,33 @@
 ﻿@using System.Xml;
 @using System.Xml.Serialization;
+
 @{ 
     var url = "https://www.rotary.org/fr/rss.xml";
     var reader = XmlReader.Create(url);
     var serializer = new XmlSerializer(typeof(AIS.Rotary.Rss));
     var feed = (AIS.Rotary.Rss)serializer.Deserialize(reader);
-    foreach(var f in feed.Channel.Items)
-    {
-    <a href="@f.Link">
-        <h3>@f.Title</h3>
-        <div>@Html.Raw(f.Description)</div>
-    </a>
-    }
 }
+    <div class="rirss">
+        @foreach(var f in feed.Channel.Items)
+        {
+        <a href="@f.Link">
+            <h3>@Html.Raw(f.Title)</h3>
+            <div>@Html.Raw(f.Description.Replace("</p>","<span class=\"btn btn-link\">Voir plus...</span></p>"))</div>
+        </a>
+        }
+    </div>
+
+<style>
+    .rirss a {
+        margin-bottom: 2em;
+        display: block;
+    }
+    .rirss img {
+       width:100%;   
+    }
+    .rirss a div {
+        display: grid;
+        grid-template-columns: 30% auto;
+        grid-column-gap: 1em;
+    }
+</style>
