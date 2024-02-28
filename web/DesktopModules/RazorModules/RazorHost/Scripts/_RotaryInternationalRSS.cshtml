@@ -1,6 +1,5 @@
 ﻿@using System.Xml;
 @using System.Xml.Serialization;
-
 @{ 
     AIS.Rotary.Rss feed = (AIS.Rotary.Rss)HttpContext.Current.Application["rotaryrss"];
 
@@ -30,9 +29,21 @@
     {
         return;
     }
+    var feed5 = new AIS.Rotary.Rss();
+    int nb = 5;
+    while(nb>0)
+    {
+        var rand = new Random();
+        var num = rand.Next(0, feed.Channel.Items.Count - 1);
+        if(!feed5.Channel.Items.Contains(feed.Channel.Items[num]))
+        {
+            feed5.Channel.Items.Add(feed.Channel.Items[num]);
+            nb--;
+        }
+    }
 }
     <div class="rirss">
-        @foreach(var f in feed.Channel.Items)
+        @foreach(var f in feed5.Channel.Items)
         {
         <a href="@f.Link">
             <h3>@Html.Raw(f.Title)</h3>
