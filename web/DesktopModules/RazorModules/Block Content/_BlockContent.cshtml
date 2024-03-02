@@ -25,9 +25,9 @@
 
     PageData["blocksSuffix"] = moduleInfo.ModuleSettings["blockcontentsuffix"];
 
-
-
-    bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo);
+    
+    
+    bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo) || TabPermissionController.CanManagePage();
 
     PageData["editable"] = editable;
     PageData["toggleable"] = true;

@@ -22,7 +22,7 @@
 
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
-    bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo);
+    bool editable = ModulePermissionController.CanEditModuleContent(moduleInfo) || TabPermissionController.CanManagePage(); 
     PageData["editable"] = editable;
     PageData["toggleable"] = true;
 
