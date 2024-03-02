@@ -13,7 +13,6 @@
         },
         methods: {
             isEditable() {
-                console.log(this.toggleable);
                 if (this.toggleable) 
                     return this.toggling;
                 else 
@@ -41,11 +40,14 @@
                     value: JSON.stringify(data),
                     keephistory:false
                 }, (r) => {
+                    if (r.status != 200) {
+                        toastr["error"]("Erreur");
+                    }
                     //this.changed = false;
                     //toastr["success"]("enregistrée");
                     
                 }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
                 })
             }
         },
