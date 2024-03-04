@@ -8,6 +8,7 @@ https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
 - Amélioration de l'ergonomie du blockcontent club et district, maintenant le blockcontent est en mode visualisation mê  me quand on a le droit de modifier le contenu. Il faut cliquer sur le crayon en haut a droite du module pour passer en modification. Ce nouveau mode de fonctionnement permet d'éviter d'avoir à ouvrir un 2e navigateur pour visualiser le résultat final.
 - Ajout d'un rôle Président Club dans le cms mis à jour automatiquement à partir des fonctions de présidents des membres (permet notamment de mettre à disposition du contenu spécifiques aux présidents, exemple : SFPE)
 - Ajout d'un module d'affichage du flux RSS de nouvelles du Rotary International (Razor : RotaryInternationalRSS.cshtml)
+- Dans le module news panel de la lettre du gouverneur, on peut maintenant définir une url de détail pour l'article, (exemple : page de détail RYLA avec formulaire d'inscription, ou url externe au site)
 
 ###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube

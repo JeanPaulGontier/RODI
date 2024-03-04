@@ -145,10 +145,11 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
                 bt_unpublish.Visible = UnPublishVisible();
                 News theNews = DataMapping.GetNews_EN(Request.QueryString["id"]);
                 if (tbx_titre.Text == "")
-                    tbx_titre.Text = ""+theNews.title;
+                    tbx_titre.Text = ""+theNews.title;                
                 if (theNews.photo != "")
                     btn_image.Text = "Changer l'image";
-
+                if (tbx_url.Text == "")
+                    tbx_url_detail.Text = "" + theNews.url;
                 switch (theNews.tag2)
                 {
                     case "BlocNoPhoto":
@@ -257,8 +258,16 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         image.Visible = image.ImageUrl != "" &&  image.ImageUrl != Const.no_image;
 
         var hl = e.Item.FindControl("HL_Detail") as HyperLink;
-        string url = Functions.UrlAddParam(Globals.NavigateURL(tabid),"newsid",""+theNews.id);
-        hl.NavigateUrl = Functions.UrlAddParam(url, "cric", ""+theNews.cric) ;
+        string url = "";
+        if(theNews.url!="")
+            url = theNews.url;
+        else
+        {
+            url = Functions.UrlAddParam(Globals.NavigateURL(tabid), "newsid", "" + theNews.id);
+            url = Functions.UrlAddParam(url, "cric", "" + theNews.cric);
+        }
+
+        hl.NavigateUrl = url;
         var hl1 = e.Item.FindControl("HL_Detail1") as HyperLink;
         hl1.NavigateUrl = hl.NavigateUrl;
 
@@ -291,10 +300,15 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
 
 
         
-        hlk_edit_texte.Visible = HasPermission() && (Request.QueryString["modif"] == null || Request.QueryString["modif"] == "")&& (Request.QueryString["delete"] == null || Request.QueryString["delete"] == "");
-        if(! (theNews.GetListBlocs().Count > 0 || hlk_edit_texte.Visible))
+        hlk_edit_texte.Visible = HasPermission() && 
+            (Request.QueryString["modif"] == null || 
+            Request.QueryString["modif"] == "") && 
+            (Request.QueryString["delete"] == null || 
+            Request.QueryString["delete"] == "");
+
+        if(! (theNews.GetListBlocs().Count > 0 || hlk_edit_texte.Visible || theNews.url != ""))
             hl.NavigateUrl = "";
-        hl1.Visible = theNews.GetListBlocs().Count > 0 || hlk_edit_texte.Visible;
+        hl1.Visible = theNews.GetListBlocs().Count > 0 || hlk_edit_texte.Visible || theNews.url!="";
         
 
 
@@ -414,6 +428,15 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
 
         newsToValidate.title = tbx_titre.Text;
         String contenu = "";
+        if(tbx_url_detail.Text!="")
+        {
+            newsToValidate.url = tbx_url_detail.Text;
+        }
+        else
+        {
+            newsToValidate.url = "";
+        }
+
         if (tbx_url.Text != "")
         {
             Video vid = new Video();
@@ -457,7 +480,7 @@ public partial class DesktopModules_AIS_News_Panel : PortalModuleBase
         newsToValidate.date_start_event = DateTime.Now;
         newsToValidate.end_publication = DateTime.Now;
         newsToValidate.Abstract = "";
-        newsToValidate.url = "";
+        //newsToValidate.url = "";
         newsToValidate.url_text = "";
         newsToValidate.visible = "O";
         newsToValidate.club_name = "";

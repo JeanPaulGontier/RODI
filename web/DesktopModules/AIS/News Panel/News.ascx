@@ -69,6 +69,9 @@
     <asp:Label Text="Titre : " runat="server"></asp:Label>
     <asp:TextBox ID="tbx_titre" Width="100%" runat="server"></asp:TextBox>
     <br />
+    <asp:Label Text="Url détail : " runat="server"></asp:Label>
+    <asp:TextBox ID="tbx_url_detail" Width="100%" runat="server" ToolTip="Laisser vide pour détail standard"></asp:TextBox>
+    <br />
     <asp:Label ID="lbl_contenu" Text="Contenu : " runat="server"></asp:Label>
     <asp:TextBox ID="tbx_contenu" Visible="true" TextMode="MultiLine" Width="600" Height="300" runat="server" ></asp:TextBox>
     <script> CKEDITOR.replace('<%=tbx_contenu.ClientID%>', {
