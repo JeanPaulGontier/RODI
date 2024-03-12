@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_PDF_Slideshow_Control" %>
-<script type="text/javascript" src="/DesktopModules/AIS/PDF SlideShow/turnjs4/extras/modernizr.2.5.3.min.js"></script>
+<script type="text/javascript" src="/DesktopModules/AIS/PDF Flipbook/turnjs4/extras/modernizr.2.5.3.min.js"></script>
 <asp:Panel runat="server" CssClass="alert alert-danger" ID="P_Error" Visible="false"><asp:Literal runat="server" ID="L_Error"></asp:Literal></asp:Panel>
 <div class="flipbook-viewport">
 	<div class="container" >
@@ -52,9 +52,9 @@
 
     yepnope({
         test: Modernizr.csstransforms,
-        yep: ['/DesktopModules/AIS/PDF SlideShow/turnjs4/lib/turn.js'],
-        nope: ['/DesktopModules/AIS/PDF SlideShow/turnjs4/lib/turn.html4.min.js'],
-        both: ['/DesktopModules/AIS/PDF SlideShow/turnjs4/smaples/magazine/css/basic.css'],
+        yep: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/lib/turn.js'],
+        nope: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/lib/turn.html4.min.js'],
+        both: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/smaples/basic/css/basic.css'],
         complete: loadApp
     });
 

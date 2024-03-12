@@ -28,6 +28,8 @@ App_Code\AIS\Rss.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
 DesktopModules\AIS\News Panel\News.ascx
 DesktopModules\AIS\News Panel\News.ascx.cs
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 ```
 ##### 02/02/2024
 ```txt

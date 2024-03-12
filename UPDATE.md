@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 12/03/2024
 - Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :
 https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
 - Le format d'export Excel des bureaux actuels et futurs est maintenant le même que celui des présidents
@@ -9,6 +11,7 @@ https://www.rodi-platform.org/district/declaration-de-confidentialite-rodi
 - Ajout d'un rôle Président Club dans le cms mis à jour automatiquement à partir des fonctions de présidents des membres (permet notamment de mettre à disposition du contenu spécifiques aux présidents, exemple : SFPE)
 - Ajout d'un module d'affichage du flux RSS de nouvelles du Rotary International (Razor : RotaryInternationalRSS.cshtml)
 - Dans le module news panel de la lettre du gouverneur, on peut maintenant définir une url de détail pour l'article, (exemple : page de détail RYLA avec formulaire d'inscription, ou url externe au site)
+- Correction d'un bug du module mailing district, lorsqu'on sélectionnait l'année le filtrage pouvait bugger dans certains cas, et amélioration de l'affichage de l'année
 
 ###### 06/02/2024
 - les blocs vidéo supportent maintenant les vidéos "SHORT" de youtube

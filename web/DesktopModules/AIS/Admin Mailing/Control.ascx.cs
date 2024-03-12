@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2023
+// Copyright (c) 2012-2024
 // by SAS AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -92,7 +92,20 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
         }
     }
-
+    string CHK_AR_0_TEXT
+    {
+        get
+        {
+            return CHK_AR_0.Text.Substring(2, 4);
+        }
+    }
+    string CHK_AR_1_TEXT
+    {
+        get
+        {
+            return CHK_AR_1.Text.Substring(2, 4);
+        }
+    }
 
     /// <summary>
     /// Définit à quel groupe l'utilisateur appartient et affiche les éléments en fonction
@@ -148,9 +161,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     }
 
                     // Peuplement des années rotariennes
-                    CHK_AR_0.Text = "&nbsp;"+ annee_0.ToString();
-                    CHK_AR_1.Text = "&nbsp;" + (annee_0 + 1).ToString();
-
+                    CHK_AR_0.Text = "&nbsp;" + annee_0 + "/" + (annee_0 + 1);
+                    CHK_AR_1.Text = "&nbsp;" + (annee_0 + 1) + "/" + (annee_0 + 2);
+                  
                     // Peuplement du filtre departemental
                     List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
                     RB_Role_Dept.Items.Clear();
@@ -198,8 +211,6 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
             else // Member CLUB
             {
-                BT_Ajouter.Visible = false;
-                P_Info.Visible = true;
                 //Member m = Functions.GetCurrentMember();
                 //if (m != null)
                 //{
@@ -398,11 +409,11 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     break;
 
                 case "A:":
-                    if (s.Remove(0, 2) == CHK_AR_0.Text)
+                    if (s.Remove(0, 2) == CHK_AR_0_TEXT)
                     {
                         CHK_AR_0.Checked = true;
                     }
-                    else if (s.Remove(0, 2) == CHK_AR_1.Text)
+                    else if (s.Remove(0, 2) == CHK_AR_1_TEXT)
                     {
                         CHK_AR_1.Checked = true;
                     }
@@ -1228,8 +1239,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                 CheckBox chk = (CheckBox)c; //casting effectif
                 if (chk.Checked == true)
                 {
-                    AR_Select.Add(chk.Text);
-                    parametres = parametres + ";A:" + chk.Text;
+                    string t = chk.Text.Substring(6, 4);
+                    AR_Select.Add(t);
+                    parametres = parametres + ";A:" + t;
                 }
             }
         }
