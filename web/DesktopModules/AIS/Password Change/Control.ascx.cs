@@ -110,10 +110,14 @@ public partial class DesktopModules_AIS_Password_Change_Control : PortalModuleBa
 
         
 
-        if (DotNetNuke.Entities.Users.UserController.ChangePassword(userInfo, null, pass1))
+        if (membershipProvider.ResetAndChangePassword(userInfo, pass1))
         {
             P1.Visible = false;
             P2.Visible = true;
+        }
+        else
+        {
+            TXT_Resultat.Text = "Le changement de mot de passe n'a pas fonctionné, contactez le webmaster";
         }
 
         

@@ -1,5 +1,14 @@
 ##### Modified files per commit
 ```txt
+Portals\_default\Skins\Rodi2017\skin.css
+Portals\_default\Containers\Rodi2017\container.css
+Portals\_default\Containers\Rodi2017\TitreH1SansFond.ascx
+Portals\_default\Containers\Rodi2017\TitreH2SansFond.ascx
+Portals\_default\Containers\Rodi2017\TitreSansFond.ascx
+DesktopModules\AIS\Password Change\Control.ascx.cs
+```
+##### 12/03/2024
+```txt
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.min.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.js

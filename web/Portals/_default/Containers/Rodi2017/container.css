@@ -52,6 +52,8 @@ h2.c_title span { vertical-align:middle; }
 .DnnModule-AISNewsPanel .RoyalBlue_ct2_top {margin-bottom:20px;}
 .RoyalBlue_ct2_content {padding-top:10px;}
 
+.RoyalBlue_ct2_style_sansfond { min-width:150px; margin:10px 0;padding:10px;}
+
 /*-------- RoyalBlue Color Header 01 --------*/
 .RoyalBlue_ch1_style { min-width:150px; margin-bottom:14px;}
 .RoyalBlue_ch1_top { min-height:15px;background:#5c85e2;padding:7px 10px;border-radius:5px; }

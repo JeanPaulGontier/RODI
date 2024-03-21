@@ -673,7 +673,10 @@ ul#myTab {
 
 .content_whitebg {
 }
-
+.content_blancbg {
+    background: #ffffff;
+    position: relative;
+}
 .content_graybg {
     background: #fbfbfb;
     position: relative;

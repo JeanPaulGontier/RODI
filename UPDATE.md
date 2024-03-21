@@ -1,4 +1,7 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout de nouveaux containers titresansfond, titreh1sansfond, titreh2sansfond permettant de positionner des modules sur des fonds de couleurs
+- correction d'un pb de changement de mot de passe dans la page espace membre/mon profil
+
 
 ###### 12/03/2024
 - Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :
