@@ -8,6 +8,8 @@ Portals\_default\Containers\Rodi2017\TitreSansFond.ascx
 DesktopModules\AIS\Password Change\Control.ascx.cs
 Portals\_default\Skins\Rodi2017\EChoppe\masonry\masonry.pkgd.js
 Portals\_default\Skins\Rodi2017\EChoppe\masonry\masonry.pkgd.min.js
+Portals\_default\Skins\Rodi2017\EChoppe\lazyload\lazyload.js
+Portals\_default\Skins\Rodi2017\EChoppe\lazyload\lazyload.min.js
 ```
 ##### 12/03/2024
 ```txt
