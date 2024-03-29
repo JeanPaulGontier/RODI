@@ -12,7 +12,7 @@ App_Code\AIS\webapi\rotarymag\RotaryMagController.cs
 App_Code\AIS\webapi\rotarymag\RotaryMagHelper.cs
 App_Code\AIS\Functions.cs
 App_Code\AIS\Member.cs
-DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryMagSynchroParametres.cshtml
 ```
 ##### 12/03/2024
 ```txt
