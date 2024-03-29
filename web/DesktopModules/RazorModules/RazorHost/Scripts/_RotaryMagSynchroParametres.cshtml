@@ -1,13 +1,14 @@
 ﻿@using AIS;
-@{ 
+@{
     var param = new RotaryMag.Parametres();
     var item = Yemon.dnn.Helpers.GetItem("RotaryMagParametres", 0);
+    bool saved = false;
 
     if (item != null)
     {
         param = Yemon.dnn.Functions.Deserialize<RotaryMag.Parametres>("" + item); ;
     }
-    if(param.dico==null)
+    if (param.dico == null)
     {
         param.dico = new RotaryMag.Dico();
         param.dico.district_id = AIS.Const.DISTRICT_ID;
@@ -31,7 +32,7 @@
         param.allowed_hosts = ("" + Request["allowed_hosts"]).Replace(" ", "").Replace(Environment.NewLine, ",").Replace(";", ",");
 
 
-        if ((""+ Request["jwt_password"])!="++++++++++")
+        if (("" + Request["jwt_password"]) != "++++++++++")
         {
             param.jwt_password = "" + Request["jwt_password"];
         }
@@ -40,10 +41,10 @@
         {
             int userid = 0;
             int.TryParse("" + Request["dico"], out userid);
-            if(userid>0)
+            if (userid > 0)
             {
                 Member member = DataMapping.GetMemberByUserID(userid);
-                if(member!=null)
+                if (member != null)
                 {
                     param.dico.email = member.email;
                     param.dico.nim = member.nim;
@@ -58,7 +59,7 @@
         }
 
         Yemon.dnn.Helpers.SetItem("RotaryMagParametres", Yemon.dnn.Functions.Serialize(param), "", keephistory: false);
-        <div class="alert alert-success">Paramètres enregistrés</div>
+        saved = true;
     }
 }
 
@@ -130,7 +131,7 @@ Authorization: Bearer #accesstoken#
     "accessToken": "#newaccesstoken#",
     "renewalToken": "#newrenewaltoken#"
 }</pre>
-                </div>        
+                </div>
             </li>
             <li>
                 <h3>Logout : <a href="@Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/logout" target="_blank">/desktopmodules/jwtauth/api/mobile/logout</a></h3>
@@ -145,7 +146,7 @@ Authorization: Bearer #accesstoken#
                     <pre>{
     "success": true
 }</pre>
-                </div>            
+                </div>
             </li>
         </ul>
         <h2>Points d'entrée de l'api (GET) :</h2>
@@ -188,3 +189,9 @@ Authorization: Bearer #accesstoken#
         <button type="submit" name="bt_valider" class="btn btn-primary">Valider</button>
     </div>
 </div>
+@{
+    if (saved)
+    {
+        <div class="alert alert-success">Paramètres enregistrés</div>
+    }
+}
