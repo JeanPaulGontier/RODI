@@ -553,6 +553,22 @@ namespace AIS
             eventLog.AddLog(logInfo);
         }
 
+        public static void Log(Exception e,EventLogController.EventLogType logtype)
+        {
+            EventLogController eventLog = new EventLogController();
+            LogInfo logInfo = new LogInfo();
+
+            logInfo.LogUserID = -1;
+            logInfo.LogPortalID = Globals.GetPortalSettings().PortalId;
+            logInfo.LogTypeKey = logtype.ToString();
+            logInfo.AddProperty("Source", e.Source);
+            logInfo.AddProperty("Message", e.Message);
+            logInfo.AddProperty("Pile d'appel", e.StackTrace);
+           
+
+            eventLog.AddLog(logInfo);
+        }
+
 
         public static Bitmap GetBitmapFromMedia(Media media)
         {

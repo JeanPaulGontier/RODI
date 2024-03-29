@@ -103,10 +103,10 @@ namespace AIS
         public string adress_3 { get; set; }
         public string zip_code { get; set; }
         public string town { get; set; }
+        public string country { get; set; }
         public string telephone { get; set; }
         public string fax { get; set; }
         public string gsm { get; set; }
-        public string country { get; set; }
         public string job { get; set; }
         public string industry { get; set; }
         public string biography { get; set; }
@@ -129,6 +129,38 @@ namespace AIS
         public string fonction_rotarienne { get; set; }
         public string satellite_member { get; set; }
 
+#region nouvelles données 2024 pour synchro RotaryMag
+
+        public int annee_entree_club { get; set; }
+        public string phf { get; set; }
+        public string legion_honneur { get; set; }
+        public string ordre_merite { get; set; }
+        public string palmes_academiques { get; set; }
+        public int medaille_militaire { get; set; }
+        public int croix_guerre {  get; set; }
+        public int autre_decorations { get; set; }
+        public int pro_secteur_activite { get; set; }
+        public string fonction { get; set; }
+        public int no_adr_pro { get; set; }
+        public string professionnal_company { get; set; }
+        public string professionnal_additional { get; set; }
+        public string professionnal_country { get; set; }
+
+
+        public string ri_ad1 { get; set; }
+        public string ri_ad2 { get; set; }
+        public string ri_ad3 { get; set; }
+        public string ri_zip_code { get; set; }
+        public string ri_town { get; set; }
+        public string ri_country { get; set; }
+
+
+        public DateTime? dt_update_manuel_rodi { get; set; }
+        public DateTime? dt_update_import_ri_club { get; set; }
+        public DateTime? dt_update_import_ri_district { get; set; }
+        public DateTime? dt_update_import_rm { get; set; }
+
+#endregion
 
         public string GetPhoto()
         {

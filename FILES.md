@@ -6,10 +6,13 @@ Portals\_default\Containers\Rodi2017\TitreH1SansFond.ascx
 Portals\_default\Containers\Rodi2017\TitreH2SansFond.ascx
 Portals\_default\Containers\Rodi2017\TitreSansFond.ascx
 DesktopModules\AIS\Password Change\Control.ascx.cs
-Portals\_default\Skins\Rodi2017\EChoppe\masonry\masonry.pkgd.js
-Portals\_default\Skins\Rodi2017\EChoppe\masonry\masonry.pkgd.min.js
-Portals\_default\Skins\Rodi2017\EChoppe\lazyload\lazyload.js
-Portals\_default\Skins\Rodi2017\EChoppe\lazyload\lazyload.min.js
+App_Code\AIS\schedulers\RotaryMagScheduler.cs
+App_Code\AIS\webapi\rotarymag\RotaryMag.cs
+App_Code\AIS\webapi\rotarymag\RotaryMagController.cs
+App_Code\AIS\webapi\rotarymag\RotaryMagHelper.cs
+App_Code\AIS\Functions.cs
+App_Code\AIS\Member.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
 ```
 ##### 12/03/2024
 ```txt
