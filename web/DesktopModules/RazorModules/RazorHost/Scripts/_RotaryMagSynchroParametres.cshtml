@@ -1,0 +1,190 @@
+﻿@using AIS;
+@{ 
+    var param = new RotaryMag.Parametres();
+    var item = Yemon.dnn.Helpers.GetItem("RotaryMagParametres", 0);
+
+    if (item != null)
+    {
+        param = Yemon.dnn.Functions.Deserialize<RotaryMag.Parametres>("" + item); ;
+    }
+    if(param.dico==null)
+    {
+        param.dico = new RotaryMag.Dico();
+        param.dico.district_id = AIS.Const.DISTRICT_ID;
+    }
+
+    DotNetNuke.Security.Roles.RoleController roleController = new DotNetNuke.Security.Roles.RoleController();
+    var admins = roleController.GetUsersByRole(Dnn.Portal.PortalId, Const.ROLE_ADMIN_DISTRICT);
+
+    if (IsPost)
+    {
+        param.jwt_url_login = "" + Request["jwt_url_login"];
+        param.jwt_url_extendtoken = "" + Request["jwt_url_extendtoken"];
+        param.url_membres = "" + Request["url_membres"];
+        param.url_annuaire = "" + Request["url_annuaire"];
+        param.jwt_username = "" + Request["jwt_username"];
+
+        int user_id_apiaccess = 0;
+        int.TryParse("" + Request["user_id_apiaccess"], out user_id_apiaccess);
+        param.user_id_apiaccess = user_id_apiaccess;
+
+        param.allowed_hosts = ("" + Request["allowed_hosts"]).Replace(" ", "").Replace(Environment.NewLine, ",").Replace(";", ",");
+
+
+        if ((""+ Request["jwt_password"])!="++++++++++")
+        {
+            param.jwt_password = "" + Request["jwt_password"];
+        }
+
+        if (("" + Request["dico"]) != "")
+        {
+            int userid = 0;
+            int.TryParse("" + Request["dico"], out userid);
+            if(userid>0)
+            {
+                Member member = DataMapping.GetMemberByUserID(userid);
+                if(member!=null)
+                {
+                    param.dico.email = member.email;
+                    param.dico.nim = member.nim;
+                    param.dico.nom = member.surname;
+                    param.dico.prenom = member.name;
+                    param.dico.cric = member.cric;
+                    param.dico.nom_club = member.club_name;
+                    param.dico.telephone = member.gsm;
+
+                }
+            }
+        }
+
+        Yemon.dnn.Helpers.SetItem("RotaryMagParametres", Yemon.dnn.Functions.Serialize(param), "", keephistory: false);
+        <div class="alert alert-success">Paramètres enregistrés</div>
+    }
+}
+
+<div class="panel-body">
+    <h2>API Rotary Mag</h2>
+    <div class="form-group">
+        <label for="jwt_url_login">URL JWT Login</label>
+        <input type="text" class="form-control" name="jwt_url_login" value="@param.jwt_url_login" />
+    </div>
+    <div class="form-group">
+        <label for="jwt_url_extendtoken">URL JWT ExtendToken</label>
+        <input type="text" class="form-control" name="jwt_url_extendtoken" value="@param.jwt_url_extendtoken" />
+    </div>
+    <div class="form-group">
+        <label for="url_membres">URL Membres</label>
+        <input type="text" class="form-control" name="url_membres" value="@param.url_membres" />
+    </div>
+    <div class="form-group">
+        <label for="url_annuaire">URL Annuaire</label>
+        <input type="text" class="form-control" name="url_annuaire" value="@param.url_annuaire" />
+    </div>
+    <div class="form-group">
+        <label for="jwt_username">JWT Username</label>
+        <input type="text" class="form-control" name="jwt_username" value="@param.jwt_username" />
+    </div>
+    <div class="form-group">
+        <label for="jwt_password">JWT Password</label>
+        <input type="password" class="form-control" name="jwt_password" value="++++++++++" />
+    </div>
+    <h2>API RODI</h2>
+    <div class="alert alert-info">
+        <h2>Authentification JWT :</h2>
+        <ul>
+            <li>
+                <h3>Login : <a href="@Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/login" target="_blank">/desktopmodules/jwtauth/api/mobile/login</a></h3>
+                <div>
+                    <pre>POST @Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/login HTTP/1.1
+Content-Type: application/json; charset=utf-8   
+
+{"u":"username","p":"password"}</pre>
+                </div>
+                <p>réponse :</p>
+                <div>
+                    <pre>{
+    "userId": 123,
+    "displayName": "RotaryMag API User",
+    "accessToken": "#accesstoken#",
+    "renewalToken": "#renewaltoken#"
+}</pre>
+                </div>
+            </li>
+            <li>
+                <h3>ExtendToken : <a href="@Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/extendtoken" target="_blank">/desktopmodules/jwtauth/api/mobile/extendtoken</a></h3>
+                <div>
+                    <pre>POST @Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/extendtoken HTTP/1.1
+Content-Type: application/json; charset=utf-8 
+Authorization: Bearer #accesstoken#
+
+{
+    "rToken":"#renewaltoken#"
+    
+}</pre>
+                </div>
+                <p>réponse :</p>
+                <div>
+                    <pre>{
+    "userId": 123,
+    "displayName": "RotaryMag API User",
+    "accessToken": "#newaccesstoken#",
+    "renewalToken": "#newrenewaltoken#"
+}</pre>
+                </div>        
+            </li>
+            <li>
+                <h3>Logout : <a href="@Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/logout" target="_blank">/desktopmodules/jwtauth/api/mobile/logout</a></h3>
+                <div>
+                    <pre>GET @Const.DISTRICT_URL/desktopmodules/jwtauth/api/mobile/logout HTTP/1.1
+Content-Type: application/json; charset=utf-8   
+Authorization: Bearer #accesstoken#
+</pre>
+                </div>
+                <p>réponse :</p>
+                <div>
+                    <pre>{
+    "success": true
+}</pre>
+                </div>            
+            </li>
+        </ul>
+        <h2>Points d'entrée de l'api (GET) :</h2>
+        <ul>
+            <li>Hello : <a href="@Const.DISTRICT_URL/desktopmodules/ais/api/rotarymag/hello" target="_blank">/desktopmodules/ais/api/rotarymag/hello</a></li>
+            <li>Clubs : <a href="@Const.DISTRICT_URL/desktopmodules/ais/api/rotarymag/hello" target="_blank">/desktopmodules/ais/api/rotarymag/clubs</a></li>
+            <li>Membres : <a href="@Const.DISTRICT_URL/desktopmodules/ais/api/rotarymag/hello" target="_blank">/desktopmodules/ais/api/rotarymag/membres</a></li>
+            <li>Dico : <a href="@Const.DISTRICT_URL/desktopmodules/ais/api/rotarymag/hello" target="_blank">/desktopmodules/ais/api/rotarymag/dico</a></li>
+            <li>Affectations : <a href="@Const.DISTRICT_URL/desktopmodules/ais/api/rotarymag/hello" target="_blank">/desktopmodules/ais/api/rotarymag/affectations</a></li>
+        </ul>
+    </div>
+    <div class="form-group">
+        <label for="dico">DICO</label>
+        <select name="dico" class="form-control">
+            <option>--- Choisir ---</option>
+            @foreach (var m in admins)
+            {
+                <option value="@m.UserID" @if (param.dico.email == m.Email) { @Html.Raw("selected") }>@(m.DisplayName)</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="user_id_apiaccess">User Id Accès API</label>
+        <input type="number" class="form-control" name="user_id_apiaccess" min="1" step="1" max="99999" value="@param.user_id_apiaccess" />
+        <div class="alert alert-warning">
+            Créez un utilisateur spécifique pour l'api avec les droits minimums et interdisez lui l'accès à l'espace membre
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="allowed_hosts">IPs et hôtes autorisés (séparés par virgules)</label>
+        <input type="text" class="form-control" name="allowed_hosts" value="@param.allowed_hosts" />
+        <div class="alert alert-warning">
+            Si le champ est vide, l'accès est interdit a tout le monde
+        </div>
+    </div>
+
+
+    <div class="from-group">
+        <button type="submit" name="bt_valider" class="btn btn-primary">Valider</button>
+    </div>
+</div>
