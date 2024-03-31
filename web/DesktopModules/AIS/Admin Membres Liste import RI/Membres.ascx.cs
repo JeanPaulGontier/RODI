@@ -255,6 +255,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_Civilite.Text = membre.civility;
                     LBL_Adresse.Text = membre.adress_1;
                     LBL_Email.Text = membre.email;
+                    LBL_Nom_Club.Text = membre.club_name;
                     LBL_Fonction_Metier.Text = membre.job;
                     LBL_Branche_Activite.Text = membre.industry;
                     LBL_Member_Honneur.Text = (""+membre.honorary_member == Const.YES) ? "Member d'honneur" : "";

@@ -14,6 +14,8 @@ App_Code\AIS\Functions.cs
 App_Code\AIS\Member.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotaryMagSynchroParametres.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 ```
 ##### 12/03/2024
 ```txt

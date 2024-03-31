@@ -127,6 +127,7 @@
 		    </div>
 		    <div class="col-sm-10">
                 <div>
+                    <p><asp:Label runat="server" ID="LBL_Nom_Club" /></p>
 		            <p><asp:Label runat="server" ID="LBL_Fonction_Metier" />
 		            <asp:Label runat="server" ID="LBL_Retraite" />
 		            <asp:Label runat="server" ID="LBL_Member_Honneur" Visible="false" />
