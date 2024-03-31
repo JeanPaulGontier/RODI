@@ -45,6 +45,7 @@
     <asp:TemplateField HeaderText="Email" SortExpression="email"  ItemStyle-Width="32">
         <ItemTemplate><a href="mailto:<%# Eval("email") %>"><%# Eval("email") %></a></ItemTemplate>
     </asp:TemplateField>
+    <asp:BoundField DataField="club_name" HeaderText="Club" SortExpression="club_name" Visible="false" />
      <asp:TemplateField HeaderText="Fonction" >
         <ItemTemplate><%# Eval("fonction_rotarienne").ToString().Replace(Environment.NewLine,"<br/>") %></ItemTemplate>
     </asp:TemplateField>

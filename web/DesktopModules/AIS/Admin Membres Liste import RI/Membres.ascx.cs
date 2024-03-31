@@ -94,6 +94,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         }
     }
 
+    
     string mode
     {
         get
@@ -468,10 +469,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 membres = DataMapping.ListMembers( sort: tri.Value + " " + sens.Value, index: GridView1.PageIndex, max: GridView1.PageSize, criterion: TXT_Critere.Text);
             }
 
-            
+
             
             GridView1.DataSource = membres;
             GridView1.DataBind();
+            if (mode == "district")
+                GridView1.Columns[5].Visible = true;
 
             int nbactif = membres.Where(m => m.honorary_member == "N").Count();
             int nbhonneur = membres.Where(m => m.honorary_member == "O").Count();
