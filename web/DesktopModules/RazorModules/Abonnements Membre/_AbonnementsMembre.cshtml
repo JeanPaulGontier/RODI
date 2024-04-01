@@ -66,12 +66,14 @@
             <select class="form-control" v-model="select">
                 <option v-for="c in getClubs" :value="c.cric">{{c.name}}</option>
             </select>
+            <em class="text-info small">Vous êtes automatiquement abonné(e) à votre club, c'est pour cela qu'il n'apparait pas dans la liste.</em>
+            
         </div>
         <div class="col-sm-2">
             <a @@click="addSub()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true" title="S'abonner"></i></a>
         </div>
 
-        <div class="alert alert-info">Votre club n'apparait pas dans la liste, car vous y êtes automatiquement abonné(e)</div>
+       
     </div>
     @if (ispresidentorsecretary)
     {
@@ -85,7 +87,7 @@
             <div class="alert alert-info">En tant que président ou secrétaire de votre club, vous êtes automatiquement abonné à tous les clubs, peut importe les clubs pour lesquels vous avez choisi de vous abonner</div>                
         }
     }
-
+   
     <div class="pe-spacer size20"></div>
     <div v-if="subs.length>0">
         <div v-if="subs.length>1">Vos abonnements actifs :</div>
