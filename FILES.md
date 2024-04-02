@@ -17,6 +17,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\RazorModules\Abonnements Membre\_AbonnementsMembre.cshtml
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 ```
 ##### 12/03/2024
 ```txt
