@@ -580,7 +580,7 @@ public partial class DesktopModules_AIS_Admin_District_Board_District_Board : Po
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
         List<DataTable> liste = new List<DataTable>();
-        var ds = DataMapping.ExecSql("SELECT section as Section, surname as Nom, name as Prénom, job as Poste, role as Role, [description] as 'Description',nim as NIM,  cric as Cric, club as 'Nom du club', (select email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
+        var ds = DataMapping.ExecSql("SELECT section as Section, surname as Nom, name as Prénom, job as Poste, role as Role, [description] as 'Description',nim as NIM,  cric as Cric, club as 'Nom du club', (select top 1 email from " + Const.TABLE_PREFIX + "members where nim=" + Const.TABLE_PREFIX + "drya.nim) as Email  FROM " + Const.TABLE_PREFIX+"drya    WHERE rotary_year = '"+ rbl_rotaryYear.SelectedValue + "'  order by section,rank");
         liste.Add(ds.Tables[0]);
 
         Media media = DataMapping.ExportDataTablesToXLS(liste, "Organigramme District " + rbl_rotaryYear.SelectedValue + "-" + (1 + int.Parse(rbl_rotaryYear.SelectedValue)) + ".xlsx", Aspose.Cells.SaveFormat.Xlsx);
