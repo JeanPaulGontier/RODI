@@ -5,6 +5,7 @@
 - ajout d'un message dans le module d'abonnement aux mailings pour le profil membre, afin d'expliquer pourquoi le club du membre n'apparait pas dans la liste
 - correction d'un pb d'affichage quand le module agenda du gouverneur n'arrivait plus à joindre le serveur d'agenda
 - correction d'un pb lors de l'export excel organigramme district lorsqu'un membre était à la fois rotaract et rotarien
+- correction d'un bug d'affichage de la professionnelle membre
 
 ###### 12/03/2024
 - Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :

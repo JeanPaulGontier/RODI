@@ -39,13 +39,14 @@
 
 
     List<Block> blocks = new List<Block>();
+
     try
     {
         string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + PageData["blocksSuffix"]);
         if (sblocks != "")
         {
             blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
-            PageData["blocks"] = blocks;
+
         }
 
     }
@@ -53,8 +54,8 @@
     {
 
     }
-
-    if(blocks.Count==0 || !member.presentation)
+    PageData["blocks"] = blocks;
+    if (blocks.Count==0 || !member.presentation)
     {
         <h1>Le membre n'a pas créé de page de présentation...</h1>
         return;
@@ -62,4 +63,5 @@
     }
 }
 @RenderPage("BlocksContent/View.cshtml")
+
 

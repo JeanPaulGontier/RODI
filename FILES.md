@@ -19,6 +19,8 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\RazorModules\Abonnements Membre\_AbonnementsMembre.cshtml
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Admin District Board\District Board.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 ```
 ##### 12/03/2024
 ```txt
