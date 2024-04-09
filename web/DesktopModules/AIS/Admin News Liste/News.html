@@ -125,9 +125,11 @@
                       this.news = JSON.parse(r.data);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             getNewsCategories() {
                 _yemon[this.moduleid].service.getData("/GetNewsCategories", {
@@ -139,9 +141,11 @@
                         
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             addNews() {
                 this.$router.push("/edit/new");

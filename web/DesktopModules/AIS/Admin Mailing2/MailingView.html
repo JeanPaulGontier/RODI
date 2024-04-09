@@ -109,9 +109,11 @@
                     }, (r) => {
                         this.$router.push("/edit/"+r.data+"/dest/");
 
-                    }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data.Message);
-                    })
+                    }
+                        //, (e) => {
+                        //toastr["error"]("Erreur : " + e.response.data.Message);
+                        //}
+                    )
 
 
                 }
@@ -184,9 +186,11 @@
                         this.$router.push("/");
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
          
 

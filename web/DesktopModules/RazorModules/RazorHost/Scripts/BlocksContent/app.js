@@ -27,9 +27,11 @@
                         this.blocks = JSON.parse(r.data);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data);
+                    //}
+                )
             },
             changed(data) {
                 if (!data)
@@ -46,9 +48,11 @@
                     //this.changed = false;
                     //toastr["success"]("enregistrée");
                     
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             }
         },
         mounted() {

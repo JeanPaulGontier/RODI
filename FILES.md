@@ -21,6 +21,15 @@ DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Admin District Board\District Board.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\AIS\Admin Mailing2\Mailing.html
+DesktopModules\AIS\Admin Mailing2\MailingEdit.html
+DesktopModules\AIS\Admin Mailing2\MailingView.html
+DesktopModules\AIS\Admin News Liste\News.html
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
+DesktopModules\AIS\Admin News Liste\NewsView.html
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
 ```
 ##### 12/03/2024
 ```txt

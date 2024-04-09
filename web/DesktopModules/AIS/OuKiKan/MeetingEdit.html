@@ -334,9 +334,11 @@
                             this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data);
+                    //}
+                )
             },
             getMeeting() {
                 this.meeting = {};
@@ -380,9 +382,11 @@
                     }, (r) => {
                         this.$router.push("/");
 
-                    }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data);
-                    })
+                    }
+                        //, (e) => {
+                        //toastr["error"]("Erreur : " + e.response.data);
+                        //}
+                    )
 
 
                 }
@@ -414,9 +418,11 @@
                 }, (r) => {
                     this.$router.push("/");
 
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data);
+                    //}
+                )
             }
         },
         mounted() {

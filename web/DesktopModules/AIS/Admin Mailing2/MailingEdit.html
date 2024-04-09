@@ -228,9 +228,11 @@
                 }, (r) => {
                     this.$router.push({ name: 'content', params: { id: this.id } });
 
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             isValid() {
                 return this.mailing.recipients &&
@@ -277,9 +279,11 @@
                 }, (r) => {
                     this.$router.push({ name: 'preview', params: { id: this.id } });
 
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
 
 
             },
@@ -297,9 +301,11 @@
                             this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
         },
         mounted() {
@@ -336,9 +342,11 @@
                     email: this.email
                 }, (r) => {
                     toastr["success"]("Message de test envoyé à "+this.email );
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             validateEmail() {
                 return _yemon[this.moduleid].service.validateEmail(this.email);
@@ -357,9 +365,11 @@
                             this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             next() {
                 this.$router.push({ name: 'send', params: { id: this.id } });
@@ -418,9 +428,11 @@
                     }, (r) => {                       
                         this.$router.push('/');
 
-                    }, (e) => {
-                        toastr["error"]("Erreur : " + e);
-                    });
+                    }
+                        //, (e) => {
+                        //toastr["error"]("Erreur : " + e);
+                        //}
+                    );
                 }
             }
         },
@@ -485,9 +497,11 @@
                             })
                         
 
-                    }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data.Message);
-                    })
+                    }
+                        //, (e) => {
+                        //toastr["error"]("Erreur : " + e.response.data.Message);
+                        //}
+                    )
 
                    
 
@@ -505,9 +519,11 @@
                     }, (r) => {
                         this.$router.push("/");
 
-                    }, (e) => {
-                        toastr["error"]("Erreur : " + e.response.data.Message);
-                    })
+                    }
+                    //    , (e) => {
+                    //    toastr["error"]("Erreur : " + e.response.data.Message);
+                    //    }
+                    )
 
 
                 }
@@ -573,9 +589,12 @@
                         this.$router.push("/");
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+
             },
           
 

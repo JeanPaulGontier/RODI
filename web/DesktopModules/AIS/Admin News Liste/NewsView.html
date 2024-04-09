@@ -75,9 +75,11 @@
                             this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             getNewsDetail() {
                 _yemon[this.moduleid].service.getData("/GetNewsDetail", {
@@ -96,9 +98,11 @@
                         this.$router.push("/");
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
          
 

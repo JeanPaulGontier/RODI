@@ -121,9 +121,11 @@
                       this.mailings = JSON.parse(r.data);
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             getCategories() {
                 _yemon[this.moduleid].service.getData("/GetCategories", {
@@ -135,9 +137,11 @@
                         
                     }
                     this.$forceUpdate();
-                }, (e) => {
-                    toastr["error"]("Erreur : " + e.response.data.Message);
-                })
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
             },
             addMailing() {
                 this.$router.push("/edit/" + _yemon[this.moduleid].service.guid() +"/dest");
