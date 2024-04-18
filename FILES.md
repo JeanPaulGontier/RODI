@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+##### 18/04/2024
+```txt
 Portals\_default\Skins\Rodi2017\skin.css
 Portals\_default\Containers\Rodi2017\container.css
 Portals\_default\Containers\Rodi2017\TitreH1SansFond.ascx

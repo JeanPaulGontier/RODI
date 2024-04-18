@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 18/04/2024
 - ajout de nouveaux containers titresansfond, titreh1sansfond, titreh2sansfond permettant de positionner des modules sur des fonds de couleurs
 - correction d'un pb de changement de mot de passe dans la page espace membre/mon profil
 - les blockscontents de la page d'accueil des sites des clubs peuvent maintenant être modifiés par les Administrateurs Districts, ce qui permet aux admins district d'aider un club pour la mise en page de son site
