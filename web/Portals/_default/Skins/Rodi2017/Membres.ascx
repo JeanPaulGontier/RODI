@@ -191,13 +191,14 @@
         <div class="footer_left">
           <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT" cssclass="Footer" /> | <a class="Footer" title="Voir la liste des mises à jour RODI, Le développement de RODI est continu, la fréquence des mises à jour est de 1 à 2 par mois, le n° de version affichée correspond à celle installée ici, vous pouvez participer aux améliorations, rubrique contact sur le site RODI Platform" href="https://raw.githubusercontent.com/JeanPaulGontier/RODI/main/UPDATE.md" target="_blank">Mises à jour</a> | <span class="Footer"><ais:RODIVERSION runat="server" /></span>
         </div>
-        <div class="footer_right">
-          <dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
+         <div class="footer_right">
+          <p><dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
           |
-          <dnn:TERMS runat="server" id="dnnTERMS" cssclass="Footer" />
+          <dnn:TERMS runat="server" id="dnnTERMS" cssclass="Footer" /></p>
+          <p><span class="Footer">La plateforme RODI est conforme au RGPD depuis sa mise en place le 25 mai 2018.</span></p>
         </div>
       </div>
-    </div>
+    </div>    
   </footer>
   <!--end footer-->
   <a onclick="window.scroll({top:0,left:0,behavior:'smooth'})" id="top-link" title="Top"> </a> </div>

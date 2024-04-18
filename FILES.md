@@ -30,6 +30,10 @@ DesktopModules\AIS\Admin News Liste\NewsView.html
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+Portals\_default\Skins\Rodi2017\home2021.ascx
+Portals\_default\Skins\Rodi2017\Membres.ascx
+Portals\_default\Skins\Rodi2017\Public.ascx
+Portals\_default\Skins\Rodi2017\Public_2020.ascx
 ```
 ##### 12/03/2024
 ```txt

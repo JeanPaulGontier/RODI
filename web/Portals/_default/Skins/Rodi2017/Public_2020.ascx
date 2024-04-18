@@ -139,9 +139,10 @@
           <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT" cssclass="Footer" />
         </div>
         <div class="footer_right">
-          <dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
+          <p><dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
           |
-          <dnn:TERMS runat="server" id="dnnTERMS" cssclass="Footer" />
+          <dnn:TERMS runat="server" id="dnnTERMS" cssclass="Footer" /></p>
+          <p><span class="Footer">La plateforme RODI est conforme depuis la mise en place du RGPD le 25 mai 2018.</span></p>
         </div>
       </div>
     </div>
