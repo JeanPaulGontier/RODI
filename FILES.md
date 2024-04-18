@@ -34,6 +34,7 @@ Portals\_default\Skins\Rodi2017\home2021.ascx
 Portals\_default\Skins\Rodi2017\Membres.ascx
 Portals\_default\Skins\Rodi2017\Public.ascx
 Portals\_default\Skins\Rodi2017\Public_2020.ascx
+Portals\_default\Skins\Rodi2017\Club.ascx
 ```
 ##### 12/03/2024
 ```txt
