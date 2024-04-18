@@ -6,6 +6,7 @@
 - correction d'un pb d'affichage quand le module agenda du gouverneur n'arrivait plus à joindre le serveur d'agenda
 - correction d'un pb lors de l'export excel organigramme district lorsqu'un membre était à la fois rotaract et rotarien
 - correction d'un bug d'affichage de la professionnelle membre
+- des Rotariens nous ont posé la question sur la conformité RGPD de la plateforme RODI, nous avons donc mis un message en pied de page des districts sur la date de mise en conformité, qui date du 1er jour de mise en place du RGPD en 2018, nous n'avions pas pensé a l'indiquer tellement ca nous semblait évident que RODI respecte la loi...
 
 ###### 12/03/2024
 - Mise à disposition sur rodi-platform.org d'une page publique de déclaration de confidentialité pour plus de clarté pour les visiteurs, pour chaque district le visiteur peut par le lien /privacy consulter la politique de confidentialité RODI commune a tous les districts :
