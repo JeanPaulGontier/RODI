@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout d'un nouveau module razor qui affiche la liste des nouvelles district déjà passées 
 
 ###### 18/04/2024
 - ajout de nouveaux containers titresansfond, titreh1sansfond, titreh2sansfond permettant de positionner des modules sur des fonds de couleurs
