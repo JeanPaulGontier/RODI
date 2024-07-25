@@ -244,7 +244,8 @@ namespace AIS.controller
             try { 
                 var application = ActionContext.Request.GetHttpContext().Application;
 
-                int cric = (int)application[context + ":cric"];
+                int cric = 0;
+                int.TryParse("" + application[context + ":cric"],out cric) ;
                 string cat = "" + category;
                 SqlCommand sql = new SqlCommand("SELECT * FROM ais_meetings WHERE cric=" + cric + " AND type=@type ORDER BY dtstart DESC");
                 sql.Parameters.AddWithValue("type", cat);
@@ -281,7 +282,8 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
 
 
-                int cric = (int)application[context + ":cric"];
+                int cric = 0;
+                int.TryParse(""+application[context + ":cric"],out cric);
 
                 SqlCommand sql = new SqlCommand("select * from ais_meetings where cric=@cric and guid=@guid");
                 sql.Parameters.AddWithValue("guid", guid);
@@ -313,7 +315,10 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
                 string ctx = "" + param["context"];
                 string mode = "" + application[ctx + ":mode"];
-                int cric = (int)application[ctx + ":cric"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[ctx + ":cric"],out cric);
 
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();

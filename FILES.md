@@ -1,6 +1,20 @@
 ##### Modified files per commit
 ```txt
+```
+##### 25/07/2024
+```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_NouvellesDistrictPassees.cshtml
+App_Code\Newsletter.cs
+AIS\RedirNews.ashx
+App_Code\ClubRewriter.cs
+App_Code\AIS\Const.cs
+App_Code\AIS\webapi\mailing\MailingController.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\webapi\news\NewsHelper.cs
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\Admin News Liste\News.html
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
 
 ```
 ##### 18/04/2024

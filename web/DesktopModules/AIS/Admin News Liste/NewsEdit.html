@@ -94,7 +94,15 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-sm-3">
+                Lien court et QR Code :
+            </div>
+            <div class="col-sm-9">
+                <a :href="'/DesktopModules/AIS/API/News/getqr?forcedownload=true&link='+getLink()" target="_blank" title="cliquer pour télécharger l'image'"><img src="/DesktopModules/AIS/API/News/getqr?link={{getLink()}}" /></a><br/>
+                <a :href="getLink()" target="_blank">{{getLink()}}</a>
+            </div>
+        </div>
     <div class="row">
         <div class="col-sm-12">
             <h4>Contenu détaillé</h4>
@@ -110,6 +118,7 @@
 
 </script>
 <script>
+    
     const NewsEdit = {
         template: '#newsedit-template',
         name: 'NewsEdit',
@@ -143,6 +152,11 @@
         methods: {
             imageChanged(e) {
                 this.news.photo = e.GUID;
+            },
+            getLink() {
+                if (!this.news || !this.news.id)
+                    return "";
+                return HOST+ "/n-" + this.news.id.substring(9, 18);
             },
             isValid() {
                 return this.news.title && this.news.dt && this.news.tag1 && this.news.visible;

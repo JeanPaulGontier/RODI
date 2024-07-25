@@ -148,6 +148,12 @@ public class ClubRewriter : IHttpModule
                 context.Server.TransferRequest("/oukikan?m=" + link + "&useridguid=" + request["useridguid"] + "&print=" + request["print"] + "&popup=" + request["popup"], true);
                 return;
             }
+            if (url.StartsWith("/n-"))
+            {
+                string link = url.Substring(3);
+                context.Server.TransferRequest("/ais/redirnews.ashx?n=" + link , true);
+                return;
+            }
             if (url.StartsWith("/mail") && request.RawUrl.Contains("purgednnscripts"))
             {
                 context.RewritePath("/ais/purgednnscripts.ashx?url=" + HttpUtility.UrlEncode(request.RawUrl), false);

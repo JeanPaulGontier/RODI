@@ -43,6 +43,7 @@
 <!-- #include virtual ="/DesktopModules/AIS/Admin News Liste/NewsView.html" -->
 <script src="/DesktopModules/AIS/Admin News Liste/app.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <script>
+    var HOST = '<%=AIS.Const.DISTRICT_URL%>';
 
     var CATEGORIES =  <%=Yemon.dnn.Functions.Serialize(categories)%>;
 

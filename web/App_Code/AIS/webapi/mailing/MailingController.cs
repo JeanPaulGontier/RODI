@@ -342,7 +342,10 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
 
                 string mode = "" + application[context + ":mode"];
-                int cric = (int)application[context + ":cric"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[context + ":cric"],out cric);
                 categorie = "" + categorie;
 
                 int minstep = 0;
@@ -373,7 +376,10 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
 
                 string mode = "" + application[context + ":mode"];
-                int cric = (int)application[context + ":cric"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[context + ":cric"],out cric);
 
 
                 SqlCommand sql = new SqlCommand("select distinct category from " + Const.TABLE_PREFIX + "mailings where cric=@cric order by category");
@@ -405,7 +411,10 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
                 string ctx = "" + param["context"];
                 string mode = "" + application[ctx + ":mode"];
-                int cric = (int)application[ctx + ":cric"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[ctx + ":cric"],out cric);
 
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();

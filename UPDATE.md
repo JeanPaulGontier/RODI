@@ -1,5 +1,10 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 25/07/2024
 - ajout d'un nouveau module razor qui affiche la liste des nouvelles district déjà passées 
+- ajout d'url courtes avec QR code pour les nouvelles clubs et district 
+	- le QR Code peut être téléchargé sous forme d'image et permet d'être inséré dans un flyer de présentation d'un évènement 
+	- on peut maintenant visualiser directement la nouvelle a partir de l'administration des nouvelles clubs & district
 
 ###### 18/04/2024
 - ajout de nouveaux containers titresansfond, titreh1sansfond, titreh2sansfond permettant de positionner des modules sur des fonds de couleurs

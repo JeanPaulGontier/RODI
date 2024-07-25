@@ -6,6 +6,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Web.Api;
 using GemBox.Pdf;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,7 +24,8 @@ namespace AIS.controller
 {
     public class NewsController : DnnApiController
     {
-        [HttpGet]      
+        [HttpGet]
+        [AllowAnonymous]
         public HttpResponseMessage Hello()
         {
             return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
@@ -226,98 +228,153 @@ namespace AIS.controller
         [DnnAuthorize]
         public HttpResponseMessage GetNews(string context,string categorie)
         {
-            var application = ActionContext.Request.GetHttpContext().Application;
+            try
+            {
 
-            string mode = "" + application[context + ":mode"];
-            int cric = (int)application[context + ":cric"];
-            categorie = "" + categorie;                        
-            List<News> news = new List<News>();
-            List<News> news1 = new List<News>();
-            if (mode=="clubs" && cric!=0)
-            {
-                news = DataMapping.ListNews(cric,"Clubs",max:int.MaxValue);
+            
+                var application = ActionContext.Request.GetHttpContext().Application;
 
-            }
-            else if(mode=="district")
-            {
-                news = DataMapping.ListNews(0, "District", max: int.MaxValue);
-            }
-            else
-            {
-                news = DataMapping.ListNews(0, mode, max: int.MaxValue);
-            }
-            if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && !UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) && !UserInfo.IsAdmin && !UserInfo.IsSuperUser)
-            {
-                foreach (News n in news)
+                string mode = "" + application[context + ":mode"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+
+                int.TryParse(""+application[context + ":cric"],out cric);
+                categorie = "" + categorie;                        
+                List<News> news = new List<News>();
+                List<News> news1 = new List<News>();
+                if (mode=="clubs" && cric!=0)
                 {
-                    if(n.visible!=Const.NO)
-                        if(n.tag1==categorie || categorie=="")
+                    news = DataMapping.ListNews(cric,"Clubs",max:int.MaxValue);
+
+                }
+                else if(mode=="district")
+                {
+                    news = DataMapping.ListNews(0, "District", max: int.MaxValue);
+                }
+                else
+                {
+                    news = DataMapping.ListNews(0, mode, max: int.MaxValue);
+                }
+                if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && !UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) && !UserInfo.IsAdmin && !UserInfo.IsSuperUser)
+                {
+                    foreach (News n in news)
+                    {
+                        if(n.visible!=Const.NO)
+                            if(n.tag1==categorie || categorie=="")
+                                news1.Add(n);
+                    }
+                }
+                else
+                {
+                    foreach(News n in news)
+                    {
+                        if (n.tag1 == categorie || categorie == "")
                             news1.Add(n);
+                    }
                 }
+
+                return Request.CreateResponse(HttpStatusCode.OK,Yemon.dnn.Functions.Serialize(news1));
             }
-            else
+            catch
             {
-                foreach(News n in news)
-                {
-                    if (n.tag1 == categorie || categorie == "")
-                        news1.Add(n);
-                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetQR(string link)
+        {
+
+            bool forcedownload = ("" + HttpContext.Current.Request.QueryString["forcedownload"]).Equals("true");
+
+            QRCodeGenerator gen = new QRCodeGenerator();
+            QRCodeData qr = gen.CreateQrCode(Const.DISTRICT_URL + "/n-" + link, QRCodeGenerator.ECCLevel.H);
+            QRCode code = new QRCode(qr);
+            System.Drawing.Image bitmap = code.GetGraphic(4);
+
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            MemoryStream ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            ms = new MemoryStream(ms.GetBuffer());
+            response.Content = new StreamContent(ms); ;
+            response.Content.Headers.Add("Content-type", "image/png");
+            if(forcedownload)
+            {
+                response.Content.Headers.Add("Content-Disposition","attachment; filename=qrcode.png");
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK,Yemon.dnn.Functions.Serialize(news1));
+            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+
+            return response;
+
+
         }
+
 
         [HttpGet]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
         public HttpResponseMessage GetNewsCategories(string context)
         {
-            var application = ActionContext.Request.GetHttpContext().Application;
+            try { 
+                var application = ActionContext.Request.GetHttpContext().Application;
 
-            string mode = "" + application[context + ":mode"];
-            int cric = (int)application[context + ":cric"];
+                string mode = "" + application[context + ":mode"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[context + ":cric"],out cric);
 
-            List<News> news = new List<News>();
-            List<string> cats = new List<string>();
+                List<News> news = new List<News>();
+                List<string> cats = new List<string>();
             
-            if (mode == "clubs" && cric != 0)
-            {
-                news = DataMapping.ListNews(cric, "Clubs", max: int.MaxValue);
-            }
-            else if (mode == "district")
-            {
-                news = DataMapping.ListNews(0, "District", max: int.MaxValue);
-            }
-            else
-            {
-                news = DataMapping.ListNews(0,mode,max: int.MaxValue);
-            }
-            if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB))
-            {
-                foreach (News n in news)
+                if (mode == "clubs" && cric != 0)
                 {
-                    if (n.visible != Const.NO)
+                    news = DataMapping.ListNews(cric, "Clubs", max: int.MaxValue);
+                }
+                else if (mode == "district")
+                {
+                    news = DataMapping.ListNews(0, "District", max: int.MaxValue);
+                }
+                else
+                {
+                    news = DataMapping.ListNews(0,mode,max: int.MaxValue);
+                }
+                if (!UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB))
+                {
+                    foreach (News n in news)
+                    {
+                        if (n.visible != Const.NO)
+                            if (!cats.Contains(n.tag1))
+                                cats.Add(n.tag1);
+                    }
+                }
+                else
+                {
+                    foreach (News n in news)
+                    {
                         if (!cats.Contains(n.tag1))
                             cats.Add(n.tag1);
+                    }
                 }
+                string[] c = cats.ToArray();
+                Array.Sort(c);
+                List<object> cc = new List<object>();
+                cc.Add(new { Key = "Toutes",Value="" });
+                foreach(string ccc in c)
+                    cc.Add(new { Key = ccc, Value = ccc });
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, cc);
             }
-            else
+            catch
             {
-                foreach (News n in news)
-                {
-                    if (!cats.Contains(n.tag1))
-                        cats.Add(n.tag1);
-                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-            string[] c = cats.ToArray();
-            Array.Sort(c);
-            List<object> cc = new List<object>();
-            cc.Add(new { Key = "Toutes",Value="" });
-            foreach(string ccc in c)
-                cc.Add(new { Key = ccc, Value = ccc });
-
-
-            return Request.CreateResponse(HttpStatusCode.OK, cc);
         }
 
         [HttpPost]
@@ -330,7 +387,10 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
                 string ctx = "" + param["context"];
                 string mode = "" + application[ctx + ":mode"];
-                int cric = (int)application[ctx + ":cric"];
+                if (mode == "")
+                    throw new Exception("mode inconnu");
+                int cric = 0;
+                int.TryParse(""+application[ctx + ":cric"],out cric);
 
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();

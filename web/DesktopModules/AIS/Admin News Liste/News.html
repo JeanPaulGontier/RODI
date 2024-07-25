@@ -21,15 +21,18 @@
             <tbody>
                 <tr>
                     <th class="col-sm-1">Date</th>
-                    <th class="col-sm-8">Titre</th>
-                    <th class="col-sm-1">Catégorie</th>
+                    <th class="col-sm-6">Titre</th>
+                    <th class="col-sm-1">Lien</th>
+                    <th class="col-sm-2">Catégorie</th>
                     <th class="col-sm-2">Visibilité</th>
+                    "
                 </tr>
-                <tr v-for="n in news" v-on:click="editNews(n)">
-                    <td>{{date(n.dt)}}</td>
-                    <td>{{n.title}}</td>
-                    <td>{{n.tag1}}</td>
-                    <td>{{visibility(n)}}</td>
+                <tr v-for="n in news" >
+                    <td v-on:click="editNews(n)">{{date(n.dt)}}</td>
+                    <td v-on:click="editNews(n)">{{n.title}}</td>
+                    <td><small><a :href="'/n-'+getLink(n)" target="_blank">{{getLink(n)}}</a></small></td>
+                    <td v-on:click="editNews(n)">{{n.tag1}}</td>
+                    <td v-on:click="editNews(n)">{{visibility(n)}}</td>
                 </tr>
             </tbody>
         </table>
@@ -52,15 +55,17 @@
             <tbody>
                 <tr>
                     <th class="col-sm-1">Date</th>
-                    <th class="col-sm-8">Titre</th>
-                    <th class="col-sm-1">Catégorie</th>
+                    <th class="col-sm-6">Titre</th>
+                    <th class="col-sm-1">Lien</th>
+                    <th class="col-sm-2">Catégorie</th>
                     <th class="col-sm-2">Visibilité</th>
                 </tr>
-                <tr v-for="n in news" v-on:click="editNews(n)">
-                    <td>{{date(n.dt)}}</td>
-                    <td>{{n.title}}</td>
-                    <td>{{n.tag1}}</td>
-                    <td>{{visibility(n)}}</td>
+                <tr v-for="n in news">
+                    <td v-on:click="editNews(n)">{{date(n.dt)}}</td>
+                    <td v-on:click="editNews(n)">{{n.title}}</td>
+                    <td><small><a :href="'/n-'+getLink(n)" target="_blank">{{getLink(n)}}</a></small></td>
+                    <td v-on:click="editNews(n)">{{n.tag1}}</td>
+                    <td v-on:click="editNews(n)">{{visibility(n)}}</td>
                 </tr>
             </tbody>
         </table>
@@ -90,6 +95,9 @@
                     return '';
                 let dd = new Date(d);
                 return dd.toLocaleDateString();
+            },
+            getLink(n) {
+                return n.id.substring(9, 18);
             },
             visibility(n) {
                 switch (n.visible) {

@@ -223,6 +223,7 @@ public class NewsletterWS : System.Web.Services.WebService
                             }
                             catch (Exception ee)
                             {
+                                Functions.Error(ee);
                                 sb.AppendLine("Erreur lors de l'envoie du mail Test id = " + n.id.ToString());
                                 n.status = "E";
                                 n.error = ee.Message;
@@ -249,6 +250,7 @@ public class NewsletterWS : System.Web.Services.WebService
             }
             catch(Exception ee)
             {
+                Functions.Error(ee);
                 return ee.Message;
             }
         }
@@ -370,6 +372,7 @@ public class NewsletterWS : System.Web.Services.WebService
             }
             catch (Exception ee)
             {
+                Functions.Error(ee);
                 return ee.Message;
             }
         }
@@ -467,6 +470,7 @@ public class NewsletterWS : System.Web.Services.WebService
                                 }
                                 catch (Exception ee)
                                 {
+                                    Functions.Error(ee);
                                     sb.AppendLine("Erreur lors de l'envoie du mail : " + n_o.email + ", newsletter : " + n.title);
                                     n_o.status = "E";
                                     n_o.error = ee.Message;
@@ -516,6 +520,7 @@ public class NewsletterWS : System.Web.Services.WebService
             }
             catch (Exception ee)
             {
+                Functions.Error(ee);
                 return ee.Message;
             }
         }
