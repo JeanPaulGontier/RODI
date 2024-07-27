@@ -315,11 +315,11 @@ namespace AIS.controller
                 var application = ActionContext.Request.GetHttpContext().Application;
                 string ctx = "" + param["context"];
                 string mode = "" + application[ctx + ":mode"];
-                if (mode == "")
-                    throw new Exception("mode inconnu");
+               
                 int cric = 0;
                 int.TryParse(""+application[ctx + ":cric"],out cric);
-
+                if (cric == 0)
+                    throw new Exception("club inconnu");
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
 
