@@ -1,0 +1,70 @@
+@using System.Data.SqlClient;
+@using System.Data;
+@{
+    if (IsPost && ("" + Request["bt_export"]).Equals("export_fdd"))
+    {
+        var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+        int idmodule = 0;
+        int.TryParse("" + objModules.GetModuleSettings(Dnn.Module.ModuleID)["idmodule"], out idmodule);
+
+        string select = "select UserDefinedRowId,FieldTitle ,FieldValue from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule;
+        string listfields = "select fieldtitle from userdefinedfields where UserDefinedFieldId in (select F.UserDefinedFieldId from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule + " and F.visible=1)";
+        var sql = new SqlCommand(listfields);
+        var table = Yemon.dnn.DataMapping.ExecSql(listfields);
+        string fields = "";
+        foreach (DataRow row in table.Rows)
+        {
+            fields += "[" + row[0] + "],";
+        }
+        if (fields.Length > 0)
+        {
+            fields = fields.Substring(0, fields.Length - 1);
+        }
+
+
+        sql = new SqlCommand("SELECT * FROM( " + select + ") AS P PIVOT(MIN(FieldValue) FOR FieldTitle IN (" + fields + ")) as PivotTable");
+        table = Yemon.dnn.DataMapping.ExecSql(sql);
+
+        byte[] bytes = Yemon.dnn.SIPro.SIPro.DataTablesToExcel(0, new List<DataTable>() { table });
+
+        string guid = Guid.NewGuid().ToString();
+        AIS.Media media = new AIS.Media()
+        {
+            content = bytes,
+            content_mime = "application/vnd.ms-excel",
+            name = "export-fdd.xlsx",
+            content_size = bytes.Length
+        };
+
+
+        Session[guid] = media;
+
+        Response.Redirect("/AIS/download.aspx?id=" + guid);
+        Response.End();
+        return;
+
+    }
+
+
+    @*if(false)
+        {
+        <table>
+            <tr>
+                @foreach(DataColumn col in table.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+            @foreach (DataRow row in table.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in table.Columns)
+                    {
+                        <th>@(""+row[col.ColumnName])</th>
+                    }
+                </tr>
+            }
+        </table>
+        }*@
+}
+<button type="submit" name="bt_export" value="export_fdd" class="btn btn-primary">Export Excel</button>
