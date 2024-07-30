@@ -1,5 +1,9 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\RazorModules\DNNFormAndListExportExcel\DNNFormAndListExportExcel.ascx
+DesktopModules\RazorModules\DNNFormAndListExportExcel\_DNNFormAndListExportExcel.cshtml
+DesktopModules\RazorModules\DNNFormAndListExportExcel\Settings.ascx
+DesktopModules\RazorModules\DNNFormAndListExportExcel\Settings.ascx.cs
 ```
 ##### 25/07/2024
 ```txt

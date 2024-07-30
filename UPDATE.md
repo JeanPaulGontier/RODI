@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- nouveau module DNNFormAndListExportExcel qui permet d'exporter directement en Excel les inscriptions faites sur un formulaire
 
 ###### 25/07/2024
 - ajout d'un nouveau module razor qui affiche la liste des nouvelles district déjà passées 
