@@ -1,21 +1,44 @@
 ﻿@using AIS
 @{
-    List<News> news = DataMapping.ListNews_EN(onlyvisible: true, category: "District", tri: "dt DESC", tags_included: "Actions", tags_excluded: "", where: "dt < getdate()") ;
+    string newsid=""+Request["newsid"];
+    List<News> news = DataMapping.ListNews_EN(onlyvisible: true, category: "District", tri: "dt DESC", tags_included: "", tags_excluded: "", where: "dt < getdate()") ;
     <div class="ModAISNewsVisuC">
         <ul>
             @foreach (var n in news)
             {
-                <li class="BlocBlanc">
-                    <a href="/les-nouvelles/nouvelles-du-district?newsid=@n.id">
-                        <h2>
-                            <span>
-                                @n.title
-                            </span>
-                        </h2>
-                        <span>@n.dt.ToString("dd MMM yyyy")</span>
-                    </a>
-                </li>
+               if(newsid!="" && newsid==n.id)
+                {
+                    <li class="BlocBlanc" style="background-color: #FAFAFA">
+                        <a href="/les-nouvelles/vu-dans-le-district?newsid=@n.id">
+                            <h2 style="color:gray">
+                                <span>
+                                    @n.title
+                                </span>
+                            </h2>
+                            <span>@n.dt.ToString("dd MMM yyyy")</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="BlocBlanc">
+                        <a href="/les-nouvelles/vu-dans-le-district?newsid=@n.id">
+                            <h2>
+                                <span>
+                                    @n.title
+                                </span>
+                            </h2>
+                            <span>@n.dt.ToString("dd MMM yyyy")</span>
+                        </a>
+                    </li>
+                }
             }
         </ul>
     </div>
 }
+
+
+
+
+
+
