@@ -360,8 +360,11 @@ namespace AIS.controller
 
                 row["dtstart"] = meeting.dtstart;
                 row["dtend"] = meeting.dtend;
+                if (meeting.dtendactive == DateTime.MinValue)
+                    meeting.dtendactive = meeting.dtstart;
+                row["dtendactive"] = meeting.dtendactive;
 
-                if(meeting.dtrevision<DateTime.Now)
+                if (meeting.dtrevision<DateTime.Now)
                     row["dtrevision"]=DateTime.Now;
                 else
                     row["dtrevision"] = meeting.dtrevision;
@@ -393,6 +396,7 @@ namespace AIS.controller
                 row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
                 row["notificationtype"] = meeting.notificationtype;
                 row["notificationlist"] = meeting.notificationlist;
+                row["notificationmsg"] = meeting.notificationmsg;
 
                 var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_meetings", "id", row);
 

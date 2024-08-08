@@ -49,6 +49,10 @@
 <!-- #include virtual ="/DesktopModules/AIS/OuKiKan/MeetingEdit.html" -->
 <script src="/DesktopModules/AIS/OuKiKan/app.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
 <script>
+    var txt = document.createElement("textarea");
+    txt.innerHTML = <%=Server.HtmlDecode(Yemon.dnn.Functions.Serialize("" + Yemon.dnn.Helpers.GetItem("meeting:msgNotif1")))%>;
+    const DEFAULTNOTIFICATIONMSG = txt.value;
+
     $(document).ready(function () {
         if (typeof _yemon == 'undefined')
             _yemon = [];

@@ -39,7 +39,7 @@ public partial class DesktopModules_AIS_OuKiKan_Control : YemonPortalModuleBase
     {
         get
         {
-            return "" + Settings["mode"];
+            return "club";// + Settings["mode"];
 
         }
     }

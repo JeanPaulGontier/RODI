@@ -4,6 +4,14 @@ DesktopModules\RazorModules\DNNFormAndListExportExcel\DNNFormAndListExportExcel.
 DesktopModules\RazorModules\DNNFormAndListExportExcel\_DNNFormAndListExportExcel.cshtml
 DesktopModules\RazorModules\DNNFormAndListExportExcel\Settings.ascx
 DesktopModules\RazorModules\DNNFormAndListExportExcel\Settings.ascx.cs
+App_Code\AIS\Meeting.cs
+App_Code\AIS\schedulers\MeetingScheduler.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\AIS\OuKiKan\Control.ascx.cs
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\OuKiKan\Settings.ascx
 ```
 ##### 25/07/2024
 ```txt

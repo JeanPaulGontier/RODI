@@ -1,7 +1,6 @@
 ﻿using AIS;
 using Aspose.Cells;
 using DotNetNuke.Services.Scheduling;
-using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,6 +28,7 @@ public class Meeting
     public string statutory { get; set; }   // O / N
     public DateTime dtstart { get; set; }
     public DateTime dtend { get; set; }
+    public DateTime dtendactive { get; set; }
     public Guid templateguid { get; set; }  // permet de lier le meeting unitaire avec le meeting periodique qui a servi a le créer
     public Guid periodguid { get; set; }    // permet de lier la periode unitaire avec la periode periodique correspondante afin de ne pas recreer une période si on change après coup l'heure de la période
 
@@ -55,6 +55,8 @@ public class Meeting
     public string link { get; set; }        // code réduit pour l'accès à la réunion 
 
     public string periods { get; set; }     // périodes de programmation sérialisé JSON
+
+    public string notificationmsg { get; set; } // message pour la notification
 
 
     public class Period
