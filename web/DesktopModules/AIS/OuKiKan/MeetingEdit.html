@@ -105,11 +105,11 @@
                                 <td width="100">N° de jour</td>
                                 <td v-for="p in meeting.periods" width="100">
                                     <select v-model="p.num" class="form-control">
-                                        <option value="1">1er</option>
-                                        <option value="2">2ème</option>
-                                        <option value="3">3ème</option>
-                                        <option value="4">4ème</option>
-                                        <option value="5">5ème</option>
+                                        <option :value="1">1er</option>
+                                        <option :value="2">2ème</option>
+                                        <option :value="3">3ème</option>
+                                        <option :value="4">4ème</option>
+                                        <option :value="5">5ème</option>
                                     </select>
                                 </td>
                                 <td rowspan="5">
