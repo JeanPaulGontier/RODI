@@ -1,4 +1,5 @@
-﻿using DotNetNuke.Common;
+﻿using DotNetNuke.Abstractions.Users;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -12,10 +13,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using Yemon.dnn;
@@ -412,6 +416,127 @@ namespace AIS.controller
                 Functions.Error(ee);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
             }
+        }
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage CreateBulletin(string guid)
+        {
+            PortalSettings ps = Globals.GetPortalSettings();
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
+
+            SqlCommand sql = new SqlCommand("select * from ais_meetings where guid=@guid");
+            sql.Parameters.AddWithValue("guid", guid);
+
+            Meeting meeting = Yemon.dnn.DataMapping.ExecSqlFirst<Meeting>(sql);
+            if (meeting == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            NewsHelper newsHelper = new NewsHelper();
+
+            News news = new News();
+            news.id = null;
+            news.cric = meeting.cric;
+            news.title = "Compte rendu "+meeting.name;
+            news.dt = DateTime.Now;
+            news.visible = "M";
+            news.tag1 = "Bulletin";
+            news.category = "Clubs";
+
+            if(DataMapping.UpdateNews(news))
+            {
+                string blocksserial = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + meeting.guid);
+                List<Block> blocks = new List<Block>();
+                if (blocksserial != "")
+                {
+                    blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(blocksserial, typeof(List<Block>));
+
+                    foreach (Block block in blocks)
+                    {
+                        switch (block.Type)
+                        {
+                             case "ImageText":
+                                block.Content = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                                break;
+                
+                            case "FileCollection":
+                                block.Content =  (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                                break;
+                            case "ImageCollection":
+                                block.Content = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+                                break;
+                            case "Raw":
+                                block.Content = (Block.Raw)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Raw));
+                                break;
+                            case "Video":
+                                block.Content = (Block.Video)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Video));
+                                break;
+                        }
+                    }
+                }
+
+                List<Meeting.User> users = Yemon.dnn.DataMapping.ExecSql<Meeting.User>(new SqlCommand("SELECT * FROM ais_meetings_users WHERE meetingguid='" + meeting.guid + "' ORDER BY lastname,firstname"));
+                int nbparticipants = users.Where(u => u.presence == "Y").Count();
+
+                var item = new Block();
+                item.Guid = Guid.NewGuid();
+                item.Type = "ImageText";
+                var content = new Block.ImageText();
+                content.Title = "Participant" +(nbparticipants>1?"s":"");
+
+                StringBuilder sb = new StringBuilder();
+                StringBuilder sb2 = new StringBuilder();
+                string s = "";
+                int count = 0;
+                foreach(var user in users.Where(u => u.presence == "Y"))
+                {
+                    sb2.Append(user.firstname + " " + user.lastname + ",");
+                    count++;
+                }
+                sb.Append("<strong>");
+                sb.Append("Présent" + (count > 1 ? "s ("+count+") :" :" :"));
+                sb.Append("</strong><br/>");
+
+                s = sb2.ToString();
+                if(s.Length>1)
+                    s= s.Substring(0, s.Length-1);
+                sb.AppendLine(s);
+                sb.AppendLine("<br/>");
+
+                sb2 = new StringBuilder();
+                count = 0;
+                foreach (var user in users.Where(u => u.presence == "N"))
+                {
+                    sb2.Append(user.firstname + " " + user.lastname + ",");
+                    count++;
+                }
+                sb.Append("<strong>");
+                sb.Append("Absent" + (count > 1 ? "s (" + count + ") :" : " :"));
+                sb.Append("</strong><br/>");
+              
+                s = sb2.ToString();
+                if (s.Length > 1)
+                    s = s.Substring(0, s.Length - 1);
+                sb.AppendLine(s);
+                sb.AppendLine("<br/>");
+
+                content.Html = sb.ToString();
+                item.Content = content;
+                blocks.Insert(0, item);
+
+                Yemon.dnn.Helpers.SetItem("blockscontent:" + news.id, "" + Yemon.dnn.Functions.Serialize(blocks), "" + userInfo.UserID, keephistory: false, portalid: ps.PortalId);
+
+
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            
+
+            return Request.CreateResponse(HttpStatusCode.OK, news.id);
         }
 
         [HttpPost]

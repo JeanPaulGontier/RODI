@@ -1,8 +1,10 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 09/08/2024
 - nouveau module DNNFormAndListExportExcel qui permet d'exporter directement en Excel les inscriptions faites sur un formulaire
 - modification fonctionnement des réunions périodiques maintenant il faut spécifier le jour dans le mois (par exemple : 1er jeudi)
 - le sujet du message de notification d'une réunion est maintenant le nom de la réunion, on peut maintenant modifier le message de notification par réunion
 - on peut définir une date de clôture des inscriptions antérieure à la date de début
+- une nouvelle fonctionnalité permet maintenant de créer une nouvelle de type bulletin à partir d'une réunion (la liste des présents et absents est automatiquement générée)
 
 MAJ BDD:
 ALTER TABLE [ais_meetings]

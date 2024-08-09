@@ -7,10 +7,11 @@
                 <button type="button" v-if="isValid()" @click="saveMeeting()" class="btn btn-primary">Valider</button>
             </div>
             <div class="col-sm-7 ">
+                <button type="button" v-if="this.id!='new' &&  meeting.type=='unitary'" @click="createBulletin()" class="btn btn-default">Créer Compte Rendu</button>
             </div>
 
             <div class="col-sm-2">
-                <button type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
+                <button v-if="this.id!='new'" type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
             </div>
         </div>
 
@@ -459,7 +460,16 @@
                 else
                     return this.meeting.name != '';
             },
-            saveMeeting() {
+            createBulletin() {
+
+                this.saveMeeting(() => {
+                    _yemon[this.moduleid].service.getData("/CreateBulletin", { guid: this.meeting.guid }, (r) => {
+
+                        window.location.assign("/Espace-Membre/Mon-club/Communication/Nouvelles#/edit/" + r.data);                        
+                    });
+                });
+            },
+            saveMeeting(callBack) {
 
                 if (this.$refs.meetingeditor)
                     this.meeting.notificationmsg = this.$refs.meetingeditor.objTinymce.getContent();
@@ -482,7 +492,10 @@
                     meeting: JSON.stringify(m),
                     blocks: JSON.stringify(b)
                 }, (r) => {
-                    this.$router.push("/");
+                    if (callBack)
+                        callBack();
+                    else
+                        this.$router.push("/");
 
                 }
                     //, (e) => {
