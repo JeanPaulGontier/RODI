@@ -75,11 +75,11 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
                             title = "Non disponible";
                         string type = "rdv";
                         JToken startWith = (JToken)evt["startWithTZ"];
-                        DateTime dt = DateTime.Parse("" + startWith["dt"]).ToLocalTime();
+                        DateTime dt = DateTime.Parse("" + startWith["dt"]);
                         if (dt > DateTime.Now.AddDays(-1))
                         {
                             JToken endWith = (JToken)evt["endWithTZ"];
-                            DateTime dtfin = DateTime.Parse("" + endWith["dt"]).ToLocalTime();
+                            DateTime dtfin = DateTime.Parse("" + endWith["dt"]);
 
                             string dtFmt = dt.ToString("ddd") + " " + dt.ToString("dd MMM yyyy");
                             string hr = dt.ToString("HH:mm") + " - " + dtfin.ToString("HH:mm");

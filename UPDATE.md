@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- changement de calcul sur les dates de l'agenda du gouverneur pour qu'il corresponde bien à l'heure locale
+
 ###### 09/08/2024
 - nouveau module DNNFormAndListExportExcel qui permet d'exporter directement en Excel les inscriptions faites sur un formulaire
 - modification fonctionnement des réunions périodiques maintenant il faut spécifier le jour dans le mois (par exemple : 1er jeudi)
