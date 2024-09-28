@@ -48,6 +48,8 @@
                 { %>
                 <div style='padding: 2px 0'><%=m.Affectation %></div>
                 <%} %>
+                 <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.8rem;'><strong><em><%=m.Profession %></em></strong></div>
+               
                 <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.7rem'><em><%=m.Email %> <%=m.Telephones %></em></div>
                 <%if ((Request["popup"] + "") != "") { }
                     else

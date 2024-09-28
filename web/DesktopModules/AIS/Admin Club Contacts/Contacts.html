@@ -1,0 +1,81 @@
+﻿<script type="text/x-template" id="contacts-template">
+    <div v-if="context.cric==0">
+        <div class="panel-body">
+            Veuillez choisir un club...
+        </div>
+    </div>    
+    <div v-else>
+        <div v-if="list.length==0" class="panel-body">Aucune liste de contacts pour le moment...</div>
+        <div class="row">
+            <div class="col-sm-3">
+                <button type="button" v-on:click="addContactList()" class="btn btn-primary" v-show="editable">Ajouter une liste</button>
+            </div>
+        </div>
+        <div class="pe-spacer size10"></div>
+        <table class="table table-striped table-hover" v-if="list.length>0">
+            <tbody>
+                <tr>
+                    <th class="col-sm-12">Listes</th>                   
+                </tr>
+                <tr v-for="n in list" v-on:click="editContactsLists(n)">
+                    <td>{{n.title}}</td>                   
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+<script>
+    const Contacts = {
+        template: '#contacts-template',
+        name: 'Contacts',
+        props: {
+          moduleid: Number,
+          context: Object,
+          editable: Boolean
+        },
+        data: function () {
+            return {
+                d: null,
+                list: []    
+            }
+        },
+      
+        methods: {
+        
+            editContactsLists(n) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                this.$router.push("/edit/" + n.guid);
+            
+            },
+            getContactsLists() {
+                _yemon[this.moduleid].service.getData("/GetContactsLists", {
+                    context: this.context.context
+                }, (r) => {
+                  this.list = [];
+                    if (r.data) {
+                        this.list = JSON.parse(r.data);
+                    }
+                    this.$forceUpdate();
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+            },           
+            addContactList() {
+                this.$router.push("/edit/new");
+            }
+        },
+        mounted() {
+            if (this.context.cric == 0)
+                return;
+
+            let lastScroll = sessionStorage.getItem(window.location.pathname + ":scroll");
+            if (lastScroll)
+                window.scrollTo(window.scrollX, parseInt(lastScroll));
+            this.getContactsLists();
+
+            setInterval(() => { this.getContactsLists() }, 10000);
+        }
+    }
+</script>

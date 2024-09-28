@@ -1,6 +1,16 @@
 ##### Modified files per commit
 ```txt
 DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
+DesktopModules\AIS\Club Trombinoscope\Control.ascx
+DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
+App_Code\AIS\webapi\contacts\ContactsController.cs
+App_Code\AIS\Contact.cs
+DesktopModules\AIS\Admin Club Contacts\app.js
+DesktopModules\AIS\Admin Club Contacts\Contacts.html
+DesktopModules\AIS\Admin Club Contacts\ContactsEdit.html
+DesktopModules\AIS\Admin Club Contacts\Control.ascx
+DesktopModules\AIS\Admin Club Contacts\Control.ascx.cs
+
 ```
 ##### 09/08/2024
 ```txt

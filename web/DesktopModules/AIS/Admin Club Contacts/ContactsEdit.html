@@ -1,0 +1,192 @@
+﻿<script type="text/x-template" id="contactsedit-template">
+    <div class="row">
+        <div class="col-sm-3 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
+            <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid() ? 'visible' : 'hidden'}">Valider</button>
+        </div>
+        <div class="col-sm-7 ">
+        </div>
+
+        <div class="col-sm-2">
+            <button type="button" v-on:click="deleteList()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
+        </div>
+    </div>
+    <h3>Liste de contacts</h3>
+    <div class="bc-dotted">
+        <div class="row">
+            <div class="col-sm-3">
+                Nom de la liste :
+            </div>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" v-model="list.title" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                Membres du club :
+            </div>
+            <div class="col-sm-7">
+                <select v-model="membreid" class="form-control">
+                    <option v-for="m in listeMembres()" :value="m.nim">{{m.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-primary" v-if="membreid>0" v-on:click="ajouter()">Ajouter</button>
+            </div>
+        </div>
+        <div class="pe-spacer size20"></div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Contacts</div>
+            <div class="panel-body" v-if="contacts.length>0">
+
+                <div class="col-sm-12" style="margin-bottom:10px" v-for="c in contacts">{{c.name}} <button type="button" v-on:click="supprimer(c)" class="btn btn-xs btn-warning" title="Supprimer de la liste"><i class="fa fa-trash-o"></i></button></div>
+            </div>
+
+            <div class="panel-body" v-else>
+                <div class="col-sm-12 ">Sélectionnez un membre pour l'ajouter à la liste des contacts</div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    
+    const ContactsEdit = {
+        template: '#contactsedit-template',
+        name: 'ContactsEdit',
+        props: {
+            moduleid: Number,
+            context: Object,
+            id: String,
+            editable: Boolean
+        },
+        data: function () {
+            return {              
+                list: {},
+                contacts: [],
+                membreid: 0,
+                membres: []
+            }
+        },
+        filters: {
+            date: function (d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            }
+        },
+        components: {
+        },
+        methods: {
+            supprimer(c) {
+                this.contacts = this.contacts.filter(cc => cc.nim != c.nim);
+            },
+            ajouter() {
+
+                var m = this.contacts.find(c => c.nim == this.membreid);
+                var mm = this.membres.find(m => m.nim == this.membreid);
+                if (!m && mm) {
+                    this.contacts.push(mm);
+        
+                    this.contacts = this.contacts.sort((a, b) => { return a.name > b.name ? 1:-1 });
+                    this.membreid = 0;
+                }
+                    
+
+                    
+
+            },
+            listeMembres() {
+                var membres = [];
+                this.membres.forEach(m => {
+                    if (!this.contacts.find(c => c.nim == m.nim))
+                        membres.push(m);
+                });
+                return membres;
+            },
+            isValid() {
+                return this.list.title;
+
+            },
+            
+            deleteList() {
+                if (confirm("Supprimer la liste ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteContactList", {
+                        guid: this.list.guid
+                    }, (r) => {
+                        this.$router.push("/");
+                    }
+                        //, (e) => {
+                        //toastr["error"]("Erreur : " + e.response.data.Message);
+                        //}
+                    )
+
+                   
+                }
+            },
+
+            valider() {
+                this.list.contacts = JSON.stringify(this.contacts);
+                _yemon[this.moduleid].service.postData("/SetContactList", {
+                        context: this.context.context,
+                        data: JSON.stringify(this.list)                   
+                    }, (r) => {
+                        this.$router.push("/");
+                   
+                    }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+                
+            },
+
+            cancel() {
+                this.$router.push("/");
+            },
+            
+            getContactList() {
+                _yemon[this.moduleid].service.getData("/GetContactList", {
+                    guid: this.id
+                }, (r) => {
+                    this.list = JSON.parse(r.data);
+                    this.contacts = JSON.parse(this.list.contacts);
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+            },
+
+            getMembres() {
+                _yemon[this.moduleid].service.getData("/GetMembres", {
+                    context: this.context.context
+                }, (r) => {
+
+                    this.membres = JSON.parse(r.data);
+                    
+                    this.$forceUpdate();
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+            },
+
+        },
+        mounted() {
+            if (!this.context ||this.context.cric==0) {
+                this.cancel();
+                return;
+            }
+                
+
+            this.getMembres();
+            if (this.id != "new") {
+                this.getContactList();
+            }
+
+            window.scrollTo(window.scrollX, 0);
+        }
+    }
+</script>

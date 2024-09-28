@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - https://rodi-platform.org
-// Copyright (c) 2012-2020
-// by SAS AIS : https://www.aisdev.net
+// RODI - http://rodi.aisdev.net
+// Copyright (c) 2012-2021
+// by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -61,167 +61,87 @@
 
 #endregion Copyrights
 
-using AIS;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
+/// Modifié le 12/07/2021 pour autoriser les catégories de nouvelles pour les nouvelles district
+/// 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AIS;
+using DotNetNuke.Entities.Modules;
+using System.IO;
+using System.Drawing;
 
-public partial class DesktopModules_Control_View : PortalModuleBase
+using DotNetNuke.Services.FileSystem;
+using FileInfo = System.IO.FileInfo;
+using DotNetNuke.Framework;
+using System.Data;
+using System.Net;
+
+public partial class DesktopModules_AIS_Admin_Club_Contact_Control : PortalModuleBase
 {
-    public int index;
-    public int rotary_year;
-    List<Affectation> affectations = new List<Affectation>();
-    public string clubname
+    DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
+
+   
+    public bool editable
     {
         get
         {
-            return Functions.CurrentClub.name;
+            return (UserInfo.IsSuperUser || 
+                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) ||
+                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+
         }
     }
+    public int cric
+    {
+        get
+        {
+            return Functions.CurrentCric;
+
+        }
+    }
+
+
+ 
+    public string context
+    {
+        get
+        {
+            if(ContextGuid.Value!="")
+            {
+
+            }
+            else
+            {
+                ContextGuid.Value = Guid.NewGuid().ToString();
+                Application[ContextGuid.Value + ":cric"] = Functions.CurrentCric;
+
+            }
+            return ContextGuid.Value;
+        }
+    }
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        ServicesFramework.Instance.RequestAjaxScriptSupport();
+        ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+    }
+
+    /// <summary>
+    /// Rafraichit le GridView et, si l'utilisateur a les droits, affiche le bouton d'ajout de nouvelles
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (IsPostBack)
-            return;
-        P_Members.Visible = Functions.CurrentCric != 0;
-        P_Club.Visible = Functions.CurrentCric == 0;
-        if (Functions.CurrentCric!=0)
-            RefreshDataList();  
-
-    }
-
-
-    public void RefreshDataList()
-    {
-        List<Member> members = DataMapping.ListMembers(Functions.CurrentCric, "", "", "surname", 0, 100, false, false);
-        if (members.Count > 0)
-        { 
-            this.ModuleConfiguration.ModuleTitle = "Trombinoscope " + members[0].club_name;
-            affectations = DataMapping.ListAffectationRY(members[0].cric,Functions.GetRotaryYear());
-        }
-        dataList_Members.DataSource = members;
-        dataList_Members.DataBind();
-    }
-
-    public class Me
-    {
-        public string Image { get; set; }
-        public string Nom { get; set; }
-        public string Email { get; set; }
-        public string Affectation { get; set; }
-        public string Lien { get; set; }
-        public string LienLabel { get; set; }
-        public string Telephones { get; set; }
-        public string Profession { get; set; }
-
-    }
-
-    public List<Me> MemberList()
-    {
-        List<Me> liste = new List<Me>();
-        List<Member> members = DataMapping.ListMembers(Functions.CurrentCric, "", "", "surname", 0, 100, false, false);
-        PortalSettings ps = PortalController.GetCurrentPortalSettings();
-        foreach (Member member in members)
-        {
-            Me m = new Me();
-            m.Email = member.email;
-            m.Nom = member.name + " " + member.surname;
-
-            m.Telephones = "";
-            if (member.professionnal_tel != "")
-                m.Telephones += "<br/><i class=\"glyphicon glyphicon-phone-alt\" title='Professionnel'></i> " + member.professionnal_tel;
-            if (member.gsm != "")
-                m.Telephones += "<br/><i class=\"glyphicon glyphicon-earphone\" title='Mobile'></i> " + member.gsm;
-            if (member.telephone != "")
-                m.Telephones += "<br/><i class=\"glyphicon glyphicon-home\" title='Personnel'></i> " + member.telephone;
-
-            m.Image = member.GetPhoto();            
-            m.Affectation = "";
-            foreach (Affectation a in affectations)
-                if (a.nim == member.nim)
-                    m.Affectation += a.function + "<br/>";
-            if (member.IsWoman())
-                m.LienLabel = "La contacter";
-            else
-                m.LienLabel = "Le contacter";
-
-            m.Profession = member.job;
-
-            if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
-            {
-                m.Lien = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,850,false);";
-            }
-            else
-            {
-                m.Lien = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,500,false);";
-            }
-
-
-            liste.Add(m);
-        }
-        return liste;
-    }
-    
-
-    protected void dataList_Members_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    {
-        Member member = (Member)e.Item.DataItem;
-        Image Image1 = (Image)e.Item.FindControl("Image1");
-
-        if (member != null)
-        {
-            Image1.ImageUrl = member.GetPhoto();
-        }
-        else
-            Image1.ImageUrl = Const.MEMBERS_NOPHOTO_H;
-
-        Label LBL_Affectation = (Label)e.Item.FindControl("LBL_Affectation");
-        LBL_Affectation.Text = "";
-        foreach (Affectation a in affectations)
-            if (a.nim == member.nim)
-                LBL_Affectation.Text += a.function + "<br/>";
         
-        var LBL_Coordonnees = (Literal)e.Item.FindControl("LBL_Coordonnees");
-        string c = "&#x2709; " + member.email + "";
-
-        LBL_Coordonnees.Text = c;
-
-        Label LBL_Nom = (Label)e.Item.FindControl("LBL_Nom");
-        LBL_Nom.Text = member.name + " " + member.surname ;
-
-        HyperLink HL_Contact = (HyperLink)e.Item.FindControl("HL_Contact");
-        if (member != null)
-        {
-            PortalSettings ps = PortalController.GetCurrentPortalSettings();
-            if (ps.UserInfo.Roles != null && ps.UserInfo.Roles.Count() > 0)
-            {
-                HL_Contact.NavigateUrl = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,850,false);";
-            }
-            else
-            {
-                HL_Contact.NavigateUrl = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,500,false);";
-            }
-
-            if (member.IsWoman() == true)
-                HL_Contact.Text = "La contacter";
-        }
-        else
-            HL_Contact.Visible = false;
+    
+         
     }
 
-  
-
-    protected void ddl_rotaryYear_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        RefreshDataList();
-    }
-
-   
 }
