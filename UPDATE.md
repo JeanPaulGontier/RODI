@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 30/09/2024
 - changement de calcul sur les dates de l'agenda du gouverneur pour qu'il corresponde bien à l'heure locale
 - ajout de la profession du membre dans le trombinoscope club
 - nouveau moduble permettant de gérer les listes de contacts club
