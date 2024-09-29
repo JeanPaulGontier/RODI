@@ -2,7 +2,7 @@
 - changement de calcul sur les dates de l'agenda du gouverneur pour qu'il corresponde bien à l'heure locale
 - ajout de la profession du membre dans le trombinoscope club
 - nouveau moduble permettant de gérer les listes de contacts club
-- 
+- les listes contacts club peuvent être utilsées dans les mailings et notifications de réunions
 
 ###### 09/08/2024
 - nouveau module DNNFormAndListExportExcel qui permet d'exporter directement en Excel les inscriptions faites sur un formulaire

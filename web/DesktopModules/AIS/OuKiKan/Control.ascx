@@ -52,6 +52,7 @@
     var txt = document.createElement("textarea");
     txt.innerHTML = <%=Server.HtmlDecode(Yemon.dnn.Functions.Serialize("" + Yemon.dnn.Helpers.GetItem("meeting:msgNotif1")))%>;
     const DEFAULTNOTIFICATIONMSG = txt.value;
+    var RECIPIENTS = <%=Yemon.dnn.Functions.Serialize(recipients)%>;
 
     $(document).ready(function () {
         if (typeof _yemon == 'undefined')

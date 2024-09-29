@@ -4,12 +4,19 @@ DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
 DesktopModules\AIS\Club Trombinoscope\Control.ascx
 DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
 App_Code\AIS\webapi\contacts\ContactsController.cs
+App_Code\AIS\webapi\contacts\ContactsHelper.cs
+App_Code\AIS\webapi\mailing\MailingHelper.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
 App_Code\AIS\Contact.cs
 DesktopModules\AIS\Admin Club Contacts\app.js
 DesktopModules\AIS\Admin Club Contacts\Contacts.html
 DesktopModules\AIS\Admin Club Contacts\ContactsEdit.html
 DesktopModules\AIS\Admin Club Contacts\Control.ascx
 DesktopModules\AIS\Admin Club Contacts\Control.ascx.cs
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\AIS\OuKiKan\Control.ascx.cs
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
 
 ```
 ##### 09/08/2024

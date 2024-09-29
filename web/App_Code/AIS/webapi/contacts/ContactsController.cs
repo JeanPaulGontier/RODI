@@ -70,10 +70,8 @@ namespace AIS.controller
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
 
-                var sql = new SqlCommand("select * from ais_contacts where guid=@guid");
-                sql.Parameters.AddWithValue("guid", guid);
-
-                Contact.List list = Yemon.dnn.DataMapping.ExecSqlFirst<Contact.List>(sql);
+                ContactsHelper contactsHelper = new ContactsHelper();
+                Contact.List list = contactsHelper.GetContactList(guid);
 
                 return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(list));
 
@@ -102,17 +100,8 @@ namespace AIS.controller
                 PortalSettings ps = Globals.GetPortalSettings();
                 var userInfo = UserController.Instance.GetCurrentUserInfo();
 
-                var members = DataMapping.ListMembers(cric: cric);
-
-                var membres = new List<Contact>();
-                foreach (var m in members)
-                    membres.Add(new Contact
-                    {
-                        nim = m.nim,
-                        name = m.surname + " " + m.name
-                    });
-
-                membres = membres.OrderBy(m => m.name).ToList();
+                ContactsHelper contactsHelper = new ContactsHelper();
+                var membres = contactsHelper.GetMembres(cric);
 
                 return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(membres));
 

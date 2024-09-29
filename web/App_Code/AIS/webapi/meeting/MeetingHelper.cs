@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using System.Globalization;
 using System.Diagnostics;
+using System.Activities.Statements;
 
 /// <summary>
 /// Description résumée de MeetingHelper
@@ -352,6 +353,14 @@ public class MeetingHelper
 
                     DataTable users = Yemon.dnn.DataMapping.ExecSql("SELECT * FROM ais_meetings_users WHERE meetingguid='" + meeting.guid + "'");
 
+                    var list = new List<Contact>();
+                    if(!string.IsNullOrEmpty(meeting.notificationlist)){
+                        ContactsHelper contactsHelper = new ContactsHelper();
+                        var cl = contactsHelper.GetContactList(new Guid(meeting.notificationlist));
+                        list = Yemon.dnn.Functions.Deserialize<List<Contact>>(cl.contacts);
+
+                    }
+
                     foreach (Member m in members)
                     {
                         bool ok = false;
@@ -362,7 +371,19 @@ public class MeetingHelper
                             ok = true;
                         if (meeting.notificationtype == "A")
                             ok = true;
-
+                        if(meeting.notificationtype=="L")
+                        {
+                            if(list !=null)
+                            {
+                                foreach(Contact c in list){
+                                    if (c.nim == m.nim){
+                                        ok = true;
+                                        break;
+                                    }
+                            }
+                        }
+                            
+                        }
                         if (ok)
                         {
 

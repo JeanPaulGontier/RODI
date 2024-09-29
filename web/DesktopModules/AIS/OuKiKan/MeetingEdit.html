@@ -225,6 +225,8 @@
                     <label class="radio"><input type="radio" name="notificationtype" value="A" v-model="meeting.notificationtype">Tous les membres</label>
                     <label class="radio"><input type="radio" name="notificationtype" value="M" v-model="meeting.notificationtype">Membres hors club satellite</label>
                     <label class="radio"><input type="radio" name="notificationtype" value="S" v-model="meeting.notificationtype">Membres club satellite seulement</label>
+                    <label class="radio" v-for="r in recipients"><input type="radio" name="notificationtype" :value="r.guid" v-model="meeting.notificationtype">{{r.title}}</label>
+
                     <!--<label class="radio"><input type="radio" name="notificationtype" value="C" v-model="meeting.notificationtype">Membres du bureau</label>-->
                 </div>
 
@@ -306,7 +308,8 @@
                     language: 'fr_FR',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
 
-                }
+                },
+                recipients: RECIPIENTS
             }
         },
         filters: {
@@ -487,7 +490,7 @@
                     }
                 });
                 m.periods = JSON.stringify(m.periods);
-
+                
                 _yemon[this.moduleid].service.postData("/SetMeeting", {
                     context: this.context.context,
                     meeting: JSON.stringify(m),

@@ -108,6 +108,30 @@ public class MailingHelper
                             AddContactsOnlyOnce(contacts, cs);
                         }
                         break;
+                    default:
+                        ContactsHelper contactsHelper = new ContactsHelper();
+                        var list = contactsHelper.GetContactList(new Guid(recipient));
+                        if(list!=null){
+
+                           var cc = (List<Contact>)Yemon.dnn.Functions.Deserialize(""+list.contacts,typeof(List<Contact>));
+
+                           var cl = new List<Mailing.Contact>();
+                           foreach (var c in cc){
+                                Member member = DataMapping.GetMemberByNim(c.nim);
+                                if(member!=null)
+                                {
+                                    cl.Add(new Mailing.Contact()
+                                    {
+                                        email = member.email,
+                                        name = member.surname + " " + member.name,
+                                        nim = member.nim
+                                    });
+                                }  
+                           }
+                           AddContactsOnlyOnce(contacts, cl);
+                        }
+
+                        break;
                 }
             }
         }
@@ -163,6 +187,14 @@ public class MailingHelper
                 guid = new Guid(CLUBS_SECRETARIES),
                 name = "Secrétaires autres clubs " + Functions.GetRotaryYear() + "-" + (Functions.GetRotaryYear() + 1)
             });
+            ContactsHelper contactsHelper = new ContactsHelper();
+            foreach(Contact.List list in contactsHelper.GetContactsLists(cric)){
+                recipients.Add(new Mailing.Recipient()
+                {
+                    guid = (Guid)list.guid,
+                    name = list.title
+                }); 
+            }
            
         }
         return recipients;

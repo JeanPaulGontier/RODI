@@ -400,6 +400,14 @@ namespace AIS.controller
                 row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
                 row["notificationtype"] = meeting.notificationtype;
                 row["notificationlist"] = meeting.notificationlist;
+
+                if (meeting.notificationtype.Length > 1)
+                {
+                    row["notificationtype"] = "L";
+                    row["notificationlist"] = ""+ meeting.notificationtype;
+                }
+
+
                 row["notificationmsg"] = meeting.notificationmsg;
 
                 var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_meetings", "id", row);

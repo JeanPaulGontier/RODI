@@ -62,6 +62,16 @@ public partial class DesktopModules_AIS_OuKiKan_Control : YemonPortalModuleBase
             return ContextGuid.Value;
         }
     }
+
+    public List<Contact.List> recipients
+    {
+        get
+        {
+            ContactsHelper contactsHelper = new ContactsHelper();
+
+            return contactsHelper.GetContactsLists(cric);
+        }
+    }
     protected override void OnInit(EventArgs e)
     {
         base.OnInit(e);
@@ -79,82 +89,6 @@ public partial class DesktopModules_AIS_OuKiKan_Control : YemonPortalModuleBase
     
     protected void Page_Load(object sender, EventArgs e)
     {
-      
-        //if (Request.HttpMethod == "POST")
-        //{
-        //    if (Request.ContentType.StartsWith("application/json"))
-        //    {
-        //        var jsonString = String.Empty;
-        //        Request.InputStream.Position = 0;
-        //        using (var inputStream = new StreamReader(Request.InputStream))
-        //            jsonString = inputStream.ReadToEnd();
 
-        //        dynamic action = Yemon.dnn.Functions.Deserialize(jsonString, typeof(KeyValuePair<string, object>));
-        //        if (action.Key == "setMeeting")
-        //        {
-        //            if(!editable)
-        //            {
-        //                this.ServeJSON(false);
-        //            }   
-        //            else
-        //            { 
-        //                Dictionary<string, object> row = DynToRow(action.Value);
-
-        //                string meetingguid = ""+row["guid"];
-                  
-        //                this.ServeJSON(Yemon.dnn.Helpers.SetItem("meeting:"+meetingguid+":"+currentcric,row["meeting"],""+UserId, keephistory: false));
-        //            }
-        //        }
-        //        else if (action.Key == "setUser")
-        //        {
-        //            Dictionary<string, object> row = DynToRow(action.Value);
-        //            string meetingguid = "" + row["meetingguid"];
-        //            string guid = "" + row["guid"];
-        //            this.ServeJSON(Yemon.dnn.Helpers.SetItem("meetinguser:" + meetingguid + ":" + guid, row["user"], "" + UserId, keephistory: false));
-        //        }
-
-        //    }
-        //}
-        //else
-        //{
-
-        //    string action = "" + Request["action"];
-        //    if (action == "hello")
-        //    {
-        //        this.ServeJSON("Hello World");
-        //    }
-        //    else if (action == "getMeetings")
-        //    {
-        //        if (!editable)
-        //        {
-        //            this.ServeJSON(false);
-        //            return;
-        //        }
-        //        var meetings = Yemon.dnn.Helpers.GetItemsMetaByName("meeting:%:" + currentcric + "");
-        //        this.ServeJSON(meetings);
-        //    }
-        //    else if (action == "getUsers")
-        //    {
-        //        var users = Yemon.dnn.Helpers.GetItemsMetaByPrefix("meetinguser:" + Request["guid"] + ":%");
-        //        this.ServeJSON(users);
-        //    }
-        //    else if (action == "getNbUsers")
-        //    {
-        //        var users = Yemon.dnn.Helpers.GetItemsMetaByPrefix("meetinguser:" + Request["guid"] + ":%");
-        //        if (users == null)
-        //            this.ServeJSON(0);
-        //        else
-        //            this.ServeJSON(users.Rows.Count);
-        //    }
-        //    else if (action == "deleteUser")
-        //    {
-        //        if(!editable)
-        //        {
-        //            this.ServeJSON(false);
-        //            return;
-        //        }
-        //        this.ServeJSON(Yemon.dnn.Helpers.DeleteItem("meetinguser:" + Request["meetingguid"] + ":" + Request["guid"]));
-        //    }
-        //}
     }
 }
