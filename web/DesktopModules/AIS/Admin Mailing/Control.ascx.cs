@@ -107,6 +107,22 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         }
     }
 
+    public string Statut(string s)
+    {
+        switch(s){
+            case "N":
+                return "Brouillon";
+            case "T":
+                return "Envoyée";
+            case "P":
+                return "Préparation";
+            case "E":
+                return "Envoi";
+
+        }
+        return "";
+    }
+
     /// <summary>
     /// Définit à quel groupe l'utilisateur appartient et affiche les éléments en fonction
     /// </summary>
@@ -1611,4 +1627,5 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         }
         
     }
+
 }

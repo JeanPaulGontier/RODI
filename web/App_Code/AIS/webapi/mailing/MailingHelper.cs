@@ -110,26 +110,23 @@ public class MailingHelper
                         break;
                     default:
                         ContactsHelper contactsHelper = new ContactsHelper();
-                        var list = contactsHelper.GetContactList(new Guid(recipient));
-                        if(list!=null){
-
-                           var cc = (List<Contact>)Yemon.dnn.Functions.Deserialize(""+list.contacts,typeof(List<Contact>));
-
-                           var cl = new List<Mailing.Contact>();
-                           foreach (var c in cc){
-                                Member member = DataMapping.GetMemberByNim(c.nim);
-                                if(member!=null)
+                        var cc = contactsHelper.GetContactsFromList(new Guid(recipient));
+         
+                        var cl = new List<Mailing.Contact>();
+                        foreach (var c in cc){
+                            Member member = DataMapping.GetMemberByNim(c.nim);
+                            if(member!=null)
+                            {
+                                cl.Add(new Mailing.Contact()
                                 {
-                                    cl.Add(new Mailing.Contact()
-                                    {
-                                        email = member.email,
-                                        name = member.surname + " " + member.name,
-                                        nim = member.nim
-                                    });
-                                }  
-                           }
-                           AddContactsOnlyOnce(contacts, cl);
+                                    email = member.email,
+                                    name = member.surname + " " + member.name,
+                                    nim = member.nim
+                                });
+                            }  
                         }
+                        AddContactsOnlyOnce(contacts, cl);
+                       
 
                         break;
                 }

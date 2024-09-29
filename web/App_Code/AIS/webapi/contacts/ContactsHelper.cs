@@ -43,4 +43,10 @@ public class ContactsHelper
 
         return contacts;
     }
+
+    public List<Contact> GetContactsFromList(Guid guid){
+        var cl = GetContactList(guid);
+        return Yemon.dnn.Functions.Deserialize<List<Contact>>(cl.contacts);
+    }
+
 }

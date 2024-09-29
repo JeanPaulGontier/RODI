@@ -17,6 +17,8 @@ DesktopModules\AIS\Admin Club Contacts\Control.ascx.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
 DesktopModules\AIS\OuKiKan\Control.ascx.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 
 ```
 ##### 09/08/2024

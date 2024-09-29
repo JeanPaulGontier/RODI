@@ -356,9 +356,7 @@ public class MeetingHelper
                     var list = new List<Contact>();
                     if(!string.IsNullOrEmpty(meeting.notificationlist)){
                         ContactsHelper contactsHelper = new ContactsHelper();
-                        var cl = contactsHelper.GetContactList(new Guid(meeting.notificationlist));
-                        list = Yemon.dnn.Functions.Deserialize<List<Contact>>(cl.contacts);
-
+                        list= contactsHelper.GetContactsFromList(new Guid(meeting.notificationlist));
                     }
 
                     foreach (Member m in members)
