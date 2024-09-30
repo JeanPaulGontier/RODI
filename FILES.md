@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\rotary\Rotary.cs
+App_Code\AIS\rotary\RotaryHelper.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 ```
 
 ##### 30/09/2024

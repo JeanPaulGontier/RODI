@@ -1,0 +1,235 @@
+@using AIS;
+@using System.Diagnostics;
+
+
+
+@{
+    var param = new Rotary.Parametres();
+    var item = Yemon.dnn.Helpers.GetItem("RotaryParametres", 0);
+    bool saved = false;
+    bool tested = false;
+    bool called = false;
+    string result = "";
+    int nim = 6310913;
+    int cric = 11209;
+
+    if (item != null)
+    {
+        param = Yemon.dnn.Functions.Deserialize<Rotary.Parametres>("" + item); ;
+    }
+
+
+    DotNetNuke.Security.Roles.RoleController roleController = new DotNetNuke.Security.Roles.RoleController();
+    var admins = roleController.GetUsersByRole(Dnn.Portal.PortalId, Const.ROLE_ADMIN_DISTRICT);
+
+    if (IsPost)
+    {
+        int.TryParse("" + Request["nim"], out nim);
+        int.TryParse("" + Request["cric"], out cric);
+
+        if (("" + Request["bt_get_clubs"]) == "get_clubs")
+        {
+            List<Rotary.Club>clubs = RotaryHelper.Get_Clubs();
+            if(clubs==null)
+            {
+                result = "Erreur récupération clubs";
+            }
+            else
+            {
+                result = Yemon.dnn.Functions.Serialize(clubs);
+            }
+            called = true;
+        }
+        if (("" + Request["bt_get_club_members"]) == "get_club_members_active")
+        {
+            List<Rotary.Member> members = RotaryHelper.Get_Club_Members("Rotary%20Club",cric,"active");
+            if (members == null)
+            {
+                result = "Erreur récupération membres";
+            }
+            else
+            {
+                result = Yemon.dnn.Functions.Serialize(members);
+            }
+            called = true;
+        }
+        if (("" + Request["bt_get_club_members"]) == "get_club_members_terminated")
+        {
+            List<Rotary.Member> members = RotaryHelper.Get_Club_Members("Rotary%20Club", cric, "terminated");
+            if (members == null)
+            {
+                result = "Erreur récupération membres";
+            }
+            else
+            {
+                result = Yemon.dnn.Functions.Serialize(members);
+            }
+            called = true;
+        }
+        if (("" + Request["bt_get_club_members"]) == "get_club_member_profile")
+        {
+            Rotary.Profile member = RotaryHelper.Get_Member_Profile(nim);
+            if (member == null)
+            {
+                result = "Erreur récupération membres";
+            }
+            else
+            {
+                result = Yemon.dnn.Functions.Serialize(member);
+            }
+            called = true;
+        }
+        if (("" + Request["bt_get_club_members"]) == "get_club_officers")
+        {
+
+
+            List<Rotary.Club.Officer> member = RotaryHelper.Get_Club_Officers(cric);
+            if (member == null)
+            {
+                result = "Erreur récupération membres";
+            }
+            else
+            {
+                result = Yemon.dnn.Functions.Serialize(member);
+            }
+            called = true;
+        }
+    }
+
+
+    if (IsPost)
+    {
+
+
+        if (("" + Request["bt_save"]) == "save")
+        {
+            param.url_api = "" + Request["url_api"];
+            param.api_username = "" + Request["api_username"];
+
+
+            if (("" + Request["api_password"]) != "++++++++++")
+            {
+                param.api_password = "" + Request["api_password"];
+            }
+
+
+            Yemon.dnn.Helpers.SetItem("RotaryParametres", Yemon.dnn.Functions.Serialize(param), "", keephistory: false);
+            saved = true;
+
+        }
+        if (("" + Request["bt_test_auth"]) == "test_auth")
+        {
+            result = RotaryHelper.Test_Auth();
+            tested = true;
+        }
+
+    }
+}
+<style>
+    .panel-heading .accordion-toggle:after {
+        /* symbol for "opening" panels */
+        font-family: 'Glyphicons Halflings'; /* essential for enabling glyphicon */
+        content: "\e114"; /* adjust as needed, taken from bootstrap.css */
+        float: right; /* adjust as needed */
+        color: grey; /* adjust as needed */
+    }
+
+    .panel-heading .accordion-toggle.collapsed:after {
+        /* symbol for "collapsed" panels */
+        content: "\e080"; /* adjust as needed, taken from bootstrap.css */
+    }
+</style>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">API Rotary International</div>
+        <div class="panel-body">
+
+
+            <div class="form-group">
+                <label for="jwt_url_login">URL Login</label>
+                <input type="text" class="form-control" name="url_api" value="@param.url_api" />
+            </div>
+            <div class="form-group">
+                <label for="jwt_username">API Username</label>
+                <input type="text" class="form-control" name="api_username" value="@param.api_username" />
+            </div>
+            <div class="form-group">
+                <label for="jwt_password">API Password</label>
+                <input type="password" class="form-control" name="api_password" value="++++++++++" />
+            </div>
+
+
+            <div class="from-group">
+                <button type="submit" name="bt_save" value="save" class="btn btn-primary">Valider</button>&nbsp;
+                <button type="submit" name="bt_test_auth" value="test_auth" class="btn btn-secondary">Test Authentification</button>&nbsp;
+            </div>
+
+
+
+            @{
+                if (saved)
+                {
+                    <div class="pe-spacer size10"></div>
+                    <div class="alert alert-success">Paramètres enregistrés</div>
+                }
+                if (tested)
+                {
+                    <div class="pe-spacer size10"></div>
+                    if (result.StartsWith("Erreur"))
+                    {
+                        <div class="alert alert-danger">@result</div>
+
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">@result</div>
+
+                    }
+                }
+            }
+
+        </div>
+    </div>
+
+
+    <div class="panel panel-default" >
+        <div class="panel-heading">Tests</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label>Cric</label>
+                <input type="number" name="cric" class="form-control" value="@cric" />
+                <label>Nim</label>
+                <input type="number" name="nim" class="form-control" value="@nim" />
+                <button type="submit" name="bt_get_clubs" value="get_clubs" class="btn btn-secondary">Récupération Clubs</button>&nbsp;
+                <button type="submit" name="bt_get_club_members" value="get_club_members_active" class="btn btn-secondary">Récupération Membres Actifs</button>&nbsp;
+                <button type="submit" name="bt_get_club_members" value="get_club_members_terminated" class="btn btn-secondary">Récupération Membres Terminés</button>&nbsp;
+                <button type="submit" name="bt_get_club_members" value="get_club_member_profile" class="btn btn-secondary">Récupération Profil Membre</button>&nbsp;
+
+                <button type="submit" name="bt_get_club_members" value="get_club_officers" class="btn btn-secondary">Récupération Club Officers</button>&nbsp;
+
+
+
+                @{
+
+                    if (called)
+                    {
+                        <div class="pe-spacer size10"></div>
+                        if (result.StartsWith("Erreur"))
+                        {
+                            <div class="alert alert-danger">@result</div>
+
+                        }
+                        else
+                        {
+                            <div class="alert alert-success">@result</div>
+
+                        }
+                    }
+                }
+            </div>
+            
+        </div>
+      
+    </div>
+</div>
+
