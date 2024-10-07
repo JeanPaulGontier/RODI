@@ -3,6 +3,7 @@
 App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+Portals\_default\Skins\Rodi2017\skin.css
 ```
 
 ##### 30/09/2024

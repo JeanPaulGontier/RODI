@@ -6,6 +6,22 @@
 - les listes contacts club peuvent être utilsées dans les mailings et notifications de réunions
 - ajout du statut dans la liste mailing du district
 
+MAJ BDD:
+CREATE TABLE [dbo].[ais_contacts](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[cric] [int] NULL,
+	[guid] [uniqueidentifier] NULL,
+	[title] [nvarchar](255) NULL,
+	[contacts] [ntext] NULL,
+	[dt_update] [datetime] NULL,
+ CONSTRAINT [PK_ais_contacts] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
 ###### 09/08/2024
 - nouveau module DNNFormAndListExportExcel qui permet d'exporter directement en Excel les inscriptions faites sur un formulaire
 - modification fonctionnement des réunions périodiques maintenant il faut spécifier le jour dans le mois (par exemple : 1er jeudi)

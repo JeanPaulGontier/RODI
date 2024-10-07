@@ -910,7 +910,7 @@ A.Footer:hover {
 }
 
 .fullwidthpane {
-    margin: 30px 0 0;
+    margin: 30px 0 30px 0;
 }
 
 .topcolorpane {
@@ -918,15 +918,15 @@ A.Footer:hover {
 }
 
 .graygrid6a {
-    margin: 40px 0 0;
+    margin: 40px 0 40px 0;
 }
 
 .graygrid6b {
-    margin: 40px 0 0;
+    margin: 40px 0 40px 0;
 }
 
 .graygrid12 {
-    margin: 40px 0 0;
+    margin: 40px 0 40px 0;
 }
 
 .middlepane {
