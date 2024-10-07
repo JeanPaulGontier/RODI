@@ -1,5 +1,9 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 07/10/2024
 - nouvel écran de paramétrage de la synchronisation RI > RODI
+/espace-membre/administration-district/technique/synchro-ri
+
 
 MAJ BDD:
 CREATE TABLE [dbo].[ri_club](
