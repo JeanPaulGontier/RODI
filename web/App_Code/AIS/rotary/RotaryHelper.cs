@@ -334,7 +334,7 @@ public class RotaryHelper
                 result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " < br /> ";
         }
        
-        result = clubs.Count + " récupéré(s)";
+        result += clubs.Count + " récupéré(s)";
 
         return result;
     }
