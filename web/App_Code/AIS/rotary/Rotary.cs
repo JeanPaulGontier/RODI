@@ -18,6 +18,7 @@ public class Rotary
 
     public class Club
     {
+        public int? id { get; set; }
         public int ClubId { get; set; }
         public string ClubType { get; set; }
         public string ClubSubType { get; set; }

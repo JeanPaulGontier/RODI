@@ -1,5 +1,6 @@
 @using AIS;
 @using System.Diagnostics;
+@using System.Data.SqlClient;
 
 
 
@@ -230,6 +231,40 @@
             
         </div>
       
+    </div>
+    @{
+        var clubsok = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        var clubsd = DataMapping.ListClubs(club_type: "rotary").OrderBy(c=>c.name).ToList();
+        var clubsko = new List<Club>();
+        foreach (var c in clubsd)
+        {
+            var club = clubsok.Find(cc => cc.ClubId == c.cric);
+            if (club == null)
+            {
+                clubsko.Add(c);
+            }
+
+        }
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">Clubs</div>
+        <div class="panel-body">
+            <h3>Clubs qui ont autorisé RODI sur rotary.org</h3>
+            <ul class="alert alert-success">
+                @foreach(var c in clubsok){
+
+                    <li>@c.ClubName</li>
+                }
+            </ul>
+            <h3>Clubs qui n'ont pas autorisé RODI sur rotary.org</h3>
+            <ul class="alert alert-warning">
+                @foreach (var c in clubsko)
+                {
+
+                    <li>@c.name</li>
+                }
+            </ul>
+        </div>
     </div>
 </div>
 

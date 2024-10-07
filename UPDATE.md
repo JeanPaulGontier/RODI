@@ -1,4 +1,25 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- nouvel écran de paramétrage de la synchronisation RI > RODI
+
+MAJ BDD:
+CREATE TABLE [dbo].[ri_club](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ClubId] [int] NULL,
+	[ClubType] [nvarchar](50) NULL,
+	[ClubSubType] [nvarchar](50) NULL,
+	[ClubName] [nvarchar](255) NULL,
+	[ClubCountry] [nvarchar](50) NULL,
+	[DistrictId] [int] NULL,
+	[MemberCount] [int] NULL,
+	[HonoraryMemberCount] [int] NULL,
+ CONSTRAINT [PK_ri_club] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
 ###### 30/09/2024
 - changement de calcul sur les dates de l'agenda du gouverneur pour qu'il corresponde bien à l'heure locale
 - ajout de la profession du membre dans le trombinoscope club

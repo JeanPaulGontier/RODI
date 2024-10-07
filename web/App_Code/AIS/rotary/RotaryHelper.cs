@@ -69,6 +69,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Data.SqlClient;
 
 
 /// <summary>
@@ -138,6 +139,7 @@ public class RotaryHelper
             }
 
             List<Rotary.Club> clubs = Yemon.dnn.Functions.Deserialize<List<Rotary.Club>>(task.Result);
+            clubs = clubs.Where(c => c.DistrictId == Const.DISTRICT_ID).ToList();
 
             return clubs;
         }
@@ -299,5 +301,41 @@ public class RotaryHelper
     public class Auth_Token
     {
         public string auth_token { get; set; }
+    }
+
+
+    public static string SynchroClubs(){
+        string result = "";
+        var clubs = Get_Clubs();
+
+        if (clubs == null)
+            return "Erreur récupération des clubs";
+
+        var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        foreach(var club in clubs)
+        {
+            var row = new Dictionary<string, object>();
+
+            var dbclub = dbclubs.Find(c => c.ClubId == club.ClubId);
+            if (dbclub != null)
+                row["id"] = dbclub.id;
+            row["clubid"] = club.ClubId;
+            row["clubtype"] = club.ClubType;
+            row["clubsubtype"] = club.ClubSubType;
+            row["clubname"] = club.ClubName;
+            row["clubcountry"] = club.ClubCountry;
+            row["districtid"] = club.DistrictId;
+            row["membercount"] = club.MemberCount;
+            row["honorarymembercount"] = club.MemberCount;
+            var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_club", "id", row);
+            if (r.Key != "error")
+                result += "" + club.ClubId + " : " + club.ClubName + "<br/>";
+            else
+                result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " < br /> ";
+        }
+       
+        result = clubs.Count + " récupéré(s)";
+
+        return result;
     }
 }
