@@ -11,8 +11,8 @@
     bool tested = false;
     bool called = false;
     string result = "";
-    int nim = 6310913;
-    int cric = 11209;
+    int nim = 0;
+    int cric = 0;
 
     if (item != null)
     {
@@ -147,7 +147,7 @@
 
 
             <div class="form-group">
-                <label for="jwt_url_login">URL Login</label>
+                <label for="jwt_url_login">URL Api</label>
                 <input type="text" class="form-control" name="url_api" value="@param.url_api" />
             </div>
             <div class="form-group">
@@ -253,7 +253,7 @@
             <ul class="alert alert-success">
                 @foreach(var c in clubsok){
 
-                    <li>@c.ClubName</li>
+                    <li>@c.ClubId : @c.ClubName</li>
                 }
             </ul>
             <h3>Clubs qui n'ont pas autorisé RODI sur rotary.org</h3>
@@ -261,7 +261,7 @@
                 @foreach (var c in clubsko)
                 {
 
-                    <li>@c.name</li>
+                    <li>@c.cric : @c.name</li>
                 }
             </ul>
         </div>
