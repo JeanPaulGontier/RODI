@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+Portals\_default\Skins\Rodi2017\images\rotary-official-licencee-ft.png
+Portals\_default\Skins\Rodi2017\Public.ascx
+
 ```
 
 ##### 07/10/2024
