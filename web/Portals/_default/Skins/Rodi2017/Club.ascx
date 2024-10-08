@@ -191,6 +191,7 @@
       <div class="copyright_bar clearafter">
         <div class="footer_left">
           <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT" cssclass="Footer" />
+           <img src="/Portals/_default/skins/rodi2017/images/rotary-official-licencee-ft.png" style="height:48px"/>
         </div>
        <div class="footer_right">
           <p><dnn:PRIVACY runat="server" id="dnnPRIVACY" cssclass="Footer" />
