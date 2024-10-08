@@ -234,7 +234,7 @@
     </div>
     @{
         var clubsok = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
-        var clubsd = DataMapping.ListClubs(club_type: "rotary").OrderBy(c=>c.name).ToList();
+        var clubsd = DataMapping.ListClubs().OrderBy(c=>c.name).ToList();
         var clubsko = new List<Club>();
         foreach (var c in clubsd)
         {
@@ -253,7 +253,7 @@
             <ul class="alert alert-success">
                 @foreach(var c in clubsok){
 
-                    <li>@c.ClubId : @c.ClubName</li>
+                    <li>@c.ClubId : @c.ClubType @c.ClubName</li>
                 }
             </ul>
             <h3>Clubs qui n'ont pas autorisé RODI sur rotary.org</h3>
@@ -261,7 +261,7 @@
                 @foreach (var c in clubsko)
                 {
 
-                    <li>@c.cric : @c.name</li>
+                    <li>@c.cric : @c.club_type @c.name</li>
                 }
             </ul>
         </div>
