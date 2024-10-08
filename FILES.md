@@ -5,6 +5,8 @@ Portals\_default\Skins\Rodi2017\Public.ascx
 Portals\_default\Skins\Rodi2017\Club.ascx
 Portals\_default\Skins\Rodi2017\home2021.ascx
 Portals\_default\Skins\Rodi2017\Public_2020.ascx
+Portals\_default\Skins\Rodi2017\home2024AE.ascx
+Portals\_default\Skins\Rodi2017\home2024AE.doctype.xml
 ```
 
 ##### 07/10/2024
