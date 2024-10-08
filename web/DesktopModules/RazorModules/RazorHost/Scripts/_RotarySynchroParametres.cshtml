@@ -27,6 +27,7 @@
     {
         int.TryParse("" + Request["nim"], out nim);
         int.TryParse("" + Request["cric"], out cric);
+        string clubtype = "" + Request["clubtype"];
 
         if (("" + Request["bt_get_clubs"]) == "get_clubs")
         {
@@ -43,7 +44,7 @@
         }
         if (("" + Request["bt_get_club_members"]) == "get_club_members_active")
         {
-            List<Rotary.Member> members = RotaryHelper.Get_Club_Members("Rotary%20Club",cric,"active");
+            List<Rotary.Member> members = RotaryHelper.Get_Club_Members(clubtype, cric,"active");
             if (members == null)
             {
                 result = "Erreur récupération membres";
@@ -56,7 +57,7 @@
         }
         if (("" + Request["bt_get_club_members"]) == "get_club_members_terminated")
         {
-            List<Rotary.Member> members = RotaryHelper.Get_Club_Members("Rotary%20Club", cric, "terminated");
+            List<Rotary.Member> members = RotaryHelper.Get_Club_Members(clubtype, cric, "terminated");
             if (members == null)
             {
                 result = "Erreur récupération membres";
@@ -198,7 +199,7 @@
         <div class="panel-body">
             <div class="form-group">
                 <label>Cric</label>
-                <input type="number" name="cric" class="form-control" value="@cric" />
+                <input type="number" name="cric" class="form-control" value="@cric" /> <select name="clubtype"><option selected value="Rotary%20Club">Rotary</option><option value="Rotaract%20Club">Rotaract</option></select>
                 <label>Nim</label>
                 <input type="number" name="nim" class="form-control" value="@nim" />
                 <button type="submit" name="bt_get_clubs" value="get_clubs" class="btn btn-secondary">Récupération Clubs</button>&nbsp;
