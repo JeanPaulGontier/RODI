@@ -13,7 +13,7 @@
     string result = "";
     int nim = 0;
     int cric = 0;
-
+    string clubtype = "Rotary%20Club";
     if (item != null)
     {
         param = Yemon.dnn.Functions.Deserialize<Rotary.Parametres>("" + item); ;
@@ -27,7 +27,7 @@
     {
         int.TryParse("" + Request["nim"], out nim);
         int.TryParse("" + Request["cric"], out cric);
-        string clubtype = "" + Request["clubtype"];
+        clubtype = "" + Request["clubtype"];
 
         if (("" + Request["bt_get_clubs"]) == "get_clubs")
         {
@@ -204,8 +204,23 @@
                     <label>Cric</label>
                     <input type="number" name="cric" class="form-control small" value="@cric" />
                     <label>Type de club</label>
-                    <select name="clubtype" class="form-control"><option selected value="Rotary%20Club">Rotary</option><option value="Rotaract%20Club">Rotaract</option></select><br />
-                    <button type="submit" name="bt_get_club_members" value="get_club_members_active" class="btn btn-secondary">Récupération Membres Actifs</button>&nbsp;
+                    <select name="clubtype" class="form-control">
+
+                        @if (clubtype == "Rotary%20Club")
+                        {
+                            <option value="Rotary%20Club" selected>Rotary</option>
+                            <option value="Rotaract%20Club">Rotaract</option>
+                        }
+                        else
+                        {
+                            <option value="Rotary%20Club">Rotary</option>
+                            <option value="Rotaract%20Club" selected>Rotaract</option>
+                        }else
+                        }
+                        <option value="Rotaract%20Club">Rotaract</option>
+                    </select><br />
+
+<button type="submit" name="bt_get_club_members" value="get_club_members_active" class="btn btn-secondary">Récupération Membres Actifs</button>&nbsp;
                     <button type="submit" name="bt_get_club_members" value="get_club_members_terminated" class="btn btn-secondary">Récupération Membres Terminés</button>&nbsp;
                     <button type="submit" name="bt_get_club_members" value="get_club_officers" class="btn btn-secondary">Récupération Club Officers</button>&nbsp;
                 </div>
