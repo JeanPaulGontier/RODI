@@ -3,6 +3,7 @@
 ###### 07/10/2024
 - nouvel écran de paramétrage de la synchronisation RI > RODI
 /espace-membre/administration-district/technique/synchro-ri
+- correction bug ajout de réunion club
 
 
 MAJ BDD:

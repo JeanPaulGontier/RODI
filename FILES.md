@@ -8,6 +8,7 @@ Portals\_default\Skins\Rodi2017\Public_2020.ascx
 Portals\_default\Skins\Rodi2017\home2024AE.ascx
 Portals\_default\Skins\Rodi2017\home2024AE.doctype.xml
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+App_Code\AIS\webapi\meeting\MeetingController.cs
 ```
 
 ##### 07/10/2024

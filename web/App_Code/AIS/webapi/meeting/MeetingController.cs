@@ -401,7 +401,7 @@ namespace AIS.controller
                 row["notificationtype"] = meeting.notificationtype;
                 row["notificationlist"] = meeting.notificationlist;
 
-                if (meeting.notificationtype.Length > 1)
+                if (meeting.notificationtype !=null && meeting.notificationtype.Length > 1)
                 {
                     row["notificationtype"] = "L";
                     row["notificationlist"] = ""+ meeting.notificationtype;
