@@ -394,7 +394,6 @@ namespace AIS.controller
                 }
               
                 
-                
                 row["dtlastupdate"] = DateTime.Now;
                 row["portalid"] = 0;
                 row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
