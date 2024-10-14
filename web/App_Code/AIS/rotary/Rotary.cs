@@ -27,6 +27,7 @@ public class Rotary
         public int DistrictId { get; set; }
         public int MemberCount {  get; set; }  
         public int HonoraryMemberCount { get; set; }
+        public DateTime DtLastUpdate { get; set; }
 
         public List<RequestorOrganizations> requestorOrganizations { get; set; }
 
@@ -44,6 +45,7 @@ public class Rotary
 
         public class Officer
         {
+            public int? id { get; set; }
             public int MemberId { get; set; }
             public int ClubId { get; set; }
             public string OfficerRole { get; set; }
@@ -56,7 +58,8 @@ public class Rotary
             public string Suffix { get; set; }
             public string Key { get; set; }
             public DateTime LastUpdated { get; set; }
-          
+
+            public DateTime DtLastUpdate { get; set; }
         }
 
         public Club() 
@@ -68,6 +71,7 @@ public class Rotary
 
     public class Member
     {
+        public int? id { get; set; }
         public int MemberId { get; set; }
         public string MemberType { get; set; }
         public string FirstName { get; set; }
@@ -75,7 +79,8 @@ public class Rotary
         public string LastName { get; set; }
         public string Suffix { get; set; }
         public string AdmissionDate { get; set; }
-
+        public DateTime DtLastUpdate { get; set; }
+        public string Profile { get; set; }
     }
 
     public class Profile

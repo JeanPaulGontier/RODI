@@ -9,6 +9,8 @@ Portals\_default\Skins\Rodi2017\home2024AE.ascx
 Portals\_default\Skins\Rodi2017\home2024AE.doctype.xml
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\rotary\Rotary.cs
+App_Code\AIS\rotary\RotaryHelper.cs
 ```
 
 ##### 07/10/2024

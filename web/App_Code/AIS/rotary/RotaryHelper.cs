@@ -70,6 +70,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Data.SqlClient;
+using Telerik.Web.UI.com.hisoftware.api2;
 
 
 /// <summary>
@@ -326,7 +327,8 @@ public class RotaryHelper
             row["clubcountry"] = club.ClubCountry;
             row["districtid"] = club.DistrictId;
             row["membercount"] = club.MemberCount;
-            row["honorarymembercount"] = club.MemberCount;
+            row["honorarymembercount"] = club.HonoraryMemberCount;
+            row["dtlastupdate"] = DateTime.Now;
             var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_club", "id", row);
             if (r.Key != "error")
                 result += "" + club.ClubId + " : " + club.ClubName + "<br/>";
@@ -338,4 +340,81 @@ public class RotaryHelper
 
         return result;
     }
+
+    public static string SynchroMembers(){
+        string result = "";
+        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ri_member"));
+        foreach (var club in clubs)
+        {
+            var members = Get_Club_Members(club.ClubType, club.ClubId, "active");
+
+            foreach(var member in members)
+            {
+                var row = new Dictionary<string, object>();
+                var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId);
+                if (dbmember != null)
+                    row["id"] = dbmember.id;
+
+                row["memberid"] = member.MemberId;
+                row["membertype"] = member.MemberType;
+                row["firstname"] = member.FirstName;
+                row["lastname"] = member.LastName;
+                row["suffix"] = member.Suffix;
+                row["admissiondate"] = member.AdmissionDate;
+                row["dtlastupdate"] = DateTime.Now;
+                row["profile"] = Yemon.dnn.Functions.Serialize(member);
+                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_member", "id", row);
+                if (r.Key != "error")
+                    result += "" + club.ClubId + " : " + club.ClubName +" : " + member.MemberType + " " + member.FirstName + " "+ member.LastName + "<br/>";
+                else
+                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.MemberType + " " + member.FirstName + " " + member.LastName + "<br/>";
+            }
+        }
+        return result;
+    }
+
+    public static string SynchroOfficers(){
+        string result = "";
+        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        if (clubs == null)
+            return "Erreur récupération des clubs";
+
+        var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ri_officer"));
+
+        foreach (var club in clubs)
+        {
+            var officers = Get_Club_Officers(club.ClubId);
+
+            foreach(var officer in officers)
+            {
+                var row = new Dictionary<string, object>();
+                var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
+                if (dbofficer != null)
+                    row["id"] = dbofficer.id;
+
+                row["memberid"] = officer.MemberId;
+                row["clubid"] = officer.ClubId;
+                row["officerrole"] = officer.OfficerRole;
+                row["startdate"] = officer.StartDate;
+                row["enddate"] = officer.EndDate;
+                row["clubname"] = officer.ClubName;
+                row["firstname"] = officer.FirstName;
+                row["lastname"] = officer.LastName;
+                row["middlename"] = officer.MiddleName;
+                row["suffix"] = officer.Suffix;
+                row["key"] = officer.Key;
+                row["lastupdated"] = officer.LastUpdated;
+                row["dtlastupdate"] = DateTime.Now;
+
+                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_officer", "id", row);
+                if (r.Key != "error")
+                    result += "" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/>";
+                else
+                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/> ";
+            }
+        }
+        return result;
+    }
+
 }
