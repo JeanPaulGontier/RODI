@@ -1,5 +1,52 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 
+MAJ BDD:
+
+ALTER TABLE [dbo].[ri_club]
+ADD DtLastUpdate datetime NULL;
+
+
+CREATE TABLE [dbo].[ri_member](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[MemberType] [nvarchar](50) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[LastName] [nvarchar](50) NULL,
+	[Suffix] [nvarchar](50) NULL,
+	[AdmissionDate] [nvarchar](50) NULL,
+	[DtLastUpdate] [datetime] NULL,
+	[Profile] [ntext] NULL,
+ CONSTRAINT [PK_ri_member] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ri_officer](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[ClubId] [int] NULL,
+	[OfficerRole] [nvarchar](50) NULL,
+	[StartDate] [nvarchar](50) NULL,
+	[EndDate] [nvarchar](50) NULL,
+	[ClubName] [nvarchar](255) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[LastName] [nvarchar](50) NULL,
+	[MiddleName] [nvarchar](50) NULL,
+	[Suffix] [nvarchar](50) NULL,
+	[key] [nvarchar](50) NULL,
+	[LastUpdated] [datetime] NULL,
+	[DtLastUpdate] [datetime] NULL,
+ CONSTRAINT [PK_ri_officer] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
 ###### 07/10/2024
 - nouvel écran de paramétrage de la synchronisation RI > RODI
 /espace-membre/administration-district/technique/synchro-ri
