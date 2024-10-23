@@ -181,12 +181,12 @@ public class RotaryHelper
         }
     }
 
-    public static List<Rotary.Club.Officer> Get_Club_Officers(int cric)
+    public static List<Rotary.Club.Officer> Get_Club_Officers(int cric, string clubtype)
     {
         try
         {
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("clubs/Rotary%20Club/"+cric+"/officers?startDate=07-01-2024&endDate=06-30-2025"));
+            var task = Task.Run(() => CallAsyncGet("clubs/"+clubtype+"/"+cric+"/officers?startDate=07-01-2024&endDate=06-30-2025"));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
@@ -384,7 +384,7 @@ public class RotaryHelper
 
         foreach (var club in clubs)
         {
-            var officers = Get_Club_Officers(club.ClubId);
+            var officers = Get_Club_Officers(club.ClubId,club.ClubType);
 
             foreach(var officer in officers)
             {
