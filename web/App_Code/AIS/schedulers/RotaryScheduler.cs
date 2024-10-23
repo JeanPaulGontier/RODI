@@ -36,7 +36,23 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-            
+
+            if (taskname.Contains("officers"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Officers Synchro</div>");
+                string result = RotaryHelper.SynchroOfficers();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
+            if (taskname.Contains("members"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Members Synchro</div>");
+                string result = RotaryHelper.SynchroMembers();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
 
         }
         catch (Exception exc)

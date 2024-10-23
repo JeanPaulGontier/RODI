@@ -14,6 +14,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 App_Code\AIS\webapi\meeting\MeetingController.cs
 App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\rotary\RotaryHelper.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
 ```
 
 ##### 07/10/2024
