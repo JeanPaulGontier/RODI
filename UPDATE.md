@@ -1,5 +1,12 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 
+###### 23/10/2024
+- moteur de synchronisation Clubs, Membres & Officers club RI -> RODI
+
+pour activer la synchronisation des clubs, les responsables des clubs doivent aller
+individuellement sur my Rotary et choisir RODI Association comme prestataire de gestion de club
+
+
 MAJ BDD:
 
 ALTER TABLE [dbo].[ri_club]
