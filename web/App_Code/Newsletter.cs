@@ -626,7 +626,7 @@ public class NewsletterWS : System.Web.Services.WebService
                     if (!string.IsNullOrEmpty(u.Email))
                     {
                         //Liste_Email.Add("'" + u.Email + "'");
-                        if (!la_Liste.Exists(m => m.userid == u.UserID))
+                        if (!la_Liste.Exists(m => m.email == u.Email))
                         {
                             la_Liste.Add(new Member
                             {

@@ -1368,7 +1368,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     if (!string.IsNullOrEmpty(u.Email))
                     {
                         // List_Email.Add("'" + u.Email + "'");
-                        if(!la_List.Exists(m => m.userid==u.UserID)){
+                        if(!la_List.Exists(m => m.email==u.Email)){
                             la_List.Add(new Member
                             {
                                 email = u.Email,
