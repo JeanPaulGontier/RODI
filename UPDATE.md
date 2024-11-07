@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- correction pb de sélection destinataire mailing district par rôles pour les utilisateurs non membres
 
 ###### 23/10/2024
 - moteur de synchronisation Clubs, Membres & Officers club RI -> RODI

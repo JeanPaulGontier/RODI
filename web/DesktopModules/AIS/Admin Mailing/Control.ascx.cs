@@ -1361,18 +1361,30 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             RoleController ObjRoleController = new RoleController();
             foreach (string s in Role_Select)
             {
+             
                 var arrUsers = ObjRoleController.GetUsersByRoleName(PortalId, s);
                 foreach (UserInfo u in arrUsers)
                 {
                     if (!string.IsNullOrEmpty(u.Email))
                     {
-                        List_Email.Add("'" + u.Email + "'");
+                        // List_Email.Add("'" + u.Email + "'");
+                        if(!la_List.Exists(m => m.userid==u.UserID)){
+                            la_List.Add(new Member
+                            {
+                                email = u.Email,
+                                name = u.FirstName,
+                                surname = u.LastName,
+                                district_id = Const.DISTRICT_ID,
+                                userid = u.UserID
+                            });
+                        }
+                        
                     }
                 }
             }
 
-            string ListEmail = string.Join(",", List_Email);
-            La_List_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListEmail + ") ");
+            //string ListEmail = string.Join(",", List_Email);
+            //La_List_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListEmail + ") ");
         }
 
         //if (!string.IsNullOrEmpty(DL_Role.SelectedValue))
@@ -1402,16 +1414,16 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
         }
 
-        if (La_List_Role != null)
-        {
-            foreach (Member mp in La_List_Role)
-            {
-                if (!la_List.Exists(mem => mem.nim == mp.nim))
-                {
-                    la_List.Add(mp);
-                }
-            }
-        }
+        //if (La_List_Role != null)
+        //{
+        //    foreach (Member mp in La_List_Role)
+        //    {
+        //        if (!la_List.Exists(mem => mem.nim == mp.nim))
+        //        {
+        //            la_List.Add(mp);
+        //        }
+        //    }
+        //}
 
         if(parametres.StartsWith(";"))
         {

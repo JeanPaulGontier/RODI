@@ -1,5 +1,7 @@
 ##### Modified files per commit
 ```txt
+App_Code\Newsletter.cs
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 ```
 ##### 07/10/2024
 ```txt

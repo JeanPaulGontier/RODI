@@ -625,13 +625,24 @@ public class NewsletterWS : System.Web.Services.WebService
                 {
                     if (!string.IsNullOrEmpty(u.Email))
                     {
-                        Liste_Email.Add("'" + u.Email + "'");
+                        //Liste_Email.Add("'" + u.Email + "'");
+                        if (!la_Liste.Exists(m => m.userid == u.UserID))
+                        {
+                            la_Liste.Add(new Member
+                            {
+                                email = u.Email,
+                                name = u.FirstName,
+                                surname = u.LastName,
+                                district_id = Const.DISTRICT_ID,
+                                userid = u.UserID
+                            });
+                        }
                     }
                 }
             }
 
-            string ListeEmail = string.Join(",", Liste_Email);
-            La_Liste_Members_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListeEmail + ") ");
+            //string ListeEmail = string.Join(",", Liste_Email);
+            //La_Liste_Members_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListeEmail + ") ");
         }
         #endregion Recherche par role
 
@@ -644,16 +655,16 @@ public class NewsletterWS : System.Web.Services.WebService
             }
         }
 
-        if (La_Liste_Members_Role != null)
-        {
-            foreach (Member mp in La_Liste_Members_Role)
-            {
-                if (!la_Liste.Exists(mem => mem.nim == mp.nim))
-                {
-                    la_Liste.Add(mp);
-                }
-            }
-        }
+        //if (La_Liste_Members_Role != null)
+        //{
+        //    foreach (Member mp in La_Liste_Members_Role)
+        //    {
+        //        if (!la_Liste.Exists(mem => mem.nim == mp.nim))
+        //        {
+        //            la_Liste.Add(mp);
+        //        }
+        //    }
+        //}
         #endregion Trie entre les listes
 
         return la_Liste;
