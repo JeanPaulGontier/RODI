@@ -620,22 +620,45 @@ public class NewsletterWS : System.Web.Services.WebService
             RoleController ObjRoleController = new RoleController();
             foreach (string s in La_Liste_Role)
             {
+
                 var arrUsers = ObjRoleController.GetUsersByRoleName(0, s);
-                foreach (UserInfo u in arrUsers)
+                if (s == "Membres")
                 {
-                    if (!string.IsNullOrEmpty(u.Email))
+                    foreach (UserInfo u in arrUsers)
                     {
-                        //Liste_Email.Add("'" + u.Email + "'");
-                        if (!la_Liste.Exists(m => m.email == u.Email))
+                        if (!string.IsNullOrEmpty(u.Email))
                         {
-                            la_Liste.Add(new Member
+                            Liste_Email.Add("'" + u.Email + "'");
+                        }
+                    }
+                    string ListEmail = string.Join(",", Liste_Email);
+                    La_Liste_Members_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListEmail + ") ");
+                    foreach (Member mm in La_Liste_Members_Role)
+                    {
+                        if (!la_Liste.Exists(m => m.email == mm.email))
+                        {
+                            la_Liste.Add(mm);
+                        }
+                    }
+
+                }
+                else
+                {
+                    foreach (UserInfo u in arrUsers)
+                    {
+                        if (!string.IsNullOrEmpty(u.Email))
+                        {
+                            if (!la_Liste.Exists(m => m.email == u.Email))
                             {
-                                email = u.Email,
-                                name = u.FirstName,
-                                surname = u.LastName,
-                                district_id = Const.DISTRICT_ID,
-                                userid = u.UserID
-                            });
+                                la_Liste.Add(new Member
+                                {
+                                    email = u.Email,
+                                    name = u.FirstName,
+                                    surname = u.LastName,
+                                    district_id = Const.DISTRICT_ID,
+                                    userid = u.UserID
+                                });
+                            }
                         }
                     }
                 }

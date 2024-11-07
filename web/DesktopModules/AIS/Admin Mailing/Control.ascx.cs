@@ -1363,24 +1363,51 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             {
              
                 var arrUsers = ObjRoleController.GetUsersByRoleName(PortalId, s);
-                foreach (UserInfo u in arrUsers)
+                if(s== "Membres")
                 {
-                    if (!string.IsNullOrEmpty(u.Email))
+                    foreach (UserInfo u in arrUsers)
                     {
-                        // List_Email.Add("'" + u.Email + "'");
-                        if(!la_List.Exists(m => m.email==u.Email)){
-                            la_List.Add(new Member
-                            {
-                                email = u.Email,
-                                name = u.FirstName,
-                                surname = u.LastName,
-                                district_id = Const.DISTRICT_ID,
-                                userid = u.UserID
-                            });
+                        if (!string.IsNullOrEmpty(u.Email))
+                        {
+                            List_Email.Add("'" + u.Email + "'");                            
                         }
-                        
+                    }
+                    string ListEmail = string.Join(",", List_Email);
+                    La_List_Role = DataMapping.GetListMembers_Mailling("SELECT * FROM " + Const.TABLE_PREFIX + "members WHERE email IN (" + ListEmail + ") ");
+                    foreach (Member mm in La_List_Role)
+                    {
+                        if (!la_List.Exists(m => m.email == mm.email))
+                        {
+                            la_List.Add(mm);
+                        }
+                    }
+                     
+                }
+                else
+                {
+
+                    foreach (UserInfo u in arrUsers)
+                    {
+                        if (!string.IsNullOrEmpty(u.Email))
+                        {
+                            // List_Email.Add("'" + u.Email + "'");
+                            if (!la_List.Exists(m => m.email == u.Email))
+                            {
+                                la_List.Add(new Member
+                                {
+                                    email = u.Email,
+                                    name = u.FirstName,
+                                    surname = u.LastName,
+                                    district_id = Const.DISTRICT_ID,
+                                    userid = u.UserID
+                                });
+                            }
+
+                        }
                     }
                 }
+
+               
             }
 
             //string ListEmail = string.Join(",", List_Email);
