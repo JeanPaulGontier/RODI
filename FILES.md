@@ -2,6 +2,8 @@
 ```txt
 App_Code\Newsletter.cs
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
+Portals\_default\Skins\Rodi2017\Club.ascx
 ```
 ##### 07/10/2024
 ```txt

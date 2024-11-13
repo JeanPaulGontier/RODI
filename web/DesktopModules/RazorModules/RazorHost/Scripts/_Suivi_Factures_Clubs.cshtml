@@ -6,6 +6,16 @@
     }
 </script>
 @{ 
+    string sortby = "" + Request["sortby"];
+    string sortorder = "" + Request["sortorder"];
+
+    if(sortby=="")
+    {
+        sortby = "club";
+    }
+    if(sortorder==""){
+        sortorder = "asc";
+    }
     int index = 0;
     int.TryParse("" + Request["paymentselect"], out index);
 
@@ -30,7 +40,7 @@
             "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
             "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
             "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
-            "FROM [ais_orders] O  where id_payment='" + payment.id + "' order by club");
+            "FROM [ais_orders] O  where id_payment='" + payment.id + "' order by "+sortby+" "+sortorder);
 
         List<DataTable> liste = new List<DataTable>();
         liste.Add(ds.Tables[0]);
@@ -78,18 +88,18 @@
             </div>
             <table class="table table-striped">
                 <tr>
-                    <th>Cric</th>
-                    <th>Club</th>
-                    <th>N&ordm;</th>
-                    <th>Montant</th>
-                    <th>M&eacute;thode</th>
-                    <th>Par qui</th>
-                    <th>Quand</th>
-                    <th>R&eacute;gl&eacute;e</th>
+                    <th><a href="#" onclick="sort('cric')">Cric @Html.Raw(sort("cric", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('club')">Club @Html.Raw(sort("club", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('id')">N° @Html.Raw(sort("id", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('montant')">Montant @Html.Raw(sort("montant", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('type_rule')">Méthode @Html.Raw(sort("type_rule", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('par_rule')">Par qui @Html.Raw(sort("par_rule", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('dt')">Quand @Html.Raw(sort("dt", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('regle')">Réglée @Html.Raw(sort("regle", sortby, sortorder))</a></th>
                     <th>Commentaire</th>
-                    <th>Groupe</th>
-                    <th>ADG</th>
-                    <th>Email</th>
+                    <th><a href="#" onclick="sort('groupe')">Groupe @Html.Raw(sort("groupe", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('adg')">ADG @Html.Raw(sort("adg", sortby, sortorder))</a></th>
+                    <th><a href="#" onclick="sort('email')">Email @Html.Raw(sort("email", sortby, sortorder))</a></th>                 
                 </tr>
             
             @foreach (DataRow order in ds.Tables[0].Rows) {
@@ -139,5 +149,41 @@
     else
     {
         <em>Aucun suivi disponible...</em>
+    }
+}
+<input type="hidden" name="sortby" id="sortby" value="@sortby" />
+<input type="hidden" name="sortorder" id="sortorder" value="@sortorder" />
+<script>
+    function sort(by) {
+        var sortby = document.getElementById('sortby');
+        var sortorder = document.getElementById('sortorder');
+        if (sortby.value != by) {
+            sortby.value = by;
+            sortorder.value = 'asc';
+        }
+        else {
+            if (sortorder.value != 'asc') {
+                sortorder.value = 'asc';
+            } else {
+                sortorder.value = 'desc';
+            }
+
+        }
+        document.forms[0].submit();
+    }
+</script>
+@functions{ 
+    string sort(string by, string sortby, string sortorder){
+        if(sortby==by){
+            if(sortorder=="asc")
+            {
+                return "<i title='croissant' class=\"glyphicon glyphicon-chevron-up\"></i>";
+            }
+            else
+            {
+                return "<i title='décroissant' class=\"glyphicon glyphicon-chevron-down\"></i>";
+            }
+        }
+        return "";
     }
 }

@@ -17,7 +17,15 @@
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/MenuClub.ascx" %>
 <%@ Register TagPrefix="ais1" TagName="NAME" Src="~/AIS/ClubName.ascx" %>
-
+<script runat="server"> 
+    Protected Overrides Sub OnInit(e As EventArgs)
+        MyBase.OnInit(e)
+        If UserController.Instance.GetCurrentUserInfo().UserID > -1 Then
+            ServicesFramework.Instance.RequestAjaxScriptSupport()
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport()
+        End If
+    End Sub
+</script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
 <dnn:STYLES runat="server" ID="StylesIE8" Name="IE8Minus" StyleSheet="css/ie8style.css" Condition="IE 8" UseSkinPath="true" />
@@ -26,15 +34,11 @@
   <dnn:CONTROLPANEL runat="server" id="cp" IsDockable="True" />
 </div>
 <div class="skin_wrapper ph_spring">
-  <!--#include file="commonparts/HeaderClub.ascx"-->
+  <!--#include file="commonparts/HeaderC-->
   <!--start skin banner-->
   <section class="skin_banner">
-    <div class="bannerpane" id="BannerPane" runat="server"></div>
-  </section>
-  <!--end skin banner-->
-  <!--start main area-->
-  <div class="skin_main">
-    <section class="content_whitebg">
+    <div class="bannerpane" id="BannerPane" rtart main ar<div class="skin_main">
+  nt_whitebg">
       <div class="skin_width">
         <div class="skin_content">
           <div class="row dnnpane">
@@ -43,35 +47,27 @@
           <div class="row dnnpane">
             <div runat="server" id="OneGrid4A" class="one_grid4a col-sm-4"></div>
             <div runat="server" id="OneGrid4B" class="one_grid4b col-sm-4"></div>
-            <div runat="server" id="OneGrid4C" class="one_grid4c col-sm-4"></div>
+            <div runat="servercol-sm-4"></div>
           </div>
           <div class="row dnnpane">
-            <div runat="server" id="TwoGrid3A" class="two_grid3a col-sm-3"></div>
-            <div runat="server" id="TwoGrid3B" class="two_grid3b col-sm-3"></div>
-            <div runat="server" id="TwoGrid3C" class="two_grid3c col-sm-3"></div>
-            <div runat="server" id="TwoGrid3D" class="two_grid3d col-sm-3"></div>
+            <div runat="serverrunat="server" id="TwoGrid3B" class="two_grid3bss="two_grid3c col-sm-3"></div>
+            <div runat="server" id="TwoGrid3D" class="two_grid3d col-sm-3          <div class="roane">
+            <div runat="server" id="m-12"></div>
           </div>
           <div class="row dnnpane">
-            <div runat="server" id="ThreeGrid12" class="three_grid12 col-sm-12"></div>
-          </div>
-          <div class="row dnnpane">
-            <div runat="server" id="FourGrid8" class="four_grid8 col-sm-8"></div>
+            <div runat="serverourGrid8" class="four_grid8 col-sm-8"></div>
             <div runat="server" id="FourGrid4" class="four_grid4 col-sm-4"></div>
           </div>
+          <d      <div runat="server" id="FiveGrid4" class="five_grid4 col-sm-4"></div>
+            <div runat="server
           <div class="row dnnpane">
-            <div runat="server" id="FiveGrid4" class="five_grid4 col-sm-4"></div>
-            <div runat="server" id="FiveGrid8" class="five_grid8 col-sm-8"></div>
-          </div>
-          <div class="row dnnpane">
-            <div runat="server" id="SixGrid6A" class="six_grid6a col-sm-6"></div>
-            <div runat="server" id="SixGrid6B" class="six_grid6b col-sm-6"></div>
-          </div>
-          <div class="row dnnpane">
+         v>
+            <div runat="server" id="SixGrid6B" class"row dnnpane">
             <div runat="server" id="SevenGrid9" class="seven_grid9 col-sm-9"></div>
-            <div runat="server" id="SevenGrid3" class="seven_grid3 col-sm-3"></div>
+            <div runat="serverevenGrid3" class="seven_grid3 col-sm-3"></div>
           </div>
           <div class="row dnnpane">
-            <div runat="server" id="EightGrid3" class="eight_grid3 col-sm-3"></div>
+            d3" class="eight_grid3 col-sm-3"></div>
             <div runat="server" id="EightGrid9" class="eight_grid9 col-sm-9"></div>
           </div>
           <div class="row dnnpane">
@@ -86,38 +82,24 @@
         </div>
       </div>
     </section>
-    <section class="content_graybg">
-      <div class="skin_width">
-        <div class="skin_main_padding">
-          <div class="row dnnpane">
-            <div runat="server" id="GrayGrid6A" class="graygrid6a col-sm-6"></div>
+    <section class="contenkin_width">
+        <div class="skin_main_padding">  <div cla runat="server" id="GrayGrid6A" class="graygrid6a col-sm-6"></div>
             <div runat="server" id="GrayGrid6B" class="graygrid6b col-sm-6"></div>
           </div>
-          <div class="row dnnpane">
-            <div runat="server" id="GrayGrid12" class="graygrid12 col-sm-12"></div>
-          </div>
-        </div>
+          <div class="row dnat="server" id="GrayGrid12" class="gr          </div>
+        
       </div>
-    </section>
-    <section class="content_whitebg">
-      <div class="skin_width">
-        <div class="skin_main_padding">
-          <div class="row dnnpane">
-            <div runat="server" id="MiddlePane" class="middlepane col-sm-12"></div>
-          </div>
-          <div class="row dnnpane">
-            <div runat="server" id="MiddleGrid6A" class="middlegrid6a col-sm-6"></div>
+    </sectio<sectio class="skins="row dnnpane">
+            <div rerveiv>
+          <div cla<div runat="server" id="MiddleGrid6A" class="middlegrid6a col-sm-6"></div>
             <div runat="server" id="MiddleGrid6B" class="middlegrid6b col-sm-6"></div>
           </div>
         </div>
       </div>
-    </section>
-    <section class="fixed_bg">
-      <div class="skin_width">
-        <div class="skin_main_padding">
-          <div class="row dnnpane">
+    </se
+    ">
             <div runat="server" id="FixedBG3A" class="fixedbg3a col-sm-3"></div>
-            <div runat="server" id="FixedBG3B" class="fixedbg3b col-sm-3"></div>
+            <div rerver" id="FixedBG3B" class="fixedbg3b col-sm-3"></div>
             <div runat="server" id="FixedBG3C" class="fixedbg3c col-sm-3"></div>
             <div runat="server" id="FixedBG3D" class="fixedbg3d col-sm-3"></div>
           </div>
@@ -128,8 +110,7 @@
       </div>
     </section>
     <section class="content_whitebg">
-      <div class="skin_width">
-        <div class="skin_main_padding">
+      <div clasass="skin_main_padding">
           <div class="row dnnpane">
             <div runat="server" id="BottomGrid12A" class="bottomGrid12a col-sm-12"></div>
           </div>

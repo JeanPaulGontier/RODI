@@ -1,5 +1,7 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - correction pb de sélection destinataire mailing district par rôles pour les utilisateurs non membres
+- ajout possibilité de tri sur les entêtes de colonnes dans l'écran suivi des factures clubs
+- modification du skin club, ce qui permet de supprimer le module bureau de la page d'accueil du club
 
 ###### 23/10/2024
 - moteur de synchronisation Clubs, Membres & Officers club RI -> RODI
