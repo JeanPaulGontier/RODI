@@ -821,7 +821,7 @@ public class RotaryHelper
                     #endregion
 
 
-                    if (club.rotary_agreement_type == "auto")
+                    if (false && club.rotary_agreement_type == "auto")
                     {
                         if (!DataMapping.UpdateMember(m))
                         {
