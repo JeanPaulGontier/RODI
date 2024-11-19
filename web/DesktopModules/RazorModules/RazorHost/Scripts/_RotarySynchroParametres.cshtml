@@ -11,6 +11,7 @@
     bool tested = false;
     bool called = false;
     string result = "";
+
     int nim = 0;
     int cric = 0;
     string clubtype = "Rotary%20Club";
@@ -28,56 +29,69 @@
         int.TryParse("" + Request["nim"], out nim);
         int.TryParse("" + Request["cric"], out cric);
         clubtype = "" + Request["clubtype"];
+        if (("" + Request["bt_ucm"]) == "ucm")
+        {
+            result = RotaryHelper.UpdateClubsMembers();
 
+            called = true;
+        }
+        if (("" + Request["bt_uco"]) == "uco")
+        {
+            result = RotaryHelper.UpdateClubsOfficers().Replace("<br/>", Environment.NewLine);
+
+            called = true;
+        }
         if (("" + Request["bt_get_clubs"]) == "get_clubs")
         {
-            List<Rotary.Club>clubs = RotaryHelper.Get_Clubs();
+            List<Rotary.Club>clubs = RotaryHelper.Get_Clubs(out result);
             if(clubs==null)
             {
                 result = "Erreur récupération clubs";
             }
             else
             {
-                result = Yemon.dnn.Functions.Serialize(clubs);
+                result = "<pre>" + result + "</pre>";
             }
+
             called = true;
         }
         if (("" + Request["bt_get_club_members"]) == "get_club_members_active")
         {
-            List<Rotary.Member> members = RotaryHelper.Get_Club_Members(clubtype, cric,"active");
+            var members = RotaryHelper.Get_Club_Members_Active(clubtype, cric,out result);
             if (members == null)
             {
                 result = "Erreur récupération membres";
             }
             else
             {
-                result = Yemon.dnn.Functions.Serialize(members);
+                result = "<pre>" + result + "</pre>";
             }
+
             called = true;
         }
         if (("" + Request["bt_get_club_members"]) == "get_club_members_terminated")
         {
-            List<Rotary.Member> members = RotaryHelper.Get_Club_Members(clubtype, cric, "terminated");
+            var members = RotaryHelper.Get_Club_Members(clubtype, cric, "terminated",out result);
             if (members == null)
             {
                 result = "Erreur récupération membres";
             }
             else
             {
-                result = Yemon.dnn.Functions.Serialize(members);
+                result = "<pre>" + result + "</pre>";
             }
             called = true;
         }
         if (("" + Request["bt_get_club_members"]) == "get_club_member_profile")
         {
-            Rotary.Profile member = RotaryHelper.Get_Member_Profile(nim);
+            Rotary.Profile member = RotaryHelper.Get_Member_Profile(nim,out result);
             if (member == null)
             {
                 result = "Erreur récupération membres";
             }
             else
             {
-                result = Yemon.dnn.Functions.Serialize(member);
+                result = "<pre>" + result + "</pre>";
             }
             called = true;
         }
@@ -85,14 +99,14 @@
         {
 
 
-            List<Rotary.Club.Officer> member = RotaryHelper.Get_Club_Officers(cric,clubtype);
+            List<Rotary.Club.Officer> member = RotaryHelper.Get_Club_Officers(cric,clubtype,out result);
             if (member == null)
             {
                 result = "Erreur récupération membres";
             }
             else
             {
-                result = Yemon.dnn.Functions.Serialize(member);
+                result = "<pre>" + result + "</pre>";
             }
             called = true;
         }
@@ -198,7 +212,11 @@
         <div class="panel-heading">Tests</div>
         <div class="panel-body">
             <div>
-                <div><button type="submit" name="bt_get_clubs" value="get_clubs" class="btn btn-secondary">Récupération Clubs</button></div>
+                <div>
+                    <button type="submit" name="bt_get_clubs" value="get_clubs" class="btn btn-secondary">Récupération Clubs</button>
+                    <button type="submit" name="bt_ucm" value="ucm" class="btn btn-secondary">Mise à jour membres des clubs</button>
+                    <button type="submit" name="bt_uco" value="uco" class="btn btn-secondary">Mise à jour officers des clubs</button>
+                </div>
                 <div class="pe-spacer size20"></div>
                 <div class="form-group form-inline">
                     <label>Cric</label>
@@ -240,12 +258,12 @@
                         <div class="pe-spacer size10"></div>
                         if (result.StartsWith("Erreur"))
                         {
-                            <div class="alert alert-danger">@result</div>
+                            <div class="alert alert-danger">@Html.Raw(result)</div>
 
                         }
                         else
                         {
-                            <div class="alert alert-success">@result</div>
+                            <div class="alert alert-success">@Html.Raw(result)</div>
 
                         }
                     }
@@ -256,7 +274,7 @@
       
     </div>
     @{
-        var clubsok = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        var clubsok = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         var clubsd = DataMapping.ListClubs().OrderBy(c=>c.name).ToList();
         var clubsko = new List<Club>();
         foreach (var c in clubsd)
@@ -290,4 +308,5 @@
         </div>
     </div>
 </div>
+
 

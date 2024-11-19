@@ -28,6 +28,11 @@
                     <asp:HyperLink ID="lbl_seo_mode" runat="server" Text='<%# GetPresentation(""+Eval("seo_mode")) %>' NavigateUrl='<%# "/"+Eval("seo") %>' Target="_blank" ToolTip="Voir le site"></asp:HyperLink>
                 </ItemTemplate>
             </asp:TemplateField>
+             <asp:TemplateField HeaderText="Synchro RI">
+                <ItemTemplate>
+                    <asp:Label ID="lbl_synchro_ri" runat="server" Text='<%# GetSynchroRI(Container) %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="lbt_edit" runat="server" CommandArgument='<%# Bind("cric") %>' CssClass="btn btn-primary"><span class="fa fa-pencil"></span></asp:LinkButton>
@@ -206,6 +211,29 @@
     </fieldset>
       <div class="pe-spacer size40"></div>
     <hr />
+     <fieldset>
+      <legend><h3>Synchronisation Rotary International > RODI</h3></legend>
+       <asp:Panel runat="server" ID="p_synchro_ri_na">
+           <div class="alert alert-warning">
+              <strong>La synchronisation du club n'a pas été autorisée sur my Rotary</strong>
+          </div>
+       </asp:Panel>
+       <asp:Panel runat="server" ID="p_synchro_ri" class="row">
+           <div class="col-sm-4">
+               <strong>Synchronisation : </strong>
+           </div>
+           <div class="col-sm-8">
+               <asp:RadioButtonList runat="server" ID="RB_synchroRI" RepeatDirection="Vertical">
+                  <asp:ListItem Text="Non" Value=""></asp:ListItem>
+                  <asp:ListItem Text="Analyse" Value="analyse"></asp:ListItem>
+                  <asp:ListItem Text="Automatique" Value="auto"></asp:ListItem>
+              </asp:RadioButtonList>
+           </div>
+       </asp:Panel>
+ </fieldset>
+  
+  <div class="pe-spacer size40"></div>
+  <hr />
     <fieldset>
         <legend>Présentation du club sur le district :</legend>
    
@@ -296,8 +324,7 @@
     </fieldset>
 
    
-    
-    <div class="pe-spacer size40"></div>
+  
     <div class="row">
         <div class="col-sm-4">
             <asp:Button ID="btn_delete" runat="server" OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer ce club ?');" Text="Supprimer le club" Visible="false" CssClass="btn btn-danger" OnClick="btn_delete_Click" />

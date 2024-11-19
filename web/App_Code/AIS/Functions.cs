@@ -2404,5 +2404,34 @@ namespace AIS
 
             return n;
         }
+
+
+        public static int GetClubSatellite(int cric){
+        
+            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) - 1; i++)
+            {
+                if (Const.CLUB_SATELLITE_PARENT_CHILD[i, 0] == cric)
+                {
+                    return Const.CLUB_SATELLITE_PARENT_CHILD[i, 1];
+                }
+
+            }
+            return 0;
+        }
+
+        public static int GetClubParent(int cric)
+        {
+
+            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) - 1; i++)
+            {
+                if (Const.CLUB_SATELLITE_PARENT_CHILD[i, 1] == cric)
+                {
+                    return Const.CLUB_SATELLITE_PARENT_CHILD[i, 0];
+                }
+
+            }
+            return 0;
+        }
+
     }
 }

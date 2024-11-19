@@ -2,6 +2,104 @@
 - correction pb de sélection destinataire mailing district par rôles pour les utilisateurs non membres
 - ajout possibilité de tri sur les entêtes de colonnes dans l'écran suivi des factures clubs
 - modification du skin club, ce qui permet de supprimer le module bureau de la page d'accueil du club
+- dans l'administration club on peut maintenant autoriser la synchro RI
+- l'écran de synchro RI contient de nouvelles fonctionnalitées 
+- le moteur de synchronisation des membres et des roles est maintenant fonctionnel et peut être activé si tous les clubs ont autorisé RODI Association comme prestataire de gestion des clubs au niveau de my Rotary
+
+
+MAJ BDD :
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ri_club]') AND type in (N'U'))
+DROP TABLE [dbo].[ri_club]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ri_member]') AND type in (N'U'))
+DROP TABLE [dbo].[ri_member]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ri_officer]') AND type in (N'U'))
+DROP TABLE [dbo].[ri_officer]
+GO
+
+
+CREATE TABLE [dbo].[ais_ri_club](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ClubId] [int] NULL,
+	[ClubType] [nvarchar](50) NULL,
+	[ClubSubType] [nvarchar](50) NULL,
+	[ClubName] [nvarchar](255) NULL,
+	[ClubCountry] [nvarchar](50) NULL,
+	[DistrictId] [int] NULL,
+	[MemberCount] [int] NULL,
+	[HonoraryMemberCount] [int] NULL,
+	[DtLastUpdate] [datetime] NULL,
+ CONSTRAINT [PK_ri_club] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ais_ri_club_member](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[ClubId] [int] NULL,
+	[DtLastUpdate] [datetime] NULL,
+ CONSTRAINT [PK_ri_club_member] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ais_ri_member](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[MemberType] [nvarchar](50) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[LastName] [nvarchar](50) NULL,
+	[Suffix] [nvarchar](50) NULL,
+	[IsHonoraryMember] [bit] NULL,
+	[IsSatelliteMember] [bit] NULL,
+	[DtLastUpdate] [datetime] NULL,
+	[Profile] [ntext] NULL,
+ CONSTRAINT [PK_ri_member] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ais_ri_officer](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[ClubId] [int] NULL,
+	[OfficerRole] [nvarchar](50) NULL,
+	[StartDate] [nvarchar](50) NULL,
+	[EndDate] [nvarchar](50) NULL,
+	[ClubName] [nvarchar](255) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[LastName] [nvarchar](50) NULL,
+	[MiddleName] [nvarchar](50) NULL,
+	[Suffix] [nvarchar](50) NULL,
+	[key] [nvarchar](50) NULL,
+	[LastUpdated] [datetime] NULL,
+	[DtLastUpdate] [datetime] NULL,
+ CONSTRAINT [PK_ri_officer] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+ALTER TABLE [dbo].[ais_clubs]
+ADD rotary_agreement_date datetime NULL;
+ALTER TABLE [dbo].[ais_clubs]
+ADD rotary_agreement_type [nvarchar](50) NULL;
+
+
 
 ###### 23/10/2024
 - moteur de synchronisation Clubs, Membres & Officers club RI -> RODI

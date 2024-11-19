@@ -96,6 +96,11 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         }
     }
 
+    public string GetSynchroRI(object container){
+        var club = (Club)((GridViewRow)container).DataItem;
+        return club.GetSynchroRI();
+    }
+
     public string GetRoleName(string id)
     {
         string result = "non défini";
@@ -152,6 +157,9 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         RB_Type_Club.SelectedIndex = 0;
         rbl_type.SelectedIndex = -1;
         tbx_nb_free_of_charge.Text = "0";
+        p_synchro_ri_na.Visible = true;
+        p_synchro_ri.Visible = false;
+        RB_synchroRI.SelectedIndex=0;
         BindRoleList();
         //btn_addClub.Text = "Ajouter le club rotaract";
         btn_addClub.Text = "Ajouter un club";
@@ -240,6 +248,15 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_web.Enabled = true;
         tbx_zip.Enabled = true;
 
+        p_synchro_ri_na.Visible = true;
+        p_synchro_ri.Visible = false;
+        if(club.rotary_agreement_date!=null){
+            p_synchro_ri.Visible = true;
+            p_synchro_ri_na.Visible = false;
+        }
+
+        RB_synchroRI.SelectedValue = club.rotary_agreement_type;
+
         BindRoleList(club.roles);
      
 
@@ -279,7 +296,9 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         club.roles = DDL_Role.SelectedValue;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = tbx_domaine.Text;
-        
+        club.rotary_agreement_type = RB_synchroRI.SelectedValue;
+
+
         double nbfoc = 0;
         double.TryParse(tbx_nb_free_of_charge.Text.Trim().Replace(".",","), out nbfoc);
         club.nb_free_of_charge = nbfoc;

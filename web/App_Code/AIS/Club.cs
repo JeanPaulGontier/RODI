@@ -103,7 +103,22 @@ namespace AIS
         public string domaine { get; set; }
         public string payment_method { get; set; }
         public double nb_free_of_charge { get; set; }
+
+        public DateTime? rotary_agreement_date { get; set; }
+        public string rotary_agreement_type { get; set; } // '': pas de synchronisation , 'auto': maj auto, 'analyse': analyse seulement
        
+
+        public string GetSynchroRI(){
+            if (rotary_agreement_date == null)
+                return "Non autorisée";
+            if (rotary_agreement_type == "")
+                return "Non configurée";
+            if (rotary_agreement_type == "auto")
+                return "Automatique";
+            if (rotary_agreement_type == "analyse")
+                return "Seulement analyse";
+            return "Non";
+        }
 
         public string GetPennant()
         {

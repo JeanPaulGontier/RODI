@@ -2,7 +2,7 @@
 <script src="/AIS/TextEditor/ckeditor/ckeditor.js"></script>
 
 <asp:Panel ID="pnl_edit" runat="server" Visible="false">
-
+    <asp:HiddenField ID="hf_synchroRI" runat="server" />
     <div class="row">
         <div class="col-sm-4">
             <strong>Type club :</strong>
@@ -159,6 +159,17 @@
             </div>
         </div>
     </fieldset>
+       <div class="pe-spacer size40"></div>
+ <hr />
+ <fieldset>
+  <legend>Synchronisation Rotary International > RODI :</legend>
+  <div class="row">
+     <div class="col-sm-12">
+         <asp:Label runat="server" ID="l_synchroRI"></asp:Label>
+     </div>    
+ </div>
+</fieldset>
+  <div class="pe-spacer size40"></div>
       <div class="pe-spacer size40"></div>
     <hr />
     <fieldset>
@@ -249,9 +260,7 @@
         </div>
     </div>
     </fieldset>
-
-   
-
+    
     <asp:Button ID="btn_validate" runat="server" Text="Valider" CssClass="btn btn-primary" OnClick="btn_validate_Click" />    
 
 </asp:Panel>

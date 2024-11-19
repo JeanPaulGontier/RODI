@@ -92,7 +92,7 @@ public class RotaryHelper
         get
         {
 
-            var item = ""+Yemon.dnn.Helpers.GetItem("RotaryAuthToken", 0);
+            var item = "" + Yemon.dnn.Helpers.GetItem("RotaryAuthToken", 0);
             if (item == null)
                 return null;
             return Yemon.dnn.Functions.Deserialize<Auth_Token>("" + item); ;
@@ -100,7 +100,7 @@ public class RotaryHelper
         }
         set
         {
-            Yemon.dnn.Helpers.SetItem("RotaryAuthToken", Yemon.dnn.Functions.Serialize(value),"", keephistory: false);
+            Yemon.dnn.Helpers.SetItem("RotaryAuthToken", Yemon.dnn.Functions.Serialize(value), "", keephistory: false);
         }
     }
 
@@ -118,27 +118,30 @@ public class RotaryHelper
             {
                 return "Erreur de login";
             }
-            
+
             return "Connexion réalisée avec succès";
         }
-        catch(Exception ee) {
-            
+        catch (Exception ee)
+        {
+
             return ee.ToString();
         }
     }
 
-    public static List<Rotary.Club> Get_Clubs()
+    public static List<Rotary.Club> Get_Clubs(out string result)
     {
+        result = null;
         try
         {
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("clubs"));
+            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs"));
             task.Wait();
 
-            if (String.IsNullOrEmpty(task.Result)) {
+            if (String.IsNullOrEmpty(task.Result))
+            {
                 throw new Exception("Erreur récupération clubs");
             }
-
+            result = task.Result;
             List<Rotary.Club> clubs = Yemon.dnn.Functions.Deserialize<List<Rotary.Club>>(task.Result);
             clubs = clubs.Where(c => c.DistrictId == Const.DISTRICT_ID).ToList();
 
@@ -157,18 +160,48 @@ public class RotaryHelper
     /// <param name="cric"></param>
     /// <param name="membertype">Active</param>
     /// <returns></returns>
-    public static List<Rotary.Member> Get_Club_Members(string clubtype, int cric, string membertype)
+    public static Rotary.Club_Members Get_Club_Members_Active(string clubtype, int cric, out string result)
     {
+        result = null;
         try
         {
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("clubs/"+clubtype+"/"+cric+"/members/"+membertype));
+            string url = "/v1.2/clubs/" + clubtype + "/" + cric + "/members/0/10000/active";
+
+            var task = Task.Run(() => CallAsyncGet(url));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
             {
-                throw new Exception("Erreur récupération clubs");
+                throw new Exception("Erreur récupération membres du club");
             }
+            result = task.Result;
+
+            Rotary.Club_Members members = Yemon.dnn.Functions.Deserialize<Rotary.Club_Members>(task.Result);
+
+            return members;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+    public static List<Rotary.Member> Get_Club_Members(string clubtype, int cric, string membertype, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+
+            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/members/" + membertype));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération membres du club");
+            }
+            result = task.Result;
 
             List<Rotary.Member> members = Yemon.dnn.Functions.Deserialize<List<Rotary.Member>>(task.Result);
 
@@ -181,19 +214,20 @@ public class RotaryHelper
         }
     }
 
-    public static List<Rotary.Club.Officer> Get_Club_Officers(int cric, string clubtype)
+    public static List<Rotary.Club.Officer> Get_Club_Officers(int cric, string clubtype, out string result)
     {
+        result = null;
         try
         {
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("clubs/"+clubtype+"/"+cric+"/officers?startDate=07-01-2024&endDate=06-30-2025"));
+            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/officers?startDate=07-01-2024&endDate=06-30-2025"));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
             {
                 throw new Exception("Erreur récupération clubs");
             }
-
+            result = task.Result;
             List<Rotary.Club.Officer> members = Yemon.dnn.Functions.Deserialize<List<Rotary.Club.Officer>>(task.Result);
 
             return members;
@@ -205,19 +239,20 @@ public class RotaryHelper
         }
     }
 
-    public static Rotary.Profile Get_Member_Profile(int nim)
+    public static Rotary.Profile Get_Member_Profile(int nim, out string result)
     {
+        result = null;
         try
         {
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("individuals/"+nim+"/profile"));
+            var task = Task.Run(() => CallAsyncGet("/v1.1/individuals/" + nim + "/profile"));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
             {
                 throw new Exception("Erreur récupération clubs");
             }
-
+            result = task.Result;
             Rotary.Profile member = Yemon.dnn.Functions.Deserialize<Rotary.Profile>(task.Result);
 
             return member;
@@ -233,15 +268,15 @@ public class RotaryHelper
     {
         HttpClient httpClient = new HttpClient();
 
-        var body = @"{"+
-                        "'Username': '"+_param.api_username+"',"+
-                        "'Password': '"+_param.api_password+"'"+
+        var body = @"{" +
+                        "'Username': '" + _param.api_username + "'," +
+                        "'Password': '" + _param.api_password + "'" +
                     "}";
 
 
-        var content =new StringContent(body, Encoding.UTF8, "application/json");
+        var content = new StringContent(body, Encoding.UTF8, "application/json");
 
-        var result = await httpClient.PostAsync(_param.url_api+ "authentication", content);
+        var result = await httpClient.PostAsync(_param.url_api + "/v1.1/authentication", content);
         if (result.IsSuccessStatusCode)
         {
             string t = result.Content.ReadAsStringAsync().Result;
@@ -272,7 +307,7 @@ public class RotaryHelper
             else
                 return null;
         }
-        
+
 
         var result = await httpClient.GetAsync(_param.url_api + url);
 
@@ -292,7 +327,7 @@ public class RotaryHelper
         if (result.IsSuccessStatusCode)
         {
             string t = result.Content.ReadAsStringAsync().Result;
-          
+
             return t;
         }
 
@@ -305,15 +340,17 @@ public class RotaryHelper
     }
 
 
-    public static string SynchroClubs(){
+    public static string SynchroClubs()
+    {
         string result = "";
-        var clubs = Get_Clubs();
+        string res = "";
+        var clubs = Get_Clubs(out res);
 
         if (clubs == null)
             return "Erreur récupération des clubs";
 
-        var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
-        foreach(var club in clubs)
+        var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+        foreach (var club in clubs)
         {
             var row = new Dictionary<string, object>();
 
@@ -329,27 +366,48 @@ public class RotaryHelper
             row["membercount"] = club.MemberCount;
             row["honorarymembercount"] = club.HonoraryMemberCount;
             row["dtlastupdate"] = DateTime.Now;
-            var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_club", "id", row);
+
+            var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club", "id", row);
             if (r.Key != "error")
+            {
                 result += "" + club.ClubId + " : " + club.ClubName + "<br/>";
+
+                SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
+                sql.Parameters.AddWithValue("cric", club.ClubId);
+
+                if (club.requestorOrganizations.Count > 0)
+                {
+                    sql.Parameters.AddWithValue("rotary_agreement_date", (DateTime)club.requestorOrganizations[0].LastUpdated);
+                    Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                }
+
+
+            }
+
             else
                 result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " < br /> ";
+
+
         }
-       
+
         result += clubs.Count + " récupéré(s)";
 
         return result;
     }
 
-    public static string SynchroMembers(){
+    public static string SynchroMembers()
+    {
         string result = "";
-        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
-        var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ri_member"));
+        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+        var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
         foreach (var club in clubs)
         {
-            var members = Get_Club_Members(club.ClubType, club.ClubId, "active");
+            string res = "";
+            var members = Get_Club_Members_Active(club.ClubType, club.ClubId, out res);
 
-            foreach(var member in members)
+            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_club_member where clubid=" + club.ClubId);
+
+            foreach (var member in members.ClubMembers)
             {
                 var row = new Dictionary<string, object>();
                 var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId);
@@ -357,36 +415,50 @@ public class RotaryHelper
                     row["id"] = dbmember.id;
 
                 row["memberid"] = member.MemberId;
-                row["membertype"] = member.MemberType;
+                row["membertype"] = "active";
                 row["firstname"] = member.FirstName;
                 row["lastname"] = member.LastName;
                 row["suffix"] = member.Suffix;
-                row["admissiondate"] = member.AdmissionDate;
-                row["dtlastupdate"] = DateTime.Now;
+                row["ishonorarymember"] = member.IsHonoraryMember();
+                row["issatellitemember"] = member.IsSatelliteMember();
+                row["dtlastupdate"] = member.DtLastUpdate();
                 row["profile"] = Yemon.dnn.Functions.Serialize(member);
-                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_member", "id", row);
+
+                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
                 if (r.Key != "error")
-                    result += "" + club.ClubId + " : " + club.ClubName +" : " + member.MemberType + " " + member.FirstName + " "+ member.LastName + "<br/>";
+                {
+                    result += "" + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";
+
+                    row = new Dictionary<string, object>();
+                    row["id"] = null;
+                    row["memberid"] = member.MemberId;
+                    row["clubid"] = club.ClubId;
+                    row["dtlastupdate"] = DateTime.Now;
+                    r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club_member", "id", row);
+                }
+
                 else
-                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.MemberType + " " + member.FirstName + " " + member.LastName + "<br/>";
+                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";
             }
         }
         return result;
     }
 
-    public static string SynchroOfficers(){
+    public static string SynchroOfficers()
+    {
         string result = "";
-        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ri_club"));
+        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         if (clubs == null)
             return "Erreur récupération des clubs";
 
-        var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ri_officer"));
+        var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
 
         foreach (var club in clubs)
         {
-            var officers = Get_Club_Officers(club.ClubId,club.ClubType);
+            string res = "";
+            var officers = Get_Club_Officers(club.ClubId, club.ClubType, out res);
 
-            foreach(var officer in officers)
+            foreach (var officer in officers)
             {
                 var row = new Dictionary<string, object>();
                 var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
@@ -407,12 +479,420 @@ public class RotaryHelper
                 row["lastupdated"] = officer.LastUpdated;
                 row["dtlastupdate"] = DateTime.Now;
 
-                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ri_officer", "id", row);
+                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_officer", "id", row);
                 if (r.Key != "error")
                     result += "" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/>";
                 else
                     result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/> ";
             }
+        }
+        return result;
+    }
+
+    public static string UpdateClubsOfficers()
+    {
+        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "");
+        string result = "";
+        foreach (var club in clubs)
+        {
+            result += club.name + "<br/>";
+        }
+        return result;
+    }
+
+    public static string UpdateClubsMembers()
+    {
+        string result = "";
+        string errors = "";
+        var allclubs = DataMapping.ListClubs();
+        var members = DataMapping.ListMembers();
+
+        var listnew = new List<Rotary.Member>();
+        var listmaj = new List<Rotary.Member>();
+        var listtrf = new List<Rotary.Member>();
+        var listdel = new List<Rotary.Member>();
+
+        var listclublog = new List<Rotary.ClubLog>();
+
+        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ToList();
+        var riclubmember = Yemon.dnn.DataMapping.ExecSql<Rotary.Club_Member>(new SqlCommand("select * from ais_ri_club_member"));
+        if(Const.CLUB_SATELLITE_APART) // on ajoute les clubs satellites a la liste des clubs autorisés car ils sont gérés différement du rotary
+        {
+            var clubssatellites = new List<Club>();
+            foreach(var club in clubs){
+                int cricsatellite = Functions.GetClubSatellite(club.cric);
+                if (cricsatellite > 0)
+                {
+                    var clubsat = DataMapping.GetClub(cricsatellite);
+                    if(clubsat!=null)
+                        clubssatellites.Add(clubsat);
+                    else
+                        errors += "Le club "+club.name+" "+club.cric+" a un club satellite "+cricsatellite+" qui n'a pas été trouvé dans la base"+Environment.NewLine;
+
+                }
+            }
+            foreach (var club in clubssatellites)
+            {
+                clubs.Add(club);
+            }
+        }
+
+
+        #region phase 1 - recherche des nouveaux membres et des maj
+
+        foreach (var club in clubs)
+        {
+            var clublog = listclublog.Find(c => c.Cric == club.cric);
+            if (clublog == null)
+            {
+                clublog = new Rotary.ClubLog(club.cric, club.name);
+                listclublog.Add(clublog);
+            }
+            int cricsatellite = Functions.GetClubSatellite(club.cric);
+
+            var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + club.cric + ")"));
+
+            var clubmembers = DataMapping.ListMembers(club.cric);
+            if (Const.CLUB_SATELLITE_APART && cricsatellite > 0)
+            {
+                var satclubmembers = DataMapping.ListMembers(cricsatellite);
+                foreach (var member in satclubmembers)
+                {
+                    clubmembers.Add(member);
+                }
+            }
+            foreach (var member in rimembers)
+            {
+                var m = clubmembers.Find(mm => mm.nim == member.MemberId);
+                if (m != null)
+                {
+                    if (Const.CLUB_SATELLITE_APART && cricsatellite > 0 && member.IsSatelliteMember) // transfert vers club satellite
+                    {
+                        listtrf.Add(member);
+                        clublog.Logs += "<p>Transfert vers club sat " + cricsatellite + " " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
+                    }
+
+                    if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club)
+                    {
+                        listmaj.Add(member);                        
+                    }
+
+
+                }
+                else
+                {
+                    m = members.Find(mm => mm.nim == member.MemberId);
+                    if (m != null)
+                    {
+
+                        if (Const.CLUB_SATELLITE_APART && cricsatellite > 0 && member.IsSatelliteMember)
+                        {
+                            if (m.cric != cricsatellite) // transfert si le membre n'est pas dans le club satellite
+                            {
+                                listtrf.Add(member);
+                                clublog.Logs += "<p>Transfert club " + m.cric + " vers club sat " + cricsatellite + " " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
+                            }
+                        }
+                        else // transfert d'un autre club
+                        {
+                            listtrf.Add(member);
+                            clublog.Logs += "<p>Transfert du club " + m.cric + " " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
+                        }
+                        if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club)
+                        {
+                            listmaj.Add(member);                            
+                        }
+                    }
+                    else
+                    {
+                        listnew.Add(member);
+                        //clublog.Logs += "<p>Nouveau membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region phase 2 - membres a effacer
+
+        foreach (var club in clubs)
+        {
+            var clublog = listclublog.Find(c => c.Cric == club.cric);
+            if (clublog == null)
+            {
+                clublog = new Rotary.ClubLog(club.cric, club.name);
+                listclublog.Add(clublog);
+            }
+            int cricsatellite = Functions.GetClubSatellite(club.cric);
+
+            
+            var clubmembers = DataMapping.ListMembers(club.cric);
+
+            if (Const.CLUB_SATELLITE_APART && cricsatellite > 0)
+            {
+                var satclubmembers = DataMapping.ListMembers(cricsatellite);
+                foreach (var member in satclubmembers)
+                {
+                    clubmembers.Add(member);
+                }
+            }
+
+            int cricparent = Functions.GetClubParent(club.cric);
+
+            var rimembers = new List<Rotary.Member>();
+            if(Const.CLUB_SATELLITE_APART && cricparent > 0) // on est dans le club satellite donc on prends les membres du club parent
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + cricparent + ")"));
+
+            else
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + club.cric + ")"));
+
+            foreach (var member in clubmembers)
+            {
+                var m = rimembers.Find(mm => mm.MemberId == member.nim);
+                if (m == null)
+                {
+                    listdel.Add(m);
+                    clublog.Logs += "<p>Suppression membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
+                }
+
+            }
+
+        }
+
+        #endregion
+
+        #region phase 3 - transfert des membres 
+
+        var riclubmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club_Member>(new SqlCommand("select * from ais_ri_club_member"));
+
+        foreach (var member in listtrf)
+        {
+            var m = DataMapping.GetMemberByNim(member.MemberId);
+
+            var cm = riclubmembers.Find(c => c.MemberId == member.MemberId);
+            var club = allclubs.Find(c => c.cric == cm.ClubId);
+
+            if (club != null)
+            {
+                var clublog = listclublog.Find(c => c.Cric == club.cric);
+                if (clublog == null)
+                {
+                    clublog = new Rotary.ClubLog(club.cric, club.name);
+                    listclublog.Add(clublog);
+                }
+
+                if (member.IsSatelliteMember && Const.CLUB_SATELLITE_APART)
+                {
+                    int cricsatellite = Functions.GetClubSatellite(cm.ClubId);
+
+
+                    club = allclubs.Find(c => c.cric == cricsatellite);
+                    if (club == null)
+                    {
+                        clublog.Errors += "Club satellite introuvable " + cricsatellite + " transfert membre impossible " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                    }
+                    else
+                    {
+                        m.cric = club.cric;
+                        m.club_name = club.name;
+                    }
+
+                }
+                else
+                {
+                    m.cric = club.cric;
+                    m.club_name = club.name;
+                }
+                if (!DataMapping.UpdateMember(m))
+                {
+                    clublog.Errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                }
+            }
+            else
+            {
+                errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + " club " + cm.ClubId + " introuvable " + Environment.NewLine;
+            }
+
+        }
+
+        #endregion
+
+        #region phase 4 - ajout nouveaux membres
+
+        foreach (var member in listnew)
+        {
+            var m = DataMapping.GetMemberByNim(member.MemberId);
+            if(m != null){
+                
+            }
+            var cm = riclubmember.Find(c => c.MemberId == member.MemberId);
+            
+            var club = clubs.Find(c => c.cric ==cm.ClubId);
+            if (club != null)
+            {
+                var clublog = listclublog.Find(c => c.Cric == club.cric);
+                if (clublog == null)
+                {
+                    clublog = new Rotary.ClubLog(club.cric, club.name);
+                    listclublog.Add(clublog);
+                }
+
+                if(m!=null){
+                    listmaj.Add(member);
+                }
+                else
+                {
+                    clublog.Logs += "Ajout membre " + member.MemberId + " " + member.FirstName + " " + member.LastName+Environment.NewLine;
+                }
+            }
+            else
+            {
+                errors += "Le membre est dans un club qui n'a pas autorisé la synchro ri "+ member.MemberId+" " + member.FirstName + " " + member.LastName + Environment.NewLine;
+            }
+        }
+        #endregion
+
+        #region phase 5 - maj
+
+        foreach (var member in listmaj)
+        {
+
+            var m = DataMapping.GetMemberByNim(member.MemberId);
+
+            var club = clubs.Find(c => c.cric == m.cric);
+            if (club != null)
+            {
+                var clublog = listclublog.Find(c => c.Cric == club.cric);
+                if (clublog == null)
+                {
+                    clublog = new Rotary.ClubLog(club.cric, club.name);
+                    listclublog.Add(clublog);
+                }
+
+                var profile = Yemon.dnn.Functions.Deserialize<Rotary.Club_Members.Member>(member.Profile);
+                if (profile == null)
+                {
+                    clublog.Errors += "Erreur extraction profil membre ri " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                    // erreur de récupération du profil membre ri
+                }
+                else
+                {
+
+                    #region changements
+                    string changements = "";
+                    profile.FirstName = Functions.ToTitleCase(profile.FirstName).Trim();
+                    profile.MiddleName = Functions.ToTitleCase(profile.MiddleName).Trim();
+                    profile.LastName = profile.LastName.ToUpper().Trim();
+                    string name = (profile.FirstName + " " + profile.MiddleName).Trim();
+                    if (m.name != name)
+                    {
+                        changements += "name("+m.name+">"+name+"),";
+                        m.name = name;
+                    }
+                    if (m.surname != profile.LastName)
+                    {
+                        changements += "surname("+m.surname+">"+profile.LastName+"),";
+                        m.surname = profile.LastName;
+                    }
+                    var email = "";
+                    foreach (var em in profile.Email)
+                    {
+                        if (em.IsPrimary)
+                        {
+                            email = (""+em.EmailAddress).ToLower();
+                        }
+                    }
+                    if (m.email != email && email!="")
+                    {
+                        changements += "email("+m.email+">"+email+"),";
+                        m.email = email;
+                    }
+                    if (changements.Length > 0)
+                    {
+                        changements = changements.Substring(0, changements.Length - 1);
+                        clublog.Logs += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "(" + changements + ")" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        //clublog.Logs += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "(pas de changements)" + Environment.NewLine;
+                    }
+
+                    #endregion
+
+
+                    if (club.rotary_agreement_type == "auto")
+                    {
+                        if (!DataMapping.UpdateMember(m))
+                        {
+                            clublog.Errors += "Erreur mise à jour membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                        }
+                        else
+                        {
+                            var sql = new SqlCommand("update ais_members set dt_update_import_ri_club=@date where nim=@nim");
+                            sql.Parameters.AddWithValue("nim", m.nim);
+                            sql.Parameters.AddWithValue("date", member.DtLastUpdate);
+                            int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                            if (nb == 0)
+                            {
+                                clublog.Errors += "Erreur maj date membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                            }
+                        }
+
+                    }
+                }
+
+
+
+
+            }
+            else
+            {
+
+                errors += "Le membre est dans un club qui n'a pas autorisé la synchro ri " + m.name + " " + m.surname + Environment.NewLine;
+
+            }
+
+
+        }
+
+        #endregion
+
+        if(errors!="")
+        {
+            string[] errs = errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            result += "<div>Erreur(s) :";
+            foreach (var error in errs)
+            {
+                result += "<p>"+error+"</p>";
+            }
+            result += "</div>";
+        }
+
+        foreach (var logclub in listclublog)
+        {
+            result += "<div><strong>" + logclub.Name + " " + logclub.Cric + "</strong></div>";
+            if (logclub.Errors.Length > 0)
+            {
+                string[] errs = logclub.Errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                result += "<div>" + errs.Length + " Erreur(s) :";
+                foreach (var error in errs)
+                {
+                    result += "<p>" + error + "</p>";
+                }
+                result += "</div>";
+            }
+            if (logclub.Logs.Length > 0)
+            {
+                string[] cc = logclub.Logs.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                result += "<div>";
+                foreach (var c in cc)
+                {
+                    result += "<p>" + c + "</p>";
+                }
+                result += "</div>";
+            }
+
         }
         return result;
     }

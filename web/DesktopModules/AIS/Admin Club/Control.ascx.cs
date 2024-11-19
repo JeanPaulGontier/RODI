@@ -125,6 +125,27 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         tbx_name.Text = club.name;
         tbx_payment_method.Text = club.payment_method;
         tbx_nb_free_of_charge.Text = ""+club.nb_free_of_charge;
+        hf_synchroRI.Value = "" + club.rotary_agreement_type;
+        if(club.rotary_agreement_date==null)
+        {
+            l_synchroRI.Text = "La synchronisation n'est pas autorisée par le club au niveau de my Rotary";
+        }
+        else
+        {
+            l_synchroRI.Text = "La synchronisation n'est pas active";
+            switch (hf_synchroRI.Value)
+            {
+                case "auto":
+                    l_synchroRI.Text = "La synchronisation est active";
+                    break;
+                case "analyse":
+                    l_synchroRI.Text = "La synchronisation analyse les différences mais ne met pas à jour les membres et le comité";
+                    break;
+            }
+
+        }
+
+
         tbx_seo.Enabled = false;
 
         tbx_adr1.Enabled = true;
@@ -173,6 +194,7 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         club.name = tbx_name.Text.ToUpper(); ;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = "" + tbx_domaine.Text;
+        club.rotary_agreement_type = "" + hf_synchroRI.Value;
 
         int last_cric = 0;
         int.TryParse("" + hf_last_cric.Value, out last_cric);

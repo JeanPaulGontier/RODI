@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -79,11 +80,13 @@ public class Rotary
         public string LastName { get; set; }
         public string Suffix { get; set; }
         public string AdmissionDate { get; set; }
+        public bool IsHonoraryMember { get; set; }
+        public bool IsSatelliteMember { get; set; }
         public DateTime DtLastUpdate { get; set; }
         public string Profile { get; set; }
     }
 
-    public class Profile
+    public class Profile 
     {
         public Individual individual { get; set; }
         public List<Address> address { get; set; }
@@ -199,10 +202,106 @@ public class Rotary
 
         }
 
+        public class Role {
+            public DateTime? AdmissionDate { get; set; }
+            public bool IsSatelliteMember { get; set; }
+            public string MemberType { get; set; }
+            public DateTime? OriginalAdmissionDate { get; set; }
+            public DateTime? TerminationDate { get; set; }
+            public string TerminationReason { get; set; }
+            public DateTime LastUpdated { get; set; }
+        }
+
         public class Website
         {
 
         }
     }
-   
+
+    
+    public class Club_Members{
+    
+        public List<Member> ClubMembers { get; set; }
+
+        public class Member : Profile.Individual {
+
+            public bool IsHonoraryMember()
+            {
+                if (Role.Count > 0)
+                {
+                    foreach (var role in Role)
+                    {
+                        if (role.MemberType=="Honorary Member")
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            public bool IsSatelliteMember(){
+                if(Role.Count>0){
+                    foreach(var role in Role)
+                    {
+                        if(role.IsSatelliteMember){
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            public DateTime DtLastUpdate(){
+                DateTime date = DateTime.MinValue;
+                if (LastUpdated > date)
+                    date = LastUpdated;
+                foreach (var a in Address)
+                    if (a.LastUpdated > date)
+                        date = a.LastUpdated;
+                foreach (var a in Email)
+                    if (a.LastUpdated > date)
+                        date = a.LastUpdated;
+                foreach (var a in Fax)
+                    if (a.LastUpdated > date)
+                        date = a.LastUpdated;
+                foreach (var a in Phone)
+                    if (a.LastUpdated > date)
+                        date = a.LastUpdated;
+                foreach (var a in Role)
+                    if (a.LastUpdated > date)
+                        date = a.LastUpdated;
+
+                return date;
+            }
+
+            public List<Profile.Address> Address { get; set; }
+            public List<Profile.Email> Email { get; set; }
+            public List<Profile.Fax> Fax { get; set; }
+            public List<Profile.Phone> Phone { get; set; }
+            public List<Profile.Role> Role { get; set; }
+           
+        }
+    }
+
+    public class Club_Member
+    {
+        public int id { get; set; }
+        public int MemberId { get; set; }
+        public int ClubId { get; set; }       
+        public DateTime DtLastUpdate { get; set; }
+    }
+
+    public class ClubLog
+    {
+        public int Cric { get; set; }
+        public string Name { get; set; }
+        public string Errors { get; set; }
+        public string Logs { get; set; }
+
+        public ClubLog(int cric, string name){
+            Cric = cric;
+            Name = name;
+            Errors = "";
+            Logs = "";
+        }
+    }
 }
