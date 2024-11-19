@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 19/11/2024
 - correction pb de sélection destinataire mailing district par rôles pour les utilisateurs non membres
 - ajout possibilité de tri sur les entêtes de colonnes dans l'écran suivi des factures clubs
 - modification du skin club, ce qui permet de supprimer le module bureau de la page d'accueil du club
