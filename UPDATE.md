@@ -6,6 +6,7 @@
 - dans l'administration club on peut maintenant autoriser la synchro RI
 - l'écran de synchro RI contient de nouvelles fonctionnalitées 
 - le moteur de synchronisation des membres et des roles est maintenant fonctionnel et peut être activé si tous les clubs ont autorisé RODI Association comme prestataire de gestion des clubs au niveau de my Rotary
+- les membres d'honneurs des clubs récupérés du RI seront géré séparément et ne seront plus modifiables dans le district, ce qui permettra d'avoir un membre dans un club et le même membre d'honneur d'un autre club
 
 
 MAJ BDD :
