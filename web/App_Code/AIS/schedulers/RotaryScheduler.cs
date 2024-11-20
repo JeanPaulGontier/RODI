@@ -69,6 +69,14 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
+            if (taskname.Contains("ump"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Members Profiles</div>");
+                string result = RotaryHelper.UpdateMembersProfiles();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
         }
         catch (Exception exc)
         {

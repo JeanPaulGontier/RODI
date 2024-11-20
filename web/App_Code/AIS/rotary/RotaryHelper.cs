@@ -263,6 +263,37 @@ public class RotaryHelper
             return null;
         }
     }
+    public static List<int> Get_Members_To_Update(DateTime start,DateTime end, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            var task = Task.Run(() => CallAsyncGet("/v1.1/individuals/updates?startDate="+start.ToString("yyyy-MM-dd")+"&endDate="+end.ToString("yyyy-MM-dd")));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération clubs");
+            }
+            result = task.Result;
+            var updates = Yemon.dnn.Functions.Deserialize<List<Rotary.Update>>(task.Result);
+            var nims = new List<int>();
+            foreach (var u in updates)
+            {
+                if(!nims.Contains(u.MemberId))
+                    nims.Add(u.MemberId);
+            }
+            return nims;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+
+
 
     public static async Task<bool> CallAsyncLogin()
     {
@@ -405,8 +436,6 @@ public class RotaryHelper
             string res = "";
             var members = Get_Club_Members_Active(club.ClubType, club.ClubId, out res);
 
-            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_club_member where clubid=" + club.ClubId);
-
             foreach (var member in members.ClubMembers)
             {
                 var row = new Dictionary<string, object>();
@@ -415,6 +444,7 @@ public class RotaryHelper
                     row["id"] = dbmember.id;
 
                 row["memberid"] = member.MemberId;
+                row["clubid"] = club.ClubId;
                 row["membertype"] = "active";
                 row["firstname"] = member.FirstName;
                 row["lastname"] = member.LastName;
@@ -423,20 +453,13 @@ public class RotaryHelper
                 row["issatellitemember"] = member.IsSatelliteMember();
                 row["dtlastupdate"] = member.DtLastUpdate();
                 row["profile"] = Yemon.dnn.Functions.Serialize(member);
+                
 
                 var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
                 if (r.Key != "error")
                 {
-                    result += "" + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";
-
-                    row = new Dictionary<string, object>();
-                    row["id"] = null;
-                    row["memberid"] = member.MemberId;
-                    row["clubid"] = club.ClubId;
-                    row["dtlastupdate"] = DateTime.Now;
-                    r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club_member", "id", row);
+                    result += "" + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";                  
                 }
-
                 else
                     result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";
             }
@@ -514,8 +537,7 @@ public class RotaryHelper
 
         var listclublog = new List<Rotary.ClubLog>();
 
-        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ToList();
-        var riclubmember = Yemon.dnn.DataMapping.ExecSql<Rotary.Club_Member>(new SqlCommand("select * from ais_ri_club_member"));
+        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ThenBy(c=>c.name).ToList();
         if(Const.CLUB_SATELLITE_APART) // on ajoute les clubs satellites a la liste des clubs autorisés car ils sont gérés différement du rotary
         {
             var clubssatellites = new List<Club>();
@@ -550,7 +572,7 @@ public class RotaryHelper
             }
             int cricsatellite = Functions.GetClubSatellite(club.cric);
 
-            var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + club.cric + ")"));
+            var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=0 and clubid=" + club.cric ));
 
             var clubmembers = DataMapping.ListMembers(club.cric);
             if (Const.CLUB_SATELLITE_APART && cricsatellite > 0)
@@ -642,10 +664,10 @@ public class RotaryHelper
 
             var rimembers = new List<Rotary.Member>();
             if(Const.CLUB_SATELLITE_APART && cricparent > 0) // on est dans le club satellite donc on prends les membres du club parent
-                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + cricparent + ")"));
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=0 and clubid=" + cricparent ));
 
             else
-                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember = 0 and memberid in (select memberid from ais_ri_club_member where clubid=" + club.cric + ")"));
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=0 and clubid=" + club.cric ));
 
             foreach (var member in clubmembers)
             {
@@ -664,14 +686,11 @@ public class RotaryHelper
 
         #region phase 3 - transfert des membres 
 
-        var riclubmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club_Member>(new SqlCommand("select * from ais_ri_club_member"));
-
         foreach (var member in listtrf)
         {
             var m = DataMapping.GetMemberByNim(member.MemberId);
 
-            var cm = riclubmembers.Find(c => c.MemberId == member.MemberId);
-            var club = allclubs.Find(c => c.cric == cm.ClubId);
+            var club = allclubs.Find(c => c.cric == member.ClubId);
 
             if (club != null)
             {
@@ -684,7 +703,7 @@ public class RotaryHelper
 
                 if (member.IsSatelliteMember && Const.CLUB_SATELLITE_APART)
                 {
-                    int cricsatellite = Functions.GetClubSatellite(cm.ClubId);
+                    int cricsatellite = Functions.GetClubSatellite(member.ClubId);
 
 
                     club = allclubs.Find(c => c.cric == cricsatellite);
@@ -704,14 +723,14 @@ public class RotaryHelper
                     m.cric = club.cric;
                     m.club_name = club.name;
                 }
-                if (!DataMapping.UpdateMember(m))
-                {
-                    clublog.Errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
-                }
+                //if (!DataMapping.UpdateMember(m))
+                //{
+                //    clublog.Errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                //}
             }
             else
             {
-                errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + " club " + cm.ClubId + " introuvable " + Environment.NewLine;
+                errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + " club " + member.ClubId + " introuvable " + Environment.NewLine;
             }
 
         }
@@ -726,9 +745,8 @@ public class RotaryHelper
             if(m != null){
                 
             }
-            var cm = riclubmember.Find(c => c.MemberId == member.MemberId);
             
-            var club = clubs.Find(c => c.cric ==cm.ClubId);
+            var club = clubs.Find(c => c.cric ==member.ClubId);
             if (club != null)
             {
                 var clublog = listclublog.Find(c => c.Cric == club.cric);
@@ -761,6 +779,7 @@ public class RotaryHelper
             var m = DataMapping.GetMemberByNim(member.MemberId);
 
             var club = clubs.Find(c => c.cric == m.cric);
+            
             if (club != null)
             {
                 var clublog = listclublog.Find(c => c.Cric == club.cric);
@@ -781,8 +800,14 @@ public class RotaryHelper
 
                     #region changements
                     string changements = "";
-                    profile.FirstName = Functions.ToTitleCase(profile.FirstName).Trim();
-                    profile.MiddleName = Functions.ToTitleCase(profile.MiddleName).Trim();
+
+                    if((m.honorary_member==Const.YES) != profile.IsHonoraryMember())
+                    {
+                        changements += "honorary(" + m.honorary_member + ">" + (profile.IsHonoraryMember() ? "O" : "N") + "),";
+                        m.honorary_member = (profile.IsHonoraryMember() ? Const.YES : Const.NO);
+                    }
+                    profile.FirstName = Functions.ToTitleCase(profile.FirstName.ToLower()).Trim();
+                    profile.MiddleName = Functions.ToTitleCase(profile.MiddleName.ToLower()).Trim();
                     profile.LastName = profile.LastName.ToUpper().Trim();
                     string name = (profile.FirstName + " " + profile.MiddleName).Trim();
                     if (m.name != name)
@@ -800,7 +825,7 @@ public class RotaryHelper
                     {
                         if (em.IsPrimary)
                         {
-                            email = (""+em.EmailAddress).ToLower();
+                            email = (""+em.Address).ToLower();
                         }
                     }
                     if (m.email != email && email!="")
@@ -821,7 +846,7 @@ public class RotaryHelper
                     #endregion
 
 
-                    if (false && club.rotary_agreement_type == "auto")
+                    if (club.rotary_agreement_type == "auto")
                     {
                         if (!DataMapping.UpdateMember(m))
                         {
@@ -894,6 +919,43 @@ public class RotaryHelper
             }
 
         }
+        return result;
+    }
+
+    public static string UpdateMembersProfiles(){
+        string result = "";
+        string res = "";
+
+        DateTime start = new DateTime(2013,7,1);
+        var item = Yemon.dnn.Helpers.GetItem("RotaryUpdateStartDate");
+        if (item != null)
+        {
+            start = Yemon.dnn.Functions.Deserialize<DateTime>(""+item);
+            start = start.AddDays(-1);
+        }
+        
+        var nims = Get_Members_To_Update(start,DateTime.Now,out res);
+        var members = DataMapping.ListMembers(max: int.MaxValue);
+        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ToList();
+
+        foreach (var member in members){
+            var club = clubs.Find(c => c.cric == member.cric);
+            if(club!=null)
+            {
+                if(nims.Contains(member.nim))
+                {
+                    var profile = Get_Member_Profile(member.nim, out res);
+                    if (profile != null)
+                    {
+                        result += "<p>Maj profil membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
+                    }
+                }
+            }
+        }
+
+        result += "</div>";
+        Yemon.dnn.Helpers.SetItem("RotaryUpdateStartDate", Yemon.dnn.Functions.Serialize(DateTime.Now), "", keephistory: false);
+
         return result;
     }
 

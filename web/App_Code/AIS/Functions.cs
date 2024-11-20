@@ -2408,7 +2408,7 @@ namespace AIS
 
         public static int GetClubSatellite(int cric){
         
-            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) - 1; i++)
+            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) ; i++)
             {
                 if (Const.CLUB_SATELLITE_PARENT_CHILD[i, 0] == cric)
                 {
@@ -2422,7 +2422,7 @@ namespace AIS
         public static int GetClubParent(int cric)
         {
 
-            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) - 1; i++)
+            for (int i = 0; i < (Const.CLUB_SATELLITE_PARENT_CHILD.Length / 2) ; i++)
             {
                 if (Const.CLUB_SATELLITE_PARENT_CHILD[i, 1] == cric)
                 {

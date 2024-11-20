@@ -74,6 +74,7 @@ public class Rotary
     {
         public int? id { get; set; }
         public int MemberId { get; set; }
+        public int ClubId { get; set; }
         public string MemberType { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -112,6 +113,7 @@ public class Rotary
         public class Individual
         {
             public int MemberId { get; set; }
+            public int ClubId { get; set; }
             public string Prefix { get; set; }
             public string FirstName { get; set; }
             public string MiddleName { get; set; }
@@ -129,11 +131,30 @@ public class Rotary
             public DateTime LastUpdated { get; set; }
         }
 
-
         public class Email
         {
-            public string EmailAddress { get; set; }
-            public string EmailType { get; set; }
+            public string Type { get; set; }
+            public string Address { get; set; }
+            public string EmailAddress 
+            { 
+                get {
+                    return Address;
+                } 
+                set {
+                    Address = value;
+                } 
+            }
+            public string EmailType
+            {
+                get
+                {
+                    return Type;
+                }
+                set
+                {
+                    Type = value;
+                }
+            }
             public bool IsPrimary { get; set; }
             public int MemberId { get; set; }
             public bool IsOnlineId { get; set; }
@@ -156,10 +177,54 @@ public class Rotary
 
         public class Address
         {
-            public string AddressType { get; set; }
-            public string AddressLine1 { get; set; }
-            public string AddressLine2 { get; set; }
-            public string AddressLine3 { get; set; }
+            public string AddressType
+            {
+                get
+                {
+                    return Type;
+                }
+                set
+                {
+                    Type = value;
+                }
+            }
+            public string AddressLine1
+            {
+                get
+                {
+                    return Line1;
+                }
+                set
+                {
+                    Line1 = value;
+                }
+            }
+            public string AddressLine2
+            {
+                get
+                {
+                    return Line2;
+                }
+                set
+                {
+                    Line2 = value;
+                }
+            }
+            public string AddressLine3
+            {
+                get
+                {
+                    return Line3;
+                }
+                set
+                {
+                    Line3 = value;
+                }
+            }
+            public string Type { get; set; }
+            public string Line1 { get; set; }
+            public string Line2 { get; set; }
+            public string Line3 { get; set; }
             public string Country { get; set; }
             public string State { get; set; }
             public string InternationalProvince { get; set; }
@@ -174,27 +239,75 @@ public class Rotary
         public class Phone
         {
             public int MemberId { get; set; }
-            public string PhoneType { get; set; }
-            public string PhoneNumber {  get; set; }
-            public string PhoneExtension { get; set; }
+            public string PhoneType
+            {
+                get
+                {
+                    return Type;
+                }
+                set
+                {
+                    Type = value;
+                }
+            }
+            public string PhoneNumber
+            {
+                get
+                {
+                    return Number;
+                }
+                set
+                {
+                    Number = value;
+                }
+            }
+            public string PhoneExtension
+            {
+                get
+                {
+                    return Extension;
+                }
+                set
+                {
+                    Extension = value;
+                }
+            }
+            public string PhoneCountryCode
+            {
+                get
+                {
+                    return CountryCode;
+                }
+                set
+                {
+                    CountryCode = value;
+                }
+            }
+            public string PhoneCountryName
+            {
+                get
+                {
+                    return Country;
+                }
+                set
+                {
+                    Country = value;
+                }
+            }
+
+            public string Type { get; set; }
+            public string Number { get; set; }
+            public string Extension { get; set; }
             public string CountryCode { get; set; }
-            public string PhoneCountryName { get; set; }
+            public string Country { get; set; }
             public bool IsPrimary {  set; get; }
             public string Key {  get; set; }
             public DateTime LastUpdated { get; set; }
         }
 
-        public class Fax
+        public class Fax: Phone
         {
-            public int MemberId { get; set; }
-            public string PhoneType { get; set; }
-            public string PhoneNumber { get; set; }
-            public string PhoneExtension { get; set; }
-            public string CountryCode { get; set; }
-            public string PhoneCountryName { get; set; }
-            public bool IsPrimary { set; get; }
-            public string Key { get; set; }
-            public DateTime LastUpdated { get; set; }
+           
         }
 
         public class Expertise
@@ -282,14 +395,6 @@ public class Rotary
         }
     }
 
-    public class Club_Member
-    {
-        public int id { get; set; }
-        public int MemberId { get; set; }
-        public int ClubId { get; set; }       
-        public DateTime DtLastUpdate { get; set; }
-    }
-
     public class ClubLog
     {
         public int Cric { get; set; }
@@ -303,5 +408,13 @@ public class Rotary
             Errors = "";
             Logs = "";
         }
+    }
+
+    public class Update
+    {
+        public int MemberId { get; set; }
+        public string EntityType { get; set; }
+        public string Key { get; set; }
+        public DateTime LastUpdated {  get; set; } 
     }
 }

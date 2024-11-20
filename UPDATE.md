@@ -10,6 +10,10 @@
 
 MAJ BDD :
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ais_ri_club_member]') AND type in (N'U'))
+DROP TABLE [dbo].[ais_ri_club_member]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ri_club]') AND type in (N'U'))
 DROP TABLE [dbo].[ri_club]
 GO
@@ -35,18 +39,6 @@ CREATE TABLE [dbo].[ais_ri_club](
 	[HonoraryMemberCount] [int] NULL,
 	[DtLastUpdate] [datetime] NULL,
  CONSTRAINT [PK_ri_club] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-CREATE TABLE [dbo].[ais_ri_club_member](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[MemberId] [int] NULL,
-	[ClubId] [int] NULL,
-	[DtLastUpdate] [datetime] NULL,
- CONSTRAINT [PK_ri_club_member] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -100,7 +92,11 @@ ADD rotary_agreement_date datetime NULL;
 ALTER TABLE [dbo].[ais_clubs]
 ADD rotary_agreement_type [nvarchar](50) NULL;
 
+ALTER TABLE [dbo].[ais_clubs]
+ADD cric_satellite int NULL;
 
+ALTER TABLE [dbo].[ais_ri_member]
+ADD ClubId int NULL;
 
 ###### 23/10/2024
 - moteur de synchronisation Clubs, Membres & Officers club RI -> RODI
