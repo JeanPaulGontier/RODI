@@ -439,7 +439,7 @@ public class RotaryHelper
             foreach (var member in members.ClubMembers)
             {
                 var row = new Dictionary<string, object>();
-                var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId);
+                var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember== member.IsHonoraryMember());
                 if (dbmember != null)
                     row["id"] = dbmember.id;
 
@@ -883,7 +883,21 @@ public class RotaryHelper
 
         #endregion
 
-        if(errors!="")
+        #region phase 6 - membres honoraires
+        foreach(var club in clubs){
+            var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=1 and clubid=" + club.cric));
+            var clublog = listclublog.Find(c => c.Cric == club.cric);
+            if (clublog == null)
+            {
+                clublog = new Rotary.ClubLog(club.cric, club.name);
+                listclublog.Add(clublog);
+            }
+            foreach (var member in rimembers){
+                clublog.Logs += "<p><em>Membre d'honneur " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</em></p>";
+            }
+        }
+        #endregion
+        if (errors!="")
         {
             string[] errs = errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             result += "<div>Erreur(s) :";
