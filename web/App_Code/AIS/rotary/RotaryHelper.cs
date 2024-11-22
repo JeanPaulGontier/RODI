@@ -1405,7 +1405,7 @@ public class RotaryHelper
                     {
                         if (m.telephone != telri)
                         {
-                            changements += "tel_pro(" + m.telephone + ">" + telri + "),";
+                            changements += "tel(" + m.telephone + ">" + telri + "),";
                             m.telephone = telri;
                         }
 

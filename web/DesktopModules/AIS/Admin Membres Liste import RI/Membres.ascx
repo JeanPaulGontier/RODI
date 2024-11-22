@@ -30,7 +30,7 @@
 <asp:Label ID="Label1" runat="server" Text="Recherche :"></asp:Label>
 <asp:TextBox runat="server" ID="TXT_Critere" AutoPostBack="true" OnTextChanged="TXT_Critere_TextChanged" ></asp:TextBox>
 <asp:Label ID="LBL_Nb" runat="server"></asp:Label>
-<asp:Button runat="server" ID="BT_Import" Text="Mettre à jour les membres" CssClass="btn btn-primary" ToolTip="Mettre à jour les membres à partir d'un fichier Excel extrait de Rotary.org" CausesValidation="false" OnClick="BT_Import_Click" />
+<asp:Button runat="server" ID="BT_Import" Text="Mettre à jour les membres" CssClass="btn btn-primary" CausesValidation="false" OnClick="BT_Import_Click" />
 <asp:Button runat="server" ID="BT_Ajout" Text="Ajouter un membre" CssClass="btn btn-primary" ToolTip="Ajouter un membre" CausesValidation="false" OnClick="BT_Ajout_Click"  Visible="false"/>
 <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_ParentInfo">Le club possède un club satellite : <%=clubsatellitename %></asp:Panel>
 <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_SatelliteInfo">Vous êtes dans un club satellite, l'ajout ou la mise à jour des membres doit être faite par le club parent : <%=clubparentname %></asp:Panel>
@@ -193,11 +193,9 @@
     <h2>Informations issues de Rotary.org :</h2>
     
     <p class="alert alert-warning">
-        Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de l'import du fichier des membres extrait du Rotary International (<a href="https://www.rotary.org">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/fr/">MyRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.<br />
+        Les champs grisés ci-dessous ne sont pas modifiables, ils sont mis à jour lors de la mise à jour des membres du Rotary International (<a href="https://www.rotary.org">rotary.org</a>) si vous souhaitez mettre à jour un de ces champs, faites le sur <a href="https://my.rotary.org/fr/">MyRotary</a> puis demandez à un responsable de votre club de mettre à jour les membres.<br />
         <br />
-        Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)<br />
-         <br />
-        Lors de l'import venant du Rotary.org, l'adresse professionnelle est choisi en priorité, dans le cas ou vous n'avez pas d'adresse professionnelle c'est l'adresse personnelle qui est utilisée
+        Vous pouvez modifier les autres en bas du formulaire (exemple : votre photo, votre profession, etc.)<br />        
     </p>
 
     
