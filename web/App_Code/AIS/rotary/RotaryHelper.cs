@@ -104,7 +104,6 @@ public class RotaryHelper
         }
     }
 
-
     public static string Test_Auth()
     {
         try
@@ -213,7 +212,6 @@ public class RotaryHelper
             return null;
         }
     }
-
     public static List<Rotary.Club.Officer> Get_Club_Officers(int cric, string clubtype, out string result)
     {
         result = null;
@@ -238,7 +236,6 @@ public class RotaryHelper
             return null;
         }
     }
-
     public static Rotary.Profile Get_Member_Profile(int nim, out string result)
     {
         result = null;
@@ -250,12 +247,84 @@ public class RotaryHelper
 
             if (String.IsNullOrEmpty(task.Result))
             {
-                throw new Exception("Erreur récupération clubs");
+                throw new Exception("Erreur récupération profil membre " + nim);
             }
             result = task.Result;
             Rotary.Profile member = Yemon.dnn.Functions.Deserialize<Rotary.Profile>(task.Result);
 
             return member;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+    public static Rotary.Profile Get_Member_Recognition(int nim, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            var task = Task.Run(() => CallAsyncGet("/v1.1/individuals/" + nim + "/recognition"));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération membre recognition " + nim);
+            }
+            result = task.Result;
+            Rotary.Profile member = Yemon.dnn.Functions.Deserialize<Rotary.Profile>(task.Result);
+
+            return member;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+    public static List<Rotary.Profile.Language> Get_Member_Languages(int nim, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            var task = Task.Run(() => CallAsyncGet("/v1.1/individuals/" + nim + "/languages"));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération membre languages " + nim);
+            }
+            result = task.Result;
+            List<Rotary.Profile.Language> languages = Yemon.dnn.Functions.Deserialize<List<Rotary.Profile.Language>>(task.Result);
+
+            return languages;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
+    public static List<Rotary.Sponsor> Get_Member_Sponsors(int nim, int cric, string clubtype, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            var task = Task.Run(() => CallAsyncGet("/v1.1/individuals/" + nim + "/clubs/"+clubtype+"/"+cric+"/sponsors"));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération membre sponsors " + nim+ " "+clubtype+" "+cric);
+            }
+            result = task.Result;
+            List<Rotary.Sponsor> sponsors = Yemon.dnn.Functions.Deserialize<List<Rotary.Sponsor>>(task.Result);
+
+            return sponsors;
         }
         catch (Exception ee)
         {
@@ -292,8 +361,30 @@ public class RotaryHelper
             return null;
         }
     }
+    public static List<Rotary.Role> Get_Member_Roles(int nim, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            var task = Task.Run(() => CallAsyncGet("/v1.2/clubs/members/" + nim + "/roles"));
+            task.Wait();
 
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération membre roles " + nim);
+            }
+            result = task.Result;
+            List<Rotary.Role> roles = Yemon.dnn.Functions.Deserialize<List<Rotary.Role>>(task.Result);
 
+            return roles;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
 
     public static async Task<bool> CallAsyncLogin()
     {
@@ -636,55 +727,7 @@ public class RotaryHelper
 
         #endregion
 
-        #region phase 2 - membres a effacer
-
-        foreach (var club in clubs)
-        {
-            var clublog = listclublog.Find(c => c.Cric == club.cric);
-            if (clublog == null)
-            {
-                clublog = new Rotary.ClubLog(club.cric, club.name);
-                listclublog.Add(clublog);
-            }
-            int cricsatellite = Functions.GetClubSatellite(club.cric);
-
-            
-            var clubmembers = DataMapping.ListMembers(club.cric);
-
-            if (Const.CLUB_SATELLITE_APART && cricsatellite > 0)
-            {
-                var satclubmembers = DataMapping.ListMembers(cricsatellite);
-                foreach (var member in satclubmembers)
-                {
-                    clubmembers.Add(member);
-                }
-            }
-
-            int cricparent = Functions.GetClubParent(club.cric);
-
-            var rimembers = new List<Rotary.Member>();
-            if(Const.CLUB_SATELLITE_APART && cricparent > 0) // on est dans le club satellite donc on prends les membres du club parent
-                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=0 and clubid=" + cricparent ));
-
-            else
-                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=0 and clubid=" + club.cric ));
-
-            foreach (var member in clubmembers)
-            {
-                var m = rimembers.Find(mm => mm.MemberId == member.nim);
-                if (m == null)
-                {
-                    listdel.Add(m);
-                    clublog.Logs += "<p>Suppression membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
-                }
-
-            }
-
-        }
-
-        #endregion
-
-        #region phase 3 - transfert des membres 
+        #region phase 2 - transfert des membres 
 
         foreach (var member in listtrf)
         {
@@ -723,14 +766,75 @@ public class RotaryHelper
                     m.cric = club.cric;
                     m.club_name = club.name;
                 }
-                //if (!DataMapping.UpdateMember(m))
-                //{
-                //    clublog.Errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
-                //}
+                if(member.IsSatelliteMember){
+                    m.satellite_member = Const.YES;
+                }else{
+                    m.satellite_member = Const.NO;
+                }
+                if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE){
+                    if (!DataMapping.UpdateMember(m))
+                    {
+                        clublog.Errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                    }
+                }                
             }
             else
             {
                 errors += "Erreur transfert membre " + member.MemberId + " " + member.FirstName + " " + member.LastName + " club " + member.ClubId + " introuvable " + Environment.NewLine;
+            }
+
+        }
+
+        #endregion
+
+        #region phase 3 - membres a effacer
+
+        foreach (var club in clubs)
+        {
+            var clublog = listclublog.Find(c => c.Cric == club.cric);
+            if (clublog == null)
+            {
+                clublog = new Rotary.ClubLog(club.cric, club.name);
+                listclublog.Add(clublog);
+            }
+            int cricsatellite = Functions.GetClubSatellite(club.cric);
+
+
+            var clubmembers = DataMapping.ListMembers(club.cric);
+
+            if (Const.CLUB_SATELLITE_APART && cricsatellite > 0)
+            {
+                var satclubmembers = DataMapping.ListMembers(cricsatellite);
+                foreach (var member in satclubmembers)
+                {
+                    clubmembers.Add(member);
+                }
+            }
+
+            int cricparent = Functions.GetClubParent(club.cric);
+
+            var rimembers = new List<Rotary.Member>();
+            if (Const.CLUB_SATELLITE_APART && cricparent > 0) // on est dans le club satellite donc on prends les membres du club parent
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from " + Const.TABLE_PREFIX + "ri_member where IsHonoraryMember=0 and clubid=" + cricparent));
+
+            else
+                rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from " + Const.TABLE_PREFIX + "ri_member where IsHonoraryMember=0 and clubid=" + club.cric));
+
+            foreach (var member in clubmembers)
+            {
+                var m = rimembers.Find(mm => mm.MemberId == member.nim);
+                if (m == null)
+                {
+                    listdel.Add(m);
+                    if(member.nim>0)
+                         clublog.Logs += "<p>Suppression membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
+                    if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type=="auto")
+                    {
+                        if (!DataMapping.DeleteMember(member.id))
+                            clublog.Logs += "<p>ERREUR suppression membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
+                    }
+                }
+
             }
 
         }
@@ -742,9 +846,6 @@ public class RotaryHelper
         foreach (var member in listnew)
         {
             var m = DataMapping.GetMemberByNim(member.MemberId);
-            if(m != null){
-                
-            }
             
             var club = clubs.Find(c => c.cric ==member.ClubId);
             if (club != null)
@@ -762,6 +863,107 @@ public class RotaryHelper
                 else
                 {
                     clublog.Logs += "Ajout membre " + member.MemberId + " " + member.FirstName + " " + member.LastName+Environment.NewLine;
+                    var profile = Yemon.dnn.Functions.Deserialize<Rotary.Club_Members.Member>(member.Profile);
+                    if(profile==null)
+                    {
+                        clublog.Errors+= "Erreur extraction profil "+ member.MemberId + " " + member.FirstName + " " + member.LastName+Environment.NewLine;
+                    }
+                    else
+                    {
+                        m = new Member();
+                        m.nim = member.MemberId;
+                        m.cric = member.ClubId;
+                        m.club_name = club.name;
+                        if (member.IsSatelliteMember)
+                        {
+                            m.satellite_member = Const.YES;
+                        }
+                        else
+                        {
+                            m.satellite_member = Const.NO;
+                        }
+                        m.name = Functions.ToTitleCase((member.FirstName + " " +     member.MiddleName).ToLower().Trim());
+                        m.surname = member.LastName.ToUpper().Trim();
+
+                        m.civility = profile.Gender == "Female" ? "Mme" : profile.Gender == "Male" ? "M":"" ;
+ 
+                        
+                        var email = "";
+                        foreach (var em in profile.Email)
+                        {
+                            if (em.IsPrimary)
+                            {
+                                email = ("" + em.Address).ToLower();
+                            }
+                        }
+                        if(email!="")
+                            m.email = email;
+                        foreach(var ad in profile.Address){
+                            if(ad.IsPrimary){
+                                if(ad.Type=="Business")
+                                {
+                                    m.professionnal_adress = ad.Line1;
+                                    m.professionnal_additional = (ad.Line2 + " " + ad.Line3).Trim();
+                                    m.professionnal_town = ad.City;
+                                    m.professionnal_zip_code = ad.PostalCode;
+                                    m.professionnal_country = ad.Country;
+                                }
+                                else
+                                {
+                                    m.adress_1 = ad.Line1;
+                                    m.adress_2 = ad.Line2;
+                                    m.adress_3 = ad.Line3;
+                                    m.zip_code = ad.PostalCode;
+                                    m.town = ad.City;
+                                    m.country = ad.Country;
+                                }
+                               
+                                m.ri_ad1 = ad.Line1;
+                                m.ri_ad2 = ad.Line2;
+                                m.ri_ad3 = ad.Line3;
+                                m.ri_zip_code = ad.PostalCode;
+                                m.ri_town = ad.City;
+                                m.ri_country = ad.Country;
+                            }
+                        }
+                        foreach (var tel in profile.Phone)
+                        {
+                            if(tel.Type=="Mobile")
+                            {
+                               m.gsm= Functions.NormalizeNumber("+"+tel.CountryCode+" "+ tel.Number);
+                            }
+                            else
+                            {
+                                m.telephone = Functions.NormalizeNumber("+" + tel.CountryCode + " " + tel.Number);
+                            }
+                        }
+                        foreach (var fax in profile.Fax)
+                        {
+                            m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+                        }
+                        DateTime birthdate = DateTime.MinValue;
+                        DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                        if(birthdate != DateTime.MinValue)
+                            m.birth_year = birthdate;
+                        foreach (var role in profile.Role)
+                        {
+                            if (role.AdmissionDate != null)
+                            {
+                                m.year_membership_rotary = (DateTime)role.AdmissionDate;
+                            }
+                        }
+                        m.base_dtupdate = DateTime.Now;
+                        if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type=="auto")
+                        {
+
+                            if(!DataMapping.InsertMember(m))
+                            {
+                                clublog.Errors+= "Erreur création membre " + member.MemberId + " " + member.FirstName + " " + member.LastName+Environment.NewLine;
+                            }
+                        }
+
+                    }
+
                 }
             }
             else
@@ -800,8 +1002,12 @@ public class RotaryHelper
 
                     #region changements
                     string changements = "";
-
-                    if((m.honorary_member==Const.YES) != profile.IsHonoraryMember())
+                    if ((m.satellite_member == Const.YES) != profile.IsSatelliteMember())
+                    {
+                        changements += "satellite(" + m.satellite_member + ">" + (profile.IsSatelliteMember() ? "O" : "N") + "),";
+                        m.satellite_member = (profile.IsSatelliteMember() ? Const.YES : Const.NO);
+                    }
+                    if ((m.honorary_member==Const.YES) != profile.IsHonoraryMember())
                     {
                         changements += "honorary(" + m.honorary_member + ">" + (profile.IsHonoraryMember() ? "O" : "N") + "),";
                         m.honorary_member = (profile.IsHonoraryMember() ? Const.YES : Const.NO);
@@ -833,10 +1039,98 @@ public class RotaryHelper
                         changements += "email("+m.email+">"+email+"),";
                         m.email = email;
                     }
+
+                    string gender = profile.Gender == "Female" ? "Mme" : profile.Gender == "Male" ? "M" : "";
+                    if(m.civility!=gender)
+                    {
+                        changements += "civ(" + m.civility + ">" + gender + "),";
+                        m.civility = gender;
+                    }
+
+                    foreach (var tel in profile.Phone)
+                    {
+                        string telri = Functions.NormalizeNumber("+" + tel.CountryCode + " " + tel.Number);
+                        
+                        if (tel.Type == "Mobile")
+                        {
+                            if(m.gsm != telri)
+                            {
+                                changements += "gsm(" + m.gsm + ">" + telri + "),";
+                                m.gsm = telri;
+                            }
+                            
+                        }
+                        else
+                        {
+                            if (m.telephone != telri)
+                            {
+                                changements += "tel(" + m.telephone + ">" + telri + "),";
+                                m.telephone = telri;
+                            }
+                       
+                        }
+                    }
+                    foreach (var fax in profile.Fax)
+                    {
+                        string telri = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+                        if(m.fax!=telri)
+                        {
+                            changements += "fax(" + m.fax + ">" + telri + "),";
+                            m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+
+                        }
+                    }
+                    foreach (var ad in profile.Address)
+                    {
+                        string adr = m.ri_ad1 + " " + m.ri_ad2 + " " + m.ri_ad3 + " " + m.ri_zip_code + " " + m.ri_town + " " + m.ri_country;
+                        string adrri = ad.Line1 + " " + ad.Line2 + " " + ad.Line3 + " " + ad.PostalCode + " " + ad.City + " " + ad.Country;
+                        if (adr != adrri)
+                        {
+                            changements += "(adr(" + adr + ">" + adrri + "),";
+                            if (ad.Type == "Business")
+                            {
+                                m.professionnal_adress = ad.Line1;
+                                m.professionnal_additional = (ad.Line2 + " " + ad.Line3).Trim();
+                                m.professionnal_zip_code = ad.PostalCode;
+                                m.professionnal_town = ad.City;
+                                m.professionnal_country = ad.Country;
+                            }
+                            else
+                            {
+                                m.adress_1 = ad.Line1;
+                                m.adress_2 = ad.Line2;
+                                m.adress_3 = ad.Line3;
+                                m.zip_code = ad.PostalCode;
+                                m.town = ad.City;
+                                m.country = ad.Country;
+                            }
+                            m.ri_ad1 = ad.Line1;
+                            m.ri_ad2 = ad.Line2;
+                            m.ri_ad3 = ad.Line3;
+                            m.ri_zip_code = ad.PostalCode;
+                            m.ri_town = ad.City;
+                            m.ri_country = ad.Country;
+                        }                  
+                    }
+                    DateTime birthdate= DateTime.MinValue;
+                    DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                    if(birthdate!=DateTime.MinValue && m.birth_year != birthdate)
+                    {
+                        changements += "birthdate(" + m.birth_year + ">" + birthdate.ToShortDateString() + "),";
+                        m.birth_year = birthdate;
+                    }
+                    foreach(var role in profile.Role){
+                        if(role.AdmissionDate!= null && m.year_membership_rotary != (DateTime)role.AdmissionDate)
+                        {
+                            changements+="admission("+m.year_membership_rotary + ">"+ ((DateTime)role.AdmissionDate).ToShortDateString()+"),";
+                            m.year_membership_rotary = (DateTime)role.AdmissionDate;
+                        }
+                    }
+                    
                     if (changements.Length > 0)
                     {
                         changements = changements.Substring(0, changements.Length - 1);
-                        clublog.Logs += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "(" + changements + ")" + Environment.NewLine;
+                        clublog.Logs += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "[" + changements + "]</p>" + Environment.NewLine;
                     }
                     else
                     {
@@ -848,19 +1142,23 @@ public class RotaryHelper
 
                     if (club.rotary_agreement_type == "auto")
                     {
-                        if (!DataMapping.UpdateMember(m))
+                        if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE)
                         {
-                            clublog.Errors += "Erreur mise à jour membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
-                        }
-                        else
-                        {
-                            var sql = new SqlCommand("update ais_members set dt_update_import_ri_club=@date where nim=@nim");
-                            sql.Parameters.AddWithValue("nim", m.nim);
-                            sql.Parameters.AddWithValue("date", member.DtLastUpdate);
-                            int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
-                            if (nb == 0)
+
+                            if (!DataMapping.UpdateMember(m))
                             {
-                                clublog.Errors += "Erreur maj date membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                                clublog.Errors += "Erreur mise à jour membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                            }
+                            else
+                            {
+                                var sql = new SqlCommand("update ais_members set dt_update_import_ri_club=@date where nim=@nim");
+                                sql.Parameters.AddWithValue("nim", m.nim);
+                                sql.Parameters.AddWithValue("date", member.DtLastUpdate);
+                                int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                                if (nb == 0)
+                                {
+                                    clublog.Errors += "Erreur maj date membre " + m.nim + " " + m.name + " " + m.surname + Environment.NewLine;
+                                }
                             }
                         }
 
@@ -894,18 +1192,115 @@ public class RotaryHelper
             }
             foreach (var member in rimembers){
                 clublog.Logs += "<p><em>Membre d'honneur " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</em></p>";
+                var profile = Yemon.dnn.Functions.Deserialize<Rotary.Club_Members.Member>(member.Profile);
+                if (profile == null)
+                {
+                    clublog.Errors += "Erreur extraction profil " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                }
+                else
+                {
+                    var m = new Member();
+                    m.honorary_member = Const.YES;
+                    m.nim = -member.MemberId;
+                    m.cric = member.ClubId;
+                    m.club_name = club.name;
+
+                    m.name = Functions.ToTitleCase((member.FirstName + " " + member.MiddleName).ToLower().Trim());
+                    m.surname = member.LastName.ToUpper().Trim();
+
+                    m.civility = profile.Gender == "Female" ? "Mme" : profile.Gender == "Male" ? "M" : "";
+
+
+                    var email = "";
+                    foreach (var em in profile.Email)
+                    {
+                        if (em.IsPrimary)
+                        {
+                            email = ("" + em.Address).ToLower();
+                        }
+                    }
+                    if (email != "")
+                        m.email = email;
+                    foreach (var ad in profile.Address)
+                    {
+                        if (ad.IsPrimary)
+                        {
+                            if (ad.Type == "Business")
+                            {
+                                m.professionnal_adress = ad.Line1;
+                                m.professionnal_additional = (ad.Line2 + " " + ad.Line3).Trim();
+                                m.professionnal_town = ad.City;
+                                m.professionnal_zip_code = ad.PostalCode;
+                                m.professionnal_country = ad.Country;
+                            }
+                            else
+                            {
+                                m.adress_1 = ad.Line1;
+                                m.adress_2 = ad.Line2;
+                                m.adress_3 = ad.Line3;
+                                m.zip_code = ad.PostalCode;
+                                m.town = ad.City;
+                                m.country = ad.Country;
+                            }
+
+                            m.ri_ad1 = ad.Line1;
+                            m.ri_ad2 = ad.Line2;
+                            m.ri_ad3 = ad.Line3;
+                            m.ri_zip_code = ad.PostalCode;
+                            m.ri_town = ad.City;
+                            m.ri_country = ad.Country;
+                        }
+                    }
+                    foreach (var tel in profile.Phone)
+                    {
+                        if (tel.Type == "Mobile")
+                        {
+                            m.gsm = Functions.NormalizeNumber("+" + tel.CountryCode + " " + tel.Number);
+                        }
+                        else
+                        {
+                            m.telephone = Functions.NormalizeNumber("+" + tel.CountryCode + " " + tel.Number);
+                        }
+                    }
+                    foreach (var fax in profile.Fax)
+                    {
+                        m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+                    }
+                    DateTime birthdate = DateTime.MinValue;
+                    DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                    if (birthdate != DateTime.MinValue)
+                        m.birth_year = birthdate;
+                    foreach (var role in profile.Role)
+                    {
+                        if (role.AdmissionDate != null)
+                        {
+                            m.year_membership_rotary = (DateTime)role.AdmissionDate;
+                        }
+                    }
+                    m.base_dtupdate = DateTime.Now;
+                    if (Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type == "auto")
+                    {
+
+                        if (!DataMapping.InsertMember(m))
+                        {
+                            clublog.Errors += "Erreur création membre d'honneur " + member.MemberId + " " + member.FirstName + " " + member.LastName + Environment.NewLine;
+                        }
+                    }
+
+                }
             }
         }
         #endregion
+        
         if (errors!="")
         {
             string[] errs = errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            result += "<div>Erreur(s) :";
+            result += "<p style='color:red'>Erreur(s) :</p>";
             foreach (var error in errs)
             {
-                result += "<p>"+error+"</p>";
+                result += "<p style='color:red'>" + error+"</p>";
             }
-            result += "</div>";
+            result += "";
         }
 
         foreach (var logclub in listclublog)
@@ -914,26 +1309,191 @@ public class RotaryHelper
             if (logclub.Errors.Length > 0)
             {
                 string[] errs = logclub.Errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                result += "<div>" + errs.Length + " Erreur(s) :";
                 foreach (var error in errs)
                 {
-                    result += "<p>" + error + "</p>";
+                    result += "<p style='color:red'>" + error + "</p>";
                 }
-                result += "</div>";
+              
             }
             if (logclub.Logs.Length > 0)
             {
                 string[] cc = logclub.Logs.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                result += "<div>";
+       
                 foreach (var c in cc)
                 {
                     result += "<p>" + c + "</p>";
                 }
-                result += "</div>";
+  
             }
 
         }
         return result;
+    }
+
+    public static string UpdateMemberProfile(Rotary.Profile profile,AIS.Club club, out string changements){
+     
+        string result = "";
+        changements = "";
+        var m = DataMapping.GetMemberByNim(profile.individual.MemberId);
+        if(m==null){
+            result = "<p>Membre introuvable "+ profile.individual.MemberId+ " "+ profile.individual.FirstName+" "+ profile.individual.LastName+"</p>"; 
+        }
+        else
+        {
+            if(m.dt_update_import_ri_club== null || profile.DtLastUpdate() > m.dt_update_import_ri_club)
+            {
+                
+
+                profile.individual.FirstName = Functions.ToTitleCase(profile.individual.FirstName.ToLower()).Trim();
+                profile.individual.MiddleName = Functions.ToTitleCase(profile.individual.MiddleName.ToLower()).Trim();
+                profile.individual.LastName = profile.individual.LastName.ToUpper().Trim();
+                string name = (profile.individual.FirstName + " " + profile.individual.MiddleName).Trim();
+                if (m.name != name)
+                {
+                    changements += "name(" + m.name + ">" + name + "),";
+                    m.name = name;
+                }
+                if (m.surname != profile.individual.LastName)
+                {
+                    changements += "surname(" + m.surname + ">" + profile.individual.LastName + "),";
+                    m.surname = profile.individual.LastName;
+                }
+                var email = "";
+                foreach (var em in profile.email)
+                {
+                    if (em.IsPrimary)
+                    {
+                        email = ("" + em.Address).ToLower();
+                    }
+                }
+                if (m.email != email && email != "")
+                {
+                    changements += "email(" + m.email + ">" + email + "),";
+                    m.email = email;
+                }
+
+                string gender = profile.individual.Gender == "Female" ? "Mme" : profile.individual.Gender == "Male" ? "M" : "";
+                if (m.civility != gender)
+                {
+                    changements += "civ(" + m.civility + ">" + gender + "),";
+                    m.civility = gender;
+                }
+
+                foreach (var tel in profile.phone)
+                {
+                    string telri = Functions.NormalizeNumber("+" + tel.CountryCode + " " + tel.Number);
+
+                    if (tel.Type == "Mobile")
+                    {
+                        if (m.gsm != telri)
+                        {
+                            changements += "gsm(" + m.gsm + ">" + telri + "),";
+                            m.gsm = telri;
+                        }
+
+                    }
+                    else if (tel.Type=="Business")
+                    {
+                        if (m.professionnal_tel != telri)
+                        {
+                            changements += "tel_pro(" + m.professionnal_tel + ">" + telri + "),";
+                            m.professionnal_tel = telri;
+                        }
+
+                    }
+                    else
+                    {
+                        if (m.telephone != telri)
+                        {
+                            changements += "tel_pro(" + m.telephone + ">" + telri + "),";
+                            m.telephone = telri;
+                        }
+
+                    }
+                }
+
+                foreach (var fax in profile.fax)
+                {
+                    string telri = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+                    if (m.fax != telri)
+                    {
+                        changements += "fax(" + m.fax + ">" + telri + "),";
+                        m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
+
+                    }
+                }
+
+                foreach (var ad in profile.address)
+                {
+                    string adrpro = m.professionnal_adress + " " + m.professionnal_additional + " " + m.professionnal_zip_code + " " + m.professionnal_town + " " + m.professionnal_country;
+                    string adr = m.adress_1 + " " + m.adress_2 + " " + m.adress_3 + " " + m.zip_code + " " + m.town+" "+m.country;
+                    string adrri = ad.Line1 + " " + ad.Line2 + " " + ad.Line3 + " " + ad.PostalCode + " " + ad.City + " " + ad.Country;
+                    if (adrpro != adrri && ad.Type == "Business")
+                    {
+                        changements += "(adr_pro(" + adrpro + ">" + adrri + "),";
+                       
+                            m.professionnal_adress = ad.Line1;
+                            m.professionnal_additional = (ad.Line2 + " " + ad.Line3).Trim();
+                            m.professionnal_zip_code = ad.PostalCode;
+                            m.professionnal_town = ad.City;
+                            m.professionnal_country = ad.Country;
+                    }
+                    if (adr != adrri && ad.Type == "Home")
+                    {
+                        changements += "(adr(" + adr + ">" + adrri + "),";
+
+                        m.adress_1 = ad.Line1;
+                        m.adress_2 = ad.Line2;
+                        m.adress_3 = ad.Line3;
+                        m.zip_code = ad.PostalCode;
+                        m.town = ad.City;
+                        m.country = ad.Country;
+
+                    }
+                }
+                DateTime birthdate = DateTime.MinValue;
+                DateTime.TryParse("" + profile.individual.DateOfBirth, out birthdate);
+                if (birthdate != DateTime.MinValue && m.birth_year != birthdate)
+                {
+                    changements += "birthdate(" + m.birth_year + ">" + birthdate.ToShortDateString() + "),";
+                    m.birth_year = birthdate;
+                }
+                if (Const.ROTARY_SYNCHRO_ALLOW_UPDATE)
+                {
+                    if (changements.Length > 0)
+                    {
+                        changements = changements.Substring(0, changements.Length - 1);
+                        result += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "[" + changements + "]</p>";
+
+                        if (club.rotary_agreement_type == "auto")
+                        {
+
+                            if (!DataMapping.UpdateMember(m))
+                            {
+                                result += "<p style='color:red'>Erreur maj</p>";
+                            }
+
+                        }
+
+                    }
+                    
+                }
+            }
+
+            if (!result.Contains("Erreur maj"))
+            {
+                var sql = new SqlCommand("update ais_members set dt_update_import_ri_club=@date where nim=@nim");
+                sql.Parameters.AddWithValue("nim", m.nim);
+                sql.Parameters.AddWithValue("date", DateTime.Now);
+                int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                if (nb == 0)
+                {
+                    result += "<p style='color:red'>Erreur maj date membre " + m.nim + " " + m.name + " " + m.surname + "</p>";
+                }
+            }
+        }
+        return result;
+
     }
 
     public static string UpdateMembersProfiles(){
@@ -947,30 +1507,53 @@ public class RotaryHelper
             start = Yemon.dnn.Functions.Deserialize<DateTime>(""+item);
             start = start.AddDays(-1);
         }
-        
+        result += "<p>Période d'analyse des mises à jour du "+start.ToShortDateString()+" au "+DateTime.Now.ToShortDateString()+"</p>";
         var nims = Get_Members_To_Update(start,DateTime.Now,out res);
         var members = DataMapping.ListMembers(max: int.MaxValue);
         var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ToList();
-
+        int nb = 0;
+        int nb2 = 0;
         foreach (var member in members){
-            var club = clubs.Find(c => c.cric == member.cric);
-            if(club!=null)
+            if(member.honorary_member==Const.NO)
             {
-                if(nims.Contains(member.nim))
+
+                var club = clubs.Find(c => c.cric == member.cric);
+                if(club!=null)
                 {
-                    var profile = Get_Member_Profile(member.nim, out res);
-                    if (profile != null)
+                    if(nims.Contains(member.nim) || member.dt_update_import_ri_club==null)
                     {
-                        result += "<p>Maj profil membre " + member.nim + " " + member.name + " " + member.surname + "</p>";
+                        var profile = Get_Member_Profile(member.nim, out res);
+                        if (profile != null)
+                        {
+                            string changements = "";
+                            result += UpdateMemberProfile(profile, club, out changements);
+                        
+                            if (changements.Length > 0)
+                                nb++;
+                        }
+                        nb2++;
                     }
                 }
+                if(nb>10)
+                    break;
+                if (nb2 > 50)
+                    break;
             }
+
         }
 
-        result += "</div>";
-        Yemon.dnn.Helpers.SetItem("RotaryUpdateStartDate", Yemon.dnn.Functions.Serialize(DateTime.Now), "", keephistory: false);
+        if (nb==0)// quand il n'y a plus de changements on met a jour la date
+        {
+            Yemon.dnn.Helpers.SetItem("RotaryUpdateStartDate", Yemon.dnn.Functions.Serialize(DateTime.Now), "", keephistory: false);
+            result += "<p><em>Aucune maj détectée</em></p>";
+        }
 
         return result;
     }
 
+    public static string ForceUmpAllProfiles(){
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("Update ais_members set dt_update_import_ri_club = null");
+        Yemon.dnn.Helpers.DeleteItem("RotaryUpdateStartDate");
+        return "Tous les profils membres vont être mis à jour en tâche de fond";
+    }
 }

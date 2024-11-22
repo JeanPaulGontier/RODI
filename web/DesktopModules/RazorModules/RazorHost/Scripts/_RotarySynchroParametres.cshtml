@@ -41,6 +41,12 @@
 
             called = true;
         }
+        if (("" + Request["bt_forceump"]) == "force_ump")
+        {
+            result = RotaryHelper.ForceUmpAllProfiles();
+
+            called = true;
+        }
         if (("" + Request["bt_get_clubs"]) == "get_clubs")
         {
             List<Rotary.Club>clubs = RotaryHelper.Get_Clubs(out result);
@@ -213,9 +219,14 @@
         <div class="panel-body">
             <div>
                 <div>
+                    <button type="submit" name="bt_ucm" value="ucm" class="btn btn-primary" title="ATTENTION : mets à jour la base de données">Mise à jour membres des clubs</button>
+                    <button type="submit" name="bt_uco" value="uco" class="btn btn-primary" title="ATTENTION : mets à jour la base de données">Mise à jour officers des clubs</button>
+                    <button type="submit" name="bt_forceump" value="force_ump" class="btn btn-warning" title="ATTENTION : mets à jour la base de données">Forcer maj tous les membres</button>
+
+                </div>
+                <div class="pe-spacer size20"></div>
+                <div>
                     <button type="submit" name="bt_get_clubs" value="get_clubs" class="btn btn-secondary">Récupération Clubs</button>
-                    <button type="submit" name="bt_ucm" value="ucm" class="btn btn-secondary">Mise à jour membres des clubs</button>
-                    <button type="submit" name="bt_uco" value="uco" class="btn btn-secondary">Mise à jour officers des clubs</button>
                 </div>
                 <div class="pe-spacer size20"></div>
                 <div class="form-group form-inline">
@@ -233,22 +244,22 @@
                         {
                             <option value="Rotary%20Club">Rotary</option>
                             <option value="Rotaract%20Club" selected>Rotaract</option>
-                       
+
                         }
-                       
+
                     </select><br />
 
                     <button type="submit" name="bt_get_club_members" value="get_club_members_active" class="btn btn-secondary">Récupération Membres Actifs</button>&nbsp;
                     <button type="submit" name="bt_get_club_members" value="get_club_members_terminated" class="btn btn-secondary">Récupération Membres Terminés</button>&nbsp;
                     <button type="submit" name="bt_get_club_members" value="get_club_officers" class="btn btn-secondary">Récupération Club Officers</button>&nbsp;
                 </div>
-            
+
                 <div class="pe-spacer size20"></div>
                 <div class="form-group form-inline">
                     <label>Nim</label>
                     <input type="number" name="nim" class="form-control" value="@nim" /> &nbsp; <button type="submit" name="bt_get_club_members" value="get_club_member_profile" class="btn btn-secondary">Récupération Profil Membre</button>
                 </div>
-              
+
 
 
                 @{

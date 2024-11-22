@@ -8,6 +8,11 @@
       <div class="pe-spacer size10"></div>
     <asp:GridView ID="gvw_clubs" CssClass="table table-striped"  GridLines="None"  OnRowCommand="gvw_clubs_RowCommand" runat="server" AutoGenerateColumns="false">
         <Columns>
+             <asp:TemplateField HeaderText="">
+                <ItemTemplate>
+                 <%# DataBinder.Eval(Container.DataItem, "IsSatellite").Equals(true)?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/satellite.png' Width=16 title='Club satellite du club "+ClubParent(Container.DataItem)+"' />":"" %>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField HeaderText="Nom du club">
                 <ItemTemplate>
                     <asp:Label ID="lbl_clubName" runat="server" Text='<%# Bind("name") %>'></asp:Label>
@@ -83,6 +88,12 @@
             <asp:RequiredFieldValidator runat="server" ControlToValidate="tbx_name" Text="Veuillez compléter" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>                    
         </div>
     </div>
+
+    <asp:Panel runat="server" ID="P_satellite" Visible="false">
+        <div class="alert alert-info">
+            <asp:Label runat="server" ID="P_satellite_lalel"></asp:Label>
+        </div>
+    </asp:Panel>
     <div class="row">
         <div class="col-sm-4">
             <strong>SEO :</strong>
@@ -213,6 +224,11 @@
     <hr />
      <fieldset>
       <legend><h3>Synchronisation Rotary International > RODI</h3></legend>
+        <asp:Panel runat="server" ID="p_synchro_ri_parent">
+            <div class="alert alert-info">
+               <strong>La synchronisation du club est gérée pas le club parent</strong>
+           </div>
+        </asp:Panel>
        <asp:Panel runat="server" ID="p_synchro_ri_na">
            <div class="alert alert-warning">
               <strong>La synchronisation du club n'a pas été autorisée sur my Rotary</strong>

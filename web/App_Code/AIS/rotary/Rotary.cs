@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 /// <summary>
 /// Description résumée de Rotary
 /// </summary>
@@ -69,6 +70,48 @@ public class Rotary
         }
 
     }
+    public class Sponsor
+    {
+        public int MemberId { get; set; }
+        public int ClubId { get; set; }
+        public string ClubType { get; set; }
+        public int SponsorMemberId { get; set; }
+        public string SponsorFirstName { get; set; }
+        public string SponsorMiddleName { get; set; }
+        public string SponsorLastName { get; set; }
+        public string SponsorPrefix { get; set; }
+        public string SponsorSuffix{ get; set; }
+        public string Key { get; set; }
+    }
+
+    public class Role {
+        public int MemberId { get; set; }
+        public string IndividualKey { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string RoleKey { get; set; }
+        public string role { get; set; }
+        public int OrganizationId { get; set; }
+        public string Organization { get; set; }
+        public string OrganizationType { get; set; }
+        public string Committee { get; set; }
+        public string CommitteeType { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public bool IsDelegationEligible { get; set; }
+        public Location Location { get; set; }
+        public string TerminationReason { get; set; }
+        public string Key { get; set; }
+        public DateTime LastUpdated { get; set; }
+    }
+
+    public class Location
+    {
+        public string State { get; set; }
+        public string InternationalProvince { get; set; }
+        public string Country { get; set; }
+    }
 
     public class Member
     {
@@ -97,7 +140,29 @@ public class Rotary
         public List<Website> website { get; set; }
         public List<Language> language { get; set; }
         public List<Expertise> expertise { get; set; }
+        public List<CurrentEmployers> currentemployers { get; set; }
+        public List<Recognition> recognition { get; set; }
 
+        public DateTime DtLastUpdate()
+        {
+            DateTime date = DateTime.MinValue;
+            if (individual.LastUpdated>date)
+                date = DateTime.MinValue;
+            foreach (var a in address)
+                if (a.LastUpdated > date)
+                    date = a.LastUpdated;
+            foreach (var a in email)
+                if (a.LastUpdated > date)
+                    date = a.LastUpdated;
+            foreach (var a in fax)
+                if (a.LastUpdated > date)
+                    date = a.LastUpdated;
+            foreach (var a in phone)
+                if (a.LastUpdated > date)
+                    date = a.LastUpdated;
+            
+            return date;
+        }
 
         public Profile() 
         {
@@ -108,6 +173,8 @@ public class Rotary
             website = new List<Website>();
             language = new List<Language>();
             expertise = new List<Expertise>();
+            currentemployers = new List<CurrentEmployers>();
+            recognition = new List<Recognition>();
         }
 
         public class Individual
@@ -123,6 +190,7 @@ public class Rotary
             public string LocalizedName { get; set; }
             public string Gender { get; set; }
             public string DateOfBirth { get; set; }
+            public string BirthYear { get; set; }
             public string PrimaryLanguage { get; set; }
             public string Classification { get; set; }
             public bool YouthFlag { get; set; }
@@ -312,7 +380,14 @@ public class Rotary
 
         public class Expertise
         {
-
+            public int MemberId { get; set; }
+            public string ExpertiseArea { get; set; }
+            public string ExpertiseAreaKey { get; set; }
+            public string ExpertiseLevel { get; set; }
+            public string ExpertiseLevelKey { get; set; }
+            public bool IsPrimary { get; set; }
+            public string Key { get; set; }
+            public DateTime LastUpdated { get; set; }
         }
 
         public class Role {
@@ -328,6 +403,30 @@ public class Rotary
         public class Website
         {
 
+        }
+
+        public class CurrentEmployers{
+            public int MemberId { get; set; }
+            public string CurrentEmployer { get; set; }
+            public string Position { get; set; }
+            public string Occupation { get; set; }
+            public bool IsPrimary { get; set; }
+            public string Key { get; set; }
+            public DateTime LastUpdated { get; set; }
+        }
+
+        public class Recognition {
+            public string MajorDonor { get; set; }
+            public string Bequest { get; set; }
+            public string Benefactor { get; set; }
+            public List<PaulHarrisFellow> paulharrisfellows { get; set; }
+            public string Eligibility { get; set; }
+
+            public class PaulHarrisFellow {
+                public string Level { get; set; }
+                public string Amount { get; set; }
+                public float Points { get; set; }
+            }
         }
     }
 

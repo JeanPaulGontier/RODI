@@ -96,6 +96,12 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         }
     }
 
+    public string ClubParent(object o){
+        var club = (Club)o;
+        
+        return ""+club.GetClubParent().name;
+    }
+
     public string GetSynchroRI(object container){
         var club = (Club)((GridViewRow)container).DataItem;
         return club.GetSynchroRI();
@@ -159,6 +165,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_nb_free_of_charge.Text = "0";
         p_synchro_ri_na.Visible = true;
         p_synchro_ri.Visible = false;
+        p_synchro_ri_na.Visible = false;
         RB_synchroRI.SelectedIndex=0;
         BindRoleList();
         //btn_addClub.Text = "Ajouter le club rotaract";
@@ -196,6 +203,18 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         hfd_cric.Text = (e.CommandArgument + "");
         pnl_edit.Visible = true;
         pnl_display.Visible = false;
+
+        var csat = club.GetClubSatellite();
+        if(csat!=null){
+            P_satellite.Visible = true;
+            P_satellite_lalel.Text = "Le club possède un club satellite : " + csat.name;
+        }
+        var cpar = club.GetClubParent();
+        if (cpar != null)
+        {
+            P_satellite.Visible = true;
+            P_satellite_lalel.Text = "Satellite du club : " + cpar.name;
+        }
 
         tbx_seo.Text = club.seo;
         tbx_adr1.Text = club.adress_1;
@@ -248,11 +267,17 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_web.Enabled = true;
         tbx_zip.Enabled = true;
 
+        p_synchro_ri_parent.Visible = false;
         p_synchro_ri_na.Visible = true;
         p_synchro_ri.Visible = false;
-        if(club.rotary_agreement_date!=null){
+        if(club.rotary_agreement_date!=null && cpar==null){
             p_synchro_ri.Visible = true;
             p_synchro_ri_na.Visible = false;
+        }
+        if(cpar!=null)
+        {
+            p_synchro_ri_na.Visible = false;
+            p_synchro_ri_parent.Visible = true;
         }
 
         RB_synchroRI.SelectedValue = club.rotary_agreement_type;

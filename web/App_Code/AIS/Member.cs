@@ -70,12 +70,67 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
+using Telerik.Windows.Controls.ChartView;
 
 namespace AIS
 {
     [Serializable]
     public class Member
     {
+        public Member(){
+            honorary_member = Const.NO;
+            surname = "";
+            name = "";
+            active_member = Const.YES;
+            civility = "";
+            maiden_name = "";
+            spouse_name = "";
+            title = "";
+            email = "";
+            adress_1 = "";
+            adress_2 = "";
+            adress_3 = "";
+            zip_code = "";
+            town = "";
+            country = "";
+            telephone = "";
+            fax = "";
+            gsm = "";
+            job = "";
+            industry = "";
+            biography = "";
+            professionnal_adress = "";
+            professionnal_adress = "";
+            professionnal_company = "";
+            professionnal_country = "";
+            professionnal_email = "";
+            professionnal_fax = "";
+            professionnal_mobile = "";
+            professionnal_tel = "";
+            professionnal_town = "";
+            professionnal_zip_code = "";
+            fonction = "";
+            fonction_rotarienne = "";
+            retired = Const.NO;
+            removed = Const.NO;
+            district_id = Const.DISTRICT_ID;
+            photo = "";
+            visible = Const.YES;
+            presentation = false;
+            satellite_member = Const.NO;
+
+            phf = "";
+            legion_honneur = "";
+            ordre_merite = "";
+            palmes_academiques = "";
+
+            ri_ad1 = "";
+            ri_ad2 = "";
+            ri_ad3 = "";
+            ri_zip_code = "";
+            ri_town = "";
+            ri_country = "";
+     }
         public Guid guid
         {
             get
@@ -86,7 +141,7 @@ namespace AIS
         }
         public int id { get; set; }
         public int nim { get; set; }
-        public string honorary_member { get; set; }
+        public string honorary_member { get; set; } 
         public string surname { get; set; }
         public string name { get; set; }
         public int cric { get; set; }

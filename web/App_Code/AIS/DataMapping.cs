@@ -2430,6 +2430,29 @@ namespace AIS
             obj.visible = "" + rd["visible"];
             obj.satellite_member = "" + rd["satellite_member"];
             obj.presentation = ("" + rd["presentation"]).Equals(Const.YES);
+            obj.ri_ad1 = "" + rd["ri_ad1"];
+            obj.ri_ad2 = "" + rd["ri_ad2"];
+            obj.ri_ad3 = "" + rd["ri_ad3"];
+            obj.ri_zip_code = "" + rd["ri_zip_code"];
+            obj.ri_town = "" + rd["ri_town"];
+            obj.ri_country = "" + rd["ri_country"];
+            if (rd["dt_update_manuel_rodi"] != DBNull.Value)
+                obj.dt_update_manuel_rodi = (DateTime)rd["dt_update_manuel_rodi"];
+            else
+                obj.dt_update_manuel_rodi = null;
+            if (rd["dt_update_import_ri_club"] != DBNull.Value)
+                obj.dt_update_import_ri_club = (DateTime)rd["dt_update_import_ri_club"];
+            else
+                obj.dt_update_import_ri_club = null;
+            if (rd["dt_update_import_ri_district"] != DBNull.Value)
+                obj.dt_update_import_ri_district = (DateTime)rd["dt_update_import_ri_district"];
+            else
+                obj.dt_update_import_ri_district = null;
+            if (rd["dt_update_import_rm"] != DBNull.Value)
+                obj.dt_update_import_rm = (DateTime)rd["dt_update_import_rm"];
+            else
+                obj.dt_update_import_rm = null;
+
 
             return obj;
         }
@@ -2575,7 +2598,7 @@ namespace AIS
                 int NIM = 0;
 
 
-                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member],[presentation]) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member,@presentation)", conn, trans);
+                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member],[presentation],ri_ad1,ri_ad2,ri_ad3,ri_zip_code,ri_town,ri_country) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member,@presentation,@ri_ad1,@ri_ad2,@ri_ad3,@ri_zip_code,@ri_town,@ri_country)", conn, trans);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
                 sql.Parameters.AddWithValue("@surname", m.surname);
@@ -2633,7 +2656,12 @@ namespace AIS
                 sql.Parameters.AddWithValue("@visible", m.visible);
                 sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
                 sql.Parameters.AddWithValue("@presentation", m.presentation ? Const.YES : Const.NO);
-
+                sql.Parameters.AddWithValue("@ri_ad1", "" + m.ri_ad1);
+                sql.Parameters.AddWithValue("@ri_ad2", "" + m.ri_ad2);
+                sql.Parameters.AddWithValue("@ri_ad3", "" + m.ri_ad3);
+                sql.Parameters.AddWithValue("@ri_zip_code", "" + m.ri_zip_code);
+                sql.Parameters.AddWithValue("@ri_town", "" + m.ri_town);
+                sql.Parameters.AddWithValue("@ri_country", "" + m.ri_country);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur Insert membre : ");
@@ -2769,7 +2797,13 @@ namespace AIS
                     "[photo]=@photo," +
                     "[visible]=@visible," +
                     "[satellite_member]=@satellite_member," +
-                    "[presentation]=@presentation " +
+                    "[presentation]=@presentation," +
+                    "ri_ad1=@ri_ad1," +
+                    "ri_ad2=@ri_ad2," +
+                    "ri_ad3=@ri_ad3," +
+                    "ri_zip_code=@ri_zip_code," +
+                    "ri_town=@ri_town," +
+                    "ri_country=@ri_country " +
                     "WHERE [id]=@id", conn, trans);
                 sql.Parameters.AddWithValue("@id", m.id);
                 sql.Parameters.AddWithValue("@nim", m.nim);
@@ -2829,15 +2863,23 @@ namespace AIS
                 sql.Parameters.AddWithValue("@photo", m.photo);
                 sql.Parameters.AddWithValue("@visible", m.visible);
                 sql.Parameters.AddWithValue("@satellite_member", m.satellite_member);
-                sql.Parameters.AddWithValue("@presentation", m.presentation?Const.YES:Const.NO);
+                sql.Parameters.AddWithValue("@presentation", m.presentation ? Const.YES : Const.NO);
+                sql.Parameters.AddWithValue("@ri_ad1", "" + m.ri_ad1);
+                sql.Parameters.AddWithValue("@ri_ad2", "" + m.ri_ad2);
+                sql.Parameters.AddWithValue("@ri_ad3", "" + m.ri_ad3);
+                sql.Parameters.AddWithValue("@ri_zip_code", "" + m.ri_zip_code);
+                sql.Parameters.AddWithValue("@ri_town", "" + m.ri_town);
+                sql.Parameters.AddWithValue("@ri_country", "" + m.ri_country);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update member : " + m.id);
 
                 ClearMemberCache();
-                
-                if (!UpdateOrCreateUser(m,conn:conn,trans:trans))
-                    throw new Exception("Erreur update membre login : "+m.id);
+                if(m.honorary_member!=Const.YES){
+                    if (!UpdateOrCreateUser(m, conn: conn, trans: trans))
+                        throw new Exception("Erreur update membre login : " + m.id);
+                }
+             
 
                 
 

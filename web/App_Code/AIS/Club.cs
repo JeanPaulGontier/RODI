@@ -141,5 +141,38 @@ namespace AIS
             a += zip + " " + town;
             return a;
         }
+
+        public bool IsSatellite {
+            get
+            {
+                    return Functions.GetClubParent(cric) > 0;
+            }
+        }
+
+        public Club GetClubSatellite(){
+            int cricsat = Functions.GetClubSatellite(cric);
+            if (cricsat > 0)
+            {
+                var club = DataMapping.GetClub(cricsat);
+                if (club != null)
+                {
+                    return club;
+                }
+            }
+            return null;
+        }
+
+        public Club GetClubParent(){
+            int cricparent = Functions.GetClubParent(cric);
+            if(cricparent>0)
+            {
+                var club = DataMapping.GetClub(cricparent);
+                if(club!=null)
+                {
+                    return club;
+                }
+            }
+            return null;
+        }
     }
 }

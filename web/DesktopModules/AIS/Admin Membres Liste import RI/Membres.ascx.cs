@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2021
-// by SAS AIS : http://www.aisdev.net
+// Copyright (c) 2012-2024
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -166,6 +166,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
 
         P_SatelliteInfo.Visible = issatellite;
+        P_ParentInfo.Visible = isparent;
         P_ClubParent.Visible = isparent;
 
         //if ("" + Functions.CurrentCric != HF_Cric.Value)
@@ -207,7 +208,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         BT_Carte_Member_Recto_Docx.Visible = isadmin && Functions.CurrentCric != 0;
         BT_Carte_Member_Verso_Docx.Visible = isadmin && Functions.CurrentCric != 0;
 
-        BT_Ajout.Visible = !issatellite 
+        BT_Import.Visible = !issatellite 
             && (UserInfo.IsSuperUser ||
             UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
             UserInfo.IsInRole(Const.ADMIN_ROLE) ||
@@ -215,7 +216,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
             DataMapping.isADG()) &&
             Functions.CurrentCric != 0 && mode == "club";
-        BT_Import.Visible = BT_Ajout.Visible;
+
 
         
 
@@ -331,7 +332,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_GSM_Pro.Text = Functions.FormatNumber(membre.professionnal_mobile);
                     LBL_GSM_Prot.Visible = membre.professionnal_mobile != "";
 
-
+                    H_ri_ad1.Value = "" + membre.ri_ad1;
+                    H_ri_ad2.Value = "" + membre.ri_ad2;
+                    H_ri_ad3.Value = "" + membre.ri_ad3;
+                    H_ri_zip_code.Value = "" + membre.ri_zip_code;
+                    H_ri_town.Value = "" + membre.ri_town;
+                    H_ri_country.Value = "" + membre.ri_country;
 
                     Club c = DataMapping.GetClub(membre.cric);
                     hf_type_club.Value = c.club_type;
@@ -366,6 +372,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     RB_Membre_d_Honneur.Enabled = false;
                     RB_Membre_satellite.Visible = true;
                     RB_Membre_satellite.Enabled = false;
+                    RB_Membre_satellite.Enabled = false;
                     //BT_Supprimer.Visible = false;
 
                     if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
@@ -376,28 +383,28 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         membre.userid == UserInfo.UserID )
                     {
                        
-                        BT_Modifier.Visible = true;
+                        BT_Modifier.Visible = true && membre.honorary_member!=Const.YES;
                     }
                     else
                     {
                         //BT_Supprimer.Visible = false;
                     }
 
-                    if (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
-                    {
+                    //if (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+                    //{
 
-                        PChangerClub.Visible = true;
-                        List<Club> clubs = DataMapping.ListClubs(sort: "name");
-                        ddlClubs.Items.Clear();
-                        ddlClubs.Items.Add(new ListItem("--- choisir le nouveau club ---", "0"));
-                        foreach (Club cc in clubs)
-                            ddlClubs.Items.Add(new ListItem(cc.name, "" + cc.cric));
-                        ddlClubs.SelectedIndex = 0;
-                    }
-                    else
-                    {
+                    //    PChangerClub.Visible = true;
+                    //    List<Club> clubs = DataMapping.ListClubs(sort: "name");
+                    //    ddlClubs.Items.Clear();
+                    //    ddlClubs.Items.Add(new ListItem("--- choisir le nouveau club ---", "0"));
+                    //    foreach (Club cc in clubs)
+                    //        ddlClubs.Items.Add(new ListItem(cc.name, "" + cc.cric));
+                    //    ddlClubs.SelectedIndex = 0;
+                    //}
+                    //else
+                    //{
                         PChangerClub.Visible = false;
-                    }
+                    //}                    //}
 
 
                     //            BT_CreateDNNUser.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
@@ -552,7 +559,14 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         hf_Ajout.Value = "";
         hf_Modif.Value = "";
         pnl_Saisie.Visible = false;
-        BT_Import.Visible = BT_Ajout.Visible;
+        BT_Import.Visible = !issatellite
+            && (UserInfo.IsSuperUser ||
+            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+            UserInfo.IsInRole(Const.ADMIN_ROLE) ||
+            UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
+            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+            DataMapping.isADG()) &&
+            Functions.CurrentCric != 0 && mode == "club"; 
     }
 
    
@@ -745,12 +759,33 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             tbx_prenom.ReadOnly = !IsEditable();
             tbx_email.Enabled = IsEditable();
             tbx_email.ReadOnly = !IsEditable();
+
+            tbx_adresse1.Enabled= IsEditable();
+            tbx_adresse1.ReadOnly= !IsEditable();
+            tbx_adresse2.Enabled = IsEditable();
+            tbx_adresse2.ReadOnly= !IsEditable();
+            tbx_adresse3.Enabled = IsEditable();
+            tbx_adresse3.ReadOnly= !IsEditable();
+            tbx_cp.Enabled = IsEditable();
+            tbx_cp.ReadOnly = !IsEditable();
+            tbx_ville.Enabled = IsEditable();
+            tbx_ville.ReadOnly = !IsEditable();
+            tbx_pays.Enabled = IsEditable();
+            tbx_pays.ReadOnly = ! IsEditable();
+
+            rbtl_civilite.Enabled = IsEditable();
+     
             tbx_adresse_pro.Enabled = IsEditable();
             tbx_adresse_pro.ReadOnly = !IsEditable();
+            tbx_adresse_pro_complement.Enabled = IsEditable();
+            tbx_adresse_pro_complement.ReadOnly = !IsEditable();
             tbx_cp_pro.Enabled = IsEditable();
             tbx_cp_pro.ReadOnly = !IsEditable();
             tbx_ville_pro.Enabled = IsEditable();
             tbx_ville_pro.ReadOnly = !IsEditable();
+            tbx_pays_pro.Enabled = IsEditable();
+            tbx_pays_pro.ReadOnly = !IsEditable();
+
             tbx_email_pro.Enabled = IsEditable();
             tbx_email_pro.ReadOnly = !IsEditable();
             tbx_tel_pro.Enabled = IsEditable();
@@ -763,6 +798,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             tbx_fax.ReadOnly = !IsEditable();
             tbx_gsm.Enabled = IsEditable();
             tbx_gsm.ReadOnly = !IsEditable();
+
+            dpk_ann__adh.Enabled = IsEditable();
+            dpk_ann__adh.ReadOnly = !IsEditable();
+
+            dpk_ann_Naiss.Enabled = IsEditable();
+            dpk_ann_Naiss.ReadOnly = !IsEditable();
 
             Member membre = Get_Membre();
 
@@ -825,8 +866,11 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             }
 
             tbx_adresse_pro.Text = "" + membre.professionnal_adress;
+            tbx_adresse_pro_complement.Text = "" + membre.professionnal_additional;
             tbx_cp_pro.Text = "" + membre.professionnal_zip_code;
             tbx_ville_pro.Text = "" + membre.professionnal_town;
+            tbx_pays_pro.Text = "" + membre.professionnal_country;
+
             tbx_email_pro.Text = "" + membre.professionnal_email;
             tbx_tel_pro.Text = "" + membre.professionnal_tel;
             tbx_fax_pro.Text = "" + membre.professionnal_fax;
@@ -919,6 +963,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             //}
 
 
+            H_ri_ad1.Value = ""+membre.ri_ad1;
+            H_ri_ad2.Value = ""+membre.ri_ad2;
+            H_ri_ad3.Value = ""+membre.ri_ad3;
+            H_ri_zip_code.Value = ""+membre.ri_zip_code;
+            H_ri_town.Value = ""+membre.ri_town;
+            H_ri_country.Value = ""+membre.ri_country;
 
 
 
@@ -933,8 +983,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
           // BT_Supprimer.Visible = true;
             BT_Valider.Visible = true;
             RB_Autoriser_Publication.Enabled = true;
-            RB_Membre_d_Honneur.Enabled = true;
-            RB_Membre_satellite.Enabled = true;
+            //RB_Membre_d_Honneur.Enabled = true;
+           // RB_Membre_satellite.Enabled = true;
         }
         catch (Exception ee)
         {
@@ -1014,6 +1064,14 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             membre.club_name = "" + lbl_club3.Text;
             membre.honorary_member = rbtl_membre_H.SelectedValue;
             membre.active_member = "" + rbtl_membre_A.SelectedValue;
+
+            membre.ri_ad1 = "" + H_ri_ad1.Value;
+            membre.ri_ad2 = "" + H_ri_ad2.Value;
+            membre.ri_ad3 = "" + H_ri_ad3.Value;
+            membre.ri_zip_code = "" + H_ri_zip_code.Value;
+            membre.ri_town = "" + H_ri_town.Value;
+            membre.ri_country = "" + H_ri_country.Value;
+            membre.ri_country = "" + H_ri_country.Value;
 
             DateTime dta = DateTime.MinValue;
             DateTime.TryParse("" + dpk_ann__adh.Text, out dta);
@@ -1289,7 +1347,35 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             { 
                 Panel1.Visible = false;
                 Panel2.Visible = false;
-                PanelImport.Visible = true;
+                PanelSynchroAnalyse.Visible = false;
+                PanelSynchroAuto.Visible = false;
+                PanelSynchroNonConfiguree.Visible = false;
+                if (Functions.CurrentClub.rotary_agreement_date != null)
+                {
+                    switch(Functions.CurrentClub.rotary_agreement_type){
+                        case "":
+                            PanelSynchroNonConfiguree.Visible = true;
+                            break;
+                        case "auto":
+                            PanelSynchroAuto.Visible = true;
+                            break;
+                        case "analyse":
+                            PanelSynchroAnalyse.Visible = true;
+                            break;
+                    }
+                
+                   
+
+                    PanelSynchro.Visible = true;
+                    PanelImport.Visible = false;
+                    PanelImport.Visible = false;
+                }
+                else
+                {
+                    PanelSynchro.Visible = false;
+                    PanelImport.Visible = true;
+
+                }
                 PImportResult.Visible = false;
                 Bti_Valider.Visible = false;
                 HF_Import.Value = "";
@@ -1304,6 +1390,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         Panel1.Visible = true;
         Panel2.Visible = true;
+        PanelSynchro.Visible=false;
         PanelImport.Visible = false;
         Response.Redirect(Request.RawUrl);
     }
@@ -1481,6 +1568,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 m.gsm = "" + w.Cells[r, 11].Value;
                 m.professionnal_fax = "" + w.Cells[r, 12].Value;
                 m.fax = "" + w.Cells[r, 13].Value;
+
+
+                
                 string[] pemails = ("" + w.Cells[r, 14].Value).Split(',');
                 if (pemails.Length > 0)
                     m.professionnal_email = pemails[0];

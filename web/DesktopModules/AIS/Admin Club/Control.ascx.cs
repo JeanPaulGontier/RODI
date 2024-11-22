@@ -100,7 +100,21 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         hf_last_cric.Value = (Functions.CurrentCric + "");
         hfd_cric.Text = (Functions.CurrentCric + "");
         pnl_edit.Visible = true;
-        
+
+        var csat = club.GetClubSatellite();
+        if (csat != null)
+        {
+            P_satellite.Visible = true;
+            P_satellite_lalel.Text = "Le club possède un club satellite : " + csat.name;
+        }
+        var cpar = club.GetClubParent();
+        if (cpar != null)
+        {
+            P_satellite.Visible = true;
+            P_satellite_lalel.Text = "Satellite du club : " + cpar.name;
+        }
+
+
         tbx_seo.Text = club.seo;
         tbx_adr1.Text = club.adress_1;
         tbx_adr2.Text = club.adress_2;
@@ -126,24 +140,56 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         tbx_payment_method.Text = club.payment_method;
         tbx_nb_free_of_charge.Text = ""+club.nb_free_of_charge;
         hf_synchroRI.Value = "" + club.rotary_agreement_type;
-        if(club.rotary_agreement_date==null)
-        {
-            l_synchroRI.Text = "La synchronisation n'est pas autorisée par le club au niveau de my Rotary";
+        if(cpar!=null){
+            if (cpar.rotary_agreement_date == null)
+            {
+                l_synchroRI.Text = "La synchronisation gérée par le club " + cpar.name + " n'est pas autorisée au niveau de my Rotary";
+                l_synchroRI.CssClass = "col-sm-12 alert alert-danger";
+            }
+            else
+            {
+                l_synchroRI.Text = "La synchronisation gérée par le club " + cpar.name + " n'est pas active" ;
+                l_synchroRI.CssClass = "col-sm-12 alert alert-danger";
+                switch (cpar.rotary_agreement_type)
+                {
+                    case "auto":
+                        l_synchroRI.Text = "La synchronisation gérée par le club "+cpar.name+" est active" ;
+                        l_synchroRI.CssClass = "col-sm-12 alert alert-info";
+                        break;
+                    case "analyse":
+                        l_synchroRI.Text = "La synchronisation gérée par le club "+cpar.name+" analyse les différences mais ne met pas à jour les membres et le comité";
+                        l_synchroRI.CssClass = "col-sm-12 alert alert-warning";
+                        break;
+                }
+
+            }
         }
         else
         {
-            l_synchroRI.Text = "La synchronisation n'est pas active";
-            switch (hf_synchroRI.Value)
+            if (club.rotary_agreement_date == null)
             {
-                case "auto":
-                    l_synchroRI.Text = "La synchronisation est active";
-                    break;
-                case "analyse":
-                    l_synchroRI.Text = "La synchronisation analyse les différences mais ne met pas à jour les membres et le comité";
-                    break;
+                l_synchroRI.Text = "La synchronisation n'est pas autorisée au niveau de my Rotary";
+                l_synchroRI.CssClass = "col-sm-12 alert alert-danger";
             }
+            else
+            {
+                l_synchroRI.Text = "La synchronisation n'est pas active";
+                l_synchroRI.CssClass = "col-sm-12 alert alert-danger";
+                switch (hf_synchroRI.Value)
+                {
+                    case "auto":
+                        l_synchroRI.Text = "La synchronisation est active";
+                        l_synchroRI.CssClass = "col-sm-12 alert alert-info";
+                        break;
+                    case "analyse":
+                        l_synchroRI.Text = "La synchronisation analyse les différences mais ne met pas à jour les membres et le comité";
+                        l_synchroRI.CssClass = "col-sm-12 alert alert-warning";
+                        break;
+                }
 
+            }          
         }
+      
 
 
         tbx_seo.Enabled = false;

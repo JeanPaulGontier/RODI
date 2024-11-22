@@ -1,4 +1,20 @@
 ##### Modified files per commit
+```txt
+App_Code\AIS\Const.cs
+App_Code\AIS\DataMapping.cs
+App_Code\AIS\Member.cs
+App_Code\AIS\Club.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+App_Code\AIS\rotary\Rotary.cs
+App_Code\AIS\rotary\RotaryHelper.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
+
+```
 ##### 19/11/2024
 ```txt
 App_Code\Newsletter.cs

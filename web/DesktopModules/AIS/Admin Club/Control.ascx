@@ -36,6 +36,11 @@
             <asp:RequiredFieldValidator runat="server" ControlToValidate="tbx_name" Text="Veuillez compléter" ForeColor="Red" Display="Dynamic">*</asp:RequiredFieldValidator>
         </div>
     </div>
+    <asp:Panel runat="server" ID="P_satellite" Visible="false">
+        <div class="alert alert-info">
+            <asp:Label runat="server" ID="P_satellite_lalel"></asp:Label>
+        </div>
+    </asp:Panel>
     <div class="row">
         <div class="col-sm-4">
             <strong>SEO :</strong>

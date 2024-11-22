@@ -15,6 +15,12 @@
         white-space: nowrap;
     }
 </style>
+<asp:HiddenField runat="server" ID="H_ri_ad1" />
+<asp:HiddenField runat="server" ID="H_ri_ad2" />
+<asp:HiddenField runat="server" ID="H_ri_ad3" />
+<asp:HiddenField runat="server" ID="H_ri_zip_code" />
+<asp:HiddenField runat="server" ID="H_ri_town" />
+<asp:HiddenField runat="server" ID="H_ri_country" />
 
 <asp:Label ID="test" runat="server" />
 
@@ -25,7 +31,8 @@
 <asp:TextBox runat="server" ID="TXT_Critere" AutoPostBack="true" OnTextChanged="TXT_Critere_TextChanged" ></asp:TextBox>
 <asp:Label ID="LBL_Nb" runat="server"></asp:Label>
 <asp:Button runat="server" ID="BT_Import" Text="Mettre à jour les membres" CssClass="btn btn-primary" ToolTip="Mettre à jour les membres à partir d'un fichier Excel extrait de Rotary.org" CausesValidation="false" OnClick="BT_Import_Click" />
-<asp:Button runat="server" ID="BT_Ajout" Text="Ajouter un membre" CssClass="btn btn-primary" ToolTip="Ajouter un membre" CausesValidation="false" OnClick="BT_Ajout_Click" />
+<asp:Button runat="server" ID="BT_Ajout" Text="Ajouter un membre" CssClass="btn btn-primary" ToolTip="Ajouter un membre" CausesValidation="false" OnClick="BT_Ajout_Click"  Visible="false"/>
+<asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_ParentInfo">Le club possède un club satellite : <%=clubsatellitename %></asp:Panel>
 <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_SatelliteInfo">Vous êtes dans un club satellite, l'ajout ou la mise à jour des membres doit être faite par le club parent : <%=clubparentname %></asp:Panel>
 <h3><asp:Label runat="server" ID="lbl_TousADG" Text="Choisissez un club" Visible="false" /></h3>
 
@@ -148,7 +155,7 @@
 		
         <asp:Panel CssClass="row" runat="server">
             <div class="Adresse col-sm-6">
-			    <h3>Coordonnées :</h3>
+			    <h3>Coordonnées personnelles :</h3>
 			        <p><asp:Label runat="server" ID="LBL_Adresse" /></p>
 			        <p><asp:Label runat="server" ID="LBL_Emailt" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email" /><br />
 			        <asp:Label runat="server" ID="LBL_Telt" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel" /><br />
@@ -157,7 +164,7 @@
 		    </div>
 		
 		    <asp:Panel runat="server" ID="Panel_Coord_Pro" CssClass="Adresse col-sm-6">
-			    <h3>Coordonnées issues de rotary.org :</h3>
+			    <h3>Coordonnées professionnelles :</h3>
                     <p><asp:Label runat="server" ID="LBL_Adresse_Pro" /></p>
 			        <p><asp:Label runat="server" ID="LBL_Email_Prot" Text="Email : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Email_Pro" /><br />
 			        <asp:Label runat="server" ID="LBL_Tel_Prot" Text="Tél : " CssClass="WLabel" /><asp:Label runat="server" ID="LBL_Tel_Pro" /><br />
@@ -198,16 +205,14 @@
     <p>&nbsp;</p>
     <p><asp:Label ID="lbl_nom2" Width="200px" runat="server" Text="Nom : " /><asp:TextBox  runat="server" ID="tbx_nom" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();' /><asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Nom" ControlToValidate="tbx_nom" Width="20px"></asp:RequiredFieldValidator></p>
     <p><asp:Label ID="lbl_prenom2" Width="200px" runat="server" Text="Prénom : " /><asp:TextBox runat="server" ID="tbx_prenom" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ForeColor="red" Text="Obligatoire" ErrorMessage="Prénom" ControlToValidate="tbx_prenom" Width="20px"></asp:RequiredFieldValidator></p> 
-    <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox  runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
-    <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="400px" MaxLength="50" /></p>    
-    <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone Perso. : " /><asp:TextBox runat="server" ID="tbx_telephone" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax Perso. : " /><asp:TextBox runat="server" ID="tbx_fax" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile Perso. : " /><asp:TextBox runat="server" ID="tbx_gsm" Width="400px" MaxLength="50" /></p>
-
+    <p>
+        <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " />
+        <asp:RadioButtonList ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+            <asp:ListItem Text="Monsieur" Value="M"  />
+            <asp:ListItem Text="Madame" Value="Mme"  />
+            <asp:ListItem Text="Non spécifiée" Value=""  />
+        </asp:RadioButtonList>
+    </p>  
     <h3><asp:Label runat="server" ID="LBL_Titre_Rotary"></asp:Label></h3>
     <p>
         <asp:Label ID="LBL_NIM2" Width="200px" runat="server" Text="NIM : " />
@@ -218,42 +223,60 @@
             MinimumValue="1" MaximumValue="1000000000" ControlToValidate="tbx_nim"
             ErrorMessage="Vous devez saisir un NIM compris entre 1 et 1000000000" />
     </p>
+    <p>
+        <asp:Label ID="lbl_club2" runat="server" Text="Club : " Width="200px" />
+        <asp:Label ID="lbl_club3" runat="server" Width="400px" />
+    </p>
 
     <p>
         <asp:Label ID="lbl_district2" runat="server" Text="District : " Width="200px" />
         <asp:Label ID="lbl_district3" runat="server" Width="400px" />
     </p>
-  
-    <hr />    
+     <table>
+     <tr>
+         <td><asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Adhésion Initiale : " Width="200px" /></td>           
+         <td><asp:TextBox CssClass="form-control" runat="server" Height="30px"  TextMode="Date" ID="dpk_ann__adh"></asp:TextBox></td>
+     </tr>
+ </table>
+  <p></p>
+ <table>
+     <tr>
+         <td><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Date de naissance : " /></td>
+         <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
+     </tr>
+ </table>
+     <h3>Coordonnées professionnelles :</h3>
+     <p><asp:Label ID="lbl_adresse_pro2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse_pro" Width="400px" MaxLength="255" /></p>
+     <p><asp:Label ID="Label3" Width="200px" runat="server" Text="Complément : " /><asp:TextBox runat="server" ID="tbx_adresse_pro_complement" Width="400px" MaxLength="255" /></p>
+     <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
+     <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox  runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
+     <p><asp:Label ID="Label2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox  runat="server" ID="tbx_pays_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
+     <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="200px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
+     <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="200px" MaxLength="50" /></p>
+     <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="200px" MaxLength="50" /></p>    
+    
+     <h3>Coordonnées personnelles :</h3>
+     <p><asp:Label ID="lbl_adresse1_2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse1" Width="400px" MaxLength="255" /></p>
+     <p><asp:Label ID="lbl_adresse2_2" Width="200px" runat="server" Text="Complément 1 : " /><asp:TextBox runat="server" ID="tbx_adresse2" Width="400px" MaxLength="255" /></p>
+     <p><asp:Label ID="lbl_adresse3_2" Width="200px" runat="server" Text="Complément 2 : " /><asp:TextBox runat="server" ID="tbx_adresse3" Width="400px" MaxLength="255" /></p>
+     <p><asp:Label ID="lbl_cp2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp" Width="400px" MaxLength="50" /></p>
+     <p><asp:Label ID="lbl_ville2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
+     <p><asp:Label ID="lbl_pays2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox runat="server" ID="tbx_pays" Width="200px" MaxLength="50"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
+     <p><asp:Label ID="lbl_telephone2" Width="200px" runat="server" Text="Téléphone Perso. : " /><asp:TextBox runat="server" ID="tbx_telephone" Width="200px" MaxLength="50" /></p>
+     <p><asp:Label ID="lbl_fax2" Width="200px" runat="server" Text="Fax Perso. : " /><asp:TextBox runat="server" ID="tbx_fax" Width="200px" MaxLength="50" /></p>
+     <p><asp:Label ID="lbl_gsm2" Width="200px" runat="server" Text="Mobile Perso. : " /><asp:TextBox runat="server" ID="tbx_gsm" Width="200px" MaxLength="50" /></p>
+     <hr />    
+
     <h2>Informations modifiables dans le district</h2>
   
-    <p>
-        <asp:Label ID="lbl_civilite2" Width="200px" runat="server" Text="Civilité : " />
-            <asp:RadioButtonList ID="rbtl_civilite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
-                <asp:ListItem Text="Monsieur" Value="M"  />
-                <asp:ListItem Text="Madame" Value="Mme"  />
-                <asp:ListItem Text="Non spécifiée" Value=""  />
-            </asp:RadioButtonList>
-    </p>  
+    
     <p><asp:Label ID="lbl_titre2" Width="200px" runat="server" Text="Titre : " /><asp:TextBox runat="server" ID="tbx_titre" Width="400px" MaxLength="255" onchange='javascript: this.value = toTitleCase(this);' /></p>
 
-    <table>
-        <tr>
-            <td><asp:Label ID="lbl_ann_adh_rotary" runat="server" Text="Adhésion Initiale : " Width="200px" /></td>           
-            <td><asp:TextBox CssClass="form-control" runat="server" Height="30px"  TextMode="Date" ID="dpk_ann__adh"></asp:TextBox></td>
-        </tr>
-    </table>
-     <p></p>
-    <table>
-        <tr>
-            <td><asp:Label ID="lbl_ann_Naiss2" Width="200px" runat="server" Text="Date de naissance : " /></td>
-            <td><asp:TextBox runat="server" ID="dpk_ann_Naiss" CssClass="form-control" Height="30px" TextMode="Date"></asp:TextBox></td>
-        </tr>
-    </table>
+   
     <p></p>
     <p><asp:Label ID="lbl_nom_JF2" Width="200px" runat="server" Text="Nom de jeune fille : " /><asp:TextBox runat="server" ID="tbx_nom_JF" Width="400px" MaxLength="255" onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
     <p><asp:Label ID="lbl_prenom_Conjoint2" Width="200px" runat="server" Text="Prénom conjoint(e) : " /><asp:TextBox runat="server" ID="tbx_prenom_Conjoint" Width="400px" MaxLength="255"  onchange='javascript: this.value = toTitleCase(this);' /></p>
-    <p><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
+    <p style='display:none'><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
 
 
     <div>
@@ -269,18 +292,12 @@
     </div>
 
     <br />
-    <h3>Coordonnées :</h3>
-    <p><asp:Label ID="lbl_adresse1_2" Width="200px" runat="server" Text="Adresse : " /><asp:TextBox runat="server" ID="tbx_adresse1" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_adresse2_2" Width="200px" runat="server" Text="Complément 1 : " /><asp:TextBox runat="server" ID="tbx_adresse2" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_adresse3_2" Width="200px" runat="server" Text="Complément 2 : " /><asp:TextBox runat="server" ID="tbx_adresse3" Width="400px" MaxLength="255" /></p>
-    <p><asp:Label ID="lbl_cp2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp" Width="400px" MaxLength="50" /></p>
-    <p><asp:Label ID="lbl_ville2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox runat="server" ID="tbx_ville" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_pays2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox runat="server" ID="tbx_pays" Width="400px" MaxLength="50"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-    <p><asp:Label ID="lbl_gsm_pro2" Width="200px" runat="server" Text="Mobile Pro. : " /><asp:TextBox runat="server" ID="tbx_gsm_pro" Width="400px" MaxLength="50" /></p>
-
+   
+    
     <h3>Profession :</h3>
     <p><asp:Label ID="lbl_fct_metier2" Width="200px" runat="server" Text="Métier : " /><asp:TextBox runat="server" ID="tbx_fct_metier" Width="400px" MaxLength="255"   onchange='javascript: this.value = toTitleCase(this);'  /></p>
     <p><asp:Label ID="lbl_branche2" Width="200px" runat="server" Text="Branche d'activité : " /><asp:TextBox runat="server" ID="tbx_branche" Width="400px" MaxLength="255"   onchange='javascript: this.value = toTitleCase(this);'  /></p>
+    <p><asp:Label ID="lbl_gsm_pro2" Width="200px" runat="server" Text="Mobile Pro. : " /><asp:TextBox runat="server" ID="tbx_gsm_pro" Width="400px" MaxLength="50" /></p>
     <p>
         <asp:Label ID="lbl_retraite2" Width="200px" runat="server" Text="Retraité : " /><asp:RadioButtonList ID="rbtl_retraite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Text="Oui" Value="O" />
@@ -289,8 +306,7 @@
 
     <br />
     <p>
-        <asp:Label ID="lbl_club2" runat="server" Text="Club : " Width="200px" />
-        <asp:Label ID="lbl_club3" runat="server" Width="400px" />
+      
         <asp:Panel runat="server" ID="PChangerClub" Visible="false">
             <asp:DropDownList ID="ddlClubs" runat="server" CssClass="form-control" Width="50%">
             </asp:DropDownList>
@@ -344,7 +360,7 @@
     <div class="txtRight">
          <asp:Label runat="server" Text="Membre d'honneur : " Width="250px" />
       
-        <asp:RadioButtonList ID="RB_Membre_d_Honneur" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+        <asp:RadioButtonList ID="RB_Membre_d_Honneur"  runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Selected="true" Text="Oui" Value="O" />
             <asp:ListItem Text="Non" Value="N" />
         </asp:RadioButtonList>
@@ -383,6 +399,26 @@
         <asp:HiddenField ID="hf_Modif" runat="server"/>
         <asp:HiddenField ID="hf_Ajout" runat="server"/>
 	</div>
+</asp:Panel>
+<asp:Panel runat="server" ID="PanelSynchro" Visible="false">
+<h2>Votre club est synchronisé avec Rotary.org :</h2>
+    <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
+        La modification des membres se fait sur le site du Rotary International, 
+        la synchronisation vers le district est automatique chaque nuit.
+    </asp:Panel>
+    <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
+        La synchronisation des membres est autorisée, 
+        mais la mise à jour dans le district est désactivé pour analyse, 
+        contactez un responsable district pour la réactiver.
+    </asp:Panel>
+     <asp:Panel runat="server" ID="PanelSynchroNonConfiguree" CssClass="alert alert-danger">
+     La synchronisation des membres est autorisée, 
+     mais la mise à jour dans le district n'a pas encore été configurée, 
+     contactez un responsable district pour la réactiver.
+ </asp:Panel>
+<div>
+    <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Fermer" CausesValidation="false" OnClick="Bti_Annuler_Click" />
+</div>
 </asp:Panel>
 <asp:Panel runat="server" ID="PanelImport" Visible="false">
     <h2>Mettre à jour les membres à partir d'un fichier Excel extrait de Rotary.org :</h2>
