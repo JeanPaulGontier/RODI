@@ -249,7 +249,7 @@
      <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
      <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox  runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
      <p><asp:Label ID="Label2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox  runat="server" ID="tbx_pays_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-     <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="200px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
+     <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
      <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="200px" MaxLength="50" /></p>
      <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="200px" MaxLength="50" /></p>    
     
@@ -277,7 +277,7 @@
     <p style='display:none'><asp:Label ID="lbl_bio2" Width="200px" runat="server" Text="Biographie : " /><asp:TextBox runat="server" ID="tbx_bio" TextMode="MultiLine" Rows="5" Width="400px" Wrap="true" /></p>
 
 
-    <div>
+    <asp:Panel runat="server" ID="P_photo">
         <asp:Label runat="server" ID="Label10" Text="Photo : " Width="200px" />
         <asp:Image runat="server" ID="IMG_Photo2" />
         <asp:FileUpload runat="server" ID="FU_Photo2"  onchange="OnClientPhotoUploaded2(this, this.files[0])" accept=".png, .jpeg, .jpg" />      
@@ -287,7 +287,7 @@
         </div>
         <asp:HiddenField runat="server" ID="HF_Photo2" />
         <asp:Button runat="server" CssClass="btn btn-xs btn-danger" ID="BT_Effacer_Photo2" Text="Supprimer la photo" CausesValidation="false" OnClick="BT_Effacer_Photo2_Click" />
-    </div>
+    </asp:Panel>
 
     <br />
    
