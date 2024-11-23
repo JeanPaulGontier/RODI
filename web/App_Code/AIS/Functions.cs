@@ -2433,5 +2433,41 @@ namespace AIS
             return 0;
         }
 
+
+        public static string JSONFormat(string json)
+        {
+            StringBuilder sb = new StringBuilder();
+            int level = 0;
+            foreach(var c in json.ToCharArray())
+            {
+                if (c == '{')
+                {
+                    sb.AppendLine("{");
+                    level++;
+                    for (int i = 0; i < level; i++)
+                        sb.Append("\t");
+                    
+                }
+                else if (c == '}')
+                {
+                    sb.AppendLine();
+                     level--;
+                    for (int i = 0; i < level; i++)
+                        sb.Append("\t");
+                    sb.Append("}");                   
+                }
+                else if (c == ',')
+                {
+                    sb.AppendLine(",");
+                    for (int i = 0; i < level; i++)
+                        sb.Append("\t");
+                }
+                else
+                    sb.Append(c);
+            }
+
+            return sb.ToString();
+        }
+
     }
 }

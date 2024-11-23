@@ -469,7 +469,7 @@ public class RotaryHelper
         var clubs = Get_Clubs(out res);
 
         if (clubs == null)
-            return "Erreur récupération des clubs";
+            return "<p style='color:red'>Erreur récupération des clubs</p>";
 
         var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         foreach (var club in clubs)
@@ -492,7 +492,7 @@ public class RotaryHelper
             var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club", "id", row);
             if (r.Key != "error")
             {
-                result += "" + club.ClubId + " : " + club.ClubName + "<br/>";
+                result += "<p>" + club.ClubId + " : " + club.ClubName + "</p>";
 
                 SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
                 sql.Parameters.AddWithValue("cric", club.ClubId);
@@ -507,12 +507,12 @@ public class RotaryHelper
             }
 
             else
-                result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " < br /> ";
+                result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + "</p>";
 
 
         }
 
-        result += clubs.Count + " récupéré(s)";
+        result += "<p>"+clubs.Count + " récupéré(s)</p>";
 
         return result;
     }
@@ -549,10 +549,27 @@ public class RotaryHelper
                 var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
                 if (r.Key != "error")
                 {
-                    result += "" + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";                  
+                    result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";                  
                 }
                 else
-                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : active " + member.FirstName + " " + member.LastName + "<br/>";
+                    result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+            }
+
+            var localmembers = dbmembers.FindAll(c => c.ClubId == club.ClubId);
+            foreach(var member in localmembers)
+            {
+                var dbmember = members.ClubMembers.Find(c => c.MemberId == member.MemberId);
+                if (dbmember == null) {
+                    if(Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where memberid="+ member.MemberId+" and clubid="+ member.ClubId)>0)
+                    {
+                        result += "<p>Suppression " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+                    }
+                    else
+                    {
+                        result += "<p style='color:red'>ERREUR suppression : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+                    }
+                    
+                }
             }
         }
         return result;
@@ -563,7 +580,7 @@ public class RotaryHelper
         string result = "";
         var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         if (clubs == null)
-            return "Erreur récupération des clubs";
+            return "<p style='color:red'>Erreur récupération des clubs</p>";
 
         var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
 
@@ -595,9 +612,9 @@ public class RotaryHelper
 
                 var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_officer", "id", row);
                 if (r.Key != "error")
-                    result += "" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/>";
+                    result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
                 else
-                    result += "ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "<br/> ";
+                    result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
             }
         }
         return result;

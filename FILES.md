@@ -4,6 +4,7 @@ App_Code\AIS\Const.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Member.cs
 App_Code\AIS\Club.cs
+App_Code\AIS\Functions.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml

@@ -6,12 +6,12 @@
 	- auto : mets à jour les données du clubs reçues du RI
 
 Nouveaux services :
-- RotaryScheduler (clubs)	: synchronisation des clubs RI > RODI
-- RotaryScheduler (officers) : synchronisation des clubs Officers RI > RODI
-- RotaryScheduler (members) : synchronisation des membres des clubs RI > RODI
-- RotaryScheduler (ucm) : Update Clubs Members (mise à jour des données membres rapide : ajout, modif & suppressions)
-- RotaryScheduler (uco) : Update Clubs Officers (mise à jour des commités des clubs)
-- RotaryScheduler (ump) : Update Members Profiles (mise à jour des profils complets des membres : adresses, mails, téléphones)
+- RotaryScheduler (clubs)	1J 5J logs : synchronisation des clubs RI > RODI
+- RotaryScheduler (officers) 1J 5J logs : synchronisation des clubs Officers RI > RODI
+- RotaryScheduler (members) 1J 5J logs : synchronisation des membres des clubs RI > RODI
+- RotaryScheduler (ucm) 1J 5J logs : Update Clubs Members (mise à jour des données membres rapide : ajout, modif & suppressions)
+- RotaryScheduler (uco) 1J 5J logs : Update Clubs Officers (mise à jour des commités des clubs)
+- RotaryScheduler (ump) 1H 500H logs: Update Members Profiles (mise à jour des profils complets des membres : adresses, mails, téléphones)
 
 Nouveau paramètre global :
 <add key="RotarySynchroAllowUpdate" value="true"/>  active ou pas la mise à jour des données de synchro de manière globale
