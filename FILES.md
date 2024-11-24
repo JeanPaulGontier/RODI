@@ -4,16 +4,21 @@ App_Code\AIS\Const.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Member.cs
 App_Code\AIS\Club.cs
+App_Code\AIS\Pays.cs
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryMagSynchroParametres.cshtml
 App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 DesktopModules\AIS\Admin Club\Control.ascx
 DesktopModules\AIS\Admin Club\Control.ascx.cs
+App_Code\AIS\webapi\rotarymag\RotaryMag.cs
+App_Code\AIS\webapi\rotarymag\RotaryMagController.cs
+App_Code\AIS\webapi\rotarymag\RotaryMagHelper.cs
 
 ```
 ##### 19/11/2024

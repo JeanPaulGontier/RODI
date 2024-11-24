@@ -10,6 +10,8 @@
     bool synchro = false;
     string synchro_result = "";
     string nim = "" + Request["nim"];
+    string collapse = "";
+    string collapsed = "collapsed";
     if (nim == "")
     {
         nim = "5604888";
@@ -141,6 +143,8 @@
 
         else if (("" + Request["bt_save"]) == "save")
         {
+            collapse = "in";
+            collapsed = "";
             param.jwt_url_login = "" + Request["jwt_url_login"];
             param.jwt_url_extendtoken = "" + Request["jwt_url_extendtoken"];
             param.url_membres = "" + Request["url_membres"];
@@ -203,8 +207,8 @@
 </style>
 <div class="panel-group" id="accordion">
     <div class="panel panel-default " >
-        <div class="panel-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Configuration</a></div>
-        <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-heading"><a class="accordion-toggle @collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Configuration</a></div>
+        <div id="collapse1" class="panel-collapse collapse @collapse">
              <div class="panel-body">
             <h2>API Rotary Mag</h2>
             <div class="form-group">

@@ -8587,13 +8587,6 @@ namespace AIS
 
         #endregion Mobile
 
-        public static List<Pays> GetCountries()
-        {
-            var AppCtx = HttpContext.Current.Application;
-            if (AppCtx["countries"] == null)
-                AppCtx["countries"] = Yemon.dnn.DataMapping.ExecSql<Pays>(new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "pays ORDER BY name"));
-            return (List<Pays>)AppCtx["countries"];
-        }
 
     }
 

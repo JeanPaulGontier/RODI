@@ -473,7 +473,7 @@ public class RotaryHelper
 
         var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         foreach (var club in clubs)
-        {
+        {            
             var row = new Dictionary<string, object>();
 
             var dbclub = dbclubs.Find(c => c.ClubId == club.ClubId);

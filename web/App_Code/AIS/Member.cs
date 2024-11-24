@@ -70,14 +70,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
-using Telerik.Windows.Controls.ChartView;
 
 namespace AIS
 {
     [Serializable]
     public class Member
     {
-        public Member(){
+        public Member()
+        {
+
             honorary_member = Const.NO;
             surname = "";
             name = "";
@@ -130,7 +131,7 @@ namespace AIS
             ri_zip_code = "";
             ri_town = "";
             ri_country = "";
-     }
+        }
         public Guid guid
         {
             get
@@ -141,7 +142,7 @@ namespace AIS
         }
         public int id { get; set; }
         public int nim { get; set; }
-        public string honorary_member { get; set; } 
+        public string honorary_member { get; set; }
         public string surname { get; set; }
         public string name { get; set; }
         public int cric { get; set; }

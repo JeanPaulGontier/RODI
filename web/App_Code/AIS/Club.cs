@@ -1,10 +1,9 @@
-﻿
-#region Copyrights
+﻿#region Copyrights
 
 //
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2024
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -61,7 +60,6 @@
 //If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy's public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
 
 #endregion Copyrights
-
 using DotNetNuke.Entities.Portals;
 using System;
 using System.Collections.Generic;
@@ -103,12 +101,20 @@ namespace AIS
         public string domaine { get; set; }
         public string payment_method { get; set; }
         public double nb_free_of_charge { get; set; }
+        public int charter_year { get; set; }
+        #region RotaryMag Specific Fields
+        public DateTime? rm_agreement_date { get; set; }
+        public string rm_agreement_name { get; set; }
+        public string rm_agreement_firstname { get; set; }
+        public string rm_agreement_function { get; set; }
+        #endregion
 
         public DateTime? rotary_agreement_date { get; set; }
         public string rotary_agreement_type { get; set; } // '': pas de synchronisation , 'auto': maj auto, 'analyse': analyse seulement
-       
 
-        public string GetSynchroRI(){
+
+        public string GetSynchroRI()
+        {
             if (rotary_agreement_date == null)
                 return "Non autorisée";
             if (rotary_agreement_type == "")
@@ -142,14 +148,16 @@ namespace AIS
             return a;
         }
 
-        public bool IsSatellite {
+        public bool IsSatellite
+        {
             get
             {
-                    return Functions.GetClubParent(cric) > 0;
+                return Functions.GetClubParent(cric) > 0;
             }
         }
 
-        public Club GetClubSatellite(){
+        public Club GetClubSatellite()
+        {
             int cricsat = Functions.GetClubSatellite(cric);
             if (cricsat > 0)
             {
@@ -162,12 +170,13 @@ namespace AIS
             return null;
         }
 
-        public Club GetClubParent(){
+        public Club GetClubParent()
+        {
             int cricparent = Functions.GetClubParent(cric);
-            if(cricparent>0)
+            if (cricparent > 0)
             {
                 var club = DataMapping.GetClub(cricparent);
-                if(club!=null)
+                if (club != null)
                 {
                     return club;
                 }
