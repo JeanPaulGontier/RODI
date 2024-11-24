@@ -12,6 +12,9 @@ Nouveaux services :
 - RotaryScheduler (ucm) 1J 5J logs : Update Clubs Members (mise à jour des données membres rapide : ajout, modif & suppressions)
 - RotaryScheduler (uco) 1J 5J logs : Update Clubs Officers (mise à jour des commités des clubs)
 - RotaryScheduler (ump) 1H 500H logs: Update Members Profiles (mise à jour des profils complets des membres : adresses, mails, téléphones)
+- RotaryScheduler (couu) 1H 1J logs: Create or Update Users
+- RotaryScheduler (mac) 1H 1J logs: Mise à jour des affectations clubs
+
 
 Nouveau paramètre global :
 <add key="RotarySynchroAllowUpdate" value="true"/>  active ou pas la mise à jour des données de synchro de manière globale
@@ -86,8 +89,8 @@ CREATE TABLE [dbo].[ais_ri_officer](
 	[MemberId] [int] NULL,
 	[ClubId] [int] NULL,
 	[OfficerRole] [nvarchar](50) NULL,
-	[StartDate] [nvarchar](50) NULL,
-	[EndDate] [nvarchar](50) NULL,
+	[StartDate] [datetime] NULL,
+	[EndDate] [datetime] NULL,
 	[ClubName] [nvarchar](255) NULL,
 	[FirstName] [nvarchar](50) NULL,
 	[LastName] [nvarchar](50) NULL,

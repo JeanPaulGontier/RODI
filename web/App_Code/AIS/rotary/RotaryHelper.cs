@@ -217,8 +217,9 @@ public class RotaryHelper
         result = null;
         try
         {
+            int rotaryyear = Functions.GetRotaryYear();
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/officers?startDate=07-01-2024&endDate=06-30-2025"));
+            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/officers?startDate=07-01-"+rotaryyear+"&endDate=06-30-"+(rotaryyear+2)));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
@@ -622,11 +623,97 @@ public class RotaryHelper
 
     public static string UpdateClubsOfficers()
     {
-        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "");
+        Dictionary<string, string> fl = new Dictionary<string, string>();
+        //c.Add("", "Action Professionnelle");
+        //c.Add("Club Executive Secretary/Director(Facultatif)", "Administration");
+        fl.Add("Rotaract Advisor", "Administration");
+        fl.Add("Club Public Image Chair", "Délégué Communication");
+        fl.Add("Rotaract Public Image Chair", "Délégué Communication");
+        //fl.Add("", "Délégué Jeunesse");
+        fl.Add("Club Membership Chair", "Effectif");
+        fl.Add("Rotaract Membership Chair", "Effectif");
+        fl.Add("Club Foundation Chair", "Fondation Rotary");
+        fl.Add("Rotaract Foundation Chair", "Fondation Rotary");
+        //fl.Add("", "Past président");
+        fl.Add("Club President", "Président");
+        fl.Add("Rotaract President", "Président");
+        //fl.Add("", "Président élu");
+        //fl.Add("", "Protocole");
+        //fl.Add("Club Executive Secretary/Director (Facultatif)", "Administration");
+        fl.Add("Club Secretary", "Secrétaire");
+        fl.Add("Rotaract Secretary", "Secrétaire");
+        fl.Add("", "Secrétaire Adjoint");
+        fl.Add("Club Treasurer", "Trésorier");
+        fl.Add("Rotaract Treasurer", "Trésorier");
+        //fl.Add("", "Trésorier Adjoint");
+        //fl.Add("", "Webmaster");
+        //fl.Add("", "Webmaster Adjoint");
+        fl.Add("Club Service Projects Chair", "Responsable Actions");
+        fl.Add("Rotaract Service Projects Chair", "Responsable Actions");
+        fl.Add("Club Learning Facilitator", "Responsable Formation");
+        fl.Add("Club Vice President", "Vice Président");
+
+        // nouveau roles au 08/01/2024
+        fl.Add("Club Executive Secretary/Director (Facultatif)", "Secrétaire Exécutif");
+        fl.Add("Club Executive Secretary/Director(Facultatif)", "Secrétaire Exécutif");
+
+
+
+        var members = DataMapping.ListMembers(max: int.MaxValue);
+        var clubs = DataMapping.ListClubs().FindAll(c => c.rotary_agreement_date != null && c.rotary_agreement_type != "").OrderBy(c => c.club_type).ThenBy(c => c.name).ToList(); 
         string result = "";
         foreach (var club in clubs)
         {
-            result += club.name + "<br/>";
+            result += "<p><strong>"+club.name+ " " + club.cric +"</strong></p>";
+            var officers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from " + Const.TABLE_PREFIX + "ri_officer where clubid=" + club.cric));
+            foreach(var officer in officers)
+            {
+                var member = members.Find(m => m.nim == officer.MemberId);
+                if(member == null)
+                {
+                    result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
+                }
+                else
+                {
+                    string localf = null;
+                    fl.TryGetValue(officer.OfficerRole, out localf); 
+                    if(localf == null)
+                    {
+                        result += "<p style='color:red'>ERREUR fonction introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                    }
+                    else
+                    {
+                        if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type=="auto")
+                        {
+
+                            var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "rya where rotary_year=@year and cric=@cric and nim=@nim and function=@function");
+                            sql.Parameters.AddWithValue("year", officer.StartDate.Year);
+                            sql.Parameters.AddWithValue("cric", club.cric);
+                            sql.Parameters.AddWithValue("nim", officer.MemberId);
+                            sql.Parameters.AddWithValue("function", localf);
+                            Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+
+                            sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rya ([rotary_year],[function],[cric],[nim],[name],[portalid]) VALUES (@year,@function,@cric,@nim,@name,0)");
+                            sql.Parameters.AddWithValue("year", officer.StartDate.Year);
+                            sql.Parameters.AddWithValue("cric", club.cric);
+                            sql.Parameters.AddWithValue("nim", officer.MemberId);
+                            sql.Parameters.AddWithValue("function", localf);
+                            sql.Parameters.AddWithValue("name", member.name + " " + member.surname) ;
+
+                            if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql)>0)
+                            {
+                                result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                            }
+                            else
+                            {
+                                result += "<p style='color:red'>ERREUR maj bdd : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                            }
+                        }
+                    }
+                   
+                }
+               
+            }
         }
         return result;
     }

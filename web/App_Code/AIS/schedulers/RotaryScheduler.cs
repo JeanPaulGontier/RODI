@@ -77,6 +77,22 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
+            if (taskname.Contains("couu"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Création ou MAJ Users</div>");
+                string result = DataMapping.CreateOrUpdateUsers();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
+            if (taskname.Contains("mac"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Mise à jour affectations clubs</div>");
+                string result = DataMapping.UpdateClubAffectations();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
         }
         catch (Exception exc)
         {
