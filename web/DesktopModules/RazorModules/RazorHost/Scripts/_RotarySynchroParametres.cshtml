@@ -1,7 +1,7 @@
 @using AIS;
 @using System.Diagnostics;
 @using System.Data.SqlClient;
-
+@using System.Data;
 
 
 @{
@@ -14,6 +14,9 @@
     string collapse = "";
     string collapsed = "collapsed";
 
+    int logid = 0;
+
+
     int nim = 0;
     int cric = 0;
     string clubtype = "Rotary%20Club";
@@ -23,14 +26,32 @@
     }
 
 
+    var logs = Yemon.dnn.DataMapping.ExecSql("SELECT [ScheduleHistoryID],[FriendlyName],[StartDate],[LogNotes]\r\n  FROM [ScheduleHistory] SH , [Schedule] S WHERE SH.ScheduleID=S.ScheduleID AND S.FriendlyName LIKE '%RotaryScheduler%'   ORDER BY StartDate DESC");
+
+
     DotNetNuke.Security.Roles.RoleController roleController = new DotNetNuke.Security.Roles.RoleController();
     var admins = roleController.GetUsersByRole(Dnn.Portal.PortalId, Const.ROLE_ADMIN_DISTRICT);
 
     if (IsPost)
     {
+        int.TryParse("" + Request["LogSelect"], out logid);
         int.TryParse("" + Request["nim"], out nim);
         int.TryParse("" + Request["cric"], out cric);
         clubtype = "" + Request["clubtype"];
+        if (("" + Request["bt_logview"]) == "logview")
+        {
+
+            foreach(DataRow row in  logs.Rows)
+            {
+                if((int)row["ScheduleHistoryID"]==logid)
+                {
+                    result = "" + row["LogNotes"];
+                    break;
+                }
+            }
+          
+            called = true;
+        }
         if (("" + Request["bt_ucm"]) == "ucm")
         {
             result = RotaryHelper.UpdateClubsMembers();
@@ -234,6 +255,30 @@
                             <button type="submit" name="bt_uco" value="uco" class="btn btn-primary" title="ATTENTION : mets à jour la base de données">Mise à jour officers des clubs</button>
                             <button type="submit" name="bt_forceump" value="force_ump" class="btn btn-warning" title="ATTENTION : mets à jour la base de données">Forcer maj tous les membres</button>
 
+                        </div>
+                    </fieldset>
+                    <div class="pe-spacer size20"></div>
+                    <fieldset>
+                        <legend>Journaux d'exécution tâches planifiées</legend>
+
+                        <div class="form-inline form-group-sm">
+                            <select name="LogSelect" class="form-control" style="width:50%">
+                                @foreach (DataRow row in logs.Rows)
+                                {
+
+                                    if ((int)row["ScheduleHistoryID"] == logid)
+                                    {
+                                        <option selected value='@row["ScheduleHistoryID"]'>@(((DateTime)row["StartDate"]).ToString("dd/MM/yyyy HH:MM:ss")) - @row["FriendlyName"]</option>
+
+                                    }
+                                    else
+                                    {
+                                        <option value='@row["ScheduleHistoryID"]'>@(((DateTime)row["StartDate"]).ToString("dd/MM/yyyy HH:MM:ss")) - @row["FriendlyName"]</option>
+
+                                    }
+                                }
+                            </select>
+                            <button type="submit" name="bt_logview" value="logview" class="btn btn-primary">Voir</button>
                         </div>
                     </fieldset>
                     <div class="pe-spacer size20"></div>
