@@ -47,6 +47,17 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ri_of
 DROP TABLE [dbo].[ri_officer]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ais_ri_club]') AND type in (N'U'))
+DROP TABLE [dbo].[ais_ri_club]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ais_ri_member]') AND type in (N'U'))
+DROP TABLE [dbo].[ais_ri_member]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ais_ri_officer]') AND type in (N'U'))
+DROP TABLE [dbo].[ais_ri_officer]
+GO
 
 CREATE TABLE [dbo].[ais_ri_club](
 	[id] [int] IDENTITY(1,1) NOT NULL,
