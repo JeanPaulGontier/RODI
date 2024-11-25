@@ -196,24 +196,24 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
         }
 
-        if(nbError > 0)
-        {
-            nbError = nbError / fonctions.Count();
+        //if(nbError > 0)
+        //{
+        //    nbError = nbError / fonctions.Count();
 
-            if (nbError == 1)
-            {
-                lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée, vous ne pourrez pas affecter ce membre à un poste.";
-            }
-            else
-            {
-                lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que ces erreurs ne sont pas corrigées, vous ne pourrez pas affecter ces membres à un poste.";
-            }
-            PanelErreur.Visible = true;
-        }
-        else
-        {
-            PanelErreur.Visible = false;
-        }
+        //    if (nbError == 1)
+        //    {
+        //        lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée, vous ne pourrez pas affecter ce membre à un poste.";
+        //    }
+        //    else
+        //    {
+        //        lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que ces erreurs ne sont pas corrigées, vous ne pourrez pas affecter ces membres à un poste.";
+        //    }
+        //    PanelErreur.Visible = true;
+        //}
+        //else
+        //{
+           PanelErreur.Visible = false;
+        //}
 
         
     }

@@ -656,7 +656,10 @@ public class RotaryHelper
         // nouveau roles au 08/01/2024
         fl.Add("Club Executive Secretary/Director (Facultatif)", "Secrétaire Exécutif");
         fl.Add("Club Executive Secretary/Director(Facultatif)", "Secrétaire Exécutif");
-
+        // nouveaux roles au 25/11/2024
+        fl.Add("Club Executive Secretary/Director", "Secrétaire Exécutif");
+        fl.Add("Club Young Leaders Contact", "Délégué Jeunesse");
+        fl.Add("Rotaract Vice President", "Vice Président");
 
 
         var members = DataMapping.ListMembers(max: int.MaxValue);
@@ -686,12 +689,11 @@ public class RotaryHelper
                         if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type=="auto")
                         {
 
-                            var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "rya where rotary_year=@year and cric=@cric and nim=@nim and function=@function");
+                            var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "rya where rotary_year=@year and cric=@cric and [function]=@function");
                             sql.Parameters.AddWithValue("year", officer.StartDate.Year);
                             sql.Parameters.AddWithValue("cric", club.cric);
-                            sql.Parameters.AddWithValue("nim", officer.MemberId);
                             sql.Parameters.AddWithValue("function", localf);
-                            Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
+                            int nb= Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
                             sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rya ([rotary_year],[function],[cric],[nim],[name],[portalid]) VALUES (@year,@function,@cric,@nim,@name,0)");
                             sql.Parameters.AddWithValue("year", officer.StartDate.Year);

@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
+// RODI - https://rodi-platform.org
 // Copyright (c) 2012-2024
-// by SAS AIS : http://www.aisdev.net
+// by SARL AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE

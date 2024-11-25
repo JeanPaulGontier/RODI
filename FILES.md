@@ -21,7 +21,8 @@ App_Code\AIS\webapi\rotarymag\RotaryMag.cs
 App_Code\AIS\webapi\rotarymag\RotaryMagController.cs
 App_Code\AIS\webapi\rotarymag\RotaryMagHelper.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
-
+DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
+DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 ```
 ##### 19/11/2024
 ```txt
