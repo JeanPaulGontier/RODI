@@ -635,7 +635,7 @@ public class RotaryHelper
         fl.Add("Rotaract President", "Président");
         fl.Add("Club Secretary", "Secrétaire");
         fl.Add("Rotaract Secretary", "Secrétaire");
-        fl.Add("", "Secrétaire Adjoint");
+       
         fl.Add("Club Treasurer", "Trésorier");
         fl.Add("Rotaract Treasurer", "Trésorier");
         fl.Add("Club Service Projects Chair", "Responsable Actions");
@@ -650,6 +650,11 @@ public class RotaryHelper
         fl.Add("Club Executive Secretary/Director", "Secrétaire Exécutif");
         fl.Add("Club Young Leaders Contact", "Délégué Jeunesse");
         fl.Add("Rotaract Vice President", "Vice Président");
+        fl.Add("Rotaract Treasurer", "Trésorier");
+        fl.Add("Rotaract Learning Facilitator", "Responsable Formation");
+        fl.Add("Rotaract Young Leaders Contact", "Délégué Jeunesse");
+        fl.Add("Club President", "Président");
+
 
 
         var members = DataMapping.ListMembers(max: int.MaxValue);
