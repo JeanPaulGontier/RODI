@@ -650,7 +650,6 @@ public class RotaryHelper
         fl.Add("Club Executive Secretary/Director", "Secrétaire Exécutif");
         fl.Add("Club Young Leaders Contact", "Délégué Jeunesse");
         fl.Add("Rotaract Vice President", "Vice Président");
-        fl.Add("Rotaract Treasurer", "Trésorier");
         fl.Add("Rotaract Learning Facilitator", "Responsable Formation");
         fl.Add("Rotaract Young Leaders Contact", "Délégué Jeunesse");
        
