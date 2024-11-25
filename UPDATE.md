@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 25/11/2024
 - le panneau de gestion des membres du club tient compte des nouveautés concernant la synchro RI
 - nouveaux paramètres admin club district synchronisation RI > RODI
 	- non : pas de synchro même si le club a autorisé RODI sur my Rotary
