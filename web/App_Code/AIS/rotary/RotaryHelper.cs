@@ -653,7 +653,7 @@ public class RotaryHelper
         fl.Add("Rotaract Treasurer", "Trésorier");
         fl.Add("Rotaract Learning Facilitator", "Responsable Formation");
         fl.Add("Rotaract Young Leaders Contact", "Délégué Jeunesse");
-        fl.Add("Club President", "Président");
+       
 
 
 
