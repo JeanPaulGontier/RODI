@@ -11,7 +11,7 @@ Nouveaux services :
 - RotaryScheduler (members) 1J 5J logs : synchronisation des membres des clubs RI > RODI
 - RotaryScheduler (ucm) 1J 5J logs : Update Clubs Members (mise à jour des données membres rapide : ajout, modif & suppressions)
 - RotaryScheduler (uco) 1J 5J logs : Update Clubs Officers (mise à jour des commités des clubs)
-- RotaryScheduler (ump) 1H 500H logs: Update Members Profiles (mise à jour des profils complets des membres : adresses, mails, téléphones)
+- RotaryScheduler (ump) 1J 5J logs: Update Members Profiles (mise à jour des profils complets des membres : adresses, mails, téléphones)
 - RotaryScheduler (couu) 1H 1J logs: Create or Update Users
 - RotaryScheduler (mac) 1H 1J logs: Mise à jour des affectations clubs
 

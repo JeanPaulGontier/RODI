@@ -624,30 +624,20 @@ public class RotaryHelper
     public static string UpdateClubsOfficers()
     {
         Dictionary<string, string> fl = new Dictionary<string, string>();
-        //c.Add("", "Action Professionnelle");
-        //c.Add("Club Executive Secretary/Director(Facultatif)", "Administration");
         fl.Add("Rotaract Advisor", "Administration");
         fl.Add("Club Public Image Chair", "Délégué Communication");
         fl.Add("Rotaract Public Image Chair", "Délégué Communication");
-        //fl.Add("", "Délégué Jeunesse");
         fl.Add("Club Membership Chair", "Effectif");
         fl.Add("Rotaract Membership Chair", "Effectif");
         fl.Add("Club Foundation Chair", "Fondation Rotary");
         fl.Add("Rotaract Foundation Chair", "Fondation Rotary");
-        //fl.Add("", "Past président");
         fl.Add("Club President", "Président");
         fl.Add("Rotaract President", "Président");
-        //fl.Add("", "Président élu");
-        //fl.Add("", "Protocole");
-        //fl.Add("Club Executive Secretary/Director (Facultatif)", "Administration");
         fl.Add("Club Secretary", "Secrétaire");
         fl.Add("Rotaract Secretary", "Secrétaire");
         fl.Add("", "Secrétaire Adjoint");
         fl.Add("Club Treasurer", "Trésorier");
         fl.Add("Rotaract Treasurer", "Trésorier");
-        //fl.Add("", "Trésorier Adjoint");
-        //fl.Add("", "Webmaster");
-        //fl.Add("", "Webmaster Adjoint");
         fl.Add("Club Service Projects Chair", "Responsable Actions");
         fl.Add("Rotaract Service Projects Chair", "Responsable Actions");
         fl.Add("Club Learning Facilitator", "Responsable Formation");
@@ -686,7 +676,7 @@ public class RotaryHelper
                     }
                     else
                     {
-                        if(Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type=="auto")
+                        if (Const.ROTARY_SYNCHRO_ALLOW_UPDATE && club.rotary_agreement_type == "auto")
                         {
 
                             var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "rya where rotary_year=@year and cric=@cric and [function]=@function");
@@ -711,6 +701,10 @@ public class RotaryHelper
                                 result += "<p style='color:red'>ERREUR maj bdd : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                             }
                         }
+                        else{
+                            result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                        }
+
                     }
                    
                 }
