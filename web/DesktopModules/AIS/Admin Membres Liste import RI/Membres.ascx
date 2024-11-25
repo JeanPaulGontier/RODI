@@ -399,24 +399,36 @@
 	</div>
 </asp:Panel>
 <asp:Panel runat="server" ID="PanelSynchro" Visible="false">
-<h2>Votre club est synchronisé avec Rotary.org :</h2>
-    <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
-        La modification des membres se fait sur le site du Rotary International, 
-        la synchronisation vers le district est automatique chaque nuit.
-    </asp:Panel>
-    <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
-        La synchronisation des membres est autorisée, 
-        mais la mise à jour dans le district est désactivé pour analyse, 
-        contactez un responsable district pour la réactiver.
-    </asp:Panel>
-     <asp:Panel runat="server" ID="PanelSynchroNonConfiguree" CssClass="alert alert-danger">
-     La synchronisation des membres est autorisée, 
-     mais la mise à jour dans le district n'a pas encore été configurée, 
-     contactez un responsable district pour la réactiver.
- </asp:Panel>
-<div>
-    <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Fermer" CausesValidation="false" OnClick="Bti_Annuler_Click" />
-</div>
+    <h2>Votre club est synchronisé avec Rotary.org :</h2>
+        <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
+            La modification des membres se fait sur le site du Rotary International, 
+            la synchronisation vers le district est automatique chaque nuit.
+        </asp:Panel>
+        <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
+            La synchronisation des membres est autorisée, 
+            mais la mise à jour dans le district est désactivé pour analyse, 
+            contactez un responsable district pour la réactiver.
+        </asp:Panel>
+         <asp:Panel runat="server" ID="PanelSynchroNonConfiguree" CssClass="alert alert-danger">
+         La synchronisation des membres est autorisée, 
+         mais la mise à jour dans le district n'a pas encore été configurée, 
+         contactez un responsable district pour la réactiver.
+     </asp:Panel>
+    <div>
+        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Fermer" CausesValidation="false" OnClick="Bti_Annuler_Click" />
+    </div>
+</asp:Panel>
+<asp:Panel runat="server" ID="PanelActivation" Visible="false">
+    <h2>Le district est synchronisé avec Rotary.org :</h2>
+         <asp:Panel runat="server" ID="Panel6" CssClass="alert alert-danger">
+         La synchronisation des membres de votre club n'est pas autorisée sur myRotary.
+         Pour activer cette synchronisation il faut choisir RODI Association dans la page de votre club sur myRotary,
+         puis indiquer à un responsable du district que vous avez fait la manipulation afin qu'il puisse activer la synchronisation
+         pour votre club.     
+     </asp:Panel>
+    <div>
+        <asp:Button runat="server" CssClass="btn btn-primary" ID="Button1" Text="Fermer" CausesValidation="false" OnClick="Bti_Annuler_Click" />
+    </div>
 </asp:Panel>
 <asp:Panel runat="server" ID="PanelImport" Visible="false">
     <h2>Mettre à jour les membres à partir d'un fichier Excel extrait de Rotary.org :</h2>

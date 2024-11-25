@@ -26,6 +26,7 @@ App_Code\AIS\webapi\rotarymag\RotaryMagHelper.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
 ```
 ##### 19/11/2024
 ```txt

@@ -1368,12 +1368,13 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                     PanelSynchro.Visible = true;
                     PanelImport.Visible = false;
-                    PanelImport.Visible = false;
+                    PanelActivation.Visible = false;
                 }
                 else
                 {
                     PanelSynchro.Visible = false;
-                    PanelImport.Visible = true;
+                    PanelImport.Visible = false;
+                    PanelActivation.Visible = true;
 
                 }
                 PImportResult.Visible = false;
@@ -1392,6 +1393,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         Panel2.Visible = true;
         PanelSynchro.Visible=false;
         PanelImport.Visible = false;
+        PanelActivation.Visible=false;
         Response.Redirect(Request.RawUrl);
     }
 

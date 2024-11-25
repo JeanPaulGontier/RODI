@@ -1,10 +1,12 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 ###### 25/11/2024
 - le panneau de gestion des membres du club tient compte des nouveautés concernant la synchro RI
+- correction bug génération qrcode dans les nouvelles
 - nouveaux paramètres admin club district synchronisation RI > RODI
 	- non : pas de synchro même si le club a autorisé RODI sur my Rotary
 	- analyse : montre les changements sans mettre à jour les données du club (membres & commités)
 	- auto : mets à jour les données du clubs reçues du RI
+	
 
 Nouveaux services :
 - RotaryScheduler (clubs)	1J 5J logs : synchronisation des clubs RI > RODI
@@ -89,6 +91,7 @@ CREATE TABLE [dbo].[ais_ri_member](
 	[IsSatelliteMember] [bit] NULL,
 	[DtLastUpdate] [datetime] NULL,
 	[Profile] [ntext] NULL,
+	[ClubId] [int] NULL
  CONSTRAINT [PK_ri_member] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
