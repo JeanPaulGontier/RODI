@@ -1,5 +1,6 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 ```
 ##### 25/11/2024
 ```txt

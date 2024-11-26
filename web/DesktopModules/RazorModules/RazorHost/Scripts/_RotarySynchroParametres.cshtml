@@ -360,7 +360,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Clubs de la base de données locale</div>
             <div class="panel-body">
-                <h3>Clubs qui ont autorisé RODI sur rotary.org</h3>
+                <h3>@clubsok Club(s) qui ont autorisé RODI sur rotary.org</h3>
                 <ul class="alert alert-success">
                     @foreach (var c in clubsok)
                     {
@@ -368,7 +368,7 @@
                         <li>@c.ClubId : @c.ClubType @c.ClubName</li>
                     }
                 </ul>
-                <h3>Clubs qui n'ont pas autorisé RODI sur rotary.org</h3>
+                <h3>@clubsko.Count Club(s) qui n'ont pas autorisé RODI sur rotary.org</h3>
                 @if (Const.CLUB_SATELLITE_APART)
                 {
                     <div class="alert alert-info">
