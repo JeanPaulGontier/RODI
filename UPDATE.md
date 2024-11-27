@@ -1,5 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - nouveau module Form Inscription
+- lors de la synchro RI des membres d'honneurs, si une photo existait quand le membre était actif alors elle est affichée
 
 MAJ BDD : 
 

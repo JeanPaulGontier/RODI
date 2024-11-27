@@ -673,7 +673,7 @@ public class RotaryHelper
                 {
                     result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
                 }
-                else
+                else if (officer.StartDate < DateTime.Now && officer.EndDate > DateTime.Now)
                 {
                     string localf = null;
                     fl.TryGetValue(officer.OfficerRole, out localf); 
@@ -692,6 +692,7 @@ public class RotaryHelper
                             sql.Parameters.AddWithValue("function", localf);
                             int nb= Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
+                            
                             sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rya ([rotary_year],[function],[cric],[nim],[name],[portalid]) VALUES (@year,@function,@cric,@nim,@name,0)");
                             sql.Parameters.AddWithValue("year", officer.StartDate.Year);
                             sql.Parameters.AddWithValue("cric", club.cric);
