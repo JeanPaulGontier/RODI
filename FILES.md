@@ -1,5 +1,12 @@
 ##### Modified files per commit
 ```txt
+AIS\MediaView.aspx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+DesktopModules\RazorModules\Form Inscription\_FormInscription.cshtml
+DesktopModules\RazorModules\Form Inscription\FormInscription.ascx
+DesktopModules\RazorModules\Form Inscription\Settings.ascx
+DesktopModules\RazorModules\Form Inscription\Settings.ascx.cs
+App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 ```
 ##### 25/11/2024

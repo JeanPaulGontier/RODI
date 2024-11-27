@@ -1,4 +1,27 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- nouveau module Form Inscription
+
+MAJ BDD : 
+
+CREATE TABLE [dbo].[ais_form_inscription](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[Nom] [nvarchar](255) NULL,
+	[Prenom] [nvarchar](255) NULL,
+	[Mail] [nvarchar](255) NULL,
+	[Telephone] [nvarchar](255) NULL,
+	[Club] [nvarchar](255) NULL,
+	[Creneaux] [nvarchar](255) NULL,
+	[DtLastUpdate] [datetime] NULL,
+	[ModuleId] [int] NULL,
+	[PortalId] [int] NULL,
+ CONSTRAINT [PK_ais_form_inscription] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
 ###### 25/11/2024
 - le panneau de gestion des membres du club tient compte des nouveautés concernant la synchro RI
 - correction bug génération qrcode dans les nouvelles

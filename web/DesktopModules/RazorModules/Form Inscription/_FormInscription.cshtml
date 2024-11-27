@@ -1,0 +1,280 @@
+﻿@using DotNetNuke.Entities.Users;
+@using System.Drawing
+@using System.Drawing.Drawing2D
+@using System.Drawing.Imaging
+@{
+
+    string nom = "" + Request["Nom"];
+    string prenom = "" + Request["Prenom"];
+    string mail = "" + Request["Mail"];
+    string telephone = "" + Request["Telephone"];
+    string club = "" + Request["Club"];
+    string creneaux = "" + Request["Creneaux"];
+
+    var captcha = Guid.NewGuid().ToString();
+    var imgcaptcha = LoadCaptcha(captcha);
+    var cre = new List<KeyValuePair<string, int>>();
+    var cren = new List<KeyValuePair<string, int>>();
+    DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    var o = objModules.GetModuleSettings(Dnn.Module.ModuleID)["Creneaux"];
+    if (o == null)
+    {
+        cre = new List<KeyValuePair<string, int>>();
+    }
+    else
+    {
+        cre = (List<KeyValuePair<string, int>>)Yemon.dnn.Functions.Deserialize("" + o, typeof(List<KeyValuePair<string, int>>));
+    }
+    foreach (var c in cre)
+    {
+        var sql = new System.Data.SqlClient.SqlCommand("select count(*) from ais_form_inscription where creneaux=@creneaux");
+        sql.Parameters.AddWithValue("creneaux", c.Key);
+        int nb = (int)Yemon.dnn.DataMapping.ExecSqlScalar(sql);
+        if (nb < c.Value)
+        {
+            cren.Add(c);
+        }
+
+    }
+
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+
+    var clubs = AIS.DataMapping.ListClubs(sort: "name");
+
+    bool ok =false;
+}
+<script type="text/javascript" src="/Portals/_default/Skins/Rodi2017/bootstrap/js/bootstrap.min.js"></script>
+<link href="/Portals/_default/Skins/Rodi2017/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+<script language="javascript" type="text/javascript">
+
+    function toTitleCase(item) {
+        var txt = item.value;
+        txt = txt.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
+        return txt;
+    }
+
+
+    function checkInput(form, name) {
+        var f = document.getElementById(name).value;
+        var formnom = document.getElementById(form);
+        formnom.classList.remove('has-success');
+        formnom.classList.remove('has-error');
+        if (f != "")
+            formnom.classList.add('has-success');
+        else
+            formnom.classList.add('has-error');
+
+        var ok = true;
+        if (document.getElementById("Nom").value == "")
+            ok = false;
+        if (document.getElementById("Prenom").value == "")
+            ok = false;
+        if (document.getElementById("Mail").value == "")
+            ok = false;
+        if (document.getElementById("Telephone").value == "")
+            ok = false;
+        if (document.getElementById("Club").value == "")
+            ok = false;
+        if (document.getElementById("Creneaux").value == "")
+            ok = false;
+        if (document.getElementById("Captcha").value == "")
+            ok = false;
+        if (ok) {
+            document.getElementById("soumettre").classList.remove("disabled");
+        }
+    }
+
+</script>
+@if (IsPost)
+{
+    if (("" + Request["bt_submit"]).Equals("submit"))
+    {
+        var captchaguid = "" + Request["captchaguid"];
+        var c = HttpContext.Current.Application[captchaguid];
+
+        
+
+        if (c != null && ("" + Request["Captcha"]).ToUpper().Trim() == ("" + c))
+        {
+
+
+            var row = new Dictionary<string, object>();
+            row["Nom"] = nom;
+            row["Prenom"] = prenom;
+            row["Mail"] = mail;
+            row["Telephone"] = telephone;
+            row["Club"] = club;
+            row["Creneaux"] = creneaux;
+            row["DtLastUpdate"] = DateTime.Now;
+            row["ModuleId"] = Dnn.Module.ModuleID;
+            row["PortalID"] = Dnn.Module.PortalID;
+
+
+            if (Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_form_inscription", "id", row).Key != "error")
+            {
+                ok=true;
+                <div class="alert alert-success">Merci, votre inscription a bien été prise en compte...</div>
+            }
+            else
+            {
+                ok = false;
+                <div class="alert alert-danger">Une erreur est survenue, veuillez nous contacter...</div>
+            }
+        }
+        else
+        {
+            ok=false;
+            <div class="alert alert-danger">Code de contrôle incorrect...</div>
+        }
+    }
+    if (("" + Request["bt_export"]).Equals("export"))
+    {
+        var table = Yemon.dnn.DataMapping.ExecSql("select [id],[Nom],[Prenom],[Mail],[Telephone],[Club],[Creneaux],[DtLastUpdate] from ais_form_inscription order by dtlastupdate");
+        var bytes = Yemon.dnn.SIPro.SIPro.DataTablesToExcel(0, new List<System.Data.DataTable> { table });
+        var media = new AIS.Media();
+        media.name = "export_inscrits_" + DateTime.Now.ToString("yyyy-MM-dd") + ".xlsx";
+        media.content = bytes;
+        media.content_mime = "application/vnd.ms-excel";
+        media.content_size = media.content.Length;
+
+        string guid = Guid.NewGuid().ToString();
+        HttpContext.Current.Application[guid] = media;
+
+        HttpContext.Current.Response.Redirect("/AIS/MediaView.aspx?id=" + guid);
+    }
+}
+
+@if (!ok)
+{
+    if(cren.Count==0)
+    {
+        <div class="alert alert-warning">Désolé mais il n'y a plus de créneaux disponible...</div>
+    }
+    else
+    {
+
+    
+    <input type="hidden" name="captchaguid" value="@captcha" />
+    <div>
+        <div id="formnom" class="form-group">
+            <label>Nom :</label><input type="text" id="Nom" name="Nom" class="form-control" value="@nom" onchange="javascript: this.value = this.value.toUpperCase();checkInput('formnom','Nom')" />
+        </div>
+        <div id="formprenom" class="form-group">
+            <label>Prénom :</label><input type="text" id="Prenom" name="Prenom" class="form-control" value="@prenom" onchange="javascript: this.value = toTitleCase(this);checkInput('formprenom','Prenom')" />
+        </div>
+        <div id="formmail" class="form-group">
+            <label>Mail :</label><input type="email" id="Mail" name="Mail" class="form-control" value="@mail" onchange="javascript: this.value = this.value.toLowerCase(this);checkInput('formmail','Mail')" />
+        </div>
+        <div id="formtel" class="form-group">
+            <label>Téléphone :</label><input type="text" id="Telephone" name="Telephone" value="@telephone" class="form-control" onchange="checkInput('formtel','Telephone')" />
+        </div>
+        <div id="formclub" class="form-group">
+            <label>Club Rotary :</label>
+            <select id="Club" name="Club" class="form-control" onchange="checkInput('formclub','Club')">
+                <option value="">--- choisir ---</option>
+                @foreach (var c in clubs)
+                {
+                    if (c.name == club)
+                    {
+                        <option selected>@c.name</option>
+                    }
+                    else
+                    {
+                        <option>@c.name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div id="formcreneaux" class="form-group">
+            <label>Créneaux :</label>
+            <select id="Creneaux" name="Creneaux" class="form-control" onchange="checkInput('formcreneaux','Creneaux')">
+                <option value="">--- choisir ---</option>
+                @foreach (var c in cren)
+                {
+                    if(c.Key==creneaux)
+                    {
+                     <option selected>@c.Key</option>
+                    }
+                    else
+                    {
+                     <option>@c.Key</option>
+                    }
+                   
+                }
+            </select>
+        </div>
+
+        <div id="formcaptcha" class="form-group">
+
+            <label>Code de contrôle :</label><input type="text" id="Captcha" name="Captcha" class="form-control" onchange="checkInput('formcaptcha','Captcha')" />
+        </div>
+        <div>
+            <img src="@imgcaptcha" />
+        </div>
+        <div class="pe-spacer size40"></div>
+
+        <div>
+            <button type="submit" id="soumettre" class="btn btn-primary disabled" name="bt_submit" value="submit">Soumettre</button>
+        </div>
+
+    </div>
+    }
+
+}
+
+@if (userInfo.IsAdmin)
+{
+    <div class="pe-spacer size40"></div>
+    <button class="btn btn-warning" type="submit" name="bt_export" value="export">Exporter la liste des participants</button>
+}
+
+@functions{
+
+    public string LoadCaptcha(string captchaguid)
+    {
+        try
+        {
+            Bitmap objBitmap = new Bitmap(130, 60);
+            Graphics objGraphics = Graphics.FromImage(objBitmap);
+            objGraphics.Clear(Color.White);
+            Random objRandom = new Random();
+            objGraphics.DrawLine(Pens.Black, objRandom.Next(0, 50), objRandom.Next(10, 30), objRandom.Next(0, 200), objRandom.Next(0, 50));
+            objGraphics.DrawRectangle(Pens.Blue, objRandom.Next(0, 20), objRandom.Next(0, 20), objRandom.Next(50, 80), objRandom.Next(0, 20));
+            objGraphics.DrawLine(Pens.Blue, objRandom.Next(0, 20), objRandom.Next(10, 50), objRandom.Next(100, 200), objRandom.Next(0, 80));
+            Brush objBrush =
+                default(Brush);
+            //create background style
+            HatchStyle[] aHatchStyles = new HatchStyle[]
+            {
+            HatchStyle.BackwardDiagonal, HatchStyle.Cross, HatchStyle.DashedDownwardDiagonal, HatchStyle.DashedHorizontal, HatchStyle.DashedUpwardDiagonal, HatchStyle.DashedVertical,
+                HatchStyle.DiagonalBrick, HatchStyle.DiagonalCross, HatchStyle.Divot, HatchStyle.DottedDiamond, HatchStyle.DottedGrid, HatchStyle.ForwardDiagonal, HatchStyle.Horizontal,
+                HatchStyle.HorizontalBrick, HatchStyle.LargeCheckerBoard, HatchStyle.LargeConfetti, HatchStyle.LargeGrid, HatchStyle.LightDownwardDiagonal, HatchStyle.LightHorizontal
+                };
+            ////create rectangular area
+            RectangleF oRectangleF = new RectangleF(0, 0, 300, 300);
+            objBrush = new HatchBrush(aHatchStyles[objRandom.Next(aHatchStyles.Length - 3)], Color.FromArgb((objRandom.Next(100, 255)), (objRandom.Next(100, 255)), (objRandom.Next(100, 255))), Color.White);
+            objGraphics.FillRectangle(objBrush, oRectangleF);
+            //Generate the image for captcha
+            string captchaText = string.Format("{0:X}", objRandom.Next(1000000, 9999999));
+            //add the captcha value in session
+            HttpContext.Current.Application[captchaguid] = captchaText;
+            Font objFont = new Font("Courier New", 15, FontStyle.Bold);
+            //Draw the image for captcha
+            objGraphics.DrawString(captchaText, objFont, Brushes.Black, 20, 20);
+            //  objBitmap.Save(HttpContext.Current.Response.OutputStream, ImageFormat.Gif);
+            byte[] _bytes;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                objBitmap.Save(ms, ImageFormat.Bmp);
+                _bytes = ms.ToArray();
+            }
+            return "data:image;base64," + Convert.ToBase64String(_bytes);
+
+        }
+        catch (Exception)
+        {
+
+        }
+        return "";
+    }
+} 

@@ -583,19 +583,20 @@ public class RotaryHelper
         if (clubs == null)
             return "<p style='color:red'>Erreur récupération des clubs</p>";
 
-        var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
+        //var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
 
         foreach (var club in clubs)
         {
+            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_officer where clubid=" + club.ClubId);
             string res = "";
             var officers = Get_Club_Officers(club.ClubId, club.ClubType, out res);
 
             foreach (var officer in officers)
             {
                 var row = new Dictionary<string, object>();
-                var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
-                if (dbofficer != null)
-                    row["id"] = dbofficer.id;
+                //var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
+                //if (dbofficer != null)
+                //    row["id"] = dbofficer.id;
 
                 row["memberid"] = officer.MemberId;
                 row["clubid"] = officer.ClubId;

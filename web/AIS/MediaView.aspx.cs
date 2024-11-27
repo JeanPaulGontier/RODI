@@ -32,6 +32,28 @@ public partial class AIS_MediaView : System.Web.UI.Page
             Response.Flush();
             Response.End();
         }
+        else if (Application[id] != null)
+        {
+            AIS.Media media = Application[id] as AIS.Media;
+            if (media != null)
+            {
+            }
+            else
+            {
+                AIS.Functions.Error(new Exception("MediaView Media est null"));
+            }
+
+            Response.Buffer = true;
+            Response.Expires = 0;
+            Response.Cache.SetCacheability(HttpCacheability.Public);
+
+
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + media.name);
+            Response.ContentType = media.content_type;
+            Response.BinaryWrite(media.content);
+            Response.Flush();
+            Response.End();
+        }
         else
         {
             AIS.Functions.Error(new Exception("MediaView id est null"));
