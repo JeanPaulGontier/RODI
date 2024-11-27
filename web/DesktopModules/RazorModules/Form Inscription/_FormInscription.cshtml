@@ -2,6 +2,7 @@
 @using System.Drawing
 @using System.Drawing.Drawing2D
 @using System.Drawing.Imaging
+@using System.Data
 @{
 
     string nom = "" + Request["Nom"];
@@ -10,6 +11,7 @@
     string telephone = "" + Request["Telephone"];
     string club = "" + Request["Club"];
     string creneaux = "" + Request["Creneaux"];
+
 
     var captcha = Guid.NewGuid().ToString();
     var imgcaptcha = LoadCaptcha(captcha);
@@ -41,7 +43,7 @@
 
     var clubs = AIS.DataMapping.ListClubs(sort: "name");
 
-    bool ok =false;
+    bool ok = false;
 }
 <script type="text/javascript" src="/Portals/_default/Skins/Rodi2017/bootstrap/js/bootstrap.min.js"></script>
 <link href="/Portals/_default/Skins/Rodi2017/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
@@ -53,6 +55,13 @@
         return txt;
     }
 
+    function del(id) {
+        if (!confirm('Supprimer ce participant ?'))
+            return;
+        document.forms[0]['__EVENTTARGET'].value = 'delete';
+        document.forms[0]['__EVENTARGUMENT'].value = id;
+        document.forms[0].submit();
+    }
 
     function checkInput(form, name) {
         var f = document.getElementById(name).value;
@@ -92,7 +101,7 @@
         var captchaguid = "" + Request["captchaguid"];
         var c = HttpContext.Current.Application[captchaguid];
 
-        
+
 
         if (c != null && ("" + Request["Captcha"]).ToUpper().Trim() == ("" + c))
         {
@@ -112,7 +121,7 @@
 
             if (Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_form_inscription", "id", row).Key != "error")
             {
-                ok=true;
+                ok = true;
                 <div class="alert alert-success">Merci, votre inscription a bien été prise en compte...</div>
             }
             else
@@ -123,7 +132,7 @@
         }
         else
         {
-            ok=false;
+            ok = false;
             <div class="alert alert-danger">Code de contrôle incorrect...</div>
         }
     }
@@ -142,90 +151,131 @@
 
         HttpContext.Current.Response.Redirect("/AIS/MediaView.aspx?id=" + guid);
     }
+    if((""+Request["__EVENTTARGET"])=="delete"){
+        int id = int.Parse("" + Request["__EVENTARGUMENT"]);
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_form_inscription where id=" + id);
+    }
 }
 
 @if (!ok)
 {
-    if(cren.Count==0)
+    if (cren.Count == 0)
     {
         <div class="alert alert-warning">Désolé mais il n'y a plus de créneaux disponible...</div>
     }
     else
     {
 
-    
-    <input type="hidden" name="captchaguid" value="@captcha" />
-    <div>
-        <div id="formnom" class="form-group">
-            <label>Nom :</label><input type="text" id="Nom" name="Nom" class="form-control" value="@nom" onchange="javascript: this.value = this.value.toUpperCase();checkInput('formnom','Nom')" />
-        </div>
-        <div id="formprenom" class="form-group">
-            <label>Prénom :</label><input type="text" id="Prenom" name="Prenom" class="form-control" value="@prenom" onchange="javascript: this.value = toTitleCase(this);checkInput('formprenom','Prenom')" />
-        </div>
-        <div id="formmail" class="form-group">
-            <label>Mail :</label><input type="email" id="Mail" name="Mail" class="form-control" value="@mail" onchange="javascript: this.value = this.value.toLowerCase(this);checkInput('formmail','Mail')" />
-        </div>
-        <div id="formtel" class="form-group">
-            <label>Téléphone :</label><input type="text" id="Telephone" name="Telephone" value="@telephone" class="form-control" onchange="checkInput('formtel','Telephone')" />
-        </div>
-        <div id="formclub" class="form-group">
-            <label>Club Rotary :</label>
-            <select id="Club" name="Club" class="form-control" onchange="checkInput('formclub','Club')">
-                <option value="">--- choisir ---</option>
-                @foreach (var c in clubs)
-                {
-                    if (c.name == club)
-                    {
-                        <option selected>@c.name</option>
-                    }
-                    else
-                    {
-                        <option>@c.name</option>
-                    }
-                }
-            </select>
-        </div>
-        <div id="formcreneaux" class="form-group">
-            <label>Créneaux :</label>
-            <select id="Creneaux" name="Creneaux" class="form-control" onchange="checkInput('formcreneaux','Creneaux')">
-                <option value="">--- choisir ---</option>
-                @foreach (var c in cren)
-                {
-                    if(c.Key==creneaux)
-                    {
-                     <option selected>@c.Key</option>
-                    }
-                    else
-                    {
-                     <option>@c.Key</option>
-                    }
-                   
-                }
-            </select>
-        </div>
 
-        <div id="formcaptcha" class="form-group">
-
-            <label>Code de contrôle :</label><input type="text" id="Captcha" name="Captcha" class="form-control" onchange="checkInput('formcaptcha','Captcha')" />
-        </div>
+        <input type="hidden" name="captchaguid" value="@captcha" />
         <div>
-            <img src="@imgcaptcha" />
-        </div>
-        <div class="pe-spacer size40"></div>
+            <div id="formnom" class="form-group">
+                <label>Nom :</label><input type="text" id="Nom" name="Nom" class="form-control" value="@nom" onchange="javascript: this.value = this.value.toUpperCase();checkInput('formnom','Nom')" />
+            </div>
+            <div id="formprenom" class="form-group">
+                <label>Prénom :</label><input type="text" id="Prenom" name="Prenom" class="form-control" value="@prenom" onchange="javascript: this.value = toTitleCase(this);checkInput('formprenom','Prenom')" />
+            </div>
+            <div id="formmail" class="form-group">
+                <label>Mail :</label><input type="email" id="Mail" name="Mail" class="form-control" value="@mail" onchange="javascript: this.value = this.value.toLowerCase(this);checkInput('formmail','Mail')" />
+            </div>
+            <div id="formtel" class="form-group">
+                <label>Téléphone :</label><input type="text" id="Telephone" name="Telephone" value="@telephone" class="form-control" onchange="checkInput('formtel','Telephone')" />
+            </div>
+            <div id="formclub" class="form-group">
+                <label>Club Rotary :</label>
+                <select id="Club" name="Club" class="form-control" onchange="checkInput('formclub','Club')">
+                    <option value="">--- choisir ---</option>
+                    @foreach (var c in clubs)
+                    {
+                        if (c.name == club)
+                        {
+                            <option selected>@c.name</option>
+                        }
+                        else
+                        {
+                            <option>@c.name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div id="formcreneaux" class="form-group">
+                <label>Créneaux :</label>
+                <select id="Creneaux" name="Creneaux" class="form-control" onchange="checkInput('formcreneaux','Creneaux')">
+                    <option value="">--- choisir ---</option>
+                    @foreach (var c in cren)
+                    {
+                        if (c.Key == creneaux)
+                        {
+                            <option selected>@c.Key</option>
+                        }
+                        else
+                        {
+                            <option>@c.Key</option>
+                        }
 
-        <div>
-            <button type="submit" id="soumettre" class="btn btn-primary disabled" name="bt_submit" value="submit">Soumettre</button>
-        </div>
+                    }
+                </select>
+            </div>
 
-    </div>
+            <div id="formcaptcha" class="form-group">
+
+                <label>Code de contrôle :</label><input type="text" id="Captcha" name="Captcha" class="form-control" onchange="checkInput('formcaptcha','Captcha')" />
+            </div>
+            <div>
+                <img src="@imgcaptcha" />
+            </div>
+            <div class="pe-spacer size40"></div>
+
+            <div>
+                <button type="submit" id="soumettre" class="btn btn-primary disabled" name="bt_submit" value="submit">Soumettre</button>
+            </div>
+
+        </div>
     }
 
 }
 
 @if (userInfo.IsAdmin)
 {
+    System.Data.DataTable inscrits = Yemon.dnn.DataMapping.ExecSql("select * from ais_form_inscription where moduleid=" + Dnn.Module.ModuleID + " and portalid=" + Dnn.Portal.PortalId + " order by dtlastupdate");
+
+
     <div class="pe-spacer size40"></div>
     <button class="btn btn-warning" type="submit" name="bt_export" value="export">Exporter la liste des participants</button>
+
+
+    if (inscrits != null && inscrits.Rows.Count>0)
+    {
+        <div>
+            <h2>Liste des participants</h2>
+        </div>
+        <table class="table table-striped">
+            <tr>
+                <th>Créneaux</th>
+                <th>Prénom / Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Club</th>
+                <th></th>
+            </tr>
+            @foreach(DataRow inscrit in inscrits.Rows)
+            {
+                <tr>
+                    <td>@(""+inscrit["creneaux"])</td>
+                    <td>@(""+inscrit["prenom"]+" "+inscrit["nom"])</td>
+                    <td>@(""+inscrit["mail"])</td>
+                    <td>@(""+inscrit["telephone"])</td>
+                    <td>@(""+inscrit["club"])</td>
+                    <td><button name="bt_delete" type="button" onclick='del(@((int)inscrit["id"]))' class="btn btn-link"><span class="glyphicon glyphicon-trash"></span></button></td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    { 
+        <div class="alert alert-info">Aucun inscrit pour le momment...</div>
+    }
+
 }
 
 @functions{
@@ -249,7 +299,7 @@
             HatchStyle.BackwardDiagonal, HatchStyle.Cross, HatchStyle.DashedDownwardDiagonal, HatchStyle.DashedHorizontal, HatchStyle.DashedUpwardDiagonal, HatchStyle.DashedVertical,
                 HatchStyle.DiagonalBrick, HatchStyle.DiagonalCross, HatchStyle.Divot, HatchStyle.DottedDiamond, HatchStyle.DottedGrid, HatchStyle.ForwardDiagonal, HatchStyle.Horizontal,
                 HatchStyle.HorizontalBrick, HatchStyle.LargeCheckerBoard, HatchStyle.LargeConfetti, HatchStyle.LargeGrid, HatchStyle.LightDownwardDiagonal, HatchStyle.LightHorizontal
-                };
+                    };
             ////create rectangular area
             RectangleF oRectangleF = new RectangleF(0, 0, 300, 300);
             objBrush = new HatchBrush(aHatchStyles[objRandom.Next(aHatchStyles.Length - 3)], Color.FromArgb((objRandom.Next(100, 255)), (objRandom.Next(100, 255)), (objRandom.Next(100, 255))), Color.White);
