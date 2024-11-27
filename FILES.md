@@ -53,6 +53,7 @@ DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
+App_Code\AIS\rotary\RotaryHelper.cs
 
 ```
 ##### 07/10/2024

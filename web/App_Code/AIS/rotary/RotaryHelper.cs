@@ -71,6 +71,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Data.SqlClient;
 using Telerik.Web.UI.com.hisoftware.api2;
+using DotNetNuke.Entities.Portals;
+using System.IO;
 
 
 /// <summary>
@@ -1315,6 +1317,17 @@ public class RotaryHelper
 
                     m.civility = profile.Gender == "Female" ? "Mme" : profile.Gender == "Male" ? "M" : "";
 
+
+                    string chemin = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
+                    chemin += "Portals\\0\\"+Const.MEMBERS_PHOTOS_PREFIX.Replace("/","\\");
+                    string filename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower();
+                    chemin = Path.Combine(chemin, filename);
+                    
+                    FileInfo fileInfo = new FileInfo(chemin);
+                    if (fileInfo.Exists)
+                    {
+                        m.photo = filename;
+                    }
 
                     var email = "";
                     foreach (var em in profile.Email)
