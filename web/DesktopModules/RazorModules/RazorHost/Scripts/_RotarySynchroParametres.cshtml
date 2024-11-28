@@ -49,7 +49,7 @@
                     break;
                 }
             }
-          
+
             called = true;
         }
         if (("" + Request["bt_ucm"]) == "ucm")
@@ -76,6 +76,20 @@
             if(clubs==null)
             {
                 result = "Erreur récupération clubs";
+            }
+            else
+            {
+                result = "<pre>" + Functions.JSONFormat(result) + "</pre>";
+            }
+
+            called = true;
+        }
+        if (("" + Request["bt_get_club_profile"]) == "get_club_profile")
+        {
+            var profile = RotaryHelper.Get_Club_Profile(clubtype, cric, out result);
+            if (profile == null)
+            {
+                result = "Erreur récupération profil club";
             }
             else
             {
@@ -311,6 +325,8 @@
                             <button type="submit" name="bt_get_club_members" value="get_club_members_active" class="btn btn-secondary">Récupération Membres Actifs</button>&nbsp;
                             <button type="submit" name="bt_get_club_members" value="get_club_members_terminated" class="btn btn-secondary">Récupération Membres Terminés</button>&nbsp;
                             <button type="submit" name="bt_get_club_members" value="get_club_officers" class="btn btn-secondary">Récupération Club Officers</button>&nbsp;
+                            <button type="submit" name="bt_get_club_profile" value="get_club_profile" class="btn btn-secondary">Récupération Profil Détaillé Club</button>&nbsp;
+                            
                         </div>
 
                         <div class="pe-spacer size20"></div>

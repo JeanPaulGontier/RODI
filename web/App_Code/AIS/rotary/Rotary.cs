@@ -26,13 +26,34 @@ public class Rotary
         public string ClubSubType { get; set; }
         public string ClubName { get; set; }
         public string ClubCountry { get; set; }
+        public DateTime? CharterDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public Subscription subscription { get; set; }
+        public string Language { get; set; }
+        public Members members { get; set; }
+
         public int DistrictId { get; set; }
+        public string ZoneName { get; set; }
+        public string ZoneSectionName { get; set; }
+        public string ZoneSectionKey { get; set; }
+
+        public List<RequestorOrganizations> requestorOrganizations { get; set; }
+
+        public List<Address> Addresses { get; set; }
+        public List<Email> EmailAddresses { get; set; }
+        public List<Website> Websites { get; set; }
+        public List<Phone> PhoneNumbers { get; set; }
+        public List<Fax> FaxNumbers { get; set; }
+
+        public string Key { get; set; }
+        public DateTime? LastUpdated { get; set; }
+
         public int MemberCount {  get; set; }  
         public int HonoraryMemberCount { get; set; }
         public DateTime DtLastUpdate { get; set; }
 
-        public List<RequestorOrganizations> requestorOrganizations { get; set; }
-
+       
         public class RequestorOrganizations
         {
             public string OrganizationType { get; set; }
@@ -43,6 +64,94 @@ public class Rotary
             public bool Get { get; set; }
             public bool IsPrefered { get; set; }
             public DateTime LastUpdated { get; set; }
+        }
+
+        public class Website
+        {
+            public int ClubId { get; set; }
+            public string ClubType { get; set; }
+            public string WebsiteAddress { get; set; }
+            public string WebsiteType { get; set; }
+            public bool IsPrimary { get; set; }
+            public string Key {  get; set; }
+            public DateTime LastUpdated { get; set; }
+        }
+
+        public class Phone
+        {
+            public int ClubId { get; set; }
+            public string ClubType { get; set; }
+            public string PhoneNumber { get; set; }
+            public string PhoneExtension { get; set; }
+            public string CountryCode { get; set; }
+            public string PhoneCountryName { get; set; }
+            public string PhoneType { get; set; }
+            public bool IsPrimary { get; set; }
+            public string Key { get; set; } 
+            public DateTime LastUpdated { get; set; }
+        }
+
+        public class Fax : Phone
+        {
+
+        }
+
+        public class Address
+        {
+            public string AddressType { get; set; }
+            public string AddressLine1 { get; set; }
+            public string AddressLine2 { get; set; }
+            public string AddressLine3 { get; set; }
+            public string Country { get; set; }
+            public string State { get; set; }
+            public string InternationalProvince { get; set; }
+            public string City { get; set; }
+            public string PostalCode { get; set; }
+            public string MeetingName { get; set; }
+            public string MeetingDay { get; set; }
+            public string MeetingTime { get; set; }
+            public string MeetingComment { get; set; }
+            public int ClubId { get; set; }
+            public string ClubType { get; set; }
+            public bool IsPrimary { get; set; }
+            public string MeetingType { get; set; }
+            public string OnlineLocation { get; set; }
+            public string MeetinglocationVariesFlag { get; set; }
+            public string MeetingLocationName { get; set; }
+            public string Key { get; set; }
+            public DateTime LastUpdated { get; set; }
+        }
+
+        public class Email
+        {
+            public string EmailAddress { get; set; }
+            public string EmailType { get; set; }
+            public bool IsPrimary { get; set; }
+            public int ClubId { get; set; }
+            public string ClubType { get; set; }
+            public string Key { get; set; } 
+            public DateTime LastUpdated { get; set; }
+        }
+
+        public class Location
+        {
+            public string State { get; set; }
+            public string InternationalProvince { get; set; }
+            public string Country { get; set; }
+        }
+
+        public class Members
+        {
+            public int MemberCount { get; set; }
+            public int HonoraryMemberCount { get; set; }
+            public int AssociatedMemberCount { get; set; }
+            public int SatelliteMemberCount { get; set; }
+        }
+
+        public class Subscription
+        {
+            public string Key { get; set; }
+            public string Magazine { get; set; }
         }
 
         public class Officer

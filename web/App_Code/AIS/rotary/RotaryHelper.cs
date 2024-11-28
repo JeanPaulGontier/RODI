@@ -161,6 +161,34 @@ public class RotaryHelper
     /// <param name="cric"></param>
     /// <param name="membertype">Active</param>
     /// <returns></returns>
+    /// 
+    public static Rotary.Club Get_Club_Profile(string clubtype, int cric, out string result)
+    {
+        result = null;
+        try
+        {
+            _param = GetParametres();
+            string url = "/v1.1/clubs/" + clubtype + "/" + cric;
+
+            var task = Task.Run(() => CallAsyncGet(url));
+            task.Wait();
+
+            if (String.IsNullOrEmpty(task.Result))
+            {
+                throw new Exception("Erreur récupération profil du club");
+            }
+            result = task.Result;
+
+            Rotary.Club members = Yemon.dnn.Functions.Deserialize<Rotary.Club>(task.Result);
+
+            return members;
+        }
+        catch (Exception ee)
+        {
+            Functions.Error(ee);
+            return null;
+        }
+    }
     public static Rotary.Club_Members Get_Club_Members_Active(string clubtype, int cric, out string result)
     {
         result = null;
