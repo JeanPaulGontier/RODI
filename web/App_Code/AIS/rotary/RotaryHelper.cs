@@ -557,13 +557,13 @@ public class RotaryHelper
         {
             string res = "";
             var members = Get_Club_Members_Active(club.ClubType, club.ClubId, out res);
-
+            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where clubid=" + club.ClubId);
             foreach (var member in members.ClubMembers)
             {
                 var row = new Dictionary<string, object>();
                 var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember== member.IsHonoraryMember());
-                if (dbmember != null)
-                    row["id"] = dbmember.id;
+                //if (dbmember != null)
+                //    row["id"] = dbmember.id;
 
                 row["memberid"] = member.MemberId;
                 row["clubid"] = club.ClubId;
@@ -586,22 +586,22 @@ public class RotaryHelper
                     result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
             }
 
-            var localmembers = dbmembers.FindAll(c => c.ClubId == club.ClubId);
-            foreach(var member in localmembers)
-            {
-                var dbmember = members.ClubMembers.Find(c => c.MemberId == member.MemberId);
-                if (dbmember == null) {
-                    if(Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where memberid="+ member.MemberId+" and clubid="+ member.ClubId)>0)
-                    {
-                        result += "<p>Suppression " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
-                    }
-                    else
-                    {
-                        result += "<p style='color:red'>ERREUR suppression : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
-                    }
+            //var localmembers = dbmembers.FindAll(c => c.ClubId == club.ClubId);
+            //foreach(var member in localmembers)
+            //{
+            //    var dbmember = members.ClubMembers.Find(c => c.MemberId == member.MemberId);
+            //    if (dbmember == null) {
+            //        if(Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where memberid="+ member.MemberId+" and clubid="+ member.ClubId)>0)
+            //        {
+            //            result += "<p>Suppression " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+            //        }
+            //        else
+            //        {
+            //            result += "<p style='color:red'>ERREUR suppression : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+            //        }
                     
-                }
-            }
+            //    }
+            //}
         }
         return result;
     }

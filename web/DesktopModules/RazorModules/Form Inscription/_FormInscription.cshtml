@@ -204,13 +204,17 @@
                     <option value="">--- choisir ---</option>
                     @foreach (var c in cren)
                     {
+                        var sql = new System.Data.SqlClient.SqlCommand("select count(*) from ais_form_inscription where moduleid=" + Dnn.Module.ModuleID + " and portalid=" + Dnn.Portal.PortalId + " and creneaux=@creneaux");
+                        sql.Parameters.AddWithValue("creneaux", c.Key);
+                        int nb = int.Parse("" + Yemon.dnn.DataMapping.ExecSqlScalar(sql));
+
                         if (c.Key == creneaux)
                         {
-                            <option selected>@c.Key</option>
+                            <option selected value="@c.Key">@c.Key (@nb/@c.Value)</option>
                         }
                         else
                         {
-                            <option>@c.Key</option>
+                            <option value="@c.Key">@c.Key (@nb/@c.Value)</option>
                         }
 
                     }
