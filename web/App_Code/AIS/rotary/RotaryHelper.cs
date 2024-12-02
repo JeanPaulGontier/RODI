@@ -699,7 +699,7 @@ public class RotaryHelper
                 var member = members.Find(m => m.nim == officer.MemberId);
                 if(member == null)
                 {
-                    result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
+                   // result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
                 }
                 else if (officer.StartDate < DateTime.Now && officer.EndDate > DateTime.Now)
                 {
