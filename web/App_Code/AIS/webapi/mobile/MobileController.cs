@@ -339,5 +339,19 @@ namespace AIS.controller
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
         }
+
+        [HttpGet]
+        [DnnAuthorize(AuthTypes = "JWT")]
+        public HttpResponseMessage OpenSession()
+        {
+            string guid = Guid.NewGuid().ToString();
+            HttpContext.Current.Application[guid] = UserInfo.UserID;
+            return Request.CreateResponse(HttpStatusCode.OK, new
+            {
+                guid = guid,
+                host = Yemon.dnn.Functions.GetHostUrl(HttpContext.Current.Request)
+
+            });
+        }
     }
 }

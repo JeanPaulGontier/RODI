@@ -9,8 +9,9 @@ DesktopModules\RazorModules\Form Inscription\_FormInscription.cshtml
 DesktopModules\RazorModules\Form Inscription\FormInscription.ascx
 DesktopModules\RazorModules\Form Inscription\Settings.ascx
 DesktopModules\RazorModules\Form Inscription\Settings.ascx.cs
-
-
+AIS\AutoLogin.aspx
+AIS\AutoLogin.aspx.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
 ```
 ##### 25/11/2024
 ```txt
