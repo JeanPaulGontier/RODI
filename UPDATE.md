@@ -2,6 +2,7 @@
 - nouveau module Form Inscription
 - lors de la synchro RI des membres d'honneurs, si une photo existait quand le membre était actif alors elle est affichée
 - correction de l'affectation des fonctions lors de la synchro, quand un membre changeait de fonction en court d'année il y avait un pb
+- les rotaracts peuvent maintenant éditer les cartes de membres avec la charte graphique rotaract (logo + couleurs)
 
 MAJ BDD : 
 

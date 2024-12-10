@@ -594,7 +594,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         List<Affectation> affectations = DataMapping.ListAffectationRY(Functions.CurrentCric, Functions.GetRotaryYear());
-        Media media = DataMapping.ProductionDocument(Const.MEMBERS_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.pdf");
+        string modele = Const.MEMBERS_CARTES_RECTO_MODELE;
+        if (Functions.CurrentClub.club_type == "rotaract")
+            modele = Const.MEMBERS_CARTES_RECTO_MODELE_ROTATACT;
+        Media media = DataMapping.ProductionDocument(modele, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.pdf");
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -624,7 +627,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         List<Affectation> affectations = DataMapping.ListAffectationRY(Functions.CurrentCric, Functions.GetRotaryYear());
-        Media media = DataMapping.ProductionDocument(Const.MEMBERS_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.doc", typemime: "application/msword");
+        string modele = Const.MEMBERS_CARTES_RECTO_MODELE;
+        if (Functions.CurrentClub.club_type == "rotaract")
+            modele = Const.MEMBERS_CARTES_RECTO_MODELE_ROTATACT;
+        Media media = DataMapping.ProductionDocument(modele, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.doc", typemime: "application/msword");
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -654,7 +660,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         List<Affectation> affectations = DataMapping.ListAffectationRY(Functions.CurrentCric, Functions.GetRotaryYear());
-        Media media = DataMapping.ProductionDocument(Const.MEMBERS_CARTES_RECTO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.docx", typemime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        string modele = Const.MEMBERS_CARTES_RECTO_MODELE;
+        if (Functions.CurrentClub.club_type == "rotaract")
+            modele = Const.MEMBERS_CARTES_RECTO_MODELE_ROTATACT;
+        Media media = DataMapping.ProductionDocument(modele, membres, affectations, "Cartes des membres " + GetNomClub() + ".recto.docx", typemime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -669,6 +678,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         List<Affectation> affectations = DataMapping.ListAffectationRY(Functions.CurrentCric, Functions.GetRotaryYear());
+      
         Media media = DataMapping.ProductionDocument(Const.MEMBERS_CARTES_VERSO_MODELE, membres, affectations, "Cartes des membres " + GetNomClub() + ".verso.docx", typemime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
@@ -1368,13 +1378,12 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
                     PanelSynchro.Visible = true;
                     PanelImport.Visible = false;
-                    PanelActivation.Visible = false;
+                    PanelImport.Visible = false;
                 }
                 else
                 {
                     PanelSynchro.Visible = false;
-                    PanelImport.Visible = false;
-                    PanelActivation.Visible = true;
+                    PanelImport.Visible = true;
 
                 }
                 PImportResult.Visible = false;
@@ -1393,7 +1402,6 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         Panel2.Visible = true;
         PanelSynchro.Visible=false;
         PanelImport.Visible = false;
-        PanelActivation.Visible=false;
         Response.Redirect(Request.RawUrl);
     }
 

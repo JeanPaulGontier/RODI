@@ -156,6 +156,7 @@ namespace AIS
         public static string MEMBERS_NOPHOTO_F = "/images/no_avatar.gif";
 
         public static string MEMBERS_CARTES_RECTO_MODELE = "/modeles/Carte_Membre_Recto.docx";
+        public static string MEMBERS_CARTES_RECTO_MODELE_ROTATACT = "/modeles/Carte_Membre_Recto_Rotaract.docx";
         public static string MEMBERS_CARTES_VERSO_MODELE = "/modeles/Carte_Membre_Verso.docx";
         public static string ORDER_MODELE = "/modeles/Commande.docx";
 

@@ -12,6 +12,10 @@ DesktopModules\RazorModules\Form Inscription\Settings.ascx.cs
 AIS\AutoLogin.aspx
 AIS\AutoLogin.aspx.cs
 App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+Portals\0\Modeles\Carte_Membre_Recto_Rotaract.docx
+App_Code\AIS\Const.cs
 ```
 ##### 25/11/2024
 ```txt
