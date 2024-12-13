@@ -846,7 +846,7 @@ public class RotaryHelper
                             listtrf.Add(member);
                             clublog.Logs += "<p>Transfert du club " + m.cric + " " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
                         }
-                        if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club)
+                        if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club || member.DtLastUpdate<DateTime.Now.AddDays(-7))
                         {
                             listmaj.Add(member);                            
                         }

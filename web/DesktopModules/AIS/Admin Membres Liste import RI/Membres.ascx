@@ -249,7 +249,6 @@
      <p><asp:Label ID="lbl_cp_pro2" Width="200px" runat="server" Text="Code postal : " /><asp:TextBox runat="server" ID="tbx_cp_pro" Width="400px" MaxLength="50" /></p>
      <p><asp:Label ID="lbl_ville_pro2" Width="200px" runat="server" Text="Ville : " /><asp:TextBox  runat="server" ID="tbx_ville_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
      <p><asp:Label ID="Label2" Width="200px" runat="server" Text="Pays : " /><asp:TextBox  runat="server" ID="tbx_pays_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toUpperCase();'  /></p>
-     <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
      <p><asp:Label ID="lbl_tel_pro2" Width="200px" runat="server" Text="Téléphone Pro. : " /><asp:TextBox runat="server" ID="tbx_tel_pro" Width="200px" MaxLength="50" /></p>
      <p><asp:Label ID="lbl_fax_pro2" Width="200px" runat="server" Text="Fax Pro. : " /><asp:TextBox runat="server" ID="tbx_fax_pro" Width="200px" MaxLength="50" /></p>    
     
@@ -296,6 +295,7 @@
     <p><asp:Label ID="lbl_fct_metier2" Width="200px" runat="server" Text="Métier : " /><asp:TextBox runat="server" ID="tbx_fct_metier" Width="400px" MaxLength="255"   onchange='javascript: this.value = toTitleCase(this);'  /></p>
     <p><asp:Label ID="lbl_branche2" Width="200px" runat="server" Text="Branche d'activité : " /><asp:TextBox runat="server" ID="tbx_branche" Width="400px" MaxLength="255"   onchange='javascript: this.value = toTitleCase(this);'  /></p>
     <p><asp:Label ID="lbl_gsm_pro2" Width="200px" runat="server" Text="Mobile Pro. : " /><asp:TextBox runat="server" ID="tbx_gsm_pro" Width="400px" MaxLength="50" /></p>
+    <p><asp:Label ID="lbl_email_pro2" Width="200px" runat="server" Text="Email Pro. : " /><asp:TextBox  runat="server" ID="tbx_email_pro" Width="400px" MaxLength="255"  onchange='javascript: this.value = this.value.toLowerCase();'  /></p>
     <p>
         <asp:Label ID="lbl_retraite2" Width="200px" runat="server" Text="Retraité : " /><asp:RadioButtonList ID="rbtl_retraite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
             <asp:ListItem Text="Oui" Value="O" />

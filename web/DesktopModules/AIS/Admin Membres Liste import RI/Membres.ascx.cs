@@ -796,8 +796,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             tbx_pays_pro.Enabled = IsEditable();
             tbx_pays_pro.ReadOnly = !IsEditable();
 
-            tbx_email_pro.Enabled = IsEditable();
-            tbx_email_pro.ReadOnly = !IsEditable();
+            //tbx_email_pro.Enabled = IsEditable();
+            //tbx_email_pro.ReadOnly = !IsEditable();
             tbx_tel_pro.Enabled = IsEditable();
             tbx_tel_pro.ReadOnly = !IsEditable();
             tbx_fax_pro.Enabled = IsEditable();
