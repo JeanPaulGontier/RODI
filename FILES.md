@@ -4,7 +4,6 @@ App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 AIS\MediaView.aspx.cs
-DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 DesktopModules\RazorModules\Form Inscription\_FormInscription.cshtml
 DesktopModules\RazorModules\Form Inscription\FormInscription.ascx
 DesktopModules\RazorModules\Form Inscription\Settings.ascx
@@ -16,6 +15,7 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 Portals\0\Modeles\Carte_Membre_Recto_Rotaract.docx
 App_Code\AIS\Const.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_nouveaux_entrants.cshtml
 ```
 ##### 25/11/2024
 ```txt

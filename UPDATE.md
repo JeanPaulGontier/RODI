@@ -4,7 +4,7 @@
 - correction de l'affectation des fonctions lors de la synchro, quand un membre changeait de fonction en court d'année il y avait un pb
 - les rotaracts peuvent maintenant éditer les cartes de membres avec la charte graphique rotaract (logo + couleurs)
 - l'email pro est de nouveau editable dans RODI car on en peut pas le récupérer du RI
-
+- nouveau module qui permet de visualiser la liste des nouveaux membres sur le dernier mois 
 
 MAJ BDD : 
 
