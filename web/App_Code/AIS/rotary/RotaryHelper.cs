@@ -1666,7 +1666,7 @@ public class RotaryHelper
                 var club = clubs.Find(c => c.cric == member.cric);
                 if(club!=null)
                 {
-                    if(nims.Contains(member.nim) || member.dt_update_import_ri_club==null)
+                    if(nims.Contains(member.nim) || member.dt_update_import_ri_club==null || member.base_dtupdate<DateTime.Now.AddMonths(-1))
                     {
                         var profile = Get_Member_Profile(member.nim, out res);
                         if (profile != null)

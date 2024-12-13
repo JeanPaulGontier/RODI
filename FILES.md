@@ -16,8 +16,6 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 Portals\0\Modeles\Carte_Membre_Recto_Rotaract.docx
 App_Code\AIS\Const.cs
-DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
-DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 ```
 ##### 25/11/2024
 ```txt

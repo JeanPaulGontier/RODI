@@ -5,6 +5,7 @@
 - les rotaracts peuvent maintenant éditer les cartes de membres avec la charte graphique rotaract (logo + couleurs)
 - l'email pro est de nouveau editable dans RODI car on en peut pas le récupérer du RI
 
+
 MAJ BDD : 
 
 CREATE TABLE [dbo].[ais_form_inscription](
