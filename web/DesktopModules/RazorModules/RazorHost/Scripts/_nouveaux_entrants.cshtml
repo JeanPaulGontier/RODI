@@ -1,22 +1,55 @@
 @using AIS
 @using System.Data.SqlClient 
 @{ 
-    var sql = new SqlCommand("select * from ais_members where year_membership_rotary >@date order by year_membership_rotary");
-    sql.Parameters.AddWithValue("date", DateTime.Now.AddMonths(-2));
+    string d = "" + Request["debut"];
+    string f = "" + Request["fin"];
+
+    DateTime debut = DateTime.Now.AddMonths(-2);
+    DateTime fin = DateTime.Now;
+
+    if(d!="")
+    {
+        DateTime.TryParse(d, out debut);
+    }
+    if(f!="")
+    {
+        DateTime.TryParse(f, out fin);
+    }
+
+
+    var sql = new SqlCommand("select * from ais_members where year_membership_rotary >@debut and year_membership_rotary<=@fin order by year_membership_rotary");
+    sql.Parameters.AddWithValue("debut", debut);
+    sql.Parameters.AddWithValue("fin", fin);
+
     var membres = Yemon.dnn.DataMapping.ExecSql<Member>(sql);
+
+    <div class="form-inline">       
+        <label for="debut">Période entre</label>&nbsp;<input type="date" id="debut" name="debut" class="form-control" value="@debut.ToString("yyyy-MM-dd")" />&nbsp;
+        <label for="fin">et</label>&nbsp;<input type="date" id="fin" name="fin" class="form-control" value="@fin.ToString("yyyy-MM-dd")" />&nbsp;
+        <button class="btn btn-primary">Mettre à jour</button>               
+    </div>
+
     if(membres.Count==0){
-        <div>Aucun nouvel entrant depuis 1 mois...</div>
+        <div class="alert alert-warning">Aucun nouvel entrant sur la période...</div>
     }
     else
     {
         <table class="table table-striped">
+            <tr>
+                <th>Nim</th>
+                <th>Prénom / Nom</th>
+                <th>Club</th>
+                <th>e-Mail</th>
+                <th>Adhésion</th>
+                
+            </tr>
             @foreach(var m in membres)
             {
-
             <tr>
                 <td>@m.nim</td>
                 <td>@m.name @m.surname</td>
                 <td>@m.club_name</td>
+                <td>@m.email</td>
                 @if (m.year_membership_rotary != null)
                 {
                     <td>@(((DateTime)m.year_membership_rotary).ToString("dd/MM/yyyy"))</td>
