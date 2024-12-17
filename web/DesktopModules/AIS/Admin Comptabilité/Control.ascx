@@ -39,7 +39,8 @@
 	<span>Description : </span>
     <blockquote class="blockquote">
         <p class="text-info">
-            On peut saisir <strong>#url#</strong> dans le corps du texte, ce tag sera remplacé automatiquement par l'url de la facture adaptée à chaque destinataire. Ce qui permet au destinataire de récupérer sa facture directement sans avoir besoin de s'identifier dans le site
+            On peut saisir <strong>#url#</strong> dans le corps du texte, ce tag sera remplacé automatiquement par l'url de la facture adaptée à chaque destinataire. Ce qui permet au destinataire de récupérer sa facture directement sans avoir besoin de s'identifier dans le site.<br />
+            <strong>#id#</strong> pour le n° de facture, <strong>#cric#</strong> pour le cric du club, <strong>#montant#</strong> pour le montant à payer
         </p>
     </blockquote>
 </div>

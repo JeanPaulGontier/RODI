@@ -8,7 +8,11 @@
 - ajout des options de partages réseaux sociaux sur la page détail nouvelle district
 - on peut maintenant limiter le nb d'élément à afficher dans l'agenda du gouverneur
 - ajout de la possibilité de trier les colonnes dans l'écran suivi cerfa et dans l'écran bénéficiaire
-
+- l'import de fichier RI manuel n'est plus nécessaire pour les années n+1 et se fait lors de la synchro RI
+- ajout de nouveaux champs pour l'email d'appel de cotisation district : 
+	- #id# pour le n° de facture
+	- #cric# pour le cric du club
+	- #montant# pour le montant a payer
 
 MAJ BDD : 
 

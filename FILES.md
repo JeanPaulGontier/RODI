@@ -23,6 +23,8 @@ DesktopModules\AIS\Agenda Gouverneur\Settings.ascx
 DesktopModules\AIS\Agenda Gouverneur\Settings.ascx.cs
 DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
 DesktopModules\RazorModules\FDDSuiviBeneficiaires\_FDDSuviBeneficiaires.cshtml
+DesktopModules\AIS\Admin Comptabilité\Control.ascx
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
 ```
 ##### 25/11/2024
 ```txt
