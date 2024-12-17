@@ -485,13 +485,55 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
             int nbactif = membres.Where(m => m.honorary_member == "N").Count();
             int nbhonneur = membres.Where(m => m.honorary_member == "O").Count();
+            List<Club> clubs = DataMapping.ListClubs();
+            int nbrotariens = membres.Where(m =>
+            {
+                var cl = clubs.Find(c => c.cric == m.cric);
+                if (cl != null)
+                {
+                    if (cl.club_type == "rotary" && m.honorary_member == Const.NO)
+                        return true;
+                }
+                return false;
+            }).Count();
+            int nbrotaracts = membres.Where(m =>
+            {
+                var cl = clubs.Find(c => c.cric == m.cric);
+                if (cl != null)
+                {
+                    if (cl.club_type == "rotaract" && m.honorary_member==Const.NO)
+                        return true;
+                }
+                return false;
+            }).Count();
             
+            int nbrotariensho = membres.Where(m =>
+            {
+                var cl = clubs.Find(c => c.cric == m.cric);
+                if (cl != null)
+                {
+                    if (cl.club_type == "rotary" && m.honorary_member == Const.YES)
+                        return true;
+                }
+                return false;
+            }).Count();
+            int nbrotaractsho = membres.Where(m =>
+            {
+                var cl = clubs.Find(c => c.cric == m.cric);
+                if (cl != null)
+                {
+                    if (cl.club_type == "rotaract" && m.honorary_member == Const.YES)
+                        return true;
+                }
+                return false;
+            }).Count();
 
             string s = membres.Count > 1 ? "s" : "";
-            if(nbhonneur>0)
-                LBL_Nb.Text = membres.Count + " membre" + s + " (" + nbactif + " actif" + (nbactif > 1 ? "s" : "") + ", " + nbhonneur + " honoraire" + (nbhonneur > 1 ? "s" : "") + ")";
+            if(mode=="district")
+
+                LBL_Nb.Text = membres.Count + " membres dont " + nbactif + " actifs (" + nbrotariens + " rotariens, " + nbrotaracts + " rotaracts) et " + nbhonneur + " honoraires (" + nbrotariensho + " rotariens, " + nbrotaractsho + " rotaracts)" ;
             else
-                LBL_Nb.Text = membres.Count + " membre" + s ;
+            LBL_Nb.Text= membres.Count + " membres dont " + nbactif + " actif"+(nbactif > 1 ? "s" : "")+" et " + nbhonneur + " honoraire"+(nbhonneur > 1 ? "s" : "")+"";
         }
         catch (Exception ee)
         {

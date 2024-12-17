@@ -18,6 +18,9 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Settings : ModuleSetti
             int n = 0;
             int.TryParse("" + Settings["num"], out n);
             num.Text = "" + n;
+            n = 0;
+            int.TryParse("" + Settings["max"], out n);
+            max.Text = "" + n;
         }
     }
 
@@ -34,5 +37,8 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Settings : ModuleSetti
         int n = 0;
         int.TryParse("" + num.Text, out n);
         mc.UpdateModuleSetting(this.ModuleId, "num", "" + n);
+        n = 0;
+        int.TryParse("" + max.Text, out n);
+        mc.UpdateModuleSetting(this.ModuleId, "max", "" + n);
     }
 }

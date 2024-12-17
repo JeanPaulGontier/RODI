@@ -16,6 +16,13 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 Portals\0\Modeles\Carte_Membre_Recto_Rotaract.docx
 App_Code\AIS\Const.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_nouveaux_entrants.cshtml
+DesktopModules\AIS\News Detail\Control.ascx
+DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\AIS\Agenda Gouverneur\Control.ascx.cs
+DesktopModules\AIS\Agenda Gouverneur\Settings.ascx
+DesktopModules\AIS\Agenda Gouverneur\Settings.ascx.cs
+DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
+DesktopModules\RazorModules\FDDSuiviBeneficiaires\_FDDSuviBeneficiaires.cshtml
 ```
 ##### 25/11/2024
 ```txt

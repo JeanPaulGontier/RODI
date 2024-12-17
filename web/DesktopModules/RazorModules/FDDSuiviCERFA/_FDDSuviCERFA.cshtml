@@ -1,0 +1,255 @@
+﻿@using System.Data.SqlClient;
+@using System.Data;
+@using DotNetNuke.Entities.Users;
+@{
+    string sortby = "" + Request["sortby"];
+    string sortorder = "" + Request["sortorder"];
+
+    if (sortby == "")
+    {
+        sortby = "UserDefinedRowId";
+    }
+    if (sortorder == "")
+    {
+        sortorder = "asc";
+    }
+
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+
+    var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    int idmodule = 0;
+    int.TryParse("" + objModules.GetModuleSettings(Dnn.Module.ModuleID)["idmodule"], out idmodule);
+
+    string select = "select UserDefinedRowId,FieldTitle ,FieldValue from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule;
+    string listfields = "select fieldtitle from userdefinedfields where UserDefinedFieldId in (select F.UserDefinedFieldId from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule + " and F.visible=1)";
+    var sql = new SqlCommand(listfields);
+    var table = Yemon.dnn.DataMapping.ExecSql(listfields);
+    string fields = "";
+    foreach (DataRow row in table.Rows)
+    {
+        fields += "[" + row[0] + "],";
+    }
+    if (fields.Length > 0)
+    {
+        fields = fields.Substring(0, fields.Length - 1);
+    }
+
+    sql = new SqlCommand("SELECT * FROM( " + select + ") AS P PIVOT(MIN(FieldValue) FOR FieldTitle IN (" + fields + ")) as PivotTable");
+    table = Yemon.dnn.DataMapping.ExecSql(sql);
+    if (table == null)
+    {
+        <div>Aucun CERFA disponible</div>
+        return;
+    }
+
+
+    if (IsPost)
+    {
+        if (!string.IsNullOrEmpty(Request["bt_cerfa"]))
+        {
+            var idpost = "" + Request["bt_cerfa"];
+            foreach (DataRow row in table.Rows)
+            {
+                var id = "" + row["UserDefinedRowId"];
+                var valide = "" + row["Validation par le gestionnaire du Fonds de Dotation"];
+                var societe = "" + row["NOM de l'entreprise (pour un membre d'une entreprise)"];
+                var recu = "" + row["Numéro de reçu fiscal"];
+                var montant = Decimal.Parse("" + row["DON Montant (en €)"]);
+                if (valide == "OUI" && id == idpost)
+                {
+                    Dictionary<string, object> rows = new Dictionary<string, object>();
+                    rows["id"] = null;
+                    rows["idsource"] = id;
+                    rows["nom"] = row["NOM (Particulier ou membre d'une entreprise)"];
+                    if (string.IsNullOrEmpty(societe))
+                    {
+                        rows["prenom"] = row["PRENOM  (Particulier ou membre d'une entreprise)"];
+                    }
+                    else
+                    {
+                        rows["prenom"] = row["numéro SIRET de l'entreprise (pour un membre d'une entreprise)"];
+                    }
+
+                    rows["societe"] = row["NOM de l'entreprise (pour un membre d'une entreprise)"];
+                    rows["email"] = row["e-mail"];
+                    rows["recu"] = recu;
+
+                    rows["DateMaj"] = DateTime.Now;
+                    rows["UserIdMaj"] = userInfo.UserID;
+                    rows["Payee"] = 1;
+                    rows["Montant"] = montant;
+                    rows["adresse"] = row["ADRESSE n°_Rue"];
+                    rows["cp"] = row["ADRESSE Code Postal"];
+                    rows["ville"] = row["ADRESSE Ville"];
+                    rows["DatePaiement"] = row["Date de la demande"];
+
+                    Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM ais_fdd WHERE idsource=" + id);
+
+                    var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_fdd", "id", rows);
+
+                    if (result.Key != "error")
+                    {
+                        var nomdoc = "Cerfa Particulier";
+                        if (!string.IsNullOrEmpty(societe))
+                        {
+                            nomdoc = "Cerfa Entreprise";
+                        }
+                        int iddoc = Yemon.dnn.SIPro.SIPro.ProductionForce(0, "document", nomdoc, "instance", "" + id);
+
+                        if (iddoc == 0)
+                        {
+                            <div class="alert alert-danger">Une erreur est survenue lors de la création du Cerfa</div>
+                        }
+                        else
+                        {
+                            byte[] bytes = Yemon.dnn.SIPro.SIPro.GetProduction(0, iddoc);
+                            string guid = Guid.NewGuid().ToString();
+                            AIS.Media media = new AIS.Media()
+                            {
+                                content = bytes,
+                                content_mime = "application/pdf",
+                                name = "cerfa-" + recu + ".pdf",
+                                content_size = bytes.Length
+                            };
+
+
+                            Session[guid] = media;
+
+                            //Response.Redirect("/AIS/download.aspx?id=" + guid);
+                            <script>
+                                setTimeout(callBack_func, 500);
+                                function callBack_func() {
+                                    document.location.href = "/AIS/download.aspx?id=@guid";
+                                }
+                            </script>
+
+                            //Response.End();
+                            //return;
+                        }
+
+
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+
+    var table1 = Yemon.dnn.DataMapping.ExecSql("SELECT idsource FROM ais_fdd");
+    var listegeneres = new List<int>
+    ();
+    foreach (DataRow row in table1.Rows)
+    {
+        listegeneres.Add((int)row[0]);
+    }
+
+
+    var rr =  table.AsEnumerable().OrderByDescending(c=>""+c[sortby]).ToList();
+    if(sortorder=="asc")
+    {
+        rr = table.AsEnumerable().OrderBy(c => ""+c[sortby]).ToList();
+    }
+
+
+    Decimal total = 0;
+    for (int i = rr.Count - 1; i >= 0; i--)
+    {
+        DataRow row = rr[i];
+        var valide = "" + row["Validation par le gestionnaire du Fonds de Dotation"];
+        if (valide == "OUI")
+        {
+            total += Decimal.Parse("" + row["DON Montant (en €)"]);
+        }
+    }
+}
+<div class="text-right form-group">
+    Total : @total.ToString("#,##0.00 €")
+</div>
+<table class="table table-striped">
+    <tr>
+        <th onclick="sort('UserDefinedRowId')">N° @Html.Raw(sort("UserDefinedRowId", sortby, sortorder))</th>
+        <th onclick="sort('Date de la demande')">Date @Html.Raw(sort("Date de la demande", sortby, sortorder))</th>
+        <th onclick="sort('Nom de l\'action du club')">Nom de l'action @Html.Raw(sort("Nom de l'action du club", sortby, sortorder))</th>
+        <th onclick="sort('NOM (Particulier ou membre d\'une entreprise)')">Nom @Html.Raw(sort("NOM (Particulier ou membre d'une entreprise)", sortby, sortorder))</th>
+        <th onclick="sort('PRENOM  (Particulier ou membre d\'une entreprise)')">Prénom @Html.Raw(sort("PRENOM  (Particulier ou membre d'une entreprise)", sortby, sortorder))</th>
+        <th onclick="sort('NOM de l\'entreprise (pour un membre d\'une entreprise)')">Entreprise @Html.Raw(sort("NOM de l'entreprise (pour un membre d'une entreprise)", sortby, sortorder))</th>
+        <th onclick="sort('numéro SIRET de l\'entreprise (pour un membre d\'une entreprise)')">Siret @Html.Raw(sort("numéro SIRET de l'entreprise (pour un membre d'une entreprise)", sortby, sortorder))</th>
+        <th onclick="sort('e-mail')">Email @Html.Raw(sort("e-mail", sortby, sortorder))</th>
+        <th onclick="sort('Numéro de reçu fiscal')">N° Reçu @Html.Raw(sort("Numéro de reçu fiscal", sortby, sortorder))</th>
+        <th onclick="sort('DON Montant (en €)')" class="text-right">Montant @Html.Raw(sort("DON Montant (en €)", sortby, sortorder))</th>
+        <th></th>
+    </tr>
+
+    @for (int i = rr.Count - 1; i >= 0; i--)
+    {
+        DataRow row = rr[i];
+        var date = DateTime.Parse("" + row["Date de la demande"]);
+        var valide = "" + row["Validation par le gestionnaire du Fonds de Dotation"];
+        var montant = Decimal.Parse("" + row["DON Montant (en €)"]);
+        var classe = "";
+        if (!listegeneres.Contains((int)row[0]))
+        {
+            classe = "danger";
+        }
+        if (valide == "OUI")
+        {
+            <tr class="@classe">
+                <td>@row["UserDefinedRowId"]</td>
+                <td>@date.ToShortDateString()</td>
+                <td>@row["Nom de l'action du club"]</td>
+                <td>@row["NOM (Particulier ou membre d'une entreprise)"]</td>
+                <td>@row["PRENOM  (Particulier ou membre d'une entreprise)"]</td>
+                <td>@row["NOM de l'entreprise (pour un membre d'une entreprise)"]</td>
+                <td>@row["numéro SIRET de l'entreprise (pour un membre d'une entreprise)"]</td>
+                <td>@row["e-mail"]</td>
+                <td>@row["Numéro de reçu fiscal"]</td>
+                <td class="text-right">@montant.ToString("#,##0.00 €")</td>
+                <td><button name="bt_cerfa" value="@row["UserDefinedRowId"]" class="btn btn-primary btn-sm">Reçu Cerfa</button></td>
+            </tr>
+        }
+
+    }
+
+</table>
+
+<input type="hidden" name="sortby" id="sortby" value="@sortby" />
+<input type="hidden" name="sortorder" id="sortorder" value="@sortorder" />
+<script>
+    function sort(by) {
+        var sortby = document.getElementById('sortby');
+        var sortorder = document.getElementById('sortorder');
+        if (sortby.value != by) {
+            sortby.value = by;
+            sortorder.value = 'asc';
+        }
+        else {
+            if (sortorder.value != 'asc') {
+                sortorder.value = 'asc';
+            } else {
+                sortorder.value = 'desc';
+            }
+
+        }
+        document.forms[0].submit();
+    }
+</script>
+@functions{
+    string sort(string by, string sortby, string sortorder)
+    {
+        if (sortby == by)
+        {
+            if (sortorder == "asc")
+            {
+                return "<i title='croissant' class=\"glyphicon glyphicon-chevron-up\"></i>";
+            }
+            else
+            {
+                return "<i title='décroissant' class=\"glyphicon glyphicon-chevron-down\"></i>";
+            }
+        }
+        return "";
+    }
+}

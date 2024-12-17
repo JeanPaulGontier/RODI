@@ -70,6 +70,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Data.SqlClient;
+using Telerik.Web.UI.com.hisoftware.api2;
 using DotNetNuke.Entities.Portals;
 using System.IO;
 
@@ -248,7 +249,7 @@ public class RotaryHelper
         {
             int rotaryyear = Functions.GetRotaryYear();
             _param = GetParametres();
-            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/officers?startDate=07-01-"+rotaryyear+"&endDate=06-30-"+(rotaryyear+2)));
+            var task = Task.Run(() => CallAsyncGet("/v1.1/clubs/" + clubtype + "/" + cric + "/officers?startDate=07-01-"+rotaryyear+"&endDate=07-01-"+(rotaryyear+2)));
             task.Wait();
 
             if (String.IsNullOrEmpty(task.Result))
@@ -700,7 +701,7 @@ public class RotaryHelper
                 {
                    // result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
                 }
-                else if (officer.StartDate < DateTime.Now && officer.EndDate > DateTime.Now)
+                else if (officer.EndDate > DateTime.Now)
                 {
                     string localf = null;
                     fl.TryGetValue(officer.OfficerRole, out localf); 
@@ -846,7 +847,7 @@ public class RotaryHelper
                             listtrf.Add(member);
                             clublog.Logs += "<p>Transfert du club " + m.cric + " " + member.MemberId + " " + member.FirstName + " " + member.LastName + "</p>";
                         }
-                        if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club || member.DtLastUpdate<DateTime.Now.AddDays(-7))
+                        if (m.dt_update_import_ri_club == null || member.DtLastUpdate > m.dt_update_import_ri_club)
                         {
                             listmaj.Add(member);                            
                         }
@@ -1666,7 +1667,7 @@ public class RotaryHelper
                 var club = clubs.Find(c => c.cric == member.cric);
                 if(club!=null)
                 {
-                    if(nims.Contains(member.nim) || member.dt_update_import_ri_club==null || member.base_dtupdate<DateTime.Now.AddMonths(-1))
+                    if(nims.Contains(member.nim) || member.dt_update_import_ri_club==null)
                     {
                         var profile = Get_Member_Profile(member.nim, out res);
                         if (profile != null)

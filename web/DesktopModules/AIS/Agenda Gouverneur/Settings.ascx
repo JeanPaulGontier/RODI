@@ -13,8 +13,12 @@
         <asp:TextBox runat="server" ID="password" TextMode="Password"   ToolTip="Laisser vide pour ne pas le remplacer"></asp:TextBox>
       
     </div>
-     <div class="dnnFormItem">
-     <div class="dnnLabel">N° calendrier : </div>
-     <asp:TextBox runat="server" ID="num" TextMode="Number"></asp:TextBox>
- </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel">N° calendrier : </div>
+        <asp:TextBox runat="server" ID="num" TextMode="Number"></asp:TextBox>
+    </div>
+    <div class="dnnFormItem">
+        <div class="dnnLabel">Nb max affichage : </div>
+        <asp:TextBox runat="server" ID="max" TextMode="Number"></asp:TextBox>
+    </div>
 </fieldset>

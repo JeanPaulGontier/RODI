@@ -73,16 +73,114 @@ using System.Web.UI.WebControls;
 using AIS;
 
 using System.Text;
+using DotNetNuke.Entities.Tabs;
+using Aspose.Words;
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {
+    News news;
+
+    public string HOST 
+    {
+        get
+        {
+            return Yemon.dnn.Functions.GetHostUrl(HttpContext.Current.Request);
+        }
+    }
+
+    public string news_photo 
+    {
+        get
+        {
+                return news.GetPhoto();
+        }
+    }
+    public string page_title
+    {
+        get
+        {
+            return HttpUtility.HtmlEncode(news.title);
+        }
+    }
+    public string news_dt
+    {
+        get
+        {
+            return news.dt.ToString();
+        }
+    }
+    public string libpath
+    {
+        get
+        {
+            return TabController.CurrentPage.SkinPath + "echoppe/"; 
+        }
+    }
+
+    public string schemacontext
+    {
+        get
+        {
+            return "context";
+        }
+    }
+    public string schemaid
+    {
+        get
+        {
+            return "id";
+        }
+    }
+    public string schematype
+    {
+        get
+        {
+            return "type";
+        }
+    }
+    public string href_mail
+    {
+        get
+        {
+            return "mailto:?subject="+Uri.EscapeUriString(page_title)+"&body="+(Uri.EscapeUriString(HOST + Request.RawUrl));
+        }
+
+    }
+    public string href_fb
+    {
+        get
+        {
+            return "https://www.facebook.com/sharer/sharer.php?u="+HttpUtility.UrlEncode(HOST+Request.RawUrl)+"&display=popup";
+        }
+    }
+    public string href_twitter
+    {
+        get
+        {
+            return "https://twitter.com/intent/tweet?url="+HttpUtility.UrlEncode(HOST+Request.RawUrl)+"&text="+ page_title +"&display=popup";
+        }
+    }
+    public string href_linkedin
+    {
+        get
+        {
+            return "https://www.linkedin.com/shareArticle?mini=true&url="+HttpUtility.UrlEncode(HOST+Request.RawUrl);
+        }
+    }
+    public string href_whatsapp
+    {
+        get
+        {
+            return "whatsapp://send?text="+Uri.EscapeUriString(news.title+Environment.NewLine+HOST+Request.RawUrl );
+        }
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         string newsid = ("" + Request.QueryString["newsid"]);
         if (newsid == "")
             Functions.Error(new Exception("Newsid inconnu : " + newsid));
 
-        News news = DataMapping.GetNews(newsid);
+        news = DataMapping.GetNews(newsid);
         if (news != null)
         {
             LBL_Titre.Text = news.title;

@@ -18,6 +18,19 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
             return num;
         }
     }
+    public int NbMax
+    {
+        get
+        {
+            int num = 0;
+            int.TryParse("" + Settings["max"], out num);
+            if (num == 0)
+            {
+                num = int.MaxValue;
+            }
+            return num;
+        }
+    }
     public List<Event> events = new List<Event>();
 
     protected void Page_Load(object sender, EventArgs e)
@@ -100,7 +113,7 @@ public partial class DesktopModules_AIS_Agenda_Gouverneur_Control : YemonPortalM
 
                         }
                     }
-                    events = events.OrderBy(x => x.date).ToList();
+                    events = events.OrderBy(x => x.date).Take(NbMax).ToList();
 
                 }
 

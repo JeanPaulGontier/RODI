@@ -1,0 +1,164 @@
+﻿@using System.Data.SqlClient;
+@using System.Data;
+@using DotNetNuke.Entities.Users;
+@{
+    string sortby = "" + Request["sortby"];
+    string sortorder = "" + Request["sortorder"];
+
+    if (sortby == "")
+    {
+        sortby = "UserDefinedRowId";
+    }
+    if (sortorder == "")
+    {
+        sortorder = "asc";
+    }
+
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
+
+    var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+    int idmodule = 0;
+    int.TryParse("" + objModules.GetModuleSettings(Dnn.Module.ModuleID)["idmodule"], out idmodule);
+
+    string select = "select UserDefinedRowId,FieldTitle ,FieldValue from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule;
+    string listfields = "select fieldtitle from userdefinedfields where UserDefinedFieldId in (select F.UserDefinedFieldId from UserDefinedFields F, UserDefinedData D where F.UserDefinedFieldId = D.UserDefinedFieldId and F.ModuleId=" + idmodule + " and F.visible=1)";
+    var sql = new SqlCommand(listfields);
+    var table = Yemon.dnn.DataMapping.ExecSql(listfields);
+    string fields = "";
+    foreach (DataRow row in table.Rows)
+    {
+        fields += "[" + row[0] + "],";
+    }
+    if (fields.Length > 0)
+    {
+        fields = fields.Substring(0, fields.Length - 1);
+    }
+
+    sql = new SqlCommand("SELECT * FROM( " + select + ") AS P PIVOT(MIN(FieldValue) FOR FieldTitle IN (" + fields + ")) as PivotTable");
+    table = Yemon.dnn.DataMapping.ExecSql(sql);
+    if (table == null)
+    {
+        <div>Aucun bénéficiaire</div>
+        return;
+    }
+
+
+
+    Decimal total = 0;
+    for (int i = table.Rows.Count - 1; i >= 0; i--)
+    {
+        DataRow row = table.Rows[i];
+        var valide = "" + row["Validation par le gestionnaire du Fonds de Dotation"];
+        if (valide == "OUI")
+        {
+            total += Decimal.Parse("" + row["Versement du FdD - Montant (en €)"]);
+        }
+    }
+
+
+    var rr = table.AsEnumerable().OrderByDescending(c => "" + c[sortby]).ToList();
+    if (sortorder == "asc")
+    {
+        rr = table.AsEnumerable().OrderBy(c => "" + c[sortby]).ToList();
+    }
+}
+<div class="text-right form-group">
+    Total : @total.ToString("#,##0.00 €")
+</div>
+<table class="table table-striped">
+    <tr>
+        <th onclick="sort('UserDefinedRowId')">N° @Html.Raw(sort("UserDefinedRowId", sortby, sortorder))</th>
+        <th onclick="sort('Date de la demande')">Date @Html.Raw(sort("Date de la demande", sortby, sortorder))</th>
+        <th onclick="sort('Nom du club porteur de l\'action')">Club / Responsable @Html.Raw(sort("Nom du club porteur de l'action", sortby, sortorder))</th>
+        <th onclick="sort('Nom de l\'action du club')">Nom de l'action @Html.Raw(sort("Nom de l'action du club", sortby, sortorder))</th>
+        <th onclick="sort('NOM (bénéficiaire individuel ou association)')">Nom / Prénom @Html.Raw(sort("NOM (bénéficiaire individuel ou association)", sortby, sortorder))</th>
+        <th onclick="sort('numéro SIRET de l\'association (pour une association bénéficiaire)')">Association / Siret @Html.Raw(sort("numéro SIRET de l\'association (pour une association bénéficiaire)", sortby, sortorder))</th>
+        <th onclick="sort('e-mail')">Email @Html.Raw(sort("e-mail", sortby, sortorder))</th>
+        <th onclick="sort('Type de versement (virement ou chèque)')">Type versement @Html.Raw(sort("Type de versement (virement ou chèque)", sortby, sortorder))</th>
+        <th onclick="sort('IBAN / RIB du bénéficiaire')">Compte @Html.Raw(sort("IBAN / RIB du bénéficiaire", sortby, sortorder))</th>
+        <th onclick="sort('Versement du FdD - Montant (en €)')" class="text-right">Montant @Html.Raw(sort("Versement du FdD - Montant (en €)", sortby, sortorder))</th>
+
+    </tr>
+
+    @for (int i = rr.Count - 1; i >= 0; i--)
+    {
+        DataRow row = rr[i];
+        var date = DateTime.Parse("" + row["Date de la demande"]);
+        var valide = "" + row["Validation par le gestionnaire du Fonds de Dotation"];
+        var montant = Decimal.Parse("" + row["Versement du FdD - Montant (en €)"]);
+
+        if (valide == "OUI")
+        {
+            <tr>
+                <td>@row["UserDefinedRowId"]</td>
+                <td>@date.ToShortDateString()</td>
+                <td>
+                    @row["Nom du club porteur de l'action"]<br />
+                    @row["Nom du responsable action (club ou multi-clubs)"]<br />
+                    @row["e-mail du responsable action club"]
+                </td>
+                <td>@row["Nom de l'action du club"]</td>
+                <td>
+                    @row["NOM (bénéficiaire individuel ou association)"]<br />
+                    @row["PRENOM  (bénéficiaire individuel ou association)"]
+                </td>
+                <td>
+                    @row["NOM de l'association (pour une association bénéficiaire)"]<br />
+                    @row["numéro SIRET de l'association (pour une association bénéficiaire)"]<br />
+                    <small>
+                        @row["ADRESSE n°_Rue"]<br />
+                        @row["ADRESSE Code Postal"] @row["ADRESSE Ville"]<br />
+                        @row["Téléphone"]
+                    </small>
+                </td>
+                <td>@row["e-mail"]</td>
+                <td>@row["Type de versement (virement ou chèque)"]</td>
+                <td>@row["IBAN / RIB du bénéficiaire"]<br />@row["Code SWIFT (ou code BIC)"]</td>
+                <td class="text-right">@montant.ToString("#,##0.00 €")</td>
+
+            </tr>
+        }
+
+    }
+
+</table>
+
+
+<input type="hidden" name="sortby" id="sortby" value="@sortby" />
+<input type="hidden" name="sortorder" id="sortorder" value="@sortorder" />
+<script>
+    function sort(by) {
+        var sortby = document.getElementById('sortby');
+        var sortorder = document.getElementById('sortorder');
+        if (sortby.value != by) {
+            sortby.value = by;
+            sortorder.value = 'asc';
+        }
+        else {
+            if (sortorder.value != 'asc') {
+                sortorder.value = 'asc';
+            } else {
+                sortorder.value = 'desc';
+            }
+
+        }
+        document.forms[0].submit();
+    }
+</script>
+@functions{
+    string sort(string by, string sortby, string sortorder)
+    {
+        if (sortby == by)
+        {
+            if (sortorder == "asc")
+            {
+                return "<i title='croissant' class=\"glyphicon glyphicon-chevron-up\"></i>";
+            }
+            else
+            {
+                return "<i title='décroissant' class=\"glyphicon glyphicon-chevron-down\"></i>";
+            }
+        }
+        return "";
+    }
+}

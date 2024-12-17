@@ -53,18 +53,18 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
-            if (taskname.Contains("ucm"))
-            {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Members</div>");
-                string result = RotaryHelper.UpdateClubsMembers();
-                this.ScheduleHistoryItem.AddLogNote(result);
-                this.ScheduleHistoryItem.Succeeded = true;
-            }
-
             if (taskname.Contains("uco"))
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Officers</div>");
                 string result = RotaryHelper.UpdateClubsOfficers();
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
+            if (taskname.Contains("ucm"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Members</div>");
+                string result = RotaryHelper.UpdateClubsMembers();
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
