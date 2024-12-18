@@ -6,6 +6,7 @@
 - les rotaracts peuvent maintenant éditer les cartes de membres avec la charte graphique rotaract (logo + couleurs)
 - l'email pro est de nouveau editable dans RODI car on en peut pas le récupérer du RI
 - nouveau module qui permet de visualiser la liste des nouveaux membres sur le dernier mois 
+	/espace-membre/administration-district/gestion/nouveaux-entrants
 - ajout des options de partages réseaux sociaux sur la page détail nouvelle district
 - on peut maintenant limiter le nb d'élément à afficher dans l'agenda du gouverneur
 - ajout de la possibilité de trier les colonnes dans l'écran suivi cerfa et dans l'écran bénéficiaire
