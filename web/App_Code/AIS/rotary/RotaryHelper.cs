@@ -564,7 +564,7 @@ public class RotaryHelper
                 foreach (var member in members.ClubMembers)
                 {
                     var row = new Dictionary<string, object>();
-                    var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember == member.IsHonoraryMember());
+                    //var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember == member.IsHonoraryMember());
                     //if (dbmember != null)
                     //    row["id"] = dbmember.id;
 
@@ -1332,6 +1332,7 @@ public class RotaryHelper
 
         #region phase 6 - membres honoraires
         foreach(var club in clubs){
+            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from " + Const.TABLE_PREFIX + "members where honorary_member='O' and cric=" + club.cric);
             var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=1 and clubid=" + club.cric));
             var clublog = listclublog.Find(c => c.Cric == club.cric);
             if (clublog == null)
