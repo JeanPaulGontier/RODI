@@ -558,32 +558,38 @@ public class RotaryHelper
             string res = "";
             var members = Get_Club_Members_Active(club.ClubType, club.ClubId, out res);
             Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where clubid=" + club.ClubId);
-            foreach (var member in members.ClubMembers)
+            if (members != null)
             {
-                var row = new Dictionary<string, object>();
-                var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember== member.IsHonoraryMember());
-                //if (dbmember != null)
-                //    row["id"] = dbmember.id;
 
-                row["memberid"] = member.MemberId;
-                row["clubid"] = club.ClubId;
-                row["membertype"] = "active";
-                row["firstname"] = member.FirstName;
-                row["lastname"] = member.LastName;
-                row["suffix"] = member.Suffix;
-                row["ishonorarymember"] = member.IsHonoraryMember();
-                row["issatellitemember"] = member.IsSatelliteMember();
-                row["dtlastupdate"] = member.DtLastUpdate();
-                row["profile"] = Yemon.dnn.Functions.Serialize(member);
-                
-
-                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
-                if (r.Key != "error")
+                foreach (var member in members.ClubMembers)
                 {
-                    result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";                  
+                    var row = new Dictionary<string, object>();
+                    var dbmember = dbmembers.Find(c => c.MemberId == member.MemberId && c.IsHonoraryMember == member.IsHonoraryMember());
+                    //if (dbmember != null)
+                    //    row["id"] = dbmember.id;
+
+                    row["memberid"] = member.MemberId;
+                    row["clubid"] = club.ClubId;
+                    row["membertype"] = "active";
+                    row["firstname"] = member.FirstName;
+                    row["lastname"] = member.LastName;
+                    row["suffix"] = member.Suffix;
+                    row["ishonorarymember"] = member.IsHonoraryMember();
+                    row["issatellitemember"] = member.IsSatelliteMember();
+                    row["dtlastupdate"] = member.DtLastUpdate();
+                    row["profile"] = Yemon.dnn.Functions.Serialize(member);
+
+
+                    var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
+                    if (r.Key != "error")
+                    {
+                        result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+                    }
+                    else
+                        result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
                 }
-                else
-                    result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+            }else {
+                result += "<p style='color:red'>ERREUR : " + club.ClubId + " impossible récupérer members</p>";
             }
 
             //var localmembers = dbmembers.FindAll(c => c.ClubId == club.ClubId);
@@ -599,7 +605,7 @@ public class RotaryHelper
             //        {
             //            result += "<p style='color:red'>ERREUR suppression : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
             //        }
-                    
+
             //    }
             //}
         }
@@ -620,34 +626,41 @@ public class RotaryHelper
             Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_officer where clubid=" + club.ClubId);
             string res = "";
             var officers = Get_Club_Officers(club.ClubId, club.ClubType, out res);
-
-            foreach (var officer in officers)
+            if(officers!=null)
             {
-                var row = new Dictionary<string, object>();
-                //var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
-                //if (dbofficer != null)
-                //    row["id"] = dbofficer.id;
 
-                row["memberid"] = officer.MemberId;
-                row["clubid"] = officer.ClubId;
-                row["officerrole"] = officer.OfficerRole;
-                row["startdate"] = officer.StartDate;
-                row["enddate"] = officer.EndDate;
-                row["clubname"] = officer.ClubName;
-                row["firstname"] = officer.FirstName;
-                row["lastname"] = officer.LastName;
-                row["middlename"] = officer.MiddleName;
-                row["suffix"] = officer.Suffix;
-                row["key"] = officer.Key;
-                row["lastupdated"] = officer.LastUpdated;
-                row["dtlastupdate"] = DateTime.Now;
+                foreach (var officer in officers)
+                {
+                    var row = new Dictionary<string, object>();
+                    //var dbofficer = dbofficers.Find(c => c.MemberId == officer.MemberId);
+                    //if (dbofficer != null)
+                    //    row["id"] = dbofficer.id;
 
-                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_officer", "id", row);
-                if (r.Key != "error")
-                    result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
-                else
-                    result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
+                    row["memberid"] = officer.MemberId;
+                    row["clubid"] = officer.ClubId;
+                    row["officerrole"] = officer.OfficerRole;
+                    row["startdate"] = officer.StartDate;
+                    row["enddate"] = officer.EndDate;
+                    row["clubname"] = officer.ClubName;
+                    row["firstname"] = officer.FirstName;
+                    row["lastname"] = officer.LastName;
+                    row["middlename"] = officer.MiddleName;
+                    row["suffix"] = officer.Suffix;
+                    row["key"] = officer.Key;
+                    row["lastupdated"] = officer.LastUpdated;
+                    row["dtlastupdate"] = DateTime.Now;
+
+                    var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_officer", "id", row);
+                    if (r.Key != "error")
+                        result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
+                    else
+                        result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
+                }
+            } else {
+                result += "<p style='color:red'>ERREUR : " + club.ClubId + " impossible de récupérer les officers</p>";
             }
+            
+
         }
         return result;
     }

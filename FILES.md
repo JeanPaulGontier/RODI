@@ -1,5 +1,7 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\rotary\RotaryHelper.cs
+```
 ##### 17/12/2024
 ```txt
 App_Code\AIS\rotary\Rotary.cs
