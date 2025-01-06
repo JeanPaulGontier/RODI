@@ -1,5 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
+- correction d'un pb de doublons de membres d'honneurs pendant la synchro
 ###### 17/12/2024
 - nouveau module Form Inscription
 - lors de la synchro RI des membres d'honneurs, si une photo existait quand le membre était actif alors elle est affichée
