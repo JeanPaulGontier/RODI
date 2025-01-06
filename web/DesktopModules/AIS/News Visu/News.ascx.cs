@@ -82,7 +82,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
         get
         {
             int t = 0;
-            int.TryParse("" + objModules.GetModuleSettings(ModuleId)["tabid"], out t);
+            int.TryParse("" + Settings["tabid"], out t);
             return t;
         }
     }
@@ -90,7 +90,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
     {
         get 
         {
-            return "" + objModules.GetModuleSettings(ModuleId)["category"];
+            return "" + Settings["category"];
         }
     }
     
@@ -98,7 +98,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
     protected void Page_Load(object sender, EventArgs e)
     {
         int nb = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["nbnews"], out nb);
+        int.TryParse("" + Settings["nbnews"], out nb);
 
         int cric=-1;
         var news = new List<News>();
@@ -116,7 +116,7 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
 
 
 
-            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
+            news = DataMapping.ListNews_EN(cric: cric != -1 ? cric : 0, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "" + Settings["tags_included"], tags_excluded: "" + Settings["tags_excluded"]);
 
 
         }
@@ -129,12 +129,12 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             }
             else
             {
-                news = DataMapping.ListNews_EN(cric: cric, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
+                news = DataMapping.ListNews_EN(cric: cric, onlyvisible: true, category: "Clubs", tri: "dt desc", tags_included: "" + Settings["tags_included"], tags_excluded: "" + Settings["tags_excluded"]);
             }
 
         }
         else
-            news = DataMapping.ListNews_EN(cric: 0, onlyvisible: true, category: categorie, tri: "dt asc", where: "dt>='"+today+"'", tags_included: "" + objModules.GetModuleSettings(ModuleId)["tags_included"], tags_excluded: "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"]);
+            news = DataMapping.ListNews_EN(cric: 0, onlyvisible: true, category: categorie, tri: "dt asc", where: "dt>='"+today+"'", tags_included: "" + Settings["tags_included"], tags_excluded: "" + Settings["tags_excluded"]);
 
         
         
@@ -152,8 +152,10 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             lbl_noNews.Visible = true;
         LI_News.DataSource = TheNews;
         LI_News.DataBind();
-      
-        
+
+        string newsid = ("" + Request.QueryString["newsid"]);
+        if (newsid == "" && TheNews.Count>0)
+            Response.Redirect(Functions.UrlAddParam(""+Request.Url,"newsid", TheNews[0].id));
     }
     
    

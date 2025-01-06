@@ -1,6 +1,8 @@
 ##### Modified files per commit
 ```txt
 App_Code\AIS\rotary\RotaryHelper.cs
+DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\AIS\News Visu\News.ascx.cs
 ```
 ##### 17/12/2024
 ```txt

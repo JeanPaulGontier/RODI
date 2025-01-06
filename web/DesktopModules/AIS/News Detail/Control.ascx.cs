@@ -75,10 +75,12 @@ using AIS;
 using System.Text;
 using DotNetNuke.Entities.Tabs;
 using Aspose.Words;
+using EasyDNNSolutions.Modules.EasyDNNRotator.Entities;
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {
     News news;
+   
 
     public string HOST 
     {
@@ -92,6 +94,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
                 return news.GetPhoto();
         }
     }
@@ -99,6 +103,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news== null)
+                return "";
             return HttpUtility.HtmlEncode(news.title);
         }
     }
@@ -106,6 +112,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return news.dt.ToString();
         }
     }
@@ -142,6 +150,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return "mailto:?subject="+Uri.EscapeUriString(page_title)+"&body="+(Uri.EscapeUriString(HOST + Request.RawUrl));
         }
 
@@ -150,6 +160,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return "https://www.facebook.com/sharer/sharer.php?u="+HttpUtility.UrlEncode(HOST+Request.RawUrl)+"&display=popup";
         }
     }
@@ -157,6 +169,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return "https://twitter.com/intent/tweet?url="+HttpUtility.UrlEncode(HOST+Request.RawUrl)+"&text="+ page_title +"&display=popup";
         }
     }
@@ -164,6 +178,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return "https://www.linkedin.com/shareArticle?mini=true&url="+HttpUtility.UrlEncode(HOST+Request.RawUrl);
         }
     }
@@ -171,6 +187,8 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
     {
         get
         {
+            if (news == null)
+                return "";
             return "whatsapp://send?text="+Uri.EscapeUriString(news.title+Environment.NewLine+HOST+Request.RawUrl );
         }
     }
@@ -181,6 +199,7 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
             Functions.Error(new Exception("Newsid inconnu : " + newsid));
 
         news = DataMapping.GetNews(newsid);
+       
         if (news != null)
         {
             LBL_Titre.Text = news.title;
