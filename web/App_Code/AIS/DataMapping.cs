@@ -5697,6 +5697,8 @@ namespace AIS
             catch { }
             try { doc.Range.Bookmarks["id"].Text = "" + order.id; }
             catch { }
+            try { doc.Range.Bookmarks["id1"].Text = "" + order.id; }
+            catch { }
             try { doc.Range.Bookmarks["dt"].Text = order.dt.ToString("dd/MM/yyyy"); }
             catch { }
             try { doc.Range.Bookmarks["amount"].Text = "" + order.amount; }
@@ -5710,6 +5712,8 @@ namespace AIS
             try { doc.Range.Bookmarks["title"].Text = payment.title; }
             catch { }
             try { doc.Range.Bookmarks["nb"].Text = "" + order.Details.Count; }
+            catch { }
+            try { doc.Range.Bookmarks["cric"].Text = "" + club.cric; }
             catch { }
 
             List<string> d = new List<string>();

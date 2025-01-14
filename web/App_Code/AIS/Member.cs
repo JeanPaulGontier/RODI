@@ -116,7 +116,7 @@ namespace AIS
             removed = Const.NO;
             district_id = Const.DISTRICT_ID;
             photo = "";
-            visible = Const.YES;
+            visible = Const.NO;
             presentation = false;
             satellite_member = Const.NO;
 

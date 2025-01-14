@@ -2,6 +2,8 @@
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro
 - le module news visu sélectionne automatiquement la 1ere news si aucune n'est sélectionnée
+- ajout du n° cric du club dans les factures PDF 
+- les nouveaux membres ainsi que les membres d'honneurs ne sont plus visible par défaut dans l'annuaire public
 ###### 17/12/2024
 - nouveau module Form Inscription
 - lors de la synchro RI des membres d'honneurs, si une photo existait quand le membre était actif alors elle est affichée
