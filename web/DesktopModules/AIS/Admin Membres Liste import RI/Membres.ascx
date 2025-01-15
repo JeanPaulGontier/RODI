@@ -63,9 +63,16 @@
    <PagerSettings Mode="NumericFirstLast" Position="Bottom"  /> 
 </asp:GridView>
 
+
     <p><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_XLS" Text="Export Excel" OnClick="BT_Export_XLS_Click" CausesValidation="false"/>
         <asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_CSV" Text="Export CSV" OnClick="BT_Export_CSV_Click" Visible="false" CausesValidation="false"/></p>
+         <div class="alert alert-info">
+             <strong>ATTENTION</strong> : vous devez respecter le RGPD si vous exportez les données personnelles des membres. Par exemple, ne pas mettre ces données dans des outils tiers sans l'accord explicite des membres concernés.
+             Pour en savoir plus : <a href="https://www.cnil.fr/sites/cnil/files/atoms/files/cnil-guide_association.pdf" target="_blank"><strong>cnil-guide_association.pdf</strong></a>
+         </div>
         <asp:Panel runat="server" ID="pnl_exports">
+        
+       
         <asp:HiddenField ID="tri" Value="surname" runat="server"/><asp:HiddenField ID="sens" Value="ASC" runat="server"/>
         <asp:HiddenField ID="HF_Cric" runat="server" />
         

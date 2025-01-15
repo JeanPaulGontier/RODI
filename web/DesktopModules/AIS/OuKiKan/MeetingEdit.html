@@ -243,6 +243,14 @@
                              :plugins="editorPlugins"
                              :toolbar1="editorToolbar"
                              :other="editorOptions" />
+                    <div class="alert alert-info">Si vous effacez le message, alors le message standard est envoyé.<br/>Vous pouvez utiliser les champs suivants :<br />
+                    <ul>
+                        <li>#meeting.name# : nom de la réunion</li>
+                        <li>#meeting.dtstart# : date de début</li>
+                        <li>#meeting.dtend# : date de fin</li>
+                        <li>#meeting.link# : pour le lien personnalisé pour le membre notifié</li>
+                        <li>#meeting.sharelink# : pour le lien partageable à un tiers</li>
+                    </ul></div>
                  
                 </div>
 

@@ -5,6 +5,8 @@ App_Code\AIS\DataMapping.cs
 App_Code\AIS\Member.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\AIS\News Visu\News.ascx.cs
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 ```
 ##### 17/12/2024
 ```txt
