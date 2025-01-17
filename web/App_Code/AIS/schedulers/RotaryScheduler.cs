@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
+using Telerik.Web.UI.com.hisoftware.api2;
 
 /// <summary>
 /// Scheduler de création des réunions périodiques
@@ -27,12 +28,19 @@ public class RotaryScheduler : SchedulerClient
 
         try
         {
+            StringBuilder sb = new StringBuilder();
+            if(Const.ROTARY_SYNCHRO_LOG)
+            {
+
+            }
 
             // do some work
             if(taskname.Contains("clubs"))
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Club Synchro</div>");
                 string result = RotaryHelper.SynchroClubs();
+                if(Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -41,6 +49,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Officers Synchro</div>");
                 string result = RotaryHelper.SynchroOfficers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -49,6 +60,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Members Synchro</div>");
                 string result = RotaryHelper.SynchroMembers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -57,6 +71,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Officers</div>");
                 string result = RotaryHelper.UpdateClubsOfficers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -65,6 +82,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Members</div>");
                 string result = RotaryHelper.UpdateClubsMembers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -73,6 +93,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Members Profiles</div>");
                 string result = RotaryHelper.UpdateMembersProfiles();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -81,6 +104,9 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Création ou MAJ Users</div>");
                 string result = DataMapping.CreateOrUpdateUsers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
@@ -89,9 +115,20 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Doing Mise à jour affectations clubs</div>");
                 string result = DataMapping.UpdateClubAffectations();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
+            if (Const.ROTARY_SYNCHRO_LOG)
+            {
+                string log = sb.ToString();
+                if(log.ToLower().Contains("erreur")){
+                    Functions.SendMail(Const.ROTARY_SYNCHRO_LOG_EMAIL, "[" + Const.DISTRICT_ID + "] Synchro RI Logs", log);
+                }
+            }
+            
 
         }
         catch (Exception exc)

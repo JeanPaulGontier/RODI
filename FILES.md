@@ -1,12 +1,15 @@
 ##### Modified files per commit
 ```txt
 App_Code\AIS\rotary\RotaryHelper.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Member.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\AIS\News Visu\News.ascx.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+App_Code\AIS\Const.cs
+
 ```
 ##### 17/12/2024
 ```txt
