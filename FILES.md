@@ -9,6 +9,8 @@ DesktopModules\AIS\News Visu\News.ascx.cs
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 App_Code\AIS\Const.cs
+DesktopModules\AIS\Admin Maj AAR\Control.ascx
+DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 
 ```
 ##### 17/12/2024

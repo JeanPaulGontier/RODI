@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - https://rodi-platform.org
+// RODI - http://rodi.aisdev.net
 // Copyright (c) 2012-2024
-// by SARL AIS : http://www.aisdev.net
+// by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -80,6 +80,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Mail;
+using Telerik.Web.UI.com.hisoftware.api2;
 
 
 public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
@@ -92,14 +93,171 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
 
     protected void BT_Refresh_AAR_Click(object sender, EventArgs e)
     {
-        TXT_Result.Text = DataMapping.UpdateClubAffectations();
+        TXT_Result.Text = "";
+        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+        try
+        {
+            conn.Open();
+
+            int annee = Functions.GetRotaryYear();
+
+            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
+            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
+            ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_PRESIDENTS_CLUBS);
+            foreach (UserInfo user in users)
+            {
+                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+                {
+                }               
+            }
+            users = rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
+            foreach (UserInfo user in users)
+            {
+                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+                {
+                }
+            }
+
+
+            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND  rotary_year IN (";
+
+            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
+                query += annee + "," + (annee + 1);
+            else// if (DateTime.Now.Month >= 7)
+                //query += (annee - 1) + "," + annee;
+                query += annee;
+
+            query += ")";
+
+            
+            SqlCommand sql = new SqlCommand(query, conn);
+            SqlDataAdapter da = new SqlDataAdapter(sql);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                string function = "" + row["function"];
+            cestbon:
+                 
+                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
+                if (membre != null)
+                {
+                    if (membre.userid == 0 )
+                    {
+                        TXT_Result.Text += "<br/><span class='alert-warning'>Le membre : " + row["name"] + " n'a pas de user DNN</span>";
+                        if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
+                        {                            
+                            TXT_Result.Text += "<br/><span class='alert-success'>et a été créé</span>";
+                            goto cestbon;
+                        }
+                        else
+                        {
+                            TXT_Result.Text += "<br/><span class='alert-danger'>et n'a pas été créé</span>";
+                        }
+
+                    }
+                    else
+                    {
+                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                        if (ui != null)
+                        {
+
+                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+                            TXT_Result.Text += "<br/>Ajout rôle admin club : " + row["name"];
+                            if(function=="Président")
+                            {
+                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+                                TXT_Result.Text += "<br/>Ajout rôle président club : " + row["name"];
+                            }
+                            
+                        }
+                    }
+                }
+            }
+            TXT_Result.Text += DataMapping.UpdateMembersLoginToRole();
+        }         
+        catch (Exception ee)
+        {
+            TXT_Result.Text += ee.ToString();
+        }
+        finally
+        {
+            conn.Close();
+        }
     }
 
 
 
     protected void BT_CreateUsersManquants_Click(object sender, EventArgs e)
     {
-        TXT_Result.Text = DataMapping.CreateOrUpdateUsers();
+        DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+        TXT_Result.Text = "";
+        List<Member> membres = DataMapping.ListMembers(max:10000);
+        foreach (Member membre in membres)
+        {
+            if (!string.IsNullOrEmpty(membre.email))
+            {
+                if (membre.userid != 0)
+                {
+                    UserInfo ui = UserController.GetUserById(Globals.GetPortalSettings().PortalId, membre.userid);
+                    if (ui == null)
+                    {
+                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+                            TXT_Result.Text += "<br/>Création : " + membre.surname + " " + membre.name + " ("+membre.email+")";
+                        else
+                            TXT_Result.Text += "<br/>Erreur création user : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+
+                    }
+                    else
+                    {
+                        if(ui.Username != membre.email)
+                        {
+                            UserController.DeleteUser(ref ui, false, false);
+                            //UserController.DeleteUnauthorizedUsers(Globals.GetPortalSettings().PortalId);
+                            TXT_Result.Text += "<br/>Suppression ancien utilisateur : " + ui.Username;
+
+                            if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+                                TXT_Result.Text += "<br/>Creation : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                            else
+                                TXT_Result.Text += "<br/>Erreur création user : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                        }
+                        else
+                        {
+                            if (DataMapping.UpdateMemberDNNUserID(membre.id, ui.UserID))
+                            { }    //TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name;
+                            else
+                                TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà mais n'a pas pu être mis à jour : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                        }
+
+                    }
+                }
+                else if (membre.userid == 0)
+                {
+                    UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                    if (ui == null)
+                    {
+                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+
+                            TXT_Result.Text += "<br/>Creation : " + membre.surname + " " + membre.name;
+                        else
+                            TXT_Result.Text += "<br/>Erreur création user : " + membre.surname + " " + membre.name;
+
+                    }
+                    else
+                    {
+                        if (DataMapping.UpdateMemberDNNUserID(membre.id, ui.UserID))
+                            TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name;
+                        else
+                            TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà mais n'a pas pu être mis à jour : " + membre.surname + " " + membre.name;
+
+
+                    }
+                }
+            }
+
+        }
+        TXT_Result.Text += "<br/>Traitement terminé...";
 
 
     }
@@ -139,5 +297,12 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
             
         }
         
+    }
+
+    protected void BT_PUU_Click(object sender, EventArgs e)
+    {
+        TXT_Result.Text = DataMapping.DeleteUnusedLogins();
+        pnl_success.Visible = true;
+        pnl_error.Visible = false;
     }
 }

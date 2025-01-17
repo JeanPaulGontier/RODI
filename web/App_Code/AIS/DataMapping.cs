@@ -1261,7 +1261,8 @@ namespace AIS
                 return true;
 
             UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
-
+            RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
 
 
 
@@ -1297,8 +1298,6 @@ namespace AIS
                 if (UserCreateStatus.Success == UserController.CreateUser(ref ui))
                 {
 
-                    DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-                    RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
                     rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
 
 
@@ -1353,16 +1352,17 @@ namespace AIS
                 ui.DisplayName = membre.name + " " + membre.surname;
                 ui.Email = membre.email;
                 ui.IsDeleted = false;
-                
+
                 //UserMembership mb = new UserMembership(ui);
-                
+
                 //mb.IsDeleted = false;
                 //mb.Approved = true;
+              
 
                 UserController.UpdateUser(Globals.GetPortalSettings().PortalId, ui,true,false);
-                
+               
                 //DataCache.ClearCache();
-                if(ui.UserID!=membre.userid)
+                if (ui.UserID!=membre.userid)
                 {
                     return UpdateMemberDNNUserID(membre.id, ui.UserID, conn, trans);
                 }
@@ -8684,7 +8684,7 @@ namespace AIS
                         }
                     }
                 }
-
+                result+=UpdateMembersLoginToRole();
             }
             catch (Exception ee)
             {
@@ -8768,6 +8768,8 @@ namespace AIS
             return result;
         }
 
+        
+
 
         public static string DeleteUnusedLogins(){
 
@@ -8780,7 +8782,11 @@ namespace AIS
                 var table= Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
                 var emails = new List<string>();
                 foreach (DataRow row in table.Rows)
-                    emails.Add(("" + row["email"]).ToLower());
+                { 
+                    var email = ("" + row["email"]).ToLower().Trim();
+                    if (email != "")
+                        emails.Add(email);
+                }
 
                 int nb = 0;
                 foreach(var user in users){
@@ -8796,15 +8802,10 @@ namespace AIS
                         else
                            sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Email + ")¨</p>");
                     }
-                    else
-                    {
-                        
-
-                        roleController.AddUserRole(Globals.GetPortalSettings().PortalId, userInfo.UserID, role.RoleID, Null.NullDate, Null.NullDate);
-                    }
                     
                     
                 }
+                
                 if (nb > 0)
                     sb.AppendLine("<p>" + nb + " utilisateur(s) supprimé(s)</p>");
                 else
@@ -8813,6 +8814,55 @@ namespace AIS
             }catch(Exception ee){
                 Functions.Error(ee);
                 return "<p style='color:red'>Erreur : " + ee.Message+ "</p>";
+
+            }
+
+        }
+        public static string UpdateMembersLoginToRole()
+        {
+
+            try
+            {
+                var sb = new StringBuilder();
+                UsersController usersController = new UsersController();
+                RoleController roleController = new RoleController();
+                RoleInfo role = roleController.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
+                var users = roleController.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
+                var table = Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
+                var emails = new List<string>();
+                foreach (DataRow row in table.Rows)
+                {
+                    var email = ("" + row["email"]).ToLower().Trim();
+                    if (email!="")
+                        emails.Add(email);
+
+                }
+
+                int nb = 0;
+
+                foreach (var email in emails)
+                {
+                    UserInfo user = UserController.GetUserByEmail(Globals.GetPortalSettings().PortalId,email);
+                    if(user==null)
+                    {
+                        sb.AppendLine("<span style='color:red'>Erreur utilisateur introuvale : " +email + "</span><br/>");
+                    }
+                    else
+                    {
+                        roleController.AddUserRole(Globals.GetPortalSettings().PortalId, user.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                        sb.AppendLine("Ajout rôle membre : " + user.Email + "<br/>");
+
+                    }
+
+
+                }
+               
+                return sb.ToString();
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+                return "<p style='color:red'>Erreur : " + ee.Message + "</p>";
 
             }
 
