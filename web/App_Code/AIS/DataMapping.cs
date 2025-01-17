@@ -89,6 +89,7 @@ using System.Web;
 using DotNetNuke.Security;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections;
+using Dnn.PersonaBar.Users.Components;
 
 namespace AIS
 {
@@ -8767,6 +8768,44 @@ namespace AIS
             return result;
         }
 
+
+        public static string DeleteUnusedLogins(){
+
+            try { 
+                var sb = new StringBuilder();
+                UsersController usersController = new UsersController();
+                RoleController roleController = new RoleController();
+                var users = roleController.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
+                var table= Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
+                var emails = new List<string>();
+                foreach (DataRow row in table.Rows)
+                    emails.Add("" + row["email"]);
+
+                int nb = 0;
+                foreach(var user in users){
+                    UserInfo userInfo = user;
+                    if (emails.Contains(user.Email))
+                    {
+                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")¨</p>");
+                        nb++;
+                        if(!UserController.DeleteUser(ref userInfo, false, false))
+                           sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Email + ")¨</p>");
+                    }
+                    
+                    
+                }
+                if (nb > 0)
+                    sb.AppendLine("<p>" + nb + " utilisateur(s) supprimé(s)</p>");
+                else
+                    sb.AppendLine("<p>Aucun utilisateur supprimé</p>");
+                return sb.ToString();
+            }catch(Exception ee){
+                Functions.Error(ee);
+                return "<p style='color:red'>Erreur : " + ee.Message+ "</p>";
+
+            }
+
+        }
     }
 
 }

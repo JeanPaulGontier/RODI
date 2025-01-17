@@ -121,6 +121,16 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
+            if(taskname.Contains("puu"))
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Doing suppression login inutilisés</div>");
+                string result = DataMapping.DeleteUnusedLogins();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
             if (Const.ROTARY_SYNCHRO_LOG)
             {
                 string log = sb.ToString();
