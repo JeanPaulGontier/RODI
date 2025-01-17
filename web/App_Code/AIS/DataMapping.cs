@@ -8796,6 +8796,10 @@ namespace AIS
                         else
                            sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Email + ")¨</p>");
                     }
+                    else
+                    {
+                        roleController.AddUserRole(Globals.GetPortalSettings().PortalId, userInfo.UserID, role.RoleID, Null.NullDate, Null.NullDate);
+                    }
                     
                     
                 }
