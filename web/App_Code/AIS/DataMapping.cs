@@ -8793,7 +8793,7 @@ namespace AIS
                     UserInfo userInfo = user;
                     if (!emails.Contains(user.Email.ToLower()))
                     {
-                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")¨</p>");
+                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")</p>");
                         nb++;
                         if(UserController.DeleteUser(ref userInfo, false, false))
                         {

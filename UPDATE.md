@@ -6,7 +6,7 @@
 - les nouveaux membres ainsi que les membres d'honneurs ne sont plus visible par défaut dans l'annuaire public
 - un texte d'explication pour le message de notification a été ajouté dans l'écran de réunion
 - un texte RGPD a été ajouté sur l'export des données membres
-- nouveau service RotaryScheduler (puu) qui purge les anciens logins inutilisés
+- nouveau service RotaryScheduler (puu) qui purge les anciens logins inutilisés et résout le pb des membres qui se connectaient encore avec un ancien login et ne voyaient plus leurs clubs, attention, c'est l'email principal du rotary.org qui est utilisé comme login membre dans rodi
 ###### 17/12/2024
 - nouveau module Form Inscription
 - lors de la synchro RI des membres d'honneurs, si une photo existait quand le membre était actif alors elle est affichée
