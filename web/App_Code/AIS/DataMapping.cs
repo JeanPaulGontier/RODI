@@ -8798,6 +8798,8 @@ namespace AIS
                     }
                     else
                     {
+                        
+
                         roleController.AddUserRole(Globals.GetPortalSettings().PortalId, userInfo.UserID, role.RoleID, Null.NullDate, Null.NullDate);
                     }
                     
