@@ -8785,7 +8785,7 @@ namespace AIS
                 int nb = 0;
                 foreach(var user in users){
                     UserInfo userInfo = user;
-                    if (emails.Contains(user.Email.ToLower()))
+                    if (!emails.Contains(user.Email.ToLower()))
                     {
                         sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")¨</p>");
                         nb++;
