@@ -8775,6 +8775,7 @@ namespace AIS
                 var sb = new StringBuilder();
                 UsersController usersController = new UsersController();
                 RoleController roleController = new RoleController();
+                RoleInfo role = roleController.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
                 var users = roleController.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
                 var table= Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
                 var emails = new List<string>();
@@ -8784,12 +8785,16 @@ namespace AIS
                 int nb = 0;
                 foreach(var user in users){
                     UserInfo userInfo = user;
-                    if (emails.Contains(user.Email))
+                    if (emails.Contains(user.Username))
                     {
-                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")¨</p>");
+                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Username + ")¨</p>");
                         nb++;
-                        if(!UserController.DeleteUser(ref userInfo, false, false))
-                           sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Email + ")¨</p>");
+                        if(UserController.DeleteUser(ref userInfo, false, false))
+                        {
+                            RoleController.DeleteUserRole(userInfo, role, Globals.GetPortalSettings(), false);
+                        }
+                        else
+                           sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Username + ")¨</p>");
                     }
                     
                     
