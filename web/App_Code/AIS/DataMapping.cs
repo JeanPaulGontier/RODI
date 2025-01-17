@@ -8780,21 +8780,21 @@ namespace AIS
                 var table= Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
                 var emails = new List<string>();
                 foreach (DataRow row in table.Rows)
-                    emails.Add("" + row["email"]);
+                    emails.Add(("" + row["email"]).ToLower());
 
                 int nb = 0;
                 foreach(var user in users){
                     UserInfo userInfo = user;
-                    if (emails.Contains(user.Username))
+                    if (emails.Contains(user.Email.ToLower()))
                     {
-                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Username + ")¨</p>");
+                        sb.AppendLine("<p>Suppression utilisateur : " + user.UserID + " (" + user.Email + ")¨</p>");
                         nb++;
                         if(UserController.DeleteUser(ref userInfo, false, false))
                         {
                             RoleController.DeleteUserRole(userInfo, role, Globals.GetPortalSettings(), false);
                         }
                         else
-                           sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Username + ")¨</p>");
+                           sb.AppendLine("<p style='color:red'>Erreur suppression utilisateur : "+user.UserID + " (" + user.Email + ")¨</p>");
                     }
                     
                     
