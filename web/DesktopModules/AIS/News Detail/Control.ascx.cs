@@ -75,7 +75,6 @@ using AIS;
 using System.Text;
 using DotNetNuke.Entities.Tabs;
 using Aspose.Words;
-using EasyDNNSolutions.Modules.EasyDNNRotator.Entities;
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {

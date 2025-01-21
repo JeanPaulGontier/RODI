@@ -1,5 +1,6 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\AIS\News Detail\Control.ascx.cs
 ```
 ##### 17/12/2024
 ```txt
