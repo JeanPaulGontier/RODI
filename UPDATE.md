@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- correction de fausse erreur affichée sur la page d'inscription à une réunion
 ###### 17/01/2025
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro
