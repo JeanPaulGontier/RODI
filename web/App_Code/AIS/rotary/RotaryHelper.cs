@@ -503,7 +503,7 @@ public class RotaryHelper
 
         Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_club");
 
-        var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+       // var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         foreach (var club in clubs)
         {            
             var row = new Dictionary<string, object>();
@@ -553,7 +553,7 @@ public class RotaryHelper
     {
         string result = "";
         var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
-        var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
+        //var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
         foreach (var club in clubs)
         {
             string res = "";
@@ -592,23 +592,6 @@ public class RotaryHelper
             }else {
                 result += "<p style='color:red'>ERREUR : " + club.ClubId + " impossible récupérer members</p>";
             }
-
-            //var localmembers = dbmembers.FindAll(c => c.ClubId == club.ClubId);
-            //foreach(var member in localmembers)
-            //{
-            //    var dbmember = members.ClubMembers.Find(c => c.MemberId == member.MemberId);
-            //    if (dbmember == null) {
-            //        if(Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_member where memberid="+ member.MemberId+" and clubid="+ member.ClubId)>0)
-            //        {
-            //            result += "<p>Suppression " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
-            //        }
-            //        else
-            //        {
-            //            result += "<p style='color:red'>ERREUR suppression : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
-            //        }
-
-            //    }
-            //}
         }
         return result;
     }
@@ -620,7 +603,7 @@ public class RotaryHelper
         if (clubs == null)
             return "<p style='color:red'>Erreur récupération des clubs</p>";
 
-        //var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
+ //       var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
 
         foreach (var club in clubs)
         {
@@ -769,6 +752,9 @@ public class RotaryHelper
         string result = "";
         string errors = "";
         var allclubs = DataMapping.ListClubs();
+
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from " + Const.TABLE_PREFIX + "members where honorary_member='O'");
+
         var members = DataMapping.ListMembers();
 
         var listnew = new List<Rotary.Member>();
@@ -1333,7 +1319,6 @@ public class RotaryHelper
 
         #region phase 6 - membres honoraires
         foreach(var club in clubs){
-            Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from " + Const.TABLE_PREFIX + "members where honorary_member='O' and cric=" + club.cric);
             var rimembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member where IsHonoraryMember=1 and clubid=" + club.cric));
             var clublog = listclublog.Find(c => c.Cric == club.cric);
             if (clublog == null)

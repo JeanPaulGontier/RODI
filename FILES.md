@@ -1,5 +1,6 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 ```
