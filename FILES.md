@@ -6,6 +6,11 @@ DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 DesktopModules\AIS\Club News Detail\Control.ascx.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockFileCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
+images\spinner.gif
+
 ```
 ##### 17/12/2024
 ```txt

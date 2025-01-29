@@ -15,7 +15,7 @@
                 <input type="text" v-model="e.Title" class="form-control" />
             </div>
             <div>
-                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none" multiple>
                 <div v-if="e.Images" v-for="(i,index) in e.Images" class="row">
                     <div class="col-sm-4">
                         <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" />
@@ -24,13 +24,21 @@
                     <div class="col-sm-8">
                         <span> Légende :</span>
                         <input type="text" v-model="i.Name" class="form-control" /><br />
-                        <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>
+                        <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>&nbsp;
+                        <button type="button" v-on:click="upFirst(index)" v-if="index>0" class="btn btn-sm btn-default" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
+                        <button type="button" v-on:click="up(index)" v-if="index>0" class="btn btn-sm btn-default" title="Monter"><i class="fa fa-angle-up"></i></button>
+                        <button type="button" v-on:click="down(index)" v-if="index<e.Images.length-1" class="btn btn-sm btn-default" title="Descendre"><i class="fa fa-angle-down"></i></button>
+                        <button type="button" v-on:click="downLast(index)" v-if="index<e.Images.length-1" class="btn btn-sm btn-default" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
+                        <hr/>
                     </div>
                     <div class="col-sm-12 pe-spacer size10"></div>
                 </div>
+                <div v-if="uploading()">
+                    <img src="/images/spinner.gif" /> Envoi en cours
+                </div>
                 <br />
-                <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
-                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
+                <button type="button" v-if="!uploading()" class="btn btn-primary" v-on:click="addDocument">Choisir une ou plusieurs photo(s)</button><br />
+                <em class="text-info">Les fichiers doivent être des photos et ne doivent pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
             </div>
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
@@ -77,6 +85,7 @@
                 return {
                     editing: false,
                     c: {},
+                    nbuploaded:0,
                     width: 0,
                     height: 452,
                     pct: 100,
@@ -100,6 +109,37 @@
                 }
             },
             methods: {
+                nbup() {
+                    var nb = 0;
+                    this.fichiers.forEach(f => {
+                        if (f.uploaded) nb++;
+                    });
+                    this.nbuploaded = nb;
+                    return nb;
+                },
+                uploading() {
+                    var u = this.fichiers.length>0 && this.nbup()<this.fichiers.length;
+                    
+                    if (!u && this.$refs.document)
+                        this.$refs.document.value = null;
+                    return u;
+                },
+                upFirst(i) {
+                    const b = this.e.Images.splice(i, 1)[0];
+                    this.e.Images.splice(0, 0, b);
+                },
+                up(i) {
+                    const b = this.e.Images.splice(i, 1)[0];
+                    this.e.Images.splice(i - 1, 0, b);
+                },
+                down(i) {
+                    const b = this.e.Images.splice(i, 1)[0];
+                    this.e.Images.splice(i + 1, 0, b);
+                },
+                downLast(i) {
+                    const b = this.e.Images.splice(i, 1)[0];
+                    this.e.Images.push(b);
+                },
                 slickStyles() {
                     return "<style>." + this.evenBox + "{position:relative;width:100%;min-height:"+this.height+"px;background-size:cover;background-position:center}." + this.evenBox + " img{position:absolute;z-index:2;display:block;top:0;left:0;width:100%}." + this.evenBox + " h3{position:absolute;z-index:3;display:block;top:0;left:15px;width:auto;text-align:left;color:#fff;background-color:#000;padding:15px 15px 15px 10px;max-width:calc(100% - 30px);border-radius:4px}." + this.sliderName + " .slick-next{right:5px;z-index:9}." + this.sliderName + " .slick-prev{left:5px;z-index:9}." + this.sliderName + " .slick-dots{position:absolute;bottom:3px;width:60%;left:50%;transform:translateX(-50%);border-radius:3px}." + this.sliderName + " .slick-dots li button:before{color:#fff;opacity:1;border-radius:50%;border:1px solid #00246c;background-color:#fff}." + this.sliderName + " .slick-dots li.slick-active button:before{opacity:1;color:#00246c;background-color:#00246c}." + this.sliderName + " .slick-prev:before,.slick-next:before{font-size:40px}." + this.sliderName + " .slick-prev,.slick-next{width:40px;height:40px}." + this.sliderName + " .slick-dots li button:before{font-family:'slick';font-size:16px}." + this.sliderName + " .slick-dots li{margin:7px 5px 3px 5px}." + this.sliderName + " .slick-dots li button:before{width:10px;height:10px;content:' '}." + this.sliderName + "{margin:3px}</style>";
                 },
@@ -211,12 +251,17 @@
                     this.$refs.document.click();
                 },
                 onChangeDocumentUpload() {
+                    this.fichiers = [];
                     if (this.$refs.document.files.length == 0)
                         return;
-                    this.fichiers.push({
-                        file: this.$refs.document.files[0],
-                        uploaded: false
-                    });
+                    
+                    for (var i = 0; i < this.$refs.document.files.length;i++) {
+                        this.fichiers.push({
+                            file: this.$refs.document.files[i],
+                            uploaded: false
+                        });
+                    }
+                    
                     this.uploadMedia({
                         type: 'photo'
                     }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
@@ -227,30 +272,39 @@
                     const image = r.data;
                     image.Name = image.Filename;
                     this.e.Images.push(image);
-                    this.fichiers = [];
+
+                    this.fichiers.forEach(f => {
+                        if (f.file.name == image.Filename) {
+                            f.uploaded = true;                          
+                        };                     
+                    });
+
                 },
                 uploadMedia(meta, callbackok, callbackerror) {
-                    let fichier = this.fichiers[this.fichiers.length - 1];
-                    if (fichier.file.size > 28 * 1024 * 1024) {
-                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
-                        this.fichiers = [];
-                        return;
-                    }
-                    let formData = new FormData();
-                    formData.append('file', fichier.file);
-                    formData.append('allowPdf2Image', true);
-
-                    if (meta) {
-                        for (let p in meta) {
-                            formData.append(p, meta[p]);
+                    this.fichiers.forEach(fichier => {
+                        if (fichier.file.size > 28 * 1024 * 1024) {
+                            alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                            this.fichiers = [];
+                            return;
                         }
-                    }
-                    _yemon[this.moduleid].service.postFile('/setMedia',
-                        formData,
-                        (r) => callbackok(r),
-                        (r) => callbackerror(r)
-                    );
+                        let formData = new FormData();
+                        formData.append('file', fichier.file);
+                        formData.append('allowPdf2Image', true);
 
+                        if (meta) {
+                            for (let p in meta) {
+                                formData.append(p, meta[p]);
+                            }
+                        }
+                        _yemon[this.moduleid].service.postFile('/setMedia',
+                            formData,
+                            (r) => callbackok(r),
+                            (r) => callbackerror(r)
+                        );
+
+                    });
+                   /* let fichier = this.fichiers[this.fichiers.length - 1];*/
+                   
                 },
             },
             created() {

@@ -5,16 +5,24 @@
             <span class="bc-label">Titre :</span>
             <input type="text" v-model="e.Title" class="form-control" />
             <div>
-                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none" multiple>
                 <div v-if="e.Files" v-for="(i,index) in e.Files">
                     Nom affiché : <input type="text" v-model="i.Name" style="width:50%" />&nbsp;
                     <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID+'&noattach=true'" class="btn btn-link" target="_blank"><i class="fa fa-eye" aria-hidden="true"> Ouvrir</i></a>&nbsp;
                     <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-link" target="_blank"><i class="fa fa-download" aria-hidden="true"> Télécharger</i></a>&nbsp;
-                    <button type="button" v-on:click="deleteFile(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button> <br />
+                    <button type="button" v-on:click="deleteFile(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button>&nbsp;
+                    <button type="button" v-on:click="upFirst(index)" v-if="index>0" class="btn btn-sm btn-default" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
+                    <button type="button" v-on:click="up(index)" v-if="index>0" class="btn btn-sm btn-default" title="Monter"><i class="fa fa-angle-up"></i></button>
+                    <button type="button" v-on:click="down(index)" v-if="index<e.Files.length-1" class="btn btn-sm btn-default" title="Descendre"><i class="fa fa-angle-down"></i></button>
+                    <button type="button" v-on:click="downLast(index)" v-if="index<e.Files.length-1" class="btn btn-sm btn-default" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button> 
+                    <hr/>
                 </div>
-                <br /><br />
-                <button type="button" class="btn btn-primary" v-on:click="addDocument">Choisir un fichier</button><br />
-                <em class="stxt">Le fichier ne doit pas dépasser 28 Mo</em><br />
+                <div v-if="uploading()">
+                    <img src="/images/spinner.gif" /> Envoi en cours
+                </div>
+                <br />
+                <button type="button" v-if="!uploading()" class="btn btn-primary" v-on:click="addDocument">Choisir un fichier ou plusieurs fichier(s)</button><br />
+                <em class="stxt">Les fichiers ne doivent pas dépasser 28 Mo</em><br />
             </div>
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
@@ -44,11 +52,43 @@
                 return {
                     editing: false,
                     c: {},
+                    nbuploaded: 0,
                     fichiers: [],
                     e: {},
                 }
             },
-            methods: {              
+            methods: {   
+                nbup() {
+                    var nb = 0;
+                    this.fichiers.forEach(f => {
+                        if (f.uploaded) nb++;
+                    });
+                    this.nbuploaded = nb;
+                    return nb;
+                },
+                uploading() {
+                    var u = this.fichiers.length > 0 && this.nbup() < this.fichiers.length;
+
+                    if (!u && this.$refs.document)
+                        this.$refs.document.value = null;
+                    return u;
+                },
+                upFirst(i) {
+                    const b = this.e.Files.splice(i, 1)[0];
+                    this.e.Files.splice(0, 0, b);
+                },
+                up(i) {
+                    const b = this.e.Files.splice(i, 1)[0];
+                    this.e.Files.splice(i - 1, 0, b);
+                },
+                down(i) {
+                    const b = this.e.Files.splice(i, 1)[0];
+                    this.e.Files.splice(i + 1, 0, b);
+                },
+                downLast(i) {
+                    const b = this.e.Files.splice(i, 1)[0];
+                    this.e.Files.push(b);
+                },
                 edit() {
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
@@ -73,12 +113,17 @@
                     this.$refs.document.click();
                 },
                 onChangeDocumentUpload() {
+                    this.fichiers = [];
                     if (this.$refs.document.files.length == 0)
                         return;
-                    this.fichiers.push({
-                        file: this.$refs.document.files[0],
-                        uploaded: false
-                    });
+
+                    for (var i = 0; i < this.$refs.document.files.length; i++) {
+                        this.fichiers.push({
+                            file: this.$refs.document.files[i],
+                            uploaded: false
+                        });
+                    }
+
                     this.uploadMedia({
                         type: 'document'
                     }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
@@ -87,28 +132,33 @@
                     const file = r.data;
                     file.Name = file.Filename;
                     this.e.Files.push(file);
-                    this.fichiers = [];
-                    Array.from(this.$refs.document.files).splice(1, 1);
+
+                    this.fichiers.forEach(f => {
+                        if (f.file.name == file.Name) {
+                            f.uploaded = true;
+                        };
+                    });
                 },
                 uploadMedia(meta, callbackok, callbackerror) {
-                    let fichier = this.fichiers[this.fichiers.length - 1];
-                    if (fichier.file.size > 28 * 1024 * 1024) {
-                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
-                        this.fichiers = [];
-                        return;
-                    }
-                    let formData = new FormData();
-                    formData.append('file', fichier.file);
-                    if (meta) {
-                        for (let p in meta) {
-                            formData.append(p, meta[p]);
+                    this.fichiers.forEach(fichier => {
+                        if (fichier.file.size > 28 * 1024 * 1024) {
+                            alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                            this.fichiers = [];
+                            return;
                         }
-                    }
-                    _yemon[this.moduleid].service.postFile('/setMedia',
-                        formData,
-                        (r) => callbackok(r),
-                        (r) => callbackerror(r)
-                    );
+                        let formData = new FormData();
+                        formData.append('file', fichier.file);
+                        if (meta) {
+                            for (let p in meta) {
+                                formData.append(p, meta[p]);
+                            }
+                        }
+                        _yemon[this.moduleid].service.postFile('/setMedia',
+                            formData,
+                            (r) => callbackok(r),
+                            (r) => callbackerror(r)
+                        );
+                    });
 
                 },
             },
