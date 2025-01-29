@@ -18,6 +18,7 @@
     var mediaPath = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
     var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     var HOST = Yemon.dnn.Functions.GetHostUrl(HttpContext.Current.Request);
+    var userInfo = UserController.Instance.GetCurrentUserInfo();
 }
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css" />
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css" />
@@ -36,18 +37,18 @@
             }
             List<AIS.News>
     newslist = AIS.DataMapping.ListNews(club.cric, tags_included: "", onlyvisible: true, category: "Clubs", sort: "dt desc");
-    if (newslist.Count > 0)
-    {
-    newsID = newslist[0].id;
-    }
-    }
+            if (newslist.Count > 0)
+            {
+                newsID = newslist[0].id;
+            }
+        }
 
     }
 
     AIS.News news = null;
     try
     {
-    news = AIS.DataMapping.GetNews(newsID);
+        news = AIS.DataMapping.GetNews(newsID);
     }
     catch
     {
@@ -55,29 +56,57 @@
     }
     if (news == null)
     {
-    return;
+        return;
     }
 
+    bool visible = false;
+    if (news.visible == Const.YES)
+    {
+        visible = true;
+    }
+    if (news.visible == "D" && userInfo.UserID > 0)
+    {
+        visible = true;
+    }
+    if (news.visible == "M" && news.cric > 0 && userInfo.UserID > 0)
+    {
+        var member = DataMapping.GetMemberByUserID(userInfo.UserID);
+        if (member != null && member.cric == news.cric)
+        {
+            visible = true;
+        }
+    }
+    if (userInfo.IsAdmin || userInfo.IsSuperUser || userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+    {
+        visible = true;
+    }
+    if (!visible)
+    {
+        HttpContext.Current.Response.Redirect("/connexion?returnurl=" + HttpUtility.UrlEncode(Request.RawUrl), true);
+        return;
+    }
+
+
     List<Block>
-        blocks = new List<Block>
-            ();
-            try
-            {
-            string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
-            if (sblocks != "")
-            {
+blocks = new List<Block>
+    ();
+    try
+    {
+        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + newsID);
+        if (sblocks != "")
+        {
             blocks = (List<Block>
                 )Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>
                     ));
-                    }
+        }
 
-                    }
-                    catch
-                    {
+    }
+    catch
+    {
 
-                    }
+    }
 
-                    string page_title = (news.club_type == "rotary" ? news.club_type.ToUpper() + " CLUB " : "") + news.club_name;
+    string page_title = (news.club_type == "rotary" ? news.club_type.ToUpper() + " CLUB " : "") + news.club_name;
 
                     <h1>@news.title</h1>
                     <h3>@page_title</h3>
