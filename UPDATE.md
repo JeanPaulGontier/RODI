@@ -1,5 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - correction de fausse erreur affichée sur la page d'inscription à une réunion
+- modification du comportement des modules news detail club et district, maintenant ils n'affichent plus que les nouvelles visibles mais aussi celles pour les membres du club sinon il redirige vers le login
 ###### 17/01/2025
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro

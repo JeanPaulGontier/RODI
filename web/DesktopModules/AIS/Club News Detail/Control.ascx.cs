@@ -98,6 +98,30 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
         News news = DataMapping.GetNews(newsid);
         if (news != null)
         {
+            bool visible = false;
+            if(news.visible==Const.YES){
+                visible = true;
+            }
+            if(news.visible=="D" && UserInfo.UserID>0){
+                visible = true;
+            }
+            if (news.visible == "M" && news.cric > 0 && UserInfo.UserID>0)
+            {
+                var member = DataMapping.GetMemberByUserID(UserInfo.UserID);
+                if (member != null && member.cric == news.cric)
+                {
+                    visible = true;
+                }
+            }
+            if (UserInfo.IsAdmin || UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+            {
+                visible= true;
+            }
+            if(!visible){
+                Response.Redirect("/connexion?returnurl=" + HttpUtility.UrlEncode(Request.RawUrl),true);
+                return;
+            }
+
             LBL_Titre.Text = news.title;
 
         
