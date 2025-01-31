@@ -3,6 +3,7 @@
 - modification du comportement des modules news detail club et district, maintenant ils n'affichent plus que les nouvelles visibles mais aussi celles pour les membres du club sinon il redirige vers le login
 - modification dans la gestion des blocks listes images et fichiers, on peut maintenant envoyer plusieurs images et fichiers d'un coup en en sélectionnant plusieurs. On peut aussi changer l'ordre des fichiers et images. Cette modification est appliquée dans tous les modules qui utilisent le bloc content : nouvelles, mailing, etc.
 - ajout d'une fonctionnalité de correction d'orientation automatique dans l'ajout de photo sur le blockcontent, exemple : photo prise a l'iphone qui pouvaient être à l'envers ou inclinée
+- ajout d'une sécurité lors de la synchro des données RI qui empeche l'effacement des membres si le RI est en erreur
 ###### 17/01/2025
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro

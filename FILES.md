@@ -10,6 +10,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockFileCollection.
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
 images\spinner.gif
+App_Code\AIS\schedulers\RotaryScheduler.cs
 
 ```
 ##### 17/12/2024
