@@ -224,6 +224,11 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
                         }
                         else
                         {
+                            if(ui.IsDeleted)
+                            {
+                                UserController.RestoreUser(ref ui);
+                                TXT_Result.Text += "<br/>Restauration user DNN existe : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                            }
                             if (DataMapping.UpdateMemberDNNUserID(membre.id, ui.UserID))
                             { }    //TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name;
                             else

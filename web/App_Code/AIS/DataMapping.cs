@@ -8731,6 +8731,11 @@ namespace AIS
                             }
                             else
                             {
+                                if (ui.IsDeleted)
+                                {
+                                    UserController.RestoreUser(ref ui);
+                                    result += "<br/>Restauration user DNN : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                                }
                                 if (DataMapping.UpdateMemberDNNUserID(membre.id, ui.UserID))
                                 { }    //TXT_Result.Text += "<br/>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name;
                                 else
@@ -8753,8 +8758,14 @@ namespace AIS
                         }
                         else
                         {
+                            if (ui.IsDeleted)
+                            {
+                                UserController.RestoreUser(ref ui);
+                                result += "<br/>Restauration user DNN : " + membre.surname + " " + membre.name + " (" + membre.email + ")";
+                            }
                             if (DataMapping.UpdateMemberDNNUserID(membre.id, ui.UserID))
-                                result += "<p>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name+"</p>";
+                            { }
+                                //result += "<p>L'utilisateur DNN existe déjà donc mise à jour : " + membre.surname + " " + membre.name+"</p>";
                             else
                                 result += "<p style='color:red'>L'utilisateur DNN existe déjà mais n'a pas pu être mis à jour : " + membre.surname + " " + membre.name+"</p>";
 
