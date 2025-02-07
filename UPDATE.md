@@ -5,6 +5,7 @@
 - ajout d'une fonctionnalité de correction d'orientation automatique dans l'ajout de photo sur le blockcontent, exemple : photo prise a l'iphone qui pouvaient être à l'envers ou inclinée
 - ajout d'une sécurité lors de la synchro des données RI qui empeche l'effacement des membres si le RI est en erreur
 - correction d'un pb dans le module Admin maj aar, quand le login d'un membre était dans la corbeille, il n'était pas restauré donc l'utilisateur ne pouvait pas se logger à l'espace membre
+- correction bug synchro date de naissance RI > RODI dans certains cas la date de naissance ne se synchronisait pas
 ###### 17/01/2025
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro

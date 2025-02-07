@@ -72,6 +72,7 @@ using System.Web;
 using System.Data.SqlClient;
 using DotNetNuke.Entities.Portals;
 using System.IO;
+using System.Globalization;
 
 
 /// <summary>
@@ -1078,7 +1079,9 @@ public class RotaryHelper
                             m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
                         }
                         DateTime birthdate = DateTime.MinValue;
-                        DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                        var culture = CultureInfo.CreateSpecificCulture("en-US");
+                        var styles = DateTimeStyles.None;
+                        DateTime.TryParse("" + profile.DateOfBirth, culture, styles, out birthdate);
                         if(birthdate != DateTime.MinValue)
                             m.birth_year = birthdate;
                         foreach (var role in profile.Role)
@@ -1249,7 +1252,9 @@ public class RotaryHelper
                         }                  
                     }
                     DateTime birthdate= DateTime.MinValue;
-                    DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                    var culture = CultureInfo.CreateSpecificCulture("en-US");
+                    var styles = DateTimeStyles.None;
+                    DateTime.TryParse("" + profile.DateOfBirth,culture,styles, out birthdate);
                     if(birthdate!=DateTime.MinValue && m.birth_year != birthdate)
                     {
                         changements += "birthdate(" + m.birth_year + ">" + birthdate.ToShortDateString() + "),";
