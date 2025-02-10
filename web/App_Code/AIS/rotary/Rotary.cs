@@ -552,7 +552,7 @@ public class Rotary
                 {
                     foreach (var role in Role)
                     {
-                        if (role.MemberType=="Honorary Member")
+                        if (role.MemberType.Contains("Honorary Member"))
                         {
                             return true;
                         }

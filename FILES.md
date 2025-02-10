@@ -14,6 +14,7 @@ App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 App_Code\AIS\rotary\RotaryHelper.cs
+App_Code\AIS\rotary\Rotary.cs
 ```
 ##### 17/12/2024
 ```txt
