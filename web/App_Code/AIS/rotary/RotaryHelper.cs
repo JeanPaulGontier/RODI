@@ -495,16 +495,19 @@ public class RotaryHelper
 
     public static string SynchroClubs()
     {
+
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_club");
+
         string result = "";
         string res = "";
         var clubs = Get_Clubs(out res);
 
+
         if (clubs == null)
-            return "<p style='color:red'>Erreur récupération des clubs</p>";
+            return "<p style='color:red'>Erreur récupération des clubs RI annulation synchro Clubs</p>";
 
-        Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_club");
-
-       // var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+        
+        //var dbclubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         foreach (var club in clubs)
         {            
             var row = new Dictionary<string, object>();
@@ -525,7 +528,8 @@ public class RotaryHelper
             var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club", "id", row);
             if (r.Key != "error")
             {
-                result += "<p>" + club.ClubId + " : " + club.ClubName + "</p>";
+                if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                    result += "<p>" + club.ClubId + " : " + club.ClubName + "</p>";
 
                 SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
                 sql.Parameters.AddWithValue("cric", club.ClubId);
@@ -552,9 +556,16 @@ public class RotaryHelper
 
     public static string SynchroMembers()
     {
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_member");
+
         string result = "";
         var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
-        //var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
+        if(clubs.Count==0){
+            return "<div style='color:red'>Aucun club issu du RI annulation synchro Members</div>" + Environment.NewLine;
+        }
+        // var dbmembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
+       
+
         foreach (var club in clubs)
         {
             string res = "";
@@ -585,7 +596,8 @@ public class RotaryHelper
                     var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_member", "id", row);
                     if (r.Key != "error")
                     {
-                        result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+                        if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                            result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
                     }
                     else
                         result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
@@ -599,13 +611,14 @@ public class RotaryHelper
 
     public static string SynchroOfficers()
     {
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_officer");
+
         string result = "";
         var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
         if (clubs == null)
-            return "<p style='color:red'>Erreur récupération des clubs</p>";
+            return "<p style='color:red'>Aucun club issu du RI annulation synchro Officers</p>";
 
- //       var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
-
+        // var dbofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
         foreach (var club in clubs)
         {
             Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_ri_officer where clubid=" + club.ClubId);
@@ -637,7 +650,10 @@ public class RotaryHelper
 
                     var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_officer", "id", row);
                     if (r.Key != "error")
-                        result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
+                    {                        
+                        if(Const.ROTARY_SYNCHRO_FULL_LOG)
+                            result += "<p>" + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";                      
+                    }
                     else
                         result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + " : " + officer.OfficerRole + "</p>";
                 }
@@ -646,12 +662,16 @@ public class RotaryHelper
             }
             
 
-        }
+        }        
         return result;
     }
 
     public static string UpdateClubsOfficers()
     {
+        var existingRiofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from ais_ri_officer"));
+        if (existingRiofficers == null || existingRiofficers.Count==0)
+            return "<p style='color:red'>Aucun officer club issu du RI annulation synchro Officers</p>";
+
         Dictionary<string, string> fl = new Dictionary<string, string>();
         fl.Add("Rotaract Advisor", "Administration");
         fl.Add("Club Public Image Chair", "Délégué Communication");
@@ -690,7 +710,9 @@ public class RotaryHelper
         string result = "";
         foreach (var club in clubs)
         {
-            result += "<p><strong>"+club.name+ " " + club.cric +"</strong></p>";
+            if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                result += "<p><strong>"+club.name+ " " + club.cric +"</strong></p>";
+
             var officers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from " + Const.TABLE_PREFIX + "ri_officer where clubid=" + club.cric));
             foreach(var officer in officers)
             {
@@ -728,14 +750,16 @@ public class RotaryHelper
 
                             if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql)>0)
                             {
-                                result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                                if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                                    result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                             }
                             else
                             {
                                 result += "<p style='color:red'>ERREUR maj bdd : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                             }
                         }
-                        else{
+                        else if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                        {
                             result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                         }
 
@@ -752,6 +776,20 @@ public class RotaryHelper
     {
         string result = "";
         string errors = "";
+
+        var existingRiClubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+        if (existingRiClubs == null || existingRiClubs.Count == 0)
+        {
+            return "<div style='color:red'>Aucun club issu du RI annulation Update Clubs Members (UCM)</div>" + Environment.NewLine;
+        }
+
+        var existingRiMembers = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from ais_ri_member"));
+        if(existingRiMembers==null || existingRiMembers.Count == 0)
+        {
+            return "<div style='color:red'>Aucun membre issu du RI annulation Update Clubs Members (UCM)</div>" + Environment.NewLine;
+        }
+
+        
         var allclubs = DataMapping.ListClubs();
 
         Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from " + Const.TABLE_PREFIX + "members where honorary_member='O'");
@@ -1457,7 +1495,8 @@ public class RotaryHelper
 
         foreach (var logclub in listclublog)
         {
-            result += "<div><strong>" + logclub.Name + " " + logclub.Cric + "</strong></div>";
+            if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                result += "<div><strong>" + logclub.Name + " " + logclub.Cric + "</strong></div>";
             if (logclub.Errors.Length > 0)
             {
                 string[] errs = logclub.Errors.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
@@ -1473,7 +1512,8 @@ public class RotaryHelper
        
                 foreach (var c in cc)
                 {
-                    result += "<p>" + c + "</p>";
+                    if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                        result += "<p>" + c + "</p>";
                 }
   
             }
@@ -1615,14 +1655,15 @@ public class RotaryHelper
                     if (changements.Length > 0)
                     {
                         changements = changements.Substring(0, changements.Length - 1);
-                        result += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "[" + changements + "]</p>";
+                        if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                            result += "<p>Maj membre " + m.nim + " " + m.name + " " + m.surname + "[" + changements + "]</p>";
 
                         if (club.rotary_agreement_type == "auto")
                         {
 
                             if (!DataMapping.UpdateMember(m))
                             {
-                                result += "<p style='color:red'>Erreur maj</p>";
+                                result += "<p style='color:red'>Erreur maj "+m.nim+"</p>";
                             }
 
                         }

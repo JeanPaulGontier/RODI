@@ -37,7 +37,7 @@ public class RotaryScheduler : SchedulerClient
             // do some work
             if(taskname.Contains("clubs"))
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Club Synchro</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Rotary Club Synchro</div>");
                 string result = RotaryHelper.SynchroClubs();
                 if(Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
@@ -48,22 +48,9 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
-            if (taskname.Contains("officers") && !error)
-            {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Officers Synchro</div>");
-                string result = RotaryHelper.SynchroOfficers();
-                if (Const.ROTARY_SYNCHRO_LOG)
-                    sb.Append(result);
-
-                error = error || sb.ToString().ToLower().Contains("erreur");
-
-                this.ScheduleHistoryItem.AddLogNote(result);
-                this.ScheduleHistoryItem.Succeeded = true;
-            }
-
             if (taskname.Contains("members") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Rotary Members Synchro</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Rotary Members Synchro</div>");
                 string result = RotaryHelper.SynchroMembers();
                 if (Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
@@ -74,10 +61,10 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
-            if (taskname.Contains("uco") && !error)
+            if (taskname.Contains("officers") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Officers</div>");
-                string result = RotaryHelper.UpdateClubsOfficers();
+                this.ScheduleHistoryItem.AddLogNote("<div>Rotary Officers Synchro</div>");
+                string result = RotaryHelper.SynchroOfficers();
                 if (Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
 
@@ -89,7 +76,7 @@ public class RotaryScheduler : SchedulerClient
 
             if (taskname.Contains("ucm") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Club Members</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Update Club Members</div>");
                 string result = RotaryHelper.UpdateClubsMembers();
                 if (Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
@@ -100,9 +87,24 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.Succeeded = true;
             }
 
+            if (taskname.Contains("uco") && !error)
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Update Club Officers</div>");
+                string result = RotaryHelper.UpdateClubsOfficers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
+                error = error || sb.ToString().ToLower().Contains("erreur");
+
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+
+            
+
             if (taskname.Contains("ump") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Update Members Profiles</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Update Members Profiles</div>");
                 string result = RotaryHelper.UpdateMembersProfiles();
                 if (Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
@@ -115,7 +117,7 @@ public class RotaryScheduler : SchedulerClient
 
             if (taskname.Contains("couu") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Création ou MAJ Users</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Création ou MAJ Users</div>");
                 string result = DataMapping.CreateOrUpdateUsers();
                 if (Const.ROTARY_SYNCHRO_LOG)
                     sb.Append(result);
@@ -128,10 +130,11 @@ public class RotaryScheduler : SchedulerClient
 
             if (taskname.Contains("mac") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing Mise à jour affectations clubs</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Mise à jour affectations clubs</div>");
                 string result = DataMapping.UpdateClubAffectations();
                 if (Const.ROTARY_SYNCHRO_LOG)
-                    sb.Append(result);
+                    if (Const.ROTARY_SYNCHRO_FULL_LOG || result.Contains("erreur"))
+                        sb.Append(result);
 
                 error = error || sb.ToString().ToLower().Contains("erreur");
 
@@ -140,10 +143,14 @@ public class RotaryScheduler : SchedulerClient
             }
             if(taskname.Contains("puu") && !error)
             {
-                this.ScheduleHistoryItem.AddLogNote("<div>Doing suppression login inutilisés</div>");
+                this.ScheduleHistoryItem.AddLogNote("<div>Suppression login inutilisés</div>");
                 string result = DataMapping.DeleteUnusedLogins();
                 if (Const.ROTARY_SYNCHRO_LOG)
-                    sb.Append(result);
+                {
+                    if(Const.ROTARY_SYNCHRO_FULL_LOG || result.Contains("erreur"))
+                        sb.Append(result);                  
+
+                }
 
                 error = error || sb.ToString().ToLower().Contains("erreur");
 

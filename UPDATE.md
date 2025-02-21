@@ -6,6 +6,15 @@
 - ajout d'une sécurité lors de la synchro des données RI qui empeche l'effacement des membres si le RI est en erreur
 - correction d'un pb dans le module Admin maj aar, quand le login d'un membre était dans la corbeille, il n'était pas restauré donc l'utilisateur ne pouvait pas se logger à l'espace membre
 - correction bug synchro date de naissance RI > RODI dans certains cas la date de naissance ne se synchronisait pas
+- correction bug synchro quand un membre était dans un rotaract et dans un rotary club, maintenant le club prioritaire est bien le rotary club, il faut mettre le membre en membre d'honneur dans le rotaract pour qu'il y apparaisse
+- simplification des logs de la synchro RI, on affiche seulement les erreurs au lieu d'afficher tout ce qui s'est bien passé
+
+Nouveau paramètre global :
+<add key="RotarySynchroLog" value="true" /> active les logs de synchro
+<add key="RotarySynchroLogEmail" value=".@." /> email de la personne qui surveille les erreurs de synchro necessite que les logs soient activés
+
+<add key="RotarySynchroFullLog" value="true"/>  active le détail complet des logs de synchro
+
 ###### 17/01/2025
 - correction d'un pb qui mettait fin de la synchro quand un club n'existe plus dans myrotary
 - correction d'un pb de doublons de membres d'honneurs pendant la synchro

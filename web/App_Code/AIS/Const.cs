@@ -92,8 +92,9 @@ namespace AIS
         public static string MAILINGS_DEBUG_DEST = "" + System.Configuration.ConfigurationManager.AppSettings["MailingsDebugDest"];
 
         public static bool ROTARY_SYNCHRO_ALLOW_UPDATE = ("" + System.Configuration.ConfigurationManager.AppSettings["RotarySynchroAllowUpdate"]).Equals("true");
-        public static bool ROTARY_SYNCHRO_LOG = true;
-        public static string ROTARY_SYNCHRO_LOG_EMAIL = "polo@pololand.com";
+        public static bool ROTARY_SYNCHRO_LOG = ("" + System.Configuration.ConfigurationManager.AppSettings["RotarySynchroLog"]).Equals("true");
+        public static string ROTARY_SYNCHRO_LOG_EMAIL = "" + System.Configuration.ConfigurationManager.AppSettings["RotarySynchroLogEmail"];
+        public static bool ROTARY_SYNCHRO_FULL_LOG = ("" + System.Configuration.ConfigurationManager.AppSettings["RotarySynchroFullLog"]).Equals("true");
 
         public static bool CLUB_SATELLITE_APART = (""+ System.Configuration.ConfigurationManager.AppSettings["ClubSatelliteApart"]).Equals("true");
         public static int[,] CLUB_SATELLITE_PARENT_CHILD
