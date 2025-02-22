@@ -1,4 +1,6 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+
+###### 22/02/2025
 - correction de fausse erreur affichée sur la page d'inscription à une réunion
 - modification du comportement des modules news detail club et district, maintenant ils n'affichent plus que les nouvelles visibles mais aussi celles pour les membres du club sinon il redirige vers le login
 - modification dans la gestion des blocks listes images et fichiers, on peut maintenant envoyer plusieurs images et fichiers d'un coup en en sélectionnant plusieurs. On peut aussi changer l'ordre des fichiers et images. Cette modification est appliquée dans tous les modules qui utilisent le bloc content : nouvelles, mailing, etc.
