@@ -2390,3 +2390,13 @@ gold: #febd11
         vertical-align: middle;
         width: 100%;
     }
+
+
+
+input:required:invalid,
+input:focus:invalid,
+select:required:invalid,
+select:focus:invalid {
+    border-left-color: lightpink;
+    border-left-width: thick;
+}

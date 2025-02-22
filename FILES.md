@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+##### 22/02/2025
+```txt
 App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\AIS\News Detail\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
@@ -16,9 +19,14 @@ DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
 App_Code\AIS\rotary\RotaryHelper.cs
 App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\Const.cs
+Portals\_default\Skins\Rodi2017\skin.css
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Comptes-Membres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Factures-Club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Parametres.cshtml
+
 
 ```
-##### 17/12/2024
+##### 17/01/2025
 ```txt
 App_Code\AIS\rotary\RotaryHelper.cs
 App_Code\AIS\schedulers\RotaryScheduler.cs

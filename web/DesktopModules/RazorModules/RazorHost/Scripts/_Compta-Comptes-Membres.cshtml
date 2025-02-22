@@ -1,0 +1,46 @@
+@using AIS;
+@{
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
+    PageData["HTML"] = Html;
+    int moduleID = Dnn.Module.ModuleID;
+    string appID = "app" + moduleID;
+    if (Functions.CurrentCric == 0)
+    {
+        <div class="alert alert-warning">Choisir un club</div>
+        return;
+    }
+    var context = Guid.NewGuid().ToString();
+    HttpContext.Current.Application[context] = Functions.CurrentCric;
+}
+@RenderPage("Compta/Init.cshtml")
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<div class="admin" id='@appID' v-cloak>
+    <router-view :moduleid="moduleid" :context="context"></router-view>
+</div>
+@RenderPage("Compta/ComptesMembres.cshtml")
+@RenderPage("Compta/CompteMembre.cshtml")
+@RenderPage("Compta/FactureView.cshtml")
+@RenderPage("Compta/ElementEdit.cshtml")
+<script>
+$(document).ready(function () {
+    if (typeof _yemon =='undefined')
+        _yemon = [];
+    _yemon[@moduleID] = new Yemon(@moduleID, '/Desktopmodules/AIS/API/Compta');
+
+    const routes = [
+        { path: '/', component: ComptaComptesMembres, props: true },
+        { path: '/view/:nim', component: ComptaCompteMembre, props: true },
+        { path: '/facture/:guid/returnurl/:returnurl', component: ComptaFactureView, props: true },
+        { path: '/element/:guid/type/:type/nim/:nim/returnurl/:returnurl', component: ComptaElementEdit, props: true },
+    ];
+    InitApp('@appID',@moduleID,'@context',routes);
+});
+</script>
+
+
