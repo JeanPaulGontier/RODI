@@ -63,11 +63,11 @@
                             <th>Nb Participants</th>
                             <!--<th></th>-->
                         </tr>
-                        <tr class="trLink" @click="editMeeting(m)" v-for="(m, index) in selectedMeetings()" :key="m.guid">
-                            <td>{{m.active}}</td>
-                            <td v-if="m.type=='unitary'">Unique</td>
-                            <td v-if="m.type=='periodic'">Périodique</td>
-                            <td v-if="m.type=='unitary'">
+                        <tr class="trLink"  v-for="(m, index) in selectedMeetings()" :key="m.guid">
+                            <td @click="editMeeting(m)">{{m.active}}</td>
+                            <td v-if="m.type=='unitary'" @click="editMeeting(m)">Unique</td>
+                            <td v-if="m.type=='periodic'" @click="editMeeting(m)">Périodique</td>
+                            <td v-if="m.type=='unitary'" @click="editMeeting(m)">
                                 <div v-if="date(m.dtstart)!=date(m.dtend)">
                                     du {{date(m.dtstart)}} - {{heure(m.dtstart)}} <br />
                                     au {{date(m.dtend)}} - {{heure(m.dtend)}}
@@ -76,17 +76,17 @@
                                     {{date(m.dtstart)}} de {{heure(m.dtstart)}} à {{heure(m.dtend)}} {{duree(m.dtstart,m.dtend)}}
                                 </div>
                             </td>
-                            <td v-if="m.type=='periodic'">
+                            <td v-if="m.type=='periodic'" @click="editMeeting(m)">
                                 <div>
                                     <span v-if="m.periods.length>0">{{m.periods.length}} p&eacute;riode<span v-if="m.periods.length>1">s</span></span>
                                     <span v-if="m.periods.length==0">aucune p&eacute;riode</span>
                                 </div>
                             </td>
 
-                            <td><span>{{m.name}}</span></td>
+                            <td @click="editMeeting(m)"><span>{{m.name}}</span></td>
                             <td v-if="m.type=='unitary'"><a :href="'/m-'+m.link" target="_blank">{{m.link}}</a></td>
                             <td v-if="m.type!='unitary'"></td>
-                            <td>{{m.nbusers}}</td>
+                            <td @click="editMeeting(m)">{{m.nbusers}}</td>
 
                             <!--<td>-->
                             <!-- ajouter un v-if pour le current user-->
