@@ -1,4 +1,8 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout de fonctionnalités sur le module réunions clubs
+	- on peut maintenant filtrer les réunions sur le critère 'prochaines' ou 'passées'
+	- les paramètres de la liste de réunions (type et prochaines/passées) est conservé quand on rentre dans une réunion et qu'on revient sur la liste 
+	- les membres du clubs ne voient maintenant que les réunions futures dont l'inscription est active
 
 ###### 22/02/2025
 - correction de fausse erreur affichée sur la page d'inscription à une réunion

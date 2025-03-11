@@ -1,4 +1,19 @@
-﻿<script type="text/x-template" id="meetings-template">
+﻿<style>
+    .nav-tabs {
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+    }
+
+    @media only screen and (max-width: 480px) {
+        .nav-tabs {
+            display: block;
+        }
+    }
+</style>
+
+<script type="text/x-template" id="meetings-template">
+
     <div id="meetingsList">
         <div class="row">
             <div class="col-sm-3">
@@ -21,7 +36,23 @@
 
             <div v-if="this.meetings.length>0">
                 <h1>Liste des réunions en cours</h1>
-                <table class="table table-striped table-hover">
+                <div v-if="categorie=='unitary'">
+                    <ul class="nav nav-tabs">
+                        <li :class="{ 'active': prochaines }">
+                            <a v-on:click="prochaines=true">Prochaines</a>
+                        </li>
+                        <li :class="{ 'active': !prochaines }">
+                            <a v-on:click="prochaines=false">Passées</a>
+                        </li>
+                    </ul>
+                </div>
+                <div v-if="selectedMeetings()==0 && categorie=='unitary'" class="text-center">
+                    <div class="pe-spacer size20"></div>
+                    <span v-if="futures">Aucune prochaine réunion pour le moment...</span>
+                    <span v-else>Aucune réunion passée pour le moment...</span>
+                    <div class="pe-spacer size20"></div>
+                </div>
+                <table class="table table-striped table-hover" v-else>
                     <tbody>
                         <tr>
                             <th>Active</th>
@@ -32,7 +63,7 @@
                             <th>Nb Participants</th>
                             <!--<th></th>-->
                         </tr>
-                        <tr class="trLink" @click="editMeeting(m)" v-for="(m, index) in meetings" :key="m.guid">
+                        <tr class="trLink" @click="editMeeting(m)" v-for="(m, index) in selectedMeetings()" :key="m.guid">
                             <td>{{m.active}}</td>
                             <td v-if="m.type=='unitary'">Unique</td>
                             <td v-if="m.type=='periodic'">Périodique</td>
@@ -60,9 +91,9 @@
                             <!--<td>-->
                             <!-- ajouter un v-if pour le current user-->
                             <!--<div class="edit" style="z-index:150;" @click.stop="editMeeting(m)">
-                                <i class="fas fa-edit"></i>editer
-                            </div>
-                        </td>-->
+                                    <i class="fas fa-edit"></i>editer
+                                </div>
+                            </td>-->
                         </tr>
                     </tbody>
                 </table>
@@ -84,23 +115,40 @@
         data: function () {
             return {
                 meetings: [],
-                categorie:'unitary'
-                
+                categorie: 'unitary',
+                prochaines: true
+
             }
         },
         filters: {
-            
+
         },
         components: {
-           
+
         },
         methods: {
+            selectedMeetings() {
+                this.saveState();
+                if (this.categorie == "periodic")
+                    return this.meetings;
+                const now = new Date();
+                if (this.prochaines) {
+                    return this.meetings.filter(m => m.dtstart >= now).sort((a, b) => {
+                        return a.dtstart - b.dtstart;
+                    });
+                }
+                else {
+                    return this.meetings.filter(m => m.dtstart < now).sort((a, b) => {
+                        return b.dtstart - a.dtstart;
+                    });
+                }
+            },
             date: function (d) {
                 if (!d)
                     return '';
                 let dd = new Date(d);
                 var days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-                return days[dd.getDay()]+ " "+ dd.toLocaleDateString();
+                return days[dd.getDay()] + " " + dd.toLocaleDateString();
             },
             heure: function (d) {
                 if (!d)
@@ -115,7 +163,7 @@
                 return '- ' + dd + ' min';
             },
             getMeetings() {
-               // this.meetings = [];
+                // this.meetings = [];
 
                 _yemon[this.moduleid].service.getData('/GetMeetings',
                     {
@@ -150,14 +198,28 @@
 
             },
             editMeeting(m) {
-                this.$router.push("/edit/"+m.guid);
+                this.$router.push("/edit/" + m.guid);
+            },
+            saveState() {
+                localStorage.setItem("meetings.state",
+                    JSON.stringify({
+                        categorie: this.categorie,
+                        prochaines: this.prochaines
+                    }));
             }
 
-           
+
 
         },
         mounted() {
-           
+
+            var saved = localStorage.getItem("meetings.state");
+            if (saved) {
+                saved = JSON.parse(saved);
+                this.categorie = saved.categorie;
+                this.prochaines = saved.prochaines;
+            }
+
             if (!this.editable) {
                 this.$router.push("/");
                 return;
