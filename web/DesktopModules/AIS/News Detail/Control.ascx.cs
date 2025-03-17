@@ -75,6 +75,7 @@ using AIS;
 using System.Text;
 using DotNetNuke.Entities.Tabs;
 using Aspose.Words;
+using System.Web.UI.HtmlControls;
 
 public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
 {
@@ -423,6 +424,30 @@ public partial class DesktopModules_AIS_News_Detail_Control : PortalModuleBase
                 {
                     HLK_Club.Visible = false;
                 }
-            }
+
+
+
+
+            HtmlMeta OpenGraphBrand = new HtmlMeta();
+            OpenGraphBrand.Attributes.Add("property", "og:type");
+            OpenGraphBrand.Content = "article";
+            Page.Header.Controls.Add(OpenGraphBrand);
+            OpenGraphBrand = new HtmlMeta();
+            OpenGraphBrand.Attributes.Add("property", "og:url");
+            OpenGraphBrand.Content = HOST + Request.RawUrl;
+            Page.Header.Controls.Add(OpenGraphBrand);
+            OpenGraphBrand = new HtmlMeta();
+            OpenGraphBrand.Attributes.Add("property", "og:title");
+            OpenGraphBrand.Content = page_title;
+            Page.Header.Controls.Add(OpenGraphBrand);
+            OpenGraphBrand = new HtmlMeta();
+            OpenGraphBrand.Attributes.Add("property", "og:image");
+            OpenGraphBrand.Content = HOST + news.GetPhoto();
+            Page.Header.Controls.Add(OpenGraphBrand);
+            OpenGraphBrand = new HtmlMeta();
+            OpenGraphBrand.Attributes.Add("property", "og:description");
+            OpenGraphBrand.Content = HOST + Request.RawUrl;
+            Page.Header.Controls.Add(OpenGraphBrand);
+        }
         }
     }

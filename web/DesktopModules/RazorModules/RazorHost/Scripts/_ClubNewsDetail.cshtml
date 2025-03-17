@@ -521,46 +521,69 @@ blocks = new List<Block>
 
 
                                     break;*@
-                                }
-                                }
-                                }
+            }
+        }
+    }
 
 
-                                // define page title
-                                var pageObj = Context.CurrentHandler as Page;
-                                page_title += " > " + news.title;
-                                pageObj.Title = page_title;
+    // define page title
+    var pageObj = Context.CurrentHandler as Page;
+    page_title += " > " + news.title;
+    pageObj.Title = page_title;
 
-                                HtmlMeta metaTag = new HtmlMeta();
-                                metaTag.Attributes.Add("property", "og:title");
-                                metaTag.Content = page_title;
-                                pageObj.Header.Controls.Add(metaTag);
+    HtmlMeta metaTag = new HtmlMeta();
+    metaTag.Attributes.Add("property", "og:title");
+    metaTag.Content = page_title;
+    pageObj.Header.Controls.Add(metaTag);
 
-                                metaTag = new HtmlMeta();
-                                metaTag.Attributes.Add("property", "og:url");
-                                metaTag.Content = HOST + Request.RawUrl;
-                                pageObj.Header.Controls.Add(metaTag);
-
-
-                                metaTag = new HtmlMeta();
-                                metaTag.Attributes.Add("property", "og:image");
-                                metaTag.Content = HOST + news.GetPhoto();
-                                pageObj.Header.Controls.Add(metaTag);
+    metaTag = new HtmlMeta();
+    metaTag.Attributes.Add("property", "og:url");
+    metaTag.Content = HOST + Request.RawUrl;
+    pageObj.Header.Controls.Add(metaTag);
 
 
-                                metaTag = new HtmlMeta();
-                                metaTag.Name = "description";
-                                metaTag.Attributes.Add("property", "og:description");
-                                metaTag.Content = Context.Server.HtmlEncode(page_title);
-                                pageObj.Header.Controls.Add(metaTag);
+    metaTag = new HtmlMeta();
+    metaTag.Attributes.Add("property", "og:image");
+    metaTag.Content = HOST + news.GetPhoto();
+    pageObj.Header.Controls.Add(metaTag);
 
 
-                                string schemacontext = "context";
-                                string schemaid = "id";
-                                string schematype = "type";
+    metaTag = new HtmlMeta();
+    metaTag.Name = "description";
+    metaTag.Attributes.Add("property", "og:description");
+    metaTag.Content = Context.Server.HtmlEncode(page_title);
+    pageObj.Header.Controls.Add(metaTag);
 
 
-                                <script type="application/ld+json">
+    string schemacontext = "context";
+    string schemaid = "id";
+    string schematype = "type";
+
+
+
+
+    HtmlMeta OpenGraphBrand = new HtmlMeta();
+    OpenGraphBrand.Attributes.Add("property", "og:type");
+    OpenGraphBrand.Content = "article";
+    pageObj.Header.Controls.Add(OpenGraphBrand);
+    OpenGraphBrand = new HtmlMeta();
+    OpenGraphBrand.Attributes.Add("property", "og:url");
+    OpenGraphBrand.Content = HOST + Request.RawUrl;
+    pageObj.Header.Controls.Add(OpenGraphBrand);
+    OpenGraphBrand = new HtmlMeta();
+    OpenGraphBrand.Attributes.Add("property", "og:title");
+    OpenGraphBrand.Content = page_title;
+    pageObj.Header.Controls.Add(OpenGraphBrand);
+    OpenGraphBrand = new HtmlMeta();
+    OpenGraphBrand.Attributes.Add("property", "og:image");
+    OpenGraphBrand.Content = HOST + news.GetPhoto();
+    pageObj.Header.Controls.Add(OpenGraphBrand);
+    OpenGraphBrand = new HtmlMeta();
+    OpenGraphBrand.Attributes.Add("property", "og:description");
+    OpenGraphBrand.Content = HOST + Request.RawUrl;
+    pageObj.Header.Controls.Add(OpenGraphBrand);
+
+    <script type="application/ld+json">
     {
       "@@context": "https://schema.org",
       "@@type": "NewsArticle",

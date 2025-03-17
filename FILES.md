@@ -2,6 +2,8 @@
 ```txt
 DesktopModules\AIS\OuKiKan\Control.ascx
 DesktopModules\AIS\OuKiKan\Meetings.html
+DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 ```
 ##### 22/02/2025
 ```txt
