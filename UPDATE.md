@@ -10,6 +10,11 @@
 	- Le nouveau thème graphique ajoute de le concept de rédacteur de contenu, car un membre n'ayant pas un profil technique peut maintenant saisir du contenu facilement avec une mise en forme préparamétrée par des Graphistes
 	- De nouveaux blocs sont maintenant disponible sur ce thème (Banner, Infos, NewsCards, Bulles, Cards, Boutons)
 	- Le blockcontent est maintenant évolutif
+- changement de comportement sur le mailing district
+	- maintenant c'est le nom et l'email de l'utilisateur connecté qui est rempli automatiquement, afin de permettre aux destinataires de faire un reply to sur l'expéditeur et non vers le district
+	- une signature automatique avec le logo du district est automatiquement ajoutée (elle peut être effacée ou remplacée) afin de permettre à l'utilisateur de ne pas oublier de mettre au moins une image et un lien pour le tracking de délivrabilité et suivi statistique des mailings
+
+
 
 ###### 22/02/2025
 - correction de fausse erreur affichée sur la page d'inscription à une réunion

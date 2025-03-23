@@ -19,6 +19,7 @@ App_Code\AIS\schedulers\RotaryMagScheduler.cs
 App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\webapi\news\NewsController.cs
 App_Code\AIS\webapi\news\NewsHelper.cs
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\rotary\Rotary.cs
 AIS\Download.aspx.cs
@@ -40,6 +41,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtm
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css.map
 Portals\_default\Skins\Rodi2025\*
+Portals\0\blockcontent\*
 
 ```
 ##### 22/02/2025

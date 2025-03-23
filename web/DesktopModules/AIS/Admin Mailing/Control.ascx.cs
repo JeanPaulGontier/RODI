@@ -841,8 +841,11 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         }
         else if (mode == "district")
         {
-            TXT_Exp_Email.Text = PortalSettings.Email;
-            TXT_Exp_Nom.Text = Const.DISTRICT_TITLE;
+            TXT_Exp_Email.Text = UserInfo.Email;
+            TXT_Exp_Nom.Text = UserInfo.DisplayName;
+
+            //TXT_Exp_Email.Text = PortalSettings.Email;
+            //TXT_Exp_Nom.Text = Const.DISTRICT_TITLE;
         }
        
         if(TXT_Exp_Nom.Text=="")
@@ -853,7 +856,10 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
         TXT_Titre.Text = "";
         TXT_Dt.Text = DateTime.Now.ToString("yyyy-MM-dd");
-        TXT_Editor.Text = "";
+        if (mode == "district")
+            TXT_Editor.Text = "<p>votre message ici...<p><hr/><p><img src='/portals/_default/skins/rodi2017/images/rotary-district"+Const.DISTRICT_ID+".png' style='width:200px'></p><p><em>"+Const.DISTRICT_TITLE+"<br/><a href='"+Const.DISTRICT_URL+"'>"+Const.DISTRICT_URL+"</a></em></p>";
+        else
+            TXT_Editor.Text = "";
         CHK_Bureau_Pres.Checked = false;
         CHK_Bureau_Secr.Checked = false;
         if (RB_Dept.Items.Count > 0)
