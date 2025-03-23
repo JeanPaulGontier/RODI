@@ -1,0 +1,10 @@
+.circle-list{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:$spacer;
+  margin:$spacer * 2;
+
+}
+
+
+ 

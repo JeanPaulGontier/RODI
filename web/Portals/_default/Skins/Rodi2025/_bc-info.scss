@@ -1,0 +1,119 @@
+.bc-info{
+  position: relative;
+  margin-bottom:$spacer * 3;
+
+  .color-bloc{
+    position: absolute;
+    right:0;
+    bottom:-$spacer * 2;
+    background-color: $info;
+    color: $default-bg;
+    padding:calc($spacer / 2);
+    width: 75%;
+    font-size: 110%;
+    text-transform: uppercase;
+
+    h4{font-size: 1.8em;}
+
+    .col-3 {
+      justify-items: center;
+      text-align: center;
+      margin: 1em 0;
+      gap:$spacer;
+
+      span{
+        display: block;
+        line-height: 1em;
+        font-size: 150%;
+      }
+    }
+  }
+}
+
+
+.bc-info-2{
+  padding:calc($spacer * 2) 0;
+  text-align: center;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacer;
+
+  > img{
+    display: none;
+  }
+}
+
+
+.bc-info-3{
+  background: url(/Portals/_default/Skins/Rodi2024/images/bg-lines.png) no-repeat center top;
+  padding: calc($spacer * 2) 0;
+  text-align: center;
+  background-size: cover;
+
+  .col-2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    a{
+      justify-self: center;
+    }
+  }
+}
+
+
+
+@media handheld, only screen and (min-width: 480px){
+  .bc-info{  
+    .color-bloc{
+      font-size: 120%;
+  
+      h4{font-size: 1.5em;}
+    }
+
+    .col-3 {
+      span{
+        font-size: 180%;
+      }
+    }
+  }
+}
+
+
+
+@media handheld, only screen and (min-width: 768px){
+  .bc-info{
+    .color-bloc{
+      padding:$spacer;
+      width: 60%;
+      font-size: 130%;
+  
+      h4{font-size: 2.5em;}
+    }
+
+    .col-3 {
+      margin: 2em 0;
+      gap:calc($spacer * 2);
+
+      span{
+        font-size: 200%;
+      }
+    }
+  }
+
+  .bc-info-2{
+    grid-template-columns: 1fr 3fr 1fr;
+
+    > img:first-child{
+      border-radius: 0 50% 50% 0;
+      display: block;
+    }
+  
+    > img:last-child{
+      border-radius: 50% 0 0 50%;
+      display: block;
+      justify-self: end;
+    }
+  }
+}

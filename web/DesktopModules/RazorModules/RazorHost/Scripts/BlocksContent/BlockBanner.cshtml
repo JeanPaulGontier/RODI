@@ -1,0 +1,215 @@
+﻿<script type="text/x-template" id="blockbanner-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <p class="text-center">
+                <strong>Type de bannière :</strong>
+            </p>
+
+            <div class="row centered">
+                <label class="radio-inline"><input type="radio" name="type" :value="1" v-model="e.Type" />Image</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="2" v-model="e.Type" />Vidéo</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="3" v-model="e.Type" />Texture</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="4" v-model="e.Type" />Couleur</label>
+            </div>
+
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Sous titre :</span>
+            <input type="text" v-model="e.Title2" class="form-control" />
+            <span class="bc-label">Description :</span>
+            <input type="text" v-model="e.Title3" class="form-control" />
+
+            <span v-if="e.Type==1" class="bc-label">Image d'arrière plan :</span>
+            <div v-if="e.Type==1" class="form-control">
+                <span v-for="(t,i) in imageList">
+                    <label :for="'image'+i"><img :src="t" width="120" /></label>
+                    <input type="radio" v-model="e.Image" name="image" :id="'image'+i" :value="t" />
+                </span>
+            </div>
+
+            <span v-if="e.Type==2" class="bc-label">Vidéo d'arrière plan :</span>
+            <div v-if="e.Type==2" class="form-control">
+                <span v-for="(t,i) in videoList">
+                    <label :for="'image'+i"><img :src="videoThumbnail(t)" width="120" /></label>
+                    <input type="radio" v-model="e.Video" name="image" :id="'image'+i" :value="t" />
+                </span>
+            </div>       
+
+            <span v-if="e.Type==3" class="bc-label">Texture d'arrière plan :</span>
+            <div v-if="e.Type==3" class="form-control">
+                <span v-for="(t,i) in textureList">
+                    <label :for="'texture'+i"><img :src="t" width="120" /></label>
+                    <input type="radio" v-model="e.Texture" name="texture" :id="'texture'+i" :value="t" />
+                </span>
+            </div>
+
+            <span class="bc-label">Couleur :</span>
+            <div class="form-control color-picker">
+                <span v-for="(t,i) in colorsList">
+                    <label :for="'color'+i" :style="{'background-color': t[0],color: t[1]}">T</label>
+                    <input type="radio" v-model="color" name="color" :id="'color'+i" :value="t" />
+                </span>
+            </div>
+
+            <span class="bc-label">Bouton de navigation :</span>
+            <div class="form-control">
+                <label for="roc0" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="false" name="roc" id="roc0" />Non</label>
+                <label for="roc1" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="true" name="roc" id="roc1" />Oui</label>
+
+            </div>
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Url de destination :</span>
+                <input type="text" v-model="e.Uri.Href" class="form-control" />
+                <span class="row">
+                    <label for="target0" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="" name="target" id="target0" />Même fenêtre</label>
+                    <label for="target1" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="_blank" name="target" id="target1" />Nouvelle fenêtre</label>
+                </span>
+            </div>
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Libellé du bouton :</span>
+                <input type="text" class="form-control" v-model="e.Uri.Label" />
+            </div>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+
+        <div v-if="!editing">
+            <div v-if="c.Type==1" class="bc-banner picture animated fadeIn">
+                <span class="banner-pict" :style="{'background-image': 'url(\''+c.Image+'\')'}"></span>
+
+                <section class="content-wrapper">
+                    <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
+                    <h1 :style="{color: c.Color}">{{c.Title}}</h1>
+                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
+                </section>
+            </div>
+
+            <div v-if="c.Type==2" class="bc-banner picture  animated fadeIn">
+                <span class="banner-video">
+                    <video style="width:100%;height:auto" autoplay muted loop :poster="videoThumbnail(c.Video)">
+                        <source :src="c.Video" type="video/mp4">
+                    </video>
+                </span>
+
+                <section class="content-wrapper">
+                    <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
+                    <h1 :style="{color: c.Color}">{{c.Title}}</h1>
+                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
+                </section>
+            </div>
+
+            <div v-if="c.Type==3" class="bc-banner picture  animated fadeIn">
+                <span class="banner-pict" :style="{'background-image': 'url(\''+c.Texture+'\')'}"></span>
+
+                <section class="content-wrapper">
+                    <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
+                    <h1 :style="{color: c.Color}">{{c.Title}}</h1>
+                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
+                </section>
+            </div>
+
+            <div v-if="c.Type==4" class="bc-banner" :style="{'background-color': c.BGColor , color: c.Color}">
+                <section class="content-wrapper">
+                    <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
+                    <h1 :style="{color: c.Color}">{{c.Title}}</h1>
+                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <a v-if="c.Uri" :href="c.Uri.Href"  :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
+                </section>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script>
+    if (typeof BlockBanner == 'undefined')
+    {
+
+         BlockBanner =  {
+            template: '#blockbanner-template',
+            name: 'BlockBanner',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                   
+                    redirectOnClick:false,
+                    colorsList : BGCOLORSLIST,
+                    videoList :  BGBANNERVIDEOLIST,
+                    imageList : BGBANNERIMAGELIST,
+                    textureList : BGBANNERTEXTURELIST,
+                    editing: false,
+                    color:null,
+                    c: {
+
+                    },
+                    fichiers: [],
+                    e: {
+                     
+                    },
+
+
+
+                }
+                        },
+            components: {
+
+            },
+             methods: {
+                videoThumbnail(v) {
+                     if (!v)
+                         return "";
+                     if (("" + v).endsWith(".mp4"))
+                         return v.substr(0, v.length - 4) + ".jpg";
+                     return v;
+                },
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                    var i = this.colorsList.findIndex(c => c[0] == this.e.BGColor);
+                    if (i > -1)
+                        this.color = this.colorsList[i];
+                    else
+                        this.color = this.colorsList[0];
+                    this.redirectOnClick = this.e.Uri != null;
+                    if(!this.e.Uri)
+                        this.e.Uri = { Href: '', Target: '',Label:'Plus de détail' };
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.c.BGColor = this.color[0];
+                    this.c.Color = this.color[1];
+                    if (!this.redirectOnClick)
+                        this.c.Uri = null;
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted() {
+                        this.c = this.content;
+                    }
+         }
+    }
+
+
+</script>

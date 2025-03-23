@@ -1,0 +1,151 @@
+﻿<script type="text/x-template" id="blockbulles-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+
+            <fieldset v-for="(n,j) in 7">
+                <legend class="bc-label">Bulle n°{{n}} :</legend>
+                <div style="margin-bottom:1em;">
+                    <small>Libellé</small>
+                    <input type="text" v-model="e.List[j].Uri.Label" class="form-control" />                    
+                </div>
+
+                <small>Image</small>
+                <div class="bulles-choice">
+                    <span v-for="(t,i) in imageList" class="bullets">
+                        <label :for="'image'+n+':'+i" class="rounded-img"><img :src="t"/></label>
+                        <input type="radio" v-model="e.List[j].Image" :name="'image'+n" :id="'image'+n+':'+i" :value="t" />
+                    </span>
+                </div>
+
+                <div>
+                    <small>Url&nbsp;de&nbsp;destination</small>
+                    <input type="text" v-model="e.List[j].Uri.Href" class="form-control"/>
+                </div>
+                <div class="form-inline">
+                    <label :for="'target'+n+'0'" class="radio-inline"><input type="radio" v-model="e.List[j].Uri.Target" value="" :name="'target'+n" :id="'target'+n+'0'" />Même fenêtre</label>
+                    <label :for="'target'+n+'1'" class="radio-inline"><input type="radio" v-model="e.List[j].Uri.Target" value="_blank" :name="'target'+n" :id="'target'+n+'1'" />Nouvelle fenêtre</label>
+                </div>
+            </fieldset>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+
+
+        <div class="bc-bulles" v-if="!editing">
+            <h5>Aucun défi n'est trop grand pour nous</h5>
+            <div class="circle-list content-wrapper" v-if="c.List">
+                <div class="side-list">
+                    <a :href="c.List[5].Uri.Href" :target="c.List[5].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[5].Image+'\')'}"  class="circle-image animated FadeInUpBig" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="FadeInUpBig" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[5].Uri.Label}}</div>
+                    </a>
+
+                    <a :href="c.List[4].Uri.Href" :target="c.List[4].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[4].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[4].Uri.Label}}</div>
+                    </a>
+                </div>
+
+                <div class="aof-middle">
+                    <a :href="c.List[0].Uri.Href" :target="c.List[0].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[0].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[0].Uri.Label}}</div>
+                    </a>
+
+                    <a :href="c.List[6].Uri.Href" :target="c.List[6].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[6].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[6].Uri.Label}}</div>
+                    </a>
+
+                    <a :href="c.List[3].Uri.Href" :target="c.List[3].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[3].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[3].Uri.Label}}</div>
+                    </a>
+                </div>
+
+                <div class="side-list">
+                    <a :href="c.List[1].Uri.Href" :target="c.List[1].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[1].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[1].Uri.Label}}</div>
+                    </a>
+                    <a :href="c.List[2].Uri.Href" :target="c.List[2].Uri.Target" class="causes-link">
+                        <span :style="{'background-image':'url(\''+c.List[2].Image+'\')'}" class="circle-image" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                        <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">{{c.List[2].Uri.Label}}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    if (typeof BlockBulles == 'undefined')
+    {
+
+        BlockBulles =  {
+            template: '#blockbulles-template',
+            name: 'BlockBulles',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+
+                    redirectOnClick:false,
+                    colorsList: BGCOLORSLIST,                   
+                    imageList: BGBULLESIMAGELIST,
+                    editing: false,
+                    color:null,
+                    c: {
+
+                                },
+                    fichiers: [],
+                    e: {
+                        
+                    },
+
+
+
+                }
+                        },
+            components: {
+
+            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));                  
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted()
+            {              
+                this.c = this.content;
+               
+            }
+         }
+    }
+</script>

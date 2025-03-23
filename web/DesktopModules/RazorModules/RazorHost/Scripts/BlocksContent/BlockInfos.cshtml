@@ -1,0 +1,156 @@
+﻿<script type="text/x-template" id="blockinfos-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Sous titre :</span>
+            <input type="text" v-model="e.Title2" class="form-control" />
+
+            <span class="bc-label">Compteur 1 :</span>
+            <div class="form-inline">
+                <span>Valeur</span>
+                <input type="number" v-model="e.Counter1" step="1" class="form-control" />
+                <span>Libellé</span>
+                <input type="text" v-model="e.Label1" class="form-control" />
+            </div>
+
+            <span class="bc-label">Compteur 2 :</span>
+            <div class="form-inline">
+                <span>Valeur</span>
+                <input type="number" v-model="e.Counter2" step="1" class="form-control" />
+                <span>Libellé</span>
+                <input type="text" v-model="e.Label2" class="form-control" />
+            </div>
+
+            <span class="bc-label">Compteur 3 :</span>
+            <div class="form-inline">
+                <span>Valeur</span>
+                <input type="number" v-model="e.Counter3" step="1" class="form-control" />
+                <span>Libellé</span>
+                <input type="text" v-model="e.Label3" class="form-control" />
+            </div>
+
+            <span class="bc-label">Image d'arrière plan :</span>
+            <div class="form-control">
+                <span v-for="(t,i) in imageList">
+                    <label :for="'image'+i"><img :src="t" width="200" /></label>
+                    <input type="radio" v-model="e.Image" name="image" :id="'image'+i" :value="t" />
+                </span>
+            </div>
+
+            <span class="bc-label">Bouton de navigation :</span>
+            <div class="form-control">
+                <label for="roc0" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="false" name="roc" id="roc0" />Non</label>
+                <label for="roc1" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="true" name="roc" id="roc1" />Oui</label>
+            </div>
+
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Url de destination :</span>
+                <input type="text" v-model="e.Uri.Href" class="form-control"/>
+                <span class="form-inline">
+                    <label for="target0" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="" name="target" id="target0" />Même fenêtre</label>
+                    <label for="target1" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="_blank" name="target" id="target1" />Nouvelle fenêtre</label>
+                </span>
+            </div>
+
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Libellé du bouton :</span>
+                <input type="text" v-model="e.Uri.Label" class="form-control"/>
+            </div>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+
+
+        <div class="content-wrapper" v-if="!editing">
+            <div class="bc-info">
+                <img :src="c.Image" class="img-r">
+                <div class="color-bloc">
+                    <h4 class="white-text">{{c.Title}}</h4>
+                    <p>{{c.Title2}}</p>
+                    <div class="row col-3">
+                        <p><span>{{c.Counter1}}</span>{{c.Label1}}</p>
+                        <p><span>{{c.Counter2}}</span>{{c.Label2}}</p>
+                        <p><span>{{c.Counter3}}</span>{{c.Label3}}</p>
+                    </div>
+                    <div class="text-right">
+                        <a v-if="c.Uri" :href="c.Uri.Href" :target="c.Uri.Target" class="btn btn-warning">{{c.Uri.Label}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockInfos == 'undefined')
+    {
+
+        BlockInfos =  {
+            template: '#blockinfos-template',
+            name: 'BlockInfos',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+
+                    redirectOnClick:false,
+                    imageList: BGINFOSIMAGELIST,
+                    editing: false,
+                    
+                    c: {
+
+                                },
+                    fichiers: [],
+                    e: {
+                        Image: null,
+                        Uri: null
+                    },
+
+                }
+            },
+            components: {
+
+            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                    this.redirectOnClick = this.e.Uri != null;
+                    if(!this.e.Uri)
+                        this.e.Uri = { Href: '', Target: '',Label:'Plus de détail' };
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    if (!this.redirectOnClick)
+                        this.c.Uri = null;
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted()
+            {
+                this.c = this.content;
+            }
+         }
+    }
+
+
+</script>

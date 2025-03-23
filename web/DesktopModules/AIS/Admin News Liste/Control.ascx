@@ -24,7 +24,7 @@
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockImageText.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockRaw.cshtml" -->
 <!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockVideo.cshtml" -->
-<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockEditor.cshtml" -->
+<!-- #include virtual ="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/BlockEditor.news.cshtml" -->
 <link href="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/styles.min.css?cdv=<%=Yemon.dnn.Functions.CDV %>" rel="stylesheet" />
 
 

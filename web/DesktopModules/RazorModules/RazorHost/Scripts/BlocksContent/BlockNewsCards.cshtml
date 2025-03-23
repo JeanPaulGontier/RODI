@@ -1,0 +1,219 @@
+﻿<script type="text/x-template" id="blocknewscards-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Description :</span>
+            <input type="text" v-model="e.Description" class="form-control" />
+            
+            <span class="bc-label">Nouvelles district :</span>
+            <div class="form-control">
+                <label for="rod0" class="radio-inline"><input type="radio" v-model="e.District" :value="false" name="rod" id="rod0" />Non</label>
+                <label for="rod1" class="radio-inline"><input type="radio" v-model="e.District" :value="true" name="rod" id="rod1" />Oui</label>
+            </div>
+            <span class="bc-label">Nouvelles clubs :</span>
+            <div class="form-control">
+                <label for="roc0" class="radio-inline"><input type="radio" v-model="e.Clubs" :value="false" name="roc" id="roc0" />Non</label>
+                <label for="roc1" class="radio-inline"><input type="radio" v-model="e.Clubs" :value="true" name="roc" id="roc1" />Oui</label>
+            </div>
+
+            <span class="bc-label">Temporalité :</span>
+            <div class="form-control">
+                <label for="rot0" class="radio-inline"><input type="radio" v-model="e.Next" :value="false" name="rot" id="rot0" />Passées</label>
+                <label for="rot1" class="radio-inline"><input type="radio" v-model="e.Next" :value="true" name="rot" id="rot1" />Futures</label>
+            </div>
+
+            <span class="bc-label">Catégories incluses :</span>
+            <textarea class="form-control" v-model="e.Tags_Included"></textarea>
+
+            <span class="bc-label">Catégories exclues :</span>
+            <textarea class="form-control" v-model="e.Tags_Excluded"></textarea>
+
+            <span class="bc-label">Couleur :</span>
+            <div class="form-control color-picker">
+                <span v-for="(t,i) in colorsList">
+                    <label :for="'color'+i" :style="{'background-color': t[0]}"> </label>
+                    <input type="radio" v-model="color" name="color" :id="'color'+i" :value="t" />
+                </span>
+            </div>
+
+            <div v-if="e.District">
+                <span class="bc-label">Url de détail des nouvelles district :</span>
+                <input type="text" class="form-control" v-model="e.Uri_District.Href" />
+                <div class="form-inline">
+                    <label for="targetd0" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="" name="targetd" id="targetd0" />Même fenêtre</label>
+                    <label for="targetd1" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="_blank" name="targetd" id="targetd1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
+            <div v-if="e.Clubs">
+                <span class="bc-label">Url de détail des nouvelles clubs :</span>
+                <input type="text" v-model="e.Uri_Clubs.Href" class="form-control" />
+                <span class="bc-label"></span>
+                <div class="form-control">
+                    <label for="targetc0" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="" name="targetc" id="targetc0" />Même fenêtre</label>
+                    <label for="targetc1" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="_blank" name="targetc" id="targetc1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+
+
+        <div class="block-news-cards" v-if="!editing"> 
+            <div class="content-wrapper">
+                <div class="card-header">
+                    <h3 :style="{color:c.Color}">{{c.Title}}</h3>
+                    <p class="lead">{{c.Description}}</p>
+                </div>
+                <div v-if="!news" class="text-center">chargement en cours...</div>
+                <div v-if="news && news.length==0" class="text-center">Aucune nouvelle trouvée, ajustez les paramètres...</div>
+                <div class="row" v-if="news">
+
+                    <div class="card" v-for="n in news">
+                        <a :href="uri(n)" :target="target(n)">
+                            <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+n.photo" :alt="n.title">
+                            <span class="news-type" style="color:turquoise;">
+                                <span>{{n.tag1}}</span>
+                            </span>
+
+                            <span class="news-date">{{date(n.dt)}}</span>
+                            <span class="news-title">{{n.title}}</span>
+
+                            <span class="news-location" v-if="n.cric!=0"><i class="fa-solid fa-location-dot"></i> {{n.club_name}}</span>
+                            <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: turquoise;"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockNewsCards == 'undefined')
+    {
+
+        BlockNewsCards =  {
+            template: '#blocknewscards-template',
+            name: 'BlockNewsCards',
+            props: [
+                'content',
+                'moduleid'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    news:null,
+                    redirectOnClick:false,
+                    colorsList: BGCOLORSLIST,
+                    editing: false,
+                    color:null,
+                    c: {                        
+                    },
+                    fichiers: [],
+                    e: {
+                        District: false,
+                        Clubs: false,
+                        Next: true,
+                        Tags_Included: '',
+                        Tags_Excluded: '',
+                        Color: null                  
+                    },
+
+
+
+                }
+                        },
+            components: {
+
+            },
+            methods: {
+                uri(n) {
+                    if (n.cric == 0) {
+                        return this.c.Uri_District.Href + n.id;
+                    } 
+                    return this.c.Uri_Clubs.Href +  n.id;
+                  
+                },
+                target(n) {
+                    if (n.cric == 0) {
+                        return this.c.Uri_District.Target;
+                    }
+                    return this.c.Uri_Clubs.Target;
+
+                },
+                date(d) {
+                    if (!d)
+                        return '';
+                    let dd = new Date(d);
+                    return dd.toLocaleDateString();
+                },
+                getNews() {
+                    _yemonNews[this.moduleid].service.getData('/GetBlockContentNews',
+                        {
+                            district: this.c.District,
+                            clubs: this.c.Clubs,
+                            next: this.c.Next,
+                            tags_included: this.c.Tags_Included,
+                            tags_excluded: this.c.Tags_Excluded,
+                        },
+                        (r) => {
+                            this.news = JSON.parse(r.data);
+                                                  },
+                        (e) => {
+                            console.log(e);
+                        }
+                        
+                    );
+                },
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                    var i = this.colorsList.findIndex(c => c[0] == this.e.Color);
+                    if (i > -1)
+                        this.color = this.colorsList[i];
+                    else
+                        this.color = this.colorsList[0];
+                    if(!this.e.Uri_District)
+                        this.e.Uri_District = { Href: '', Target: '' };
+                    if (!this.e.Uri_Clubs)
+                        this.e.Uri_Clubs = { Href: '', Target: '' };
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.c.Color = this.color[0];
+                    if (!this.c.Tags_Included)
+                        this.c.Tags_Included = '';
+                    if (!this.c.Tags_Excluded)
+                        this.c.Tags_Excluded = '';
+
+                    this.editing = false;
+                    this.onChange();
+                    this.getNews();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted()
+            {
+                this.c = this.content;
+                this.getNews();
+            }
+         }
+    }
+
+
+</script>

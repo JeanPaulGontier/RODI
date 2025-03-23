@@ -214,8 +214,10 @@ namespace AIS.controller
             
             List<News> news = new List<News>();
             List<object> news1 = new List<object>();
-         
-                
+
+            var random = new Random();
+
+
             news = DataMapping.ListNews_EN(onlyvisible: true, category: "Clubs", tri: "dt asc", tags_included: "", tags_excluded: "Bulletins", max: 100, where:" dt > getdate()-1");
             foreach (News n in news)
             {
@@ -229,7 +231,8 @@ namespace AIS.controller
                     {
                         id = n.id,
                         dt = n.dt.ToLongDateString(),
-                        newsColor = "blue",
+                        date = n.dt,
+                        newsColor = System.Drawing.ColorTranslator.ToHtml(Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(random.Next(0x1000000))))),
                         category = n.category,
                         title = n.title,
                         photo = n.photo,
@@ -253,7 +256,8 @@ namespace AIS.controller
                     {
                         id = n.id,
                         dt = n.dt.ToLongDateString(),
-                        newsColor = "blue",
+                        date = n.dt,
+                        newsColor = System.Drawing.ColorTranslator.ToHtml(Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(random.Next(0x1000000))))),
                         category = n.category,
                         title = n.title,
                         photo = n.photo,

@@ -1,0 +1,206 @@
+/* Textes */
+.ais-primary-text, a.ais-primary-link:visited{
+    color: $ais-primary;
+}
+.ais-info-text{
+    color:$ais-info;
+}
+
+
+/* Liens */
+.ais-primary-link{
+    color:$ais-primary;
+    &:hover{color:$ais-info;}
+}
+
+.ais-info-link{
+    color:$ais-info;
+    &:hover{color:$ais-primary;}
+}
+
+.ais-secondary-link{
+    color:$ais-secondary-text;
+    &:hover{color:$ais-light-text;}
+}
+
+.ais-light-link{
+    color:$ais-light-text;
+    &:hover{color:$ais-secondary-text;}
+}
+
+
+/* Boutons */
+.ais-btn, .btn {
+    display: inline-block;
+    background: none;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    margin:0 3px;
+    line-height: 1.4em;
+    border-radius: 4px;
+    font-family: $sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: $transition;
+
+    &:hover{transition: $transition;}
+
+    &.btn-primary{
+        background-color:$ais-primary;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $ais-info;}
+    }
+
+    &.btn-info{
+        background-color:$ais-info;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $ais-primary;}
+    }
+
+    &.btn-violet{
+        background-color:$violet;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $danger;}
+    }
+
+    &.btn-ais-highlight, &.btn-warning{
+        background-color:$ais-highlight;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $orange;}
+    }
+
+    &.btn-turquoise, &.btn-success{
+        background-color:$turquoise;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $powder-blue;}
+    }
+
+    &.btn-danger{
+        background-color:$danger;
+        color:$ais-default-bg;
+
+        &:hover{background-color: $violet;}
+    }
+  }
+
+a.ais-btn-connexion {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    background: $ais-highlight;
+    padding: 5px 18px 5px 18px !important;
+    margin: -20px 5px 5px 0;
+    border-radius: 0 0 15px 15px;
+    color: $ais-dark !important;
+    transition: $transition;
+
+    &:hover {
+        text-decoration: none !important;
+        color: $ais-secondary-bg !important;
+        background: $moss;
+        transition:$transition;
+    }
+}
+
+.codifam a.ais-btn-connexion {
+    position: fixed;
+    top: 0;
+    right: 5px;
+    display: inline-block;
+    background: $ais-highlight;
+    padding: 5px 18px 5px 18px !important;
+    margin:0;
+    border-radius: 0 0 15px 15px;
+    color: $ais-dark !important;
+    transition: $transition;
+
+    &:hover {
+        text-decoration: none !important;
+        color: $ais-secondary-bg !important;
+        background: $moss;
+        transition:$transition;
+    }
+}
+
+
+.bc-editing .btn-close {
+    background: $ais-default-bg;
+    border: 1px solid $ais-secondary-bg;
+}
+
+/* Alignements */
+.ais-text-center{text-align: center;}
+.ais-text-right{text-align: right;}
+.ais-relative{position:relative;}
+
+
+/* Formulaires */
+input[type=text], input[type=date], select, textarea{
+    width: 100%;
+    padding: 7px 15px;
+    margin: 8px 3px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: $sans-serif;
+    font-size:1em;
+    box-sizing: border-box;
+  }
+  
+  .form-control {
+    font-family: $sans-serif;
+  }
+
+  .form-inline{
+    display:flex;
+    align-items: center;
+  }
+
+
+  /* Tables */
+  table{
+    border-collapse: collapse;
+    width: 100%;
+    margin:1em 0;
+
+    td, th{
+        padding:.5em;
+    }
+
+    tr:hover{
+        background-color:rgba(0,0,0,.1);
+        cursor: pointer;
+    }
+    tr:nth-child(1):hover{
+        background-color: none;
+        cursor: default;
+    }
+  }
+
+
+  .table-striped {
+    tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+
+        &:hover{
+            background-color:rgba(0,0,0,.1);
+        }
+    }
+    tr:nth-child(1):hover{
+        background-color:  rgba(0, 0, 0, .05);
+        cursor: default;
+    }
+}

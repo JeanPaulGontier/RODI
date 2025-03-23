@@ -1,0 +1,512 @@
+@charset "UTF-8";
+@import 'variables';
+@import 'header';
+@import 'layout';
+@import 'buttons';
+@import 'fontAwesome/all.css';
+@import 'cards';
+@import 'banners';
+@import 'animation';
+@import 'typos';
+@import 'forms';
+@import 'tables';
+@import 'bc-info';
+@import 'bc-bulles';
+
+.partager{
+    display: flex;
+    align-items:center;
+    margin-top:1.5em;
+
+    ul{
+        display: flex;
+        flex-wrap:wrap;
+        margin:0;
+    }
+    
+    li{
+        list-style: none;
+
+        a{
+            align-items: center;
+            display: flex;
+            height: 30px;
+            place-content: center;
+            width: 40px;
+        }
+
+        > a > span{
+            width:20px;
+            height:20px;
+            text-align:center;
+        }
+
+        > a span + span{
+            display:none;
+        }
+    }
+
+    button {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 0 0 0;
+        border:0;
+        background-color: transparent;
+    }
+
+    path {
+        fill: #0067c8;
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            fill: #00246c;
+            transition:all .3s ease-in-out;
+        }
+    }
+}
+
+.list-img {
+    display: flex;
+    flex-wrap: wrap;
+
+    li {
+        display: flex;
+        border: 1px solid #ddd;
+        margin: 0.5em;
+        text-align: center;
+        flex-flow: column wrap;
+        position: relative;
+
+        img {
+            max-width: initial;
+            object-fit: cover;
+            height: 100px;
+            width: 100px;
+        }
+
+        button {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            z-index: 999;
+        }
+
+        a {
+            display: block;
+            font-size: 0;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0);
+            padding: 40px 7px 7px 7px;
+            word-wrap: break-word;
+            line-height: 1.2em;
+
+            &:hover {
+                background: rgba(0,0,0,0.8);
+                font-size: 60%;
+                color: #fff;
+                transition: all 0.4s ease-in-out;
+                -webkit-transition: all 0.4s ease-in-out;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+.Head {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.SubHead {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.SubSubHead {
+    font-size: 13px;
+}
+
+.Normal {
+    font-size: 1em;
+    line-height: 1.2em;
+}
+
+.SmallLink {
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+input[type=radio] + label, .ModAISNewsDetailC a.Normal {
+    padding: 0 20px 0 5px;
+}
+
+.RadUpload .ruInputs li {
+    list-style: none;
+}
+
+
+
+
+
+/*--------- Scroll Top Style ----------*/
+#top-link {
+    background: url("images/scroll_top.png") no-repeat scroll center -4px #999;
+    background: url("images/scroll_top.png") no-repeat scroll center -4px rgba(0, 0, 0, 0.3);
+    border: 0 none;
+    border-radius: 2px;
+    bottom: 10px;
+    right: 55px;
+    display: block;
+    height: 35px;
+    padding: 0;
+    width: 40px;
+    position: fixed;
+    text-decoration: none;
+    z-index: 903;
+
+    :hover {
+        background: url("images/scroll_top.png") no-repeat scroll center -42px #666;
+        background: url("images/scroll_top.png") no-repeat scroll center -42px rgba(0, 0, 0, 0.6);
+        transition:$transition;
+    }
+
+}
+
+
+.LimitedHeight {
+    max-height: 150px;
+    overflow: hidden;
+    display: grid;
+    align-content: center;
+}
+
+
+/* Petites Annonces */
+.Annonce > span {
+    font-family: Frutiger;
+    display: block;
+}
+
+/*--------- News V2 ----------*/
+
+.BlocPhotoTop > a img,
+.BlocPhotoRight.MiniNews > a img,
+.BlocPhotoLeft.MiniNews > a img,
+img.DetailedArticle {
+    width: 100%;
+}
+
+.BlocPhotoTop .Date {
+    margin-right: 5px;
+    line-height: 43px;
+    font-size: 1.4em;
+    float: right;
+}
+
+.BlocPhotoTop p {
+    margin: 0 0 10px 0;
+    clear: both;
+}
+
+.Filet p + a {
+    display: block;
+    text-align: right;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    cursor: hand;
+    font-family: Frutiger, sans-serif;
+}
+
+.Filet.active {
+    opacity: 0.4;
+}
+
+/* Photo à droite & gauche */
+.BlocPhotoRight > a > div,
+.BlocPhotoLeft > a > div,
+.ModAISNewsArticleC .BlocPhotoLeft > img,
+.ModAISNewsArticleC .BlocPhotoRight > img {
+    display: table-cell;
+    float: right;
+    max-width: 40%;
+    text-align: right;
+}
+
+.BlocPhotoLeft > a > div,
+.ModAISNewsArticleC .BlocPhotoLeft > img {
+    float: left;
+    margin-right: 15px;
+}
+
+.BlocPhotoRight .Block,
+.BlocPhotoLeft .Block {
+    display: table-cell;
+}
+
+.BlocPhotoRight.MiniNews > a div,
+.BlocPhotoLeft.MiniNews > a div {
+    display: block;
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+
+.BlocPhotoTop h1,
+.BlocNoPhoto h1,
+.BlocPhotoRight h1,
+.BlocPhotoLeft h1 {
+    margin: 0;
+    font-size: 1.4em;
+    line-height: 1.1em;
+}
+
+.BlocPhotoRight .Date,
+.BlocPhotoLeft .Date,
+.BlocNoPhoto .Date {
+    margin: -8px 10px 5px 0;
+    display: block;
+    text-align: right;
+    font-size: 1.2em;
+}
+
+.BlocPhotoRight p,
+.BlocPhotoLeft p,
+.BlocNoPhoto p {
+    margin: 0 0 10px 0;
+    text-align: justify;
+}
+
+.BlocPhotoLeft p {
+    margin-left: 5px;
+}
+
+.BlocPhotoRight p {
+    margin-right: 15px;
+}
+
+.MiniNews h1 {
+    font-size: 1.4em;
+}
+
+/* Photo Vidéo */
+.BlocVideo > p {
+    width: 35%;
+    float: left;
+    margin: 10px 0 0;
+}
+
+.BlocVideo h1 {
+    margin: 0 5px;
+}
+
+.BlocVideo .Date {
+    margin: -8px 0 5px 0;
+    display: block;
+    text-align: right;
+    font-size: 1.2em;
+}
+/* Détail */
+h1.DetailedArticle {
+    font-size: 1.7em;
+    line-height: 1.1em;
+    margin: 0 0 0.3em 0;
+    clear: both;
+}
+
+    h1.DetailedArticle a {
+        float: right;
+        font-size: 1em;
+        color: #febd11;
+    }
+
+h1.DetailedArticle a:hover {
+    opacity: 0.7;
+}
+
+
+
+
+/*--------- Trombis ----------*/
+.Trombi > br, .MiniTrombi > br {
+    display: none;
+}
+
+.Trombi .panel-body {
+    > img {
+        float: left;
+    }
+
+    > div {
+        margin-left: 140px;
+        text-align: left;
+
+        strong > span + span {
+            white-space: nowrap;
+        }
+    }
+}
+
+
+
+/*--------- pagination gridview  ----------*/
+.GVPager > td > table {
+    margin: 20px 0;
+}
+
+.GVPager span {
+    color: #ffffff;
+    background-color: #428bca;
+    cursor: default;
+    padding: 6px 12px;
+}
+
+.GVPager a {
+    padding: 6px 12px;
+    line-height: 1.42857143;
+    text-decoration: none;
+    color: #428bca;
+    background-color: #ffffff;
+
+    &:hover {
+        color: #2a6496;
+        background-color: #eeeeee;
+    }
+}
+
+.img-ronde {
+    border-radius: 50%;
+}
+
+
+
+/* Galeries photos */
+
+.Grow {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+}
+
+.Lrow {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+
+    img {
+        margin-top: 8px;
+        vertical-align: middle;
+        width: 100%;
+    }
+}
+
+.Gcolumn {
+    flex: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+
+    img {
+        margin-top: 8px;
+        vertical-align: middle;
+        width: 100%;
+    }
+}
+
+
+
+
+@media handheld, only screen and (max-width: 768px) {
+ /*--------- Scroll Top Style ----------*/
+    #top-link {
+        bottom: 12px;
+        right: 20px;
+    }
+    .slider_slick_1 .slick-dots {
+        width: 100% !important;
+    }
+    
+  }
+
+
+
+
+
+/*--------- CSS Reset for Tablet ----------*/
+@media handheld, only screen and (max-width: 1140px) {
+
+    /* Photo à droite & gauche */
+    .BlocPhotoRight > a > div,
+    .BlocPhotoLeft > a > div {
+        display: block;
+        float: none;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .ModAISNewsArticleC .BlocPhotoLeft > img,
+    .ModAISNewsArticleC .BlocPhotoRight > img {
+        display: block;
+        float: none;
+        width: 100%;
+        margin: 0;
+        max-width: 100%;
+    }
+
+    .BlocPhotoRight > a img,
+    .BlocPhotoLeft > a img {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .BlocPhotoRight .Block,
+    .BlocPhotoLeft .Block {
+        display: block;
+    }
+
+    .BlocPhotoRight h1,
+    .BlocPhotoLeft h1 {
+        margin-top: 5px;
+    }
+
+    .BlocPhotoRight .Date,
+    .BlocPhotoLeft .Date {
+        margin-right: 5px;
+        line-height: 43px;
+        font-size: 1.4em;
+        float: right;
+    }
+
+    .BlocPhotoRight p, .BlocPhotoLeft p {
+        margin: 0;
+        clear: both;
+    }
+
+    .Trombi .panel-body > img {
+        float: none;
+    }
+
+    .Trombi .panel-body > div {
+        margin-left: 0;
+        text-align: left;
+    }
+
+
+
+    /*--------- Scroll Top  ----------*/
+    #top-link {
+        bottom: 20px;
+        right: 20px;
+    }
+}

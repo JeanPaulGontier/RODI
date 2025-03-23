@@ -4658,7 +4658,7 @@ namespace AIS
                 if (tags_excluded != "")
                 {
                     string t = "";
-                    string[] exclus = tags_excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] exclus = ("" + tags_excluded).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ex in exclus)
                         t += "'" + ex + "',";
                     if (t.EndsWith(","))
@@ -4671,7 +4671,7 @@ namespace AIS
                 if (tags_included != "")
                 {
                     string t = "";
-                    string[] inclus = tags_included.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] inclus = (""+tags_included).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string inc in inclus)
                         t += "'" + inc + "',";
                     if (t.EndsWith(","))

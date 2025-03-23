@@ -1,0 +1,33 @@
+table{
+    border-collapse: collapse;
+    width: 100%;
+    margin:1em 0;
+
+    td, th{
+        padding:.5em;
+    }
+
+    tr:hover{
+        background-color:rgba(0,0,0,.1);
+        cursor: pointer;
+    }
+    tr:nth-child(1):hover{
+        background-color: none;
+        cursor: default;
+    }
+  }
+
+
+.table-striped {
+    tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, .05);
+
+        &:hover{
+            background-color:rgba(0,0,0,.1);
+        }
+    }
+    tr:nth-child(1):hover{
+        background-color:  rgba(0, 0, 0, .05);
+        cursor: default;
+    }
+}

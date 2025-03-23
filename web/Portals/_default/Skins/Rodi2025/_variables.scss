@@ -1,0 +1,65 @@
+/* Couleurs */
+$default-text:#3b3b3b;
+$dark-text:#000;
+$secondary-text:#898A8D; /* Pewter */
+$light-text:#9BA4B4; /* Mist */
+
+$default-bg:#ffffff;
+$secondary-bg:#e7e7e8; /* Silver */
+
+$primary:#005daa; /* Azure */
+$info:#01b4e7; /* Sky Blue */
+
+$dark: #17458f; /* Royal Blue */
+$highlight:#f7a81b; /* Gold */
+
+/* Secondaires */
+$danger:#e02927; /* Cranberry */
+$cranberry:#d91b5c; /* Cranberry */
+$turquoise:#009999; /* Turquoise */
+$info-2:#872175; /* Violet */
+$orange:#ff7600; /* Orange */
+
+/* Pastels */
+$slate:#657F99; /* Slate */
+$lavender:#C6BCD0; /* Lavender */
+$powder-blue:#B9D9EB; /* Powder Blue */
+$moss:#A7ACA2; /* Moss */
+$taupe:#D9C89E; /* Taupe */
+
+/* Neutres */
+$smoke:#bcbdc0; /* Smoke */
+$charcoal:#54565A; /* Charcoal */
+
+/* Neutres chauds */
+$storm:#7A6E66;
+$ash:#968B83;
+$platinum:#BFB7B0;
+$cloud:#D6D1CA;
+
+
+
+/* Fonts */
+$sans-serif: 'Open Sans', sans-serif;
+$serif: georgia, serif;
+$font-weight-normal:300;
+$font-weight-bold:600;
+$font-weight-black:900;
+
+
+
+/* Divers */
+$shadow-box:4px 4px 18px 2px rgba(0,0,0,.3);
+$transition:all .6s ease-in-out;
+
+
+
+/* Layout */
+$site-width:1920px;
+$menu-width:1530px;
+$content-width:1100px;
+
+
+
+/* Spacers */
+$spacer: 2rem;

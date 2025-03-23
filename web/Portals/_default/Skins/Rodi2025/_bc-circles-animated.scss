@@ -1,0 +1,67 @@
+
+.circle-list{
+  display: grid;
+  grid-template-columns: repeat(3, 280px);
+  gap:$spacer;
+  justify-content: center;
+  align-items: center;
+
+  /*.side-list{
+    margin-top:140px;
+  }*/
+  
+  .causes-link{
+    display: block;
+    height:calc(270px + $spacer);
+    position: relative;
+
+    .circle-image {
+      display: block;
+      overflow: hidden;
+      border-radius: 50%;
+      margin: $spacer auto;
+      width:270px;
+      height: 270px;
+      transition: all .5s ease-in-out;
+      background-size: cover !important;
+      background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20181110_KE_699_Promoting_Peace.jpg?itok=rsCjaBs5);
+      background-position: center center !important;
+      background-repeat: no-repeat !important;
+
+      &:hover{
+        /*zoom: 105%;*/
+        width:280px;
+        height:280px;
+        transition: all .5s ease-in-out;
+      }      
+    }
+    div{
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  #cause--4 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20190623_IN_0443_Mothers_and_Children.jpg?itok=Ubx65hPZ);
+  }
+  #cause--2 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20190624_IN_526_Fighting_Disease.jpg?itok=A-_spIYZ);
+  }
+  #cause--3 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20190427_NG_018_Clean_Water.jpg?itok=DKIBktmw);
+  }
+  #cause--6 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20180806_NP_003_Growing_Local_Economies.jpg?itok=O1HQU4B2);
+  }
+  #cause--5 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-20190625_GH_063_Education.jpg?itok=0ST2p5pU);
+  }
+  #cause--7 .circle-image{
+    background: url(https://www.rotary.org/sites/default/files/styles/w_700/public/home-areas-of-focus-shutterstock-1317118457-Environment.jpg?itok=S5s7dmcj);
+  }
+}
+
+ 

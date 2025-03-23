@@ -1,0 +1,118 @@
+
+.no-select{
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select:none; 
+    user-select:none;
+    -o-user-select:none;
+}
+
+A {
+    color: $primary;
+    text-decoration: none;
+    transition:$transition;
+
+    &:hover {
+        color:$info;
+        filter:brightness(.75);
+        transition:$transition;
+    }
+    
+    img {border: 0;}
+}
+
+h1 {
+    font-size: 22px;
+    line-height: 1.2em;
+    color:$dark;
+    font-weight:$font-weight-bold;
+    font-family: $sans-serif;
+}
+
+h2 {
+    font-size: 22px;
+    line-height: 1.2em;
+    font-weight:$font-weight-bold;
+    font-family: $sans-serif;
+}
+
+
+h3{
+    font-size:2em;
+    line-height: 1.2em;
+    font-weight:$font-weight-bold;
+    font-family: $sans-serif;
+    color: $info;
+}
+
+h4 {
+    font-size: 16px;
+    line-height: 1.2em;
+    font-weight:$font-weight-bold;
+    font-family: $sans-serif;
+}
+
+h5{
+    font-weight:$font-weight-normal;
+    font-family: $sans-serif;
+    color: $default-bg;
+    font-size: 16px;
+}
+
+h6 {
+    font-size: 14px;
+    line-height: 1.2em;
+    font-family: $sans-serif;
+}
+
+.lead{font-size: 1.2em;}
+
+
+/* Textes */
+.primary-text, a.primary-link:visited{
+    color: $primary;
+}
+.info-text{
+    color:$info;
+}
+.white-text{
+    color: $default-bg;
+}
+
+
+/* Liens */
+.primary-link{
+    color:$primary;
+    &:hover{color:$info;}
+}
+
+.info-link{
+    color:$info;
+    &:hover{color:$primary;}
+}
+
+.secondary-link{
+    color:$secondary-text;
+    &:hover{color:$light-text;}
+}
+
+.light-link{
+    color:$light-text;
+    &:hover{color:$secondary-text;}
+}
+
+
+
+
+
+@media handheld, only screen and (min-width: 768px){
+    h3{
+        font-size:2.5em;
+    }
+}
+
+@media handheld, only screen and (min-width: 1024px){
+    h3{
+        font-size:3em;
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -26,10 +27,12 @@ public partial class AIS_Download : System.Web.UI.Page
             Response.Expires = 0;
             Response.Cache.SetCacheability(HttpCacheability.Public);
 
+            Response.AddHeader("content-length", "" + media.content.Length);
             Response.AppendHeader("Content-Disposition", "attachment; filename=" + Functions.ClearFileName(media.name));
             Response.ContentType = media.content_type;
             Response.BinaryWrite(media.content);
             Response.Flush();
+            Response.End();
         }
         else
         {

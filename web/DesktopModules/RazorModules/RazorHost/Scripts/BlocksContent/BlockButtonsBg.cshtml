@@ -1,0 +1,132 @@
+﻿<script type="text/x-template" id="blockbuttonsbg-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Sous titre :</span>
+            <input type="text" v-model="e.Title2" class="form-control" />
+
+            <span class="bc-label">Couleur :</span>
+            <div class="form-control color-picker">
+                <span v-for="(t,i) in colorsList">
+                    <label :for="'color'+i" :style="{'background-color': t[0],color: t[1]}">T</label>
+                    <input type="radio" v-model="color" name="color" :id="'color'+i" :value="t" />
+                </span>
+            </div>
+
+            <span class="bc-label">Boutons de navigation :</span>
+            <div v-for="(u,i) in e.List">
+                <small>Url de destination :</small>
+                <input type="text" v-model="u.Href" class="form-control" style="margin:0;" />
+                <div class="form-inline">
+                    <input type="radio" v-model="u.Target" value="" :name="'target'+i" :id="'target0'+i" /><label :for="'target0'+i"> Même fenêtre</label>
+                    <input type="radio" v-model="u.Target" value="_blank" :name="'target'+i" :id="'target1'+i" /><label :for="'target1'+i"> Nouvelle fenêtre</label>
+                </div>
+                <small>Libellé du bouton :</small>
+                <input type="text" v-model="u.Label" class="form-control" />
+
+                <button type="button" class="btn btn-danger" v-on:click="sup(u)" style="margin-bottom:2em;">Supprimer</button>
+            </div>
+
+            <div style="margin:2em 0;">
+                <button type="button" class="btn btn-link" v-on:click="add()">Ajouter un bouton</button>
+            </div>
+            <div class="text-center">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+
+
+        <div v-if="!editing">
+            <div class="bg-colored bc-info-3" :style="{'background-color': c.BGColor}">
+                <div class="content-wrapper" v-if="c">
+                    <div class="card-header">
+                        <h3 :style="{color: c.Color}">{{c.Title}}</h3>
+                        <p :style="{color: c.Color}" class="lead">{{c.Title2}}</p>
+                    </div>
+                    <div class="row col-2" v-if="c.List && c.List.length>0">
+                        <a :href="u.Href"  :target="u.Target"  :style="{color: c.Color,'border-color':c.Color}" class="btn  btn-xl btn-link" v-for="u in c.List">{{u.Label}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockButtonsBg == 'undefined')
+    {
+
+        BlockButtonsBg =  {
+            template: '#blockbuttonsbg-template',
+            name: 'BlockButtonsBg',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+
+                    color:null,
+                    colorsList : BGCOLORSLIST,                    
+                    editing: false,
+                    e: {},
+                    c: {}
+                }
+                        },
+            components: {
+
+            },
+            methods: {
+                add() {
+                    this.e.List.push({
+                        Href: 'https://www.rotary.org',
+                        Target: '_blank',
+                        Label: 'Bouton...'
+
+                    });
+
+                },
+                sup(u) {
+                    this.e.List = this.e.List.filter(e=>e != u);
+                },
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                    var i = this.colorsList.findIndex(c => c[0] == this.e.BGColor);
+                    if (i > -1)
+                        this.color = this.colorsList[i];
+                    else
+                        this.color = this.colorsList[0];
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.c.BGColor = this.color[0];
+                    this.c.Color = this.color[1];
+
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted()
+            {
+                this.c = this.content;
+            }
+         }
+    }
+
+
+</script>

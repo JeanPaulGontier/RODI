@@ -1,0 +1,83 @@
+.btn {
+    display: inline-block;
+    background: none;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 9px 20px;
+    margin:0 3px;
+    line-height: 1.4em;
+    border-radius: 24px;
+    font-family: $sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: $transition;
+
+    &:hover{filter:brightness(.75);transition: $transition;}
+
+    &.btn-primary{
+        background-color:$primary;
+        color:$default-bg;
+    }
+
+    &.btn-info{
+        background-color:$info;
+        color:$default-bg;
+    }
+
+    &.btn-info-2{
+        background-color:$info-2;
+        color:$default-bg;
+    }
+
+    &.btn-highlight, &.btn-warning{
+        background-color:$highlight;
+        color:$dark-text;
+    }
+
+    &.btn-turquoise, &.btn-success{
+        background-color:$turquoise;
+        color:$default-bg;
+    }
+
+    &.btn-danger{
+        background-color:$danger;
+        color:$default-bg;
+    }
+
+    &.btn-link{
+        background-color: transparent;
+        border: 2px $default-text solid;
+    }
+  }
+
+
+
+
+
+.bc-editing .btn-close {
+    background: $default-bg;
+    border: 1px solid $secondary-bg;
+}
+
+
+@media screen and (min-width: 360px) {
+    .btn.btn-xl{
+        padding: 15px 27px;
+        line-height: 1.2em;
+        border-radius: 30px;
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .btn.btn-xl{
+        padding: 20px 40px;
+        border-radius: 35px;
+        font-size: 110%;
+    }
+}

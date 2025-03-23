@@ -1,9 +1,46 @@
 ##### Modified files per commit
 ```txt
+
+```
+##### 23/03/2025
+```txt
+App_Code\AIS\schedulers\RotaryScheduler.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
 DesktopModules\AIS\OuKiKan\Meetings.html
 DesktopModules\AIS\News Detail\Control.ascx.cs
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\Admin News Liste\News.html
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
+App_Code\AIS\schedulers\MailingScheduler.cs
+App_Code\AIS\schedulers\MeetingScheduler.cs
+App_Code\AIS\schedulers\RotaryMagScheduler.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
+App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\webapi\news\NewsHelper.cs
+App_Code\AIS\DataMapping.cs
+App_Code\AIS\rotary\Rotary.cs
+AIS\Download.aspx.cs
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.news.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBulles.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButton2Imgs.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButtonsBg.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.min.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.scss
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockInfos.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css.map
+Portals\_default\Skins\Rodi2025\*
+
 ```
 ##### 22/02/2025
 ```txt

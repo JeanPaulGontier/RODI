@@ -1,9 +1,15 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 23/03/2025
 - ajout de fonctionnalités sur le module réunions clubs
 	- on peut maintenant filtrer les réunions sur le critère 'prochaines' ou 'passées'
 	- les paramètres de la liste de réunions (type et prochaines/passées) est conservé quand on rentre dans une réunion et qu'on revient sur la liste 
 	- les membres du clubs ne voient maintenant que les réunions futures dont l'inscription est active
 - correction bug de partage réseaux sociaux sur visualisation nouvelles clubs et district
+- ajout d'une sécurité pour empécher la double exécution des traitements liés à la synchro RI > RODI, dans certains cas il pouvait apparaitre 2 fois les membres d'honneurs dans un club
+- Ajout d'un nouveau thème graphique pour l'espace public du district Rodi2025
+	- Le nouveau thème graphique ajoute de le concept de rédacteur de contenu, car un membre n'ayant pas un profil technique peut maintenant saisir du contenu facilement avec une mise en forme préparamétrée par des Graphistes
+	- De nouveaux blocs sont maintenant disponible sur ce thème (Banner, Infos, NewsCards, Bulles, Cards, Boutons)
+	- Le blockcontent est maintenant évolutif
 
 ###### 22/02/2025
 - correction de fausse erreur affichée sur la page d'inscription à une réunion

@@ -1,0 +1,157 @@
+﻿<script type="text/x-template" id="blockbutton2imgs-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+
+            <span class="bc-label">Description :</span>
+            <input type="text" v-model="e.Description" class="form-control" />
+
+            <fieldset>
+                <legend class="bc-label">Image gauche :</legend>
+                <div class="form-control">
+                    <span v-for="(t,i) in imageList">
+                        <label :for="'imageg'+i"><img :src="t" width="120" /></label>
+                        <input type="radio" v-model="e.ImageGauche" name="imageg" :id="'imageg'+i" :value="t" />
+                    </span>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend class="bc-label">Image droite :</legend>
+                <div class="form-control">
+                    <span v-for="(t,i) in imageList">
+                        <label :for="'imaged'+i"><img :src="t" width="120" /></label>
+                        <input type="radio" v-model="e.ImageDroite" name="imaged" :id="'imaged'+i" :value="t" />
+                    </span>
+                </div>
+            </fieldset>
+
+            <span class="bc-label">Couleur :</span>
+            <div class="form-control color-picker">
+                <span v-for="(t,i) in colorsList">
+                    <label :for="'color'+i" :style="{'background-color': t[0],color:t[1]}"> T </label>
+                    <input type="radio" v-model="color" name="color" :id="'color'+i" :value="t" />
+                </span>
+            </div>
+
+            <span class="bc-label">Bouton de navigation :</span>
+            <div class="form-control">
+                <label for="roc0" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="false" name="roc" id="roc0" />Non</label>
+                <label for="roc1" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="true" name="roc" id="roc1" />Oui</label>
+            </div>
+
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Url de destination :</span>
+                <input type="text" v-model="e.Uri.Href" class="form-control" />
+                <div class="form-inline">
+                    <label for="target0" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="" name="target" id="target0" />Même fenêtre</label>
+                    <label for="target1" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="_blank" name="target" id="target1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
+            <div v-if="redirectOnClick">
+                <span class="bc-label">Libellé du bouton :</span>
+                <input type="text" v-model="e.Uri.Label" class="form-control" />
+            </div>
+
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing" >
+            <div class="bg-secondary">
+                <div class="bc-info-2 card-header" v-if="c">
+                    <img :src="c.ImageGauche">
+                    <div>
+                        <h3 :style="{color:c.BGColor}">{{c.Title}}</h3>
+                        <p class="lead pb-4">{{c.Description}}</p>
+
+                        <a v-if="c.Uri" :style="{'background-color': c.BGColor,color:c.Color}" :href="c.Uri.Href" :target="c.Uri.Target" class="btn btn-xl btn-info-2">{{c.Uri.Label}}</a>
+                    </div>
+                    <img :src="c.ImageDroite">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockButton2Imgs == 'undefined')
+    {
+
+        BlockButton2Imgs =  {
+            template: '#blockbutton2imgs-template',
+            name: 'BlockButton2Imgs',
+            props: [
+                'content'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+
+                    redirectOnClick: false,
+                    imageList: BGBUTTON2IMGSIMAGELIST,
+                    colorsList : BGCOLORSLIST,
+                    editing: false,
+                    color:null,
+                    c: {
+
+                                },
+                    fichiers: [],
+                    e: {
+                      
+                    },
+
+
+
+                }
+                        },
+            components: {
+
+            },
+            methods: {
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                    var i = this.colorsList.findIndex(c => c[0] == this.e.BGColor);
+                    if (i > -1)
+                        this.color = this.colorsList[i];
+                    else
+                        this.color = this.colorsList[0];
+                    this.redirectOnClick = this.e.Uri != null;
+                    if(!this.e.Uri)
+                        this.e.Uri = { Href: '', Target: '',Label:'Plus de détail' };
+                },
+                validate() {
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.c.BGColor = this.color[0];
+                    this.c.Color = this.color[1];
+                    if (!this.redirectOnClick)
+                        this.c.Uri = null;
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+
+            },
+            mounted()
+            {
+                this.c = this.content;
+            }
+         }
+    }
+
+
+</script>

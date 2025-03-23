@@ -1,0 +1,96 @@
+.bc-banner{
+    text-align: center;
+
+    h1{
+        font-size:250%;
+        margin:0;
+        font-weight:$font-weight-black;
+    }
+    h2{
+        font-size:120%;
+        margin:0;
+        padding-top:.25em;
+        font-weight:$font-weight-black;
+    }
+    a{color: $default-bg;}
+
+    &.picture{
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height:150px;
+        overflow: hidden;
+        z-index: 3;
+        background: transparent;
+        padding:0;
+    
+        &:after{
+            content:"";
+            height: 60%;
+            background: linear-gradient(0deg,rgba(0,0,0,.7) 0,transparent);
+            bottom: 0;
+            display: block;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            z-index:2;
+        }
+        .banner-pict{
+            z-index:1;
+            position: absolute;
+            height:100%;
+            width:100%;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+
+        .banner-video{
+            z-index:1;
+            position: absolute;
+            overflow: hidden;
+            height:100%;
+            width:100%;
+        }
+    }
+
+    section{
+        z-index: 4;
+        font-family: $sans-serif;
+
+        p{
+            font-size:120%;
+            text-transform: uppercase;
+            padding:1em 2em;
+            line-height: 1.2em;
+        }
+
+        a{margin-bottom:1em;}
+    }
+}
+
+@media screen and (min-width: 360px) {
+    .bc-banner{
+        h1{font-size:300%;}
+        h2{font-size:150%;}
+        &.picture {min-height:200px;}
+    }
+}
+
+
+@media screen and (min-width: 480px) {
+    .bc-banner{
+        h1{font-size:380%;}
+        h2{font-size: 250%;}
+        &.picture {min-height:250px;}
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .bc-banner{
+        h1{font-size:650%;}
+        h2{font-size: 400%;}
+        &.picture {min-height:480px;}
+        section p{font-size: 150%;padding:1em 4em;}
+    }
+}

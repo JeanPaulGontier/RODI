@@ -2,10 +2,10 @@
     <div v-for="(b,index) in blocks" v-if="blocks" :class="{'bc-dotted': editable}">
         <div class="bc-buttonBar" v-if="editing==-1 && editable">
             <button type="button" v-on:click="deleteBlock(index)" class="btn btn-xs btn-warning" title="Supprimer"><i class="fa fa-trash-o"></i></button>
-            <button type="button" v-if="index>0" v-on:click="firstBlock(index)" class="btn btn-default btn-xs" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
-            <button type="button" v-if="index>0" v-on:click="upBlock(index)" class="btn btn-default btn-xs" title="Monter"><i class="fa fa-angle-up"></i></button>
-            <button type="button" v-if="index<blocks.length-1" v-on:click="downBlock(index)" class="btn btn-default btn-xs" title="Descendre"><i class="fa fa-angle-down"></i></button>
-            <button type="button" v-if="index<blocks.length-1" v-on:click="lastBlock(index)" class="btn btn-default btn-xs" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
+            <button type="button" v-if="index>0" v-on:click="firstBlock(index)" class="btn btn-link btn-xs" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
+            <button type="button" v-if="index>0" v-on:click="upBlock(index)" class="btn btn-link btn-xs" title="Monter"><i class="fa fa-angle-up"></i></button>
+            <button type="button" v-if="index<blocks.length-1" v-on:click="downBlock(index)" class="btn btn-link btn-xs" title="Descendre"><i class="fa fa-angle-down"></i></button>
+            <button type="button" v-if="index<blocks.length-1" v-on:click="lastBlock(index)" class="btn btn-link btn-xs" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
             <button type="button" v-on:click="editBlock(index)" class="btn btn-info btn-xs">Editer</button>
         </div>
 
@@ -23,7 +23,7 @@
     <div v-if="!adding && editable" style="text-align:center">
         <button type="button" class="btn btn-info" v-on:click="adding=true">Ajouter un bloc</button>
     </div>
-    <div v-if="adding && editable" class="bc-editing" v-show="editable">
+    <div v-if="adding && editable" class="bc-editing m-2" v-show="editable">
         <h3>Choisir le type de bloc à ajouter</h3>
         <button type="button" v-on:click="adding=false" class="btn btn-close"><i class="fa fa-times"></i></button>
         <div class="bc-buttonBar">
@@ -32,6 +32,15 @@
             <button type="button" class="btn btn-primary" v-on:click="addBlock('ImageCollection')">Liste d'images</button>
             <button type="button" class="btn btn-primary" v-on:click="addBlock('Video')">Vidéo</button>
             <button type="button" class="btn btn-primary" v-on:click="addBlock('Raw')">Contenu HTML</button>
+        </div>
+        <div class="bc-buttonBar" v-if="evo">
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('Banner')">Bannière</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('NewsCards')">Nouvelles</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('Infos')">Infos</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('Bulles')">Bulles</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('Cards')">Cartes</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('Button2Imgs')">Bouton 2 Images</button>
+            <button type="button" class="btn btn-primary" v-on:click="addBlock('ButtonsBg')">Boutons avec fond</button>
         </div>
     </div>
 </script>
@@ -49,12 +58,15 @@
                 'changed'
             ],
             components: {
-                BlockImageText, BlockImageCollection, BlockFileCollection, BlockRaw, BlockVideo
+                BlockImageText, BlockImageCollection, BlockFileCollection, BlockRaw, BlockVideo,
+                BlockBanner, BlockNewsCards, BlockInfos, BlockBulles, BlockCards, BlockButton2Imgs, BlockButtonsBg
             },
             data() {
                 return {
                     adding: false,
-                    editing: -1
+                    editing: -1,
+                    thumbnail: BGTHUMBNAIL,
+                    evo: BGEVO
                 }
             },
             methods: {
@@ -78,7 +90,151 @@
                             this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Type: 'youtube', Url: '' } });
                             break;
 
-
+                        case 'Banner':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'Notre District',
+                                    Title2: 'Rotary International',
+                                    Title3: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
+                                    Type: 1,
+                                    BGColor: BGCOLORSLIST[0, 0],
+                                    Color: BGCOLORSLIST[0][1],
+                                    Image: BGBANNERIMAGELIST[0]
+                                }
+                            });
+                            break;
+                        case 'NewsCards':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'Nouvelles',
+                                    Description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
+                                    District: true,
+                                    Clubs: true,
+                                    Next: true,
+                                    Tags_Included: '',
+                                    Tags_Excluded: 'Bulletin',
+                                    Uri_District: { Href: BGDISTRICTNEWSURL, Target: '' },
+                                    Uri_Clubs: { Href: BGCLUBSNEWSURL, Target: '' },
+                                    Color: BGCOLORSLIST[0][0]
+                                }
+                            });
+                            break;
+                        case 'Infos':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'Titre',
+                                    Title2: 'Sous titre',
+                                    Counter1: 1,
+                                    Label1: 'Un',
+                                    Counter2: 2,
+                                    Label2: 'Deux',
+                                    Counter3: 3,
+                                    Label3: 'Trois',
+                                    Image: BGINFOSIMAGELIST[0]
+                                }
+                            });
+                            break;
+                        case 'Bulles':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: "Aucun défi n'est trop grand pour nous",
+                                    List: [
+                                        {
+                                            Image: BGBULLESIMAGELIST[0],
+                                            Uri: { Href:'https://www.rotary.org/fr/our-causes/fighting-disease', Target:'_blank',Label:'Lutter contre les maladies'}
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[1],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/providing-clean-water', Target: '_blank', Label: 'Approvisionner en eau propre' }
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[2],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/growing-local-economies', Target: '_blank', Label: 'Développer les économies locales' }
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[3],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/protecting-environment', Target: '_blank', Label: "Protéger l'environnement" }
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[4],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/saving-mothers-and-children', Target: '_blank', Label: 'Sauver des mères et des enfants' }
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[5],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/promoting-peace', Target: '_blank', Label: 'Promouvoir la paix' }
+                                        },
+                                        {
+                                            Image: BGBULLESIMAGELIST[6],
+                                            Uri: { Href: 'https://www.rotary.org/fr/our-causes/supporting-education', Target: '_blank', Label: "Soutenir l'éducation" }
+                                        }
+                                    ]
+                                }
+                            });
+                            break;
+                        case 'Cards':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'LE ROTARY ET LA JEUNESSE',
+                                    Description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa a. Cum sociis natoque penatibus et magnis dis parturient montes.',
+                                    BGColor: BGCOLORSLIST[1][0],
+                                    Color: BGCOLORSLIST[1][1],
+                                    List: [
+                                        {
+                                            Title: 'les clubs interact',
+                                            Title2: 'pour les 12-18 ans',
+                                            Image: BGCARDSIMAGELIST[0],
+                                            Uri: { Href: 'https://www.rotary.org/fr/get-involved/interact-clubs', Target: '_blank', Label: 'en savoir plus' }                                            
+                                        },
+                                        {
+                                            Title: 'les clubs rotaract',
+                                            Title2: 'pour les 18-30 ans',
+                                            Image: BGCARDSIMAGELIST[1],
+                                            Uri: { Href: 'https://www.rotary.org/fr/get-involved/rotaract-clubs', Target: '_blank', Label: 'en savoir plus' }
+                                        }
+                                    ]
+                                }
+                            });
+                            break;
+                        case 'Button2Imgs':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'LA FONDATION ROTARY',
+                                    Description: "La Fondation Rotary transforme vos dons en actions durables qui changent le quotidien de milliers de personnes aussi bien près de vous qu'à l'autre bout du monde.",
+                                    Uri: { Href: 'https://www.rotary.org/fr/about-rotary/rotary-foundation', Target: '_blank', Label: 'comment ca marche ?' },
+                                    ImageGauche: BGBUTTON2IMGSIMAGELIST[0],
+                                    ImageDroite: BGBUTTON2IMGSIMAGELIST[1],
+                                    BGColor: BGCOLORSLIST[6][0],
+                                    Color: BGCOLORSLIST[6][1],
+                                }
+                            });
+                            break;
+                        case 'ButtonsBg':
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: "ENVIE DE PASSER A L'ACTION ?",
+                                    Title2: "Rejoignez-nous",
+                                    BGColor: BGCOLORSLIST[3][0],
+                                    Color: BGCOLORSLIST[3][1],
+                                    List: [
+                                        {
+                                            Href: 'https://www.rotary.org/fr/get-involved/join',
+                                            Target: '_blank',
+                                            Label:'DEVENIR MEMBRE'
+                                        },
+                                        {
+                                            Href: 'https://my.rotary.org/fr/club-search?meetingLocationRange=25&clubName=cannes&distance=25',
+                                            Target: '_blank',
+                                            Label: 'LOCALISER UN CLUB'
+                                        },
+                                        {
+                                            Href: 'https://www.rotary.org/fr/get-involved/ways-to-give',
+                                            Target: '_blank',
+                                            Label: 'FAIRE UN DON'
+                                        }
+                                    ]                                    
+                                }
+                            });
+                            break;
                     }
                     this.adding = false;
                     this.$nextTick(()=>this.editBlock(this.blocks.length - 1));
@@ -118,8 +274,6 @@
                 onChange() {
                     this.editing = -1;
                     this.$emit('changed', this.blocks);
-
-
 
                 }
 
