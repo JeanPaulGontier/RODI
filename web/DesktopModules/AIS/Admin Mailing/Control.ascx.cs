@@ -857,7 +857,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         TXT_Titre.Text = "";
         TXT_Dt.Text = DateTime.Now.ToString("yyyy-MM-dd");
         if (mode == "district")
-            TXT_Editor.Text = "<p>votre message ici...<p><hr/><p><img src='/portals/_default/skins/rodi2017/images/rotary-district"+Const.DISTRICT_ID+".png' style='width:200px'></p><p><em>"+Const.DISTRICT_TITLE+"<br/><a href='"+Const.DISTRICT_URL+"'>"+Const.DISTRICT_URL+"</a></em></p>";
+            TXT_Editor.Text = "<p>votre message ici...<p><hr/><p><img src='"+Const.DISTRICT_URL+"/portals/_default/skins/rodi2017/images/rotary-district"+Const.DISTRICT_ID+".png' style='width:200px'></p><p><em>"+Const.DISTRICT_TITLE+"<br/><a href='"+Const.DISTRICT_URL+"'>"+Const.DISTRICT_URL+"</a></em></p>";
         else
             TXT_Editor.Text = "";
         CHK_Bureau_Pres.Checked = false;
