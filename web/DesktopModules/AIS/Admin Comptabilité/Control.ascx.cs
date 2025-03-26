@@ -64,19 +64,12 @@
 using DotNetNuke.Common.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
+
 using System.Web.UI.WebControls;
 using AIS;
 using DotNetNuke.Entities.Modules;
-using System.IO;
-using System.Drawing;
-using Telerik.Web.UI;
 using System.Data;
-using System.Data.SqlClient;
-using Argotic.Extensions.Core;
-using DNN.Modules.SecurityAnalyzer.Components.Checks;
+
 
 public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModuleBase
 {
