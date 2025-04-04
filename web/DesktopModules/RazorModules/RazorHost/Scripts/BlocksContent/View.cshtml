@@ -450,7 +450,8 @@
                 Block.Bulles bu = (Block.Bulles)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Bulles));
 
                 <div class="bc-bulles" >
-                    <h5 data-aos="fade-up">Aucun défi n'est trop grand pour nous</h5><!-- titre-->
+                    <h5 data-aos="fade-up">@bu.Title</h5>
+                    <pre>@bu.Description</pre>
                     <div class="circle-list content-wrapper" >
                         <div class="side-list">
                             <a href="@bu.List[5].Uri.Href" data-aos="fade-up" target="@bu.List[5].Uri.Target" class="causes-link">
@@ -505,7 +506,7 @@
                 <div class="content-wrapper cards-col-@car.List.Count">
                     <div class="card-header">                            
                         <h3 style="color:@car.BGColor">@car.Title</h3>
-                        <p class="lead">@car.Description</p>
+                        <pre class="lead">@car.Description</pre>
                     </div>
 
                     <div class="row centered">
@@ -513,7 +514,10 @@
                         {
                             <div class="transparent-card">
                                 <img src="@card.Image" alt="@card.Title">
-                                <div class="news-title">@card.Title<br />@card.Title2</div>
+                                <div class="news-title">
+                                    <span>@card.Title</span>
+                                    <pre>@card.Description</pre>
+                                </div>
                                 @if (card.Uri != null)
                                 {
                                     <a href="@card.Uri.Href" target="@card.Uri.Target" style="background-color:@car.BGColor;color:@car.Color" class="btn btn-xl">@card.Uri.Label</a>

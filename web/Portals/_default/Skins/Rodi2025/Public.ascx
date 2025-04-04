@@ -9,8 +9,8 @@
 <%@ Register TagPrefix="dnn" TagName="CONTROLPANEL" Src="~/Admin/Skins/controlpanel.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
-<%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/Menu.ascx" %>
-
+<%@ Register TagPrefix="ais" TagName="MENU" Src="~/Portals/_default/Skins/Rodi2025/Controls/Menu.ascx" %>
+<ais:MENU runat="server" ID="Menu2025"/>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
@@ -61,7 +61,7 @@
       <% End If%>
 
       <%If Request.IsAuthenticated Then%>
-          <span class="user-m"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></span>
+          <span class="user-m"><% Response.Write("Bienvenue " + Entities.Users.UserController.Instance.GetCurrentUserInfo().DisplayName) %></span>
           <div class="info-text">
             <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="ais-info-link"><i class="fa-regular fa-circle-user"></i> Mon profil</a> | 
             <a href="/Espace-Membre" title="Espace membres" class="ais-info-link"><i class="fa-solid fa-people-group"></i> Espace Membre</a> | 
@@ -85,22 +85,23 @@
       <% End If%>
 
       <%If Request.IsAuthenticated Then%>
-          <span class="user-m"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></span> | 
+          <span class="user-m"><% Response.Write("Bienvenue " + Entities.Users.UserController.Instance.GetCurrentUserInfo().DisplayName) %></span> | 
           <a href="/Espace-Membre/Mon-profil" title="Mon profil"><i class="fa-regular fa-circle-user"></i> Mon profil</a> | 
           <a href="/Espace-Membre" title="Espace membres"><i class="fa-solid fa-people-group"></i> Espace Membre</a> |
           <a href="/logoff" title="Déconnexion">Déconnexion <i class="fa-solid fa-power-off"></i></a>
       <% End If%>
     </div>
 
-    <div class="row-fluid">
-      <dnn:LOGO runat="server" ID="LOGO1" CssClass="logo-style"/>
-      <ais:MENU runat="server" ID="MENU1" />
+    <dnn:LOGO runat="server" ID="LOGO1" CssClass="logo-style"/>
+
+    <div class="menu-bar">
+      <div class="content-wrapper"><ais:MENU runat="server" ID="MENU1"/></div>
     </div>
   </header>
 </div>
 
 
-<section runat="server" id="ContentPane"></section>
+<section runat="server" id="ContentPane" class="content-pane"></section>
 
 
 <footer>

@@ -318,6 +318,7 @@ namespace AIS
             public static readonly string THUMBNAIL = "/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/bulles.jpg";
 
             public string Title { get; set; }
+            public string Description { get; set; }
 
             public Bulle[] List { get; set; }
 
@@ -362,7 +363,7 @@ namespace AIS
             {
                 public string Image { get; set; }
                 public string Title { get; set; }
-                public string Title2 { get; set; }
+                public string Description { get; set; }
                 public Uri Uri { get; set; }
             }
         }

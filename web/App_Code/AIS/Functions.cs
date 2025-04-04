@@ -272,7 +272,12 @@ namespace AIS
                 Member member = GetCurrentMember();
                 if (member != null)
                 {
-                    if (!DataMapping.IsMemberInRole(member.id, Const.ROLE_ADMIN_DISTRICT) && !DataMapping.IsMemberInRole(member.id, Const.ADMIN_ROLE) && !DataMapping.IsMemberInRole(member.id, Const.ROLE_ADMIN_ROTARACT) && !DataMapping.isADG(member.id))
+                    if ((   !DataMapping.IsMemberInRole(member.id, Const.ROLE_ADMIN_DISTRICT) && 
+                            !DataMapping.IsMemberInRole(member.id, Const.ADMIN_ROLE) && 
+                            !DataMapping.IsMemberInRole(member.id, Const.ROLE_ADMIN_ROTARACT) && 
+                            !DataMapping.isADG(member.id) && 
+                            !DataMapping.IsMemberInRole(member.id, Const.ROLE_FORMATEUR_CLUBS))
+                       || HttpContext.Current.Session["Club"] == null)
                     {
                         Club club = DataMapping.GetClub(member.cric);
                         HttpContext.Current.Session["Club"] = club;

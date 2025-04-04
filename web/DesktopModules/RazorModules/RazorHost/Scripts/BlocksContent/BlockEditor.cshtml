@@ -20,7 +20,7 @@
         </component>
 
     </div>
-    <div v-if="!adding && editable" style="text-align:center">
+    <div v-if="!adding && editable" style="text-align:center" class="my-2">
         <button type="button" class="btn btn-info" v-on:click="adding=true">Ajouter un bloc</button>
     </div>
     <div v-if="adding && editable" class="bc-editing m-2" v-show="editable">
@@ -138,6 +138,7 @@
                             this.blocks.push({
                                 Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
                                     Title: "Aucun défi n'est trop grand pour nous",
+                                    Description: "Depuis plus d'un siècle, nous avons rapproché les cultures et relié les continents. Nous défendons la paix, combattons l'analphabétisme et la pauvreté, aidons les gens à avoir accès à l'eau potable et à l'assainissement, et luttons contre les maladies. Notre nouvelle cause est la protection de la planète et de ses ressources.",
                                     List: [
                                         {
                                             Image: BGBULLESIMAGELIST[0],
@@ -181,13 +182,13 @@
                                     List: [
                                         {
                                             Title: 'les clubs interact',
-                                            Title2: 'pour les 12-18 ans',
+                                            Description: 'pour les 12-18 ans',
                                             Image: BGCARDSIMAGELIST[0],
                                             Uri: { Href: 'https://www.rotary.org/fr/get-involved/interact-clubs', Target: '_blank', Label: 'en savoir plus' }                                            
                                         },
                                         {
                                             Title: 'les clubs rotaract',
-                                            Title2: 'pour les 18-30 ans',
+                                            Description: 'pour les 18-30 ans',
                                             Image: BGCARDSIMAGELIST[1],
                                             Uri: { Href: 'https://www.rotary.org/fr/get-involved/rotaract-clubs', Target: '_blank', Label: 'en savoir plus' }
                                         }

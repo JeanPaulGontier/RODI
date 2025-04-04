@@ -1,5 +1,16 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\Const.cs
+App_Code\AIS\Functions.cs
+DesktopModules\AIS\Admin Club Selecteur\Control.ascx.cs
+DesktopModules\AIS\Admin Club Selecteur\Settings.ascx.cs
+App_Code\AIS\Block.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBulles.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+
+Portals\_default\Skins\Rodi2025\*
 
 ```
 ##### 23/03/2025

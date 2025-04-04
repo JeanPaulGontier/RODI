@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2021
-// by SAS AIS : http://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -75,24 +75,6 @@ using DotNetNuke.Security.Roles;
 
 public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
 {
-    DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
-
-    
-    int Clubtabid
-    {
-        get
-        {
-            int t = 0;
-            int.TryParse("" + Settings["clubtabid"], out t);
-            return t;
-        }
-    }
-
-    /// <summary>
-    /// Récupère les données nécessaires et les affiche
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
         if (IsPostBack)
@@ -113,7 +95,7 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
 
 
         List<Club> clubs = new List<Club>();
-        if(UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+        if(UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || UserInfo.IsInRole(Const.ROLE_FORMATEUR_CLUBS))
         {
             clubs = DataMapping.ListClubs(sort: "name asc");
         }
@@ -198,33 +180,12 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur : PortalModuleBase
         foreach (Club c in clubs)
             DL_Clubs.Items.Add(new ListItem(c.name, "" + c.cric));
         if(Functions.CurrentClub!=null)
-            DL_Clubs.SelectedValue = "" + Functions.CurrentClub.cric;
-
-        //if (UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
-        //{
-        //    BT_Ajouter.Visible = true;
-        //}
+            DL_Clubs.SelectedValue = "" + Functions.CurrentClub.cric;     
     }
 
     protected void DL_Clubs_SelectedIndexChanged(object sender, EventArgs e)
     {
         Response.Redirect("" + Request.Url);
     }
-
-    /// <summary>
-    /// Redirige vers la page de création de club
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-   /* protected void BT_Ajouter_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            Response.Redirect(Globals.NavigateURL(Clubtabid) + "?ref=new");
-        }
-        catch (Exception ee)
-        {
-            Functions.Error(ee);
-        }
-    }*/
+    
 }

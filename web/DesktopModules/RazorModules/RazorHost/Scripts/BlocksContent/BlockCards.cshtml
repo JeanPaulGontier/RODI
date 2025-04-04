@@ -6,7 +6,7 @@
             <span class="bc-label">Titre :</span>
             <input type="text" v-model="e.Title" class="form-control" />
             <span class="bc-label">Description :</span>
-            <input type="text" v-model="e.Description" class="form-control" />
+            <textarea rows="3" v-model="e.Description" class="form-control" ></textarea>
 
             <span class="bc-label">Couleur :</span>
             <div class="form-control color-picker">
@@ -25,8 +25,8 @@
                 </div>
 
                 <div>
-                    <small>Sous&nbsp;titre</small>
-                    <input type="text" v-model="n.Title2" class="form-control" />
+                    <small>Description</small>
+                    <textarea rows="3" v-model="n.Description" class="form-control"></textarea>
                 </div>
 
                 <small>Image</small>
@@ -66,13 +66,16 @@
             <div class="content-wrapper" :class="cardsClass()">
                 <div class="card-header">                      
                     <h3 :style="{color:c.BGColor}">{{c.Title}}</h3>
-                    <p class="lead">{{c.Description}}</p>
+                    <pre class="lead">{{c.Description}}</pre>
                 </div>
 
                 <div class="row centered" v-if="c.List">
                     <div class="transparent-card" v-for="i in c.List">
                         <img :src="i.Image" :alt="i.Title">
-                        <div class="news-title">{{i.Title}}<br />{{i.Title2}}</div>
+                        <div class="news-title">
+                            <span>{{i.Title}}</span>
+                            <pre>{{i.Description}}</pre>
+                        </div>
 
                         <a v-if="i.Uri" :style="{'background-color': c.BGColor,color:c.Color}" :href="i.Uri.Href" :target="i.Uri.Target" class="btn btn-xl">{{i.Uri.Label}}</a>
                     </div>

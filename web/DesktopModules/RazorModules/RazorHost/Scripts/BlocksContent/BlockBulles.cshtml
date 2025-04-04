@@ -5,6 +5,8 @@
 
             <span class="bc-label">Titre :</span>
             <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Description :</span>
+            <textarea rows="3" v-model="e.Description" class="form-control" ></textarea>
 
             <fieldset v-for="(n,j) in 7">
                 <legend class="bc-label">Bulle n°{{n}} :</legend>
@@ -38,7 +40,8 @@
 
 
         <div class="bc-bulles" v-if="!editing">
-            <h5>Aucun défi n'est trop grand pour nous</h5>
+            <h5>{{c.Title}}</h5>
+            <pre>{{c.Description}}</pre>
             <div class="circle-list content-wrapper" v-if="c.List">
                 <div class="side-list">
                     <a :href="c.List[5].Uri.Href" :target="c.List[5].Uri.Target" class="causes-link">

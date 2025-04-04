@@ -73,20 +73,15 @@ using System.Web.UI.WebControls;
 
 public partial class DesktopModules_AIS_Admin_Club_Selecteur_Settings : ModuleSettingsBase
 {
-    /// <summary>
-    /// Au chargement de la page, crée les données nécessaires au paramétrage de la page principale
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.IsPostBack)
             return;
 
-        DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();       
+        ModuleController objModules = new ModuleController();       
 
         int tabid_Club = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["clubtabid"], out tabid_Club);
+        int.TryParse("" + Settings["clubtabid"], out tabid_Club);
         Tab_club.DataTextField = "Text";
         Tab_club.DataValueField = "Value";
         Tab_club.DataSource = Functions.GetListItemsFromTabs(tabid_Club);
@@ -101,7 +96,7 @@ public partial class DesktopModules_AIS_Admin_Club_Selecteur_Settings : ModuleSe
     {
         base.UpdateSettings();
 
-        DotNetNuke.Entities.Modules.ModuleController objModules3 = new DotNetNuke.Entities.Modules.ModuleController();
+        ModuleController objModules3 = new ModuleController();
         objModules3.UpdateModuleSetting(ModuleId, "clubtabid", Tab_club.SelectedValue);
     }
 }
