@@ -9,6 +9,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBulles.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Usage_Stats.cshtml
 
 Portals\_default\Skins\Rodi2025\*
 

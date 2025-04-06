@@ -1,0 +1,74 @@
+﻿@using AIS
+@using System.Text
+@using System.Threading.Tasks
+@using DotNetNuke.Services.FileSystem
+@using DotNetNuke.Entities.Tabs
+@using DotNetNuke.Entities.Modules
+@using DotNetNuke.Entities.Modules.Definitions
+@{
+    var clubs = DataMapping.ListClubs();
+
+
+    <table class="table table-striped">
+        <tr>
+            <td>Club</td>
+            <td>Documents (Mo)</td>
+            <td>Nouvelles</td>
+            <td>Plus récente</td>
+            <td>Mailing</td>
+            <td>Plus récent</td>
+            <td>Réunions</td>
+            <td>Plus récente</td>
+
+        </tr>
+        @foreach (var club in clubs)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes("documents:" + club.cric);
+            string url = Functions.CalculateMD5Hash(bytes);
+
+
+            string folderPath = Server.MapPath("/portals/0/Clubs/Documents/" + url + "/Documents/");
+
+
+            string nbNews=""+ Yemon.dnn.DataMapping.ExecSqlScalar("select count(*) from " + Const.TABLE_PREFIX + "news where cric=" + club.cric);
+            string dtNewsLast = "" + Yemon.dnn.DataMapping.ExecSqlScalar("select top 1 dt from " + Const.TABLE_PREFIX + "news where cric=" + club.cric +" order by dt desc");
+            if(dtNewsLast!="")
+            {
+                dtNewsLast = DateTime.Parse(dtNewsLast).ToShortDateString();
+            }
+            string nbMailing = "" + Yemon.dnn.DataMapping.ExecSqlScalar("select count(*) from " + Const.TABLE_PREFIX + "mailings where cric=" + club.cric);
+            string dtMailingsLast = "" + Yemon.dnn.DataMapping.ExecSqlScalar("select top 1 dt from " + Const.TABLE_PREFIX + "mailings where cric=" + club.cric + " order by dt desc");
+            if (dtMailingsLast != "")
+            {
+                dtMailingsLast = DateTime.Parse(dtMailingsLast).ToShortDateString();
+            }
+            string nbReunions = "" + Yemon.dnn.DataMapping.ExecSqlScalar("select count(*) from " + Const.TABLE_PREFIX + "meetings where cric=" + club.cric);
+            string dtReunionsLast = "" + Yemon.dnn.DataMapping.ExecSqlScalar("select top 1 dtrevision from " + Const.TABLE_PREFIX + "meetings where cric=" + club.cric + " order by dtrevision desc");
+            if (dtReunionsLast != "")
+            {
+                dtReunionsLast = DateTime.Parse(dtReunionsLast).ToShortDateString();
+            }
+        <tr>
+            <td>@club.name</td>
+            <td>@DirSize(folderPath)</td>
+            <td>@nbNews</td>
+            <td>@dtNewsLast</td>
+            <td>@nbMailing</td>
+            <td>@dtMailingsLast</td>
+            <td>@nbReunions</td>
+            <td>@dtReunionsLast</td>
+        </tr>
+        }
+    </table>
+}
+
+@functions{ 
+    public string DirSize(string folderPath)
+    {
+        DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
+        long dirSize = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length)/1024/1024;
+        return dirSize>0?""+dirSize:"";
+    }
+
+}
+
