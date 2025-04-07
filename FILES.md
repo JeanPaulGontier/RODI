@@ -10,6 +10,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_Usage_Stats.cshtml
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 
 Portals\_default\Skins\Rodi2025\*
 

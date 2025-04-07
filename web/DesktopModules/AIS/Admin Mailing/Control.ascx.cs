@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2024
-// by SAS AIS : https://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -149,7 +149,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             int annee_0 = Functions.GetRotaryYear();
             // Member du DISTRICT
             UserInfo ui = PortalSettings.UserInfo;
-            if ((ui.IsInRole(Const.ROLE_ADMIN_DISTRICT) == true ||
+            if (ui.IsAdmin ||
+                ui.IsSuperUser ||
+                (ui.IsInRole(Const.ROLE_ADMIN_DISTRICT) == true ||
                 ui.IsInRole(Const.ROLE_ADMIN_ROTARACT) == true) && 
                 mode=="district")
             {
@@ -160,7 +162,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                 {
                     // Peuplement des roles
                     RoleController ObjRoleController = new RoleController();
-                    var arrRoles = ObjRoleController.GetRoles();
+                    var arrRoles = ObjRoleController.GetRoles(PortalId);
                     foreach (RoleInfo c in arrRoles)
                     {
                         if (c.RoleID > 4)
@@ -180,33 +182,33 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     CHK_AR_0.Text = "&nbsp;" + annee_0 + "/" + (annee_0 + 1);
                     CHK_AR_1.Text = "&nbsp;" + (annee_0 + 1) + "/" + (annee_0 + 2);
                   
-                    // Peuplement du filtre departemental
-                    List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
-                    RB_Role_Dept.Items.Clear();
-                    var counts =
-                    from c in clubs
-                    orderby c.zip
-                    group c by ((c.zip + "  ").Substring(0, 2).Replace("04", "06")).Trim() into g
-                    select new { Cp = g.Key, Count = g.Count() };
-                    RB_Role_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
-                    foreach (var o in counts)
-                    {
-                        switch (o.Cp)
-                        {
-                            case "06":
-                                RB_Role_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
-                                break;
-                            case "20":
-                                RB_Role_Dept.Items.Add(new ListItem("Corse", o.Cp));
-                                break;
-                            case "83":
-                                RB_Role_Dept.Items.Add(new ListItem("Var", o.Cp));
-                                break;
-                            case "98":
-                                RB_Role_Dept.Items.Add(new ListItem("Monaco", o.Cp));
-                                break;
-                        }
-                    }
+                //    // Peuplement du filtre departemental
+                //    List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
+                //    RB_Role_Dept.Items.Clear();
+                //    var counts =
+                //    from c in clubs
+                //    orderby c.zip
+                //    group c by ((c.zip + "  ").Substring(0, 2).Replace("04", "06")).Trim() into g
+                //    select new { Cp = g.Key, Count = g.Count() };
+                //    RB_Role_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
+                //    foreach (var o in counts)
+                //    {
+                //        switch (o.Cp)
+                //        {
+                //            case "06":
+                //                RB_Role_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
+                //                break;
+                //            case "20":
+                //                RB_Role_Dept.Items.Add(new ListItem("Corse", o.Cp));
+                //                break;
+                //            case "83":
+                //                RB_Role_Dept.Items.Add(new ListItem("Var", o.Cp));
+                //                break;
+                //            case "98":
+                //                RB_Role_Dept.Items.Add(new ListItem("Monaco", o.Cp));
+                //                break;
+                //        }
+                //    }
                 }
 
                 // Custum image manager
@@ -241,35 +243,35 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                 //    {
                 Panel_Club.Visible = true;
 
-                if (IsPostBack == false)
-                {
-                    List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
-                    RB_Dept.Items.Clear();
-                    var counts =
-                    from c in clubs
-                    orderby c.zip
-                    group c by ((c.zip+"  ").Substring(0, 2).Replace("04", "06")).Trim() into g
-                    select new { Cp = g.Key, Count = g.Count() };
-                    RB_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
-                    foreach (var o in counts)
-                    {
-                        switch (o.Cp)
-                        {
-                            case "06":
-                                RB_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
-                                break;
-                            case "20":
-                                RB_Dept.Items.Add(new ListItem("Corse", o.Cp));
-                                break;
-                            case "83":
-                                RB_Dept.Items.Add(new ListItem("Var", o.Cp));
-                                break;
-                            case "98":
-                                RB_Dept.Items.Add(new ListItem("Monaco", o.Cp));
-                                break;
-                        }
-                    }
-                }
+                //if (IsPostBack == false)
+                //{
+                    //List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
+                    //RB_Dept.Items.Clear();
+                    //var counts =
+                    //from c in clubs
+                    //orderby c.zip
+                    //group c by ((c.zip+"  ").Substring(0, 2).Replace("04", "06")).Trim() into g
+                    //select new { Cp = g.Key, Count = g.Count() };
+                    //RB_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
+                    //foreach (var o in counts)
+                    //{
+                    //    switch (o.Cp)
+                    //    {
+                    //        case "06":
+                    //            RB_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
+                    //            break;
+                    //        case "20":
+                    //            RB_Dept.Items.Add(new ListItem("Corse", o.Cp));
+                    //            break;
+                    //        case "83":
+                    //            RB_Dept.Items.Add(new ListItem("Var", o.Cp));
+                    //            break;
+                    //        case "98":
+                    //            RB_Dept.Items.Add(new ListItem("Monaco", o.Cp));
+                    //            break;
+                    //    }
+                    //}
+                //}
 
                
                 //string filename_Img = Functions.ClearFileName(@"~/Portals/0/Clubs/" + Functions.CurrentClub.seo + "/Images"); //Documents
@@ -303,7 +305,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
             else if (mode == "district")
             {
-                Functions.CurrentClub = null;
+                //Functions.CurrentClub = null;
                 lbl_noClubSelected.Visible = false;
             }
             else
@@ -649,25 +651,27 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         List<Newsletter> news = new List<Newsletter>();
         if(mode=="club")
         {
-            if (Functions.CurrentCric == 0 && DataMapping.isADG())
-            {
-                List<Domain> listeDom = DataMapping.GetListDomain("ADG", "");
-                foreach (Domain dom in listeDom)
-                {
-                    if (UserInfo.IsInRole(dom.subdomain))
-                    {
-                        foreach (Newsletter newsletter in DataMapping.ListNewsletters(cric: int.Parse(dom.value), index: GridView1.PageIndex, max: GridView1.PageSize))
-                        {
-                            news.Add(newsletter);
-                        }
+          //  if (Functions.CurrentCric == 0 && DataMapping.isADG())
+            //if (Functions.CurrentCric == 0 )
+            //{
+                
+                //List<Domain> listeDom = DataMapping.GetListDomain("ADG", "");
+                //foreach (Domain dom in listeDom)
+                //{
+                //    if (UserInfo.IsInRole(dom.subdomain))
+                //    {
+                //        foreach (Newsletter newsletter in DataMapping.ListNewsletters(cric: int.Parse(dom.value), index: GridView1.PageIndex, max: GridView1.PageSize))
+                //        {
+                //            news.Add(newsletter);
+                //        }
 
-                    }
-                }
-            }
-            else
-            {
+                //    }
+                //}
+            //}
+            //else
+            //{
                 news = DataMapping.ListNewsletters(cric: Functions.CurrentCric, index: GridView1.PageIndex, max: GridView1.PageSize);
-            }
+            //}
         }
         else
         {
@@ -704,7 +708,10 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         List<Member> La_List = new List<Member>();
 
         UserInfo ui = PortalSettings.UserInfo;
-        if ((ui.IsInRole(Const.ROLE_ADMIN_DISTRICT) || ui.IsInRole(Const.ROLE_ADMIN_ROTARACT)) == true && Functions.CurrentCric == 0)
+        if (mode=="district" ||
+            ui.IsAdmin ||
+            ui.IsSuperUser ||
+            (ui.IsInRole(Const.ROLE_ADMIN_DISTRICT) || ui.IsInRole(Const.ROLE_ADMIN_ROTARACT)) == true )
         {
             La_List = Recherche_District(out param);
         }
@@ -811,7 +818,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         }
         else
         {
-            Functions.MessageBoxShow("La liste des destinataires est null", this);
+            Functions.MessageBoxShow("La liste des destinataires est vide", this);
         }
 
 
@@ -1078,11 +1085,11 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         List<Member> List_Secretaire = new List<Member>();
 
         string dept = "";
-        if (RB_Dept.SelectedIndex > 0)
-        {
-            dept = "'" + RB_Dept.SelectedValue.Replace("06", "06','04") + "'"; // contournement du club qui est dans le 04
-            parametres = parametres + ";D:" + dept;
-        }
+        //if (RB_Dept.SelectedIndex > 0)
+        //{
+        //    dept = "'" + RB_Dept.SelectedValue.Replace("06", "06','04") + "'"; // contournement du club qui est dans le 04
+        //    parametres = parametres + ";D:" + dept;
+        //}
 
         int annee_0 = Functions.GetRotaryYear();
 
@@ -1271,12 +1278,12 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             }
         }
 
-        string dept = "";
-        if (RB_Role_Dept.SelectedIndex > 0)
-        {
-            dept = "'" + RB_Role_Dept.SelectedValue.Replace("06", "06','04") + "'"; // contournement du club qui est dans le 04
-            parametres = parametres + ";D:" + dept;
-        }
+        //string dept = "";
+        //if (RB_Role_Dept.SelectedIndex > 0)
+        //{
+        //    dept = "'" + RB_Role_Dept.SelectedValue.Replace("06", "06','04") + "'"; // contournement du club qui est dans le 04
+        //    parametres = parametres + ";D:" + dept;
+        //}
         #endregion extraction des critères de recherche
 
         #region Recherche par fonctions
@@ -1350,10 +1357,10 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
                 requete = requete + requete_AR + requete_FCT + " AND nim != 0 ) ";
 
-                if(!string.IsNullOrEmpty(dept))
-                {
-                    requete = requete + " AND cric in (SELECT cric FROM " + Const.TABLE_PREFIX + "clubs WHERE SUBSTRING(cp, 1, 2) IN (" + dept + "))";
-                }
+                //if(!string.IsNullOrEmpty(dept))
+                //{
+                //    requete = requete + " AND cric in (SELECT cric FROM " + Const.TABLE_PREFIX + "clubs WHERE SUBSTRING(cp, 1, 2) IN (" + dept + "))";
+                //}
 
                 la_List_Fonction = DataMapping.GetListMembers_Mailling(requete);
             }
