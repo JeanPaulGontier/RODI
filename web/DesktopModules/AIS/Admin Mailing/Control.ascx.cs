@@ -734,7 +734,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     obj.status = "N";
                     obj.recipient = "";
                 }
-                obj.cric = Functions.CurrentCric;
+                obj.cric = 0;// patch 07/04/25 on force le cric a zero car plus possible d'envoyer depuis les clubs Functions.CurrentCric;
                 DateTime n= DateTime.Now;
                 DateTime.TryParse("" + TXT_Dt.Text, out n);
                 obj.dt = n;
@@ -1517,7 +1517,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         if (HF_id.Value != "")
         {
             obj = DataMapping.GetNewsletter(HF_id.Value);
-            obj.cric = Functions.CurrentCric;
+            obj.cric = 0; // patch 07/04/25 force le cric a zero car les clubs ne peuvent plus envoyer avec ce module Functions.CurrentCric;
             DateTime n=DateTime.Now;
             DateTime.TryParse("" + TXT_Dt.Text, out n);
             obj.dt = n;
