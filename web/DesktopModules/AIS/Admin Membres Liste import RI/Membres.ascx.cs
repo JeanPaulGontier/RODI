@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2024
+// Copyright (c) 2012-2025
 // by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -78,7 +78,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
-using Aspose;
 
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
@@ -103,6 +102,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             
         }
     }
+
     public bool issatellite
     {
         get
@@ -147,12 +147,13 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         get
         {
-            return UserInfo.IsAdmin  || 
+            return UserInfo.IsAdmin ||
                 UserInfo.IsSuperUser ||
-                
-                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
-                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
+
+                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                UserInfo.IsInRole(Const.ADMIN_ROLE) ||
                 UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                UserInfo.IsInRole(Const.ROLE_FORMATEUR_CLUBS) ||
                 DataMapping.isADG();
         }
     }
@@ -198,8 +199,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             RefreshGrid();
         }
 
-        BT_Export_CSV.Visible = isadmin; /*&& Functions.CurrentCric != 0*/
-        BT_Export_XLS.Visible = isadmin; /*&& Functions.CurrentCric != 0*/
+        BT_Export_CSV.Visible = isadmin; 
+        BT_Export_XLS.Visible = isadmin; 
        
         BT_Carte_Member_Recto.Visible =isadmin && Functions.CurrentCric != 0;
         BT_Carte_Member_Verso.Visible = isadmin && Functions.CurrentCric != 0;
@@ -208,13 +209,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         BT_Carte_Member_Recto_Docx.Visible = isadmin && Functions.CurrentCric != 0;
         BT_Carte_Member_Verso_Docx.Visible = isadmin && Functions.CurrentCric != 0;
 
-        BT_Import.Visible = !issatellite 
-            && (UserInfo.IsSuperUser ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
-            UserInfo.IsInRole(Const.ADMIN_ROLE) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
-            DataMapping.isADG()) &&
+        BT_Import.Visible = !issatellite && isadmin &&
             Functions.CurrentCric != 0 && mode == "club";
 
 
@@ -375,14 +370,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     RB_Membre_satellite.Enabled = false;
                     //BT_Supprimer.Visible = false;
 
-                    if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
-                        DataMapping.isADG() || 
-                        UserInfo.IsSuperUser || 
-                        UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || 
-                        UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
-                        membre.userid == UserInfo.UserID )
-                    {
-                       
+                    if (isadmin || membre.userid == UserInfo.UserID )
+                    {                       
                         BT_Modifier.Visible = true && membre.honorary_member!=Const.YES;
                     }
                     else
@@ -548,8 +537,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <returns></returns>
     string GetNomClub()
     {
+        if (mode == "district")
+            return "";
         if (Functions.CurrentClub != null)
-            return "du club "+Functions.CurrentClub.name;
+            return "du club " + Functions.CurrentClub.name;
         return "";
     }
 
@@ -560,11 +551,14 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <param name="e"></param>
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
-        List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue,criterion:TXT_Critere.Text);
+        int cric = Functions.CurrentCric;
+        if (mode == "district")
+            cric = 0;
+        List<Member> membres = DataMapping.ListMembers(cric: cric, sort: "surname asc", max: int.MaxValue,criterion:TXT_Critere.Text);
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
-        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres"+GetNomClub()+".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres"+GetNomClub()+".xlsx", SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -577,11 +571,14 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <param name="e"></param>
     protected void BT_Export_CSV_Click(object sender, EventArgs e)
     {
-        List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "name asc", max: int.MaxValue, criterion: TXT_Critere.Text);
+        int cric = Functions.CurrentCric;
+        if (mode == "district")
+            cric = 0;
+        List<Member> membres = DataMapping.ListMembers(cric: cric, sort: "name asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
-        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".csv", Aspose.Cells.SaveFormat.CSV);
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".csv", SaveFormat.CSV);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -602,12 +599,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         hf_Modif.Value = "";
         pnl_Saisie.Visible = false;
         BT_Import.Visible = !issatellite
-            && (UserInfo.IsSuperUser ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
-            UserInfo.IsInRole(Const.ADMIN_ROLE) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
-            DataMapping.isADG()) &&
+            && isadmin &&
             Functions.CurrentCric != 0 && mode == "club"; 
     }
 

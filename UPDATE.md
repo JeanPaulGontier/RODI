@@ -2,7 +2,8 @@
 - ajout d'un nouveau Rôle "Formateur Clubs" qui permet aux utilisateurs qu'on y ajoute d'administrer tous les clubs dans le but de les former, sans avoir besoin d'être Administrateur District
 	Attention : il faut ajouter le rôle dans le module sélecteur de club pour qu'il apparaisse aux utilisateurs concernés
 - ajout d'un module de statistiques d'usage des clubs
-- correction bug apparu depuis la maj 23/03/2025 sur le mailing district, qui ne sélectionnait pas correctement les destinataires.
+- changement de fonctionnement sur la sélection de club quand on est ADG, Formateur Club ou Administration district, quand un de ces utilisateurs se connecte, son club est automatiquement sélectionné pour que la rubrique mon club pointe vers le bon club.
+	- correction bug apparu depuis la maj 23/03/2025 sur le mailing district, qui ne sélectionnait pas correctement les destinataires, le pb était lié au changement de fonctionnement de sélection de club.
 
 ###### 23/03/2025
 - ajout de fonctionnalités sur le module réunions clubs

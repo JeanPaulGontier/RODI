@@ -319,14 +319,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     RB_Membre_satellite.Enabled = false;
                     BT_Supprimer.Visible = false;
 
-                    if ((UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
-                        DataMapping.isADG() || 
-                        UserInfo.IsSuperUser || 
-                        UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || 
-                        UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
-                        membre.userid == UserInfo.UserID )
-                    {
-                       
+                    if (isAdmin() || membre.userid == UserInfo.UserID )
+                    {                       
                         BT_Modifier.Visible = true;
                     }
                     else
@@ -447,6 +441,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <returns></returns>
     string GetNomClub()
     {
+        if (mode == "district")
+            return "";
         if (Functions.CurrentClub != null)
             return "du club "+Functions.CurrentClub.name;
         return "";
@@ -466,7 +462,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
-        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres"+GetNomClub()+".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".xlsx", SaveFormat.Xlsx);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
@@ -486,7 +482,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
-        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".csv", Aspose.Cells.SaveFormat.CSV);
+        Media media = DataMapping.ExportDataGridToXLS(GridViewExport, "Liste des membres" + GetNomClub() + ".csv", SaveFormat.CSV);
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
