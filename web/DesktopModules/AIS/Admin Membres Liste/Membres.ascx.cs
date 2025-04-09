@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2021
-// by SAS AIS : http://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -78,7 +78,6 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
-using Aspose;
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
@@ -100,6 +99,20 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             
         }
     }
+
+ 
+
+    private bool isAdmin()
+    {
+        return UserInfo.IsSuperUser ||
+                    (UserInfo.IsInRole(Const.ADMIN_ROLE) ||
+                     UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                     DataMapping.isADG() ||
+                     UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                     UserInfo.IsInRole(Const.ROLE_FORMATEUR_CLUBS)
+                     );
+    }
+
 
     /// <summary>
     /// Affiche la liste des membres selon les droits de l'utilisateur
@@ -141,23 +154,19 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             RefreshGrid();
         }
 
-        BT_Export_CSV.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || ((UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG()) /*&& Functions.CurrentCric != 0*/);
-        BT_Export_XLS.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) || ((UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG()) /*&& Functions.CurrentCric != 0*/);
+        BT_Export_CSV.Visible = isAdmin();
+        BT_Export_XLS.Visible = isAdmin();
        
-        BT_Carte_Member_Recto.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Recto_DOC.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso_DOC.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Recto_Docx.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
-        BT_Carte_Member_Verso_Docx.Visible = UserInfo.IsSuperUser || (Functions.CurrentCric != 0 && (UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)));
+        BT_Carte_Member_Recto.Visible = isAdmin() && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso.Visible = isAdmin() && Functions.CurrentCric != 0;
+        BT_Carte_Member_Recto_DOC.Visible = isAdmin() && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso_DOC.Visible = isAdmin() && Functions.CurrentCric != 0;
+        BT_Carte_Member_Recto_Docx.Visible = isAdmin() && Functions.CurrentCric != 0;
+        BT_Carte_Member_Verso_Docx.Visible = isAdmin() && Functions.CurrentCric != 0;
 
-        BT_Ajout.Visible = (UserInfo.IsSuperUser ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
-            UserInfo.IsInRole(Const.ADMIN_ROLE) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) ||
-            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
-            DataMapping.isADG()) &&
-            Functions.CurrentCric != 0 && mode == "club";
+        BT_Ajout.Visible = isAdmin() && 
+                            Functions.CurrentCric != 0 && 
+                            mode == "club";
         BT_Import.Visible = BT_Ajout.Visible;
 
         
@@ -342,7 +351,6 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     }
 
 
-                    //            BT_CreateDNNUser.Visible = (UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ADMIN_ROLE) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT));
 
                 }
                 catch( Exception ee)
@@ -451,7 +459,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <param name="e"></param>
     protected void BT_Export_XLS_Click(object sender, EventArgs e)
     {
-        List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "surname asc", max: int.MaxValue,criterion:TXT_Critere.Text);
+        int cric = Functions.CurrentCric;
+        if (mode == "district")
+            cric = 0;
+        List<Member> membres = DataMapping.ListMembers(cric: cric, sort: "surname asc", max: int.MaxValue,criterion:TXT_Critere.Text);
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
@@ -468,7 +479,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     /// <param name="e"></param>
     protected void BT_Export_CSV_Click(object sender, EventArgs e)
     {
-        List<Member> membres = DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "name asc", max: int.MaxValue, criterion: TXT_Critere.Text);
+        int cric = Functions.CurrentCric;
+        if (mode == "district")
+            cric = 0;
+        List<Member> membres = DataMapping.ListMembers(cric: cric, sort: "name asc", max: int.MaxValue, criterion: TXT_Critere.Text);
         GridViewExport.DataSource = membres;
         GridViewExport.DataBind();
 
@@ -1195,7 +1209,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     {
         try
         {
-            if (UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+            if (isAdmin())
             {
                 Panel1.Visible = false;
                 Panel2.Visible = false;
@@ -1280,7 +1294,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 
     protected void BT_Import_Click(object sender, EventArgs e)
     {
-        if (UserInfo.IsInRole(Const.ROLE_ADMIN_ROTARACT) || UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || DataMapping.isADG() || UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
+        if (isAdmin())
         {
             if(Functions.CurrentCric > 0)
             { 
