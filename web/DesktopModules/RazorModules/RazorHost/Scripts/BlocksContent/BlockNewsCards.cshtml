@@ -71,7 +71,7 @@
                 </div>
                 <div v-if="!news" class="text-center">chargement en cours...</div>
                 <div v-if="news && news.length==0" class="text-center">Aucune nouvelle trouvée, ajustez les paramètres...</div>
-                <div class="row" v-if="news">
+                <div class="grid" v-if="news">
 
                     <div class="card" v-for="n in news">
                         <a :href="uri(n)" :target="target(n)">

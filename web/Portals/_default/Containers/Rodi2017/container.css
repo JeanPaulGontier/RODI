@@ -15,7 +15,7 @@ h2.c_title span { vertical-align:middle; }
 .c_title_footer{ font-size:18px; color:#f0f0f0; font-weight:bold;font-family:Georgia, "Times New Roman", Arial, serif; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
 .c_title_black { font-size:18px; color:#555555; font-weight:bold;font-family:Georgia, "Times New Roman", Arial, serif; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
 .c_title_white { font-size:1.1em; color:#FFFFFF;padding-bottom:1em;transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
-.c_title_RoyalBlue{ font-size:1.1em;color:#00246c; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
+.c_title_RoyalBlue{ font-size:1.1em;color:#17458F; transition: all 0.5s ease 0s;  -webkit-transition:all 0.5s ease 0s;-moz-transition:all 0.5s ease 0s;}
 
 /*-------- BlackTitle Container 01 --------*/
 .Bt1_style { min-width:150px; margin-bottom:14px;}

@@ -7,8 +7,11 @@
             <button type="button" v-if="index<blocks.length-1" v-on:click="downBlock(index)" class="btn btn-link btn-xs" title="Descendre"><i class="fa fa-angle-down"></i></button>
             <button type="button" v-if="index<blocks.length-1" v-on:click="lastBlock(index)" class="btn btn-link btn-xs" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button>
             <button type="button" v-on:click="editBlock(index)" class="btn btn-info btn-xs">Editer</button>
+            <button type="button" v-on:click="onToggle(false)" v-if="toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
+        </div>      
+        <div v-if="editing==-1 && !editable && toggleable">
+            <button type="button" v-on:click="onToggle(true)" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
         </div>
-
         <component :ref="b.Guid"
                    :key="b.Guid"
                    :guid="b.Guid"
@@ -18,7 +21,7 @@
                    v-on:changed="blockChanged(index,$event)"
                    v-on:cancel="blockCancel()">
         </component>
-
+        
     </div>
     <div v-if="!adding && editable" style="text-align:center" class="my-2">
         <button type="button" class="btn btn-info" v-on:click="adding=true">Ajouter un bloc</button>
@@ -52,10 +55,10 @@
             template: '#blockseditor-template',
             name: 'BlocksEditor',
             props: [
-                'blocks', 'moduleid', 'editable'
+                'blocks', 'moduleid', 'editable','toggleable'
             ],
             emits: [
-                'changed'
+                'changed','toggle'
             ],
             components: {
                 BlockImageText, BlockImageCollection, BlockFileCollection, BlockRaw, BlockVideo,
@@ -66,16 +69,31 @@
                     adding: false,
                     editing: -1,
                     thumbnail: BGTHUMBNAIL,
-                    evo: BGEVO
+                    evo: BGEVO,
                 }
             },
             methods: {
+                onToggle(v) {
+                    this.$emit('toggle',v);
+                },
                 addBlock(type) {
                     if (!this.blocks)
                         this.blocks = [];
                     switch (type) {
                         case 'ImageText':
-                            this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Position: 'H' } });
+                            this.blocks.push({
+                                Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: {
+                                    Title: 'Photo et texte',
+                                    Description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
+                                    Position: 'B',
+                                    Largeur: 12,
+                                    VAling: 'top',
+                                    HAlign:'left',
+                                    Type:0,
+                                    BGColor: BGCOLORSLIST[1][0],
+                                    Color: BGCOLORSLIST[1][1]
+                                }
+                            });
                             break
                         case 'FileCollection':
                             this.blocks.push({ Guid: _yemon[this.moduleid].service.guid(), Type: type, Content: { Title: '', Files: [] } });
@@ -243,6 +261,7 @@
                 editBlock(i) {
                     this.editing = i;
                     this.$refs[this.blocks[i].Guid].edit();
+                    sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
                 },
                 deleteBlock(i) {
                     if (confirm('Supprimer le bloc ?')) {
@@ -275,6 +294,9 @@
                 onChange() {
                     this.editing = -1;
                     this.$emit('changed', this.blocks);
+                    let lastScroll = sessionStorage.getItem(window.location.pathname + ":scroll");
+                    if (lastScroll)
+                        window.scrollTo({ top: parseInt(lastScroll), left: window.scrollX, behavior: 'smooth' });
 
                 }
 
@@ -299,7 +321,7 @@
                     "hideMethod": "fadeOut"
                 };
 
-
+                sessionStorage.removeItem(window.location.pathname + ":scroll");
             },
             watch: {
                 blocks: {

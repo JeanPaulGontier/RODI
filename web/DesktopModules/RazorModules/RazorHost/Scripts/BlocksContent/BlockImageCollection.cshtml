@@ -48,24 +48,28 @@
             <h2>{{c.Title}}</h2>
             <div class="Grow" ref="imagescollection" v-if="c.Type=='gallery'">
                 <div class="Gcolumn" v-for="(c,index) in columns()" :style="getColumnStyle()">
-                    <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
-                </div>
+                    <a :data-fslightbox="guid" v-for="i in c" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
+                        <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+                   </a>
+                 </div>
             </div>
 
             <div class="Lrow" v-if="!c.Type">
-                <img v-for="i in c.Images" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+                <a :data-fslightbox="guid" v-for="i in c.Images" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
+                    <img  :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+                </a>
             </div>
 
             <div v-html="slickStyles()">
 
             </div>
-            <div :class="sliderName" :id="sliderName"  ref="imagesslider" v-show="c.Type=='slider'">
-                <a v-for="i in c.Images">
+            <div :class="sliderName" :id="sliderName" ref="imagesslider" v-if="c.Type=='slider'">
+                <a :data-fslightbox="guid" v-for="i in c.Images" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
                     <div :class="evenBox" :style="{ backgroundImage: 'url(/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID }">
                     </div>
                 </a>
             </div>
-
+           
         </div>
     </div>
 </script>
@@ -77,12 +81,16 @@
            props: [
                 'content', 'moduleid', 'guid'
             ],
+          
             emits: [
                 'changed',
                 'cancel'
             ],
             data() {
                 return {
+                    source: [],
+                    sourceIndex: 0,
+                    toggler: true,
                     editing: false,
                     c: {},
                     nbuploaded:0,
@@ -165,9 +173,17 @@
                             let height = Math.round(this.width * ratio, 0);
                             this.height = Math.min(this.height, height);
                         })
+
+
+                        this.$nextTick(() => {
+                            refreshFsLightbox();
+                        });
+
+                        
+                           
                         
                     });
-
+                    
                 },
                 
                 columns() {
@@ -321,9 +337,10 @@
                     if (this.c.Type == 'slider')
                         $('.' + this.sliderName).slick(this.slickOptions);
 
-             
+                  
                   
                 });
+                
                
             },
 

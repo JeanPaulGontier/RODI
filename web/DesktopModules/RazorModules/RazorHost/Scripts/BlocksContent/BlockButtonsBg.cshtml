@@ -16,7 +16,7 @@
                 </span>
             </div>
 
-            <span class="bc-label">Boutons de navigation :</span>
+            <span class="bc-label">Boutons :</span>
             <div v-for="(u,i) in e.List">
                 <small>Url de destination :</small>
                 <input type="text" v-model="u.Href" class="form-control" style="margin:0;" />
@@ -46,7 +46,7 @@
                         <h3 :style="{color: c.Color}">{{c.Title}}</h3>
                         <p :style="{color: c.Color}" class="lead">{{c.Title2}}</p>
                     </div>
-                    <div class="row col-2" v-if="c.List && c.List.length>0">
+                    <div class="grid col-2" v-if="c.List && c.List.length>0">
                         <a :href="u.Href"  :target="u.Target"  :style="{color: c.Color,'border-color':c.Color}" class="btn  btn-xl btn-link" v-for="u in c.List">{{u.Label}}</a>
                     </div>
                 </div>

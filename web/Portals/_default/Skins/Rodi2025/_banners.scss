@@ -21,7 +21,7 @@
         justify-content: center;
         min-height:150px;
         overflow: hidden;
-        z-index: 3;
+        /*z-index: 3;*/
         background: transparent;
         padding:0;
     
@@ -34,10 +34,10 @@
             left: 0;
             position: absolute;
             width: 100%;
-            z-index:2;
+            /*z-index:2;*/
         }
         .banner-pict{
-            z-index:1;
+            /*z-index:1;*/
             position: absolute;
             height:100%;
             width:100%;
@@ -46,7 +46,7 @@
         }
 
         .banner-video{
-            z-index:1;
+            /*z-index:1;*/
             position: absolute;
             overflow: hidden;
             height:100%;
@@ -55,8 +55,9 @@
     }
 
     section{
-        z-index: 4;
+        z-index: 1;
         font-family: $sans-serif;
+        text-shadow: 0 5px 20px $dark-text;
 
         p{
             font-size:120%;
@@ -89,7 +90,7 @@
 @media screen and (min-width: 960px) {
     .bc-banner{
         h1{font-size:650%;}
-        h2{font-size: 400%;}
+        h2{font-size: 350%;}
         &.picture {min-height:480px;}
         section p{font-size: 150%;padding:1em 4em;}
     }

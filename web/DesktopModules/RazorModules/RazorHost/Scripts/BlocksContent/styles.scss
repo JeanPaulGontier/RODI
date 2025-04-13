@@ -1,4 +1,5 @@
 /* EDITION OFF -------------- */
+.admin > div > div{position:relative;}
 
 .close-edit, .open-edit{
     position:absolute;
@@ -7,11 +8,11 @@
     border:none;
     border-radius:0 0 0 80%;
     padding:.2em .3em .5em .6em;
-    background-color:#c9dee9;
+    background-color:rgba(201,222,233,.8);
     transition:all .3s ease-in-out;
     color:#ffffff;
     font-size:1.2em;
-    z-index:99;
+    z-index:9;
 }
 .close-edit:hover, .open-edit:hover{
     background-color: #01b4e7;
@@ -27,19 +28,13 @@
     column-gap: 1em;
     flex-wrap: wrap;
     row-gap: 1em;
-    opacity: 0.5;
     transition: all 0.5s ease-in-out;
     padding-bottom: .5em;
-
-    &:hover{
-        opacity:1;
-        transition: all 0.5s ease-in-out;
-    }
 }
 
 .bc-dotted {
     border: 2px #eee dashed;
-    padding: 1.5em;
+    padding: .25em;
     margin-bottom: 1em;
     transition: all 0.5s ease-in-out;
 
@@ -51,6 +46,7 @@
 
 .bc-editing {
     box-shadow: 0 0 35px 5px rgba(0,0,0,.9);
+    background-color: #ffffff;
     padding: 2em 3em;
     position: relative;
     z-index: 999;
@@ -88,9 +84,26 @@
         margin: 5px;
     }
 
+    input[type="text"] + .form-inline{
+        margin-top:-1em;
+    }
+
     .radio-inline{
         display: flex;
         align-items: center;
+
+        &.radio-img{
+            flex-direction:column-reverse;
+            text-align:center;
+            font-size:85%;
+            justify-content: stretch;
+            flex:1 1;
+
+            > img{
+                width:100px;
+                padding:.25em 0;
+            }
+        }
     }
 }
 
@@ -138,10 +151,8 @@ small + .form-control{margin: 0 0 1em 0;}
     }        
 }
 
-.bc-photo > img{
-    max-width:400px/100%;
-    max-height:500px;
-    margin:.5em 0;
+.bc-photo > div > img{
+    max-height:400px;
 }
 
 .rounded-img{
@@ -149,8 +160,6 @@ small + .form-control{margin: 0 0 1em 0;}
     overflow: hidden;
     border-radius: 50%;
 }
-
-
 
 fieldset{
     margin-bottom:3em;
@@ -174,6 +183,22 @@ fieldset{
     }
 }
 
+.img-positions {
+    padding:1em 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+
+        .form-control{
+            display: flex;
+            margin-bottom:1em;
+
+            &:last-child{margin-bottom:0;}
+        }
+
+        > div > img{max-width:300px;}
+    
+}
 
 @media handheld, only screen and (min-width: 960px){
     fieldset{
@@ -186,4 +211,10 @@ fieldset{
             border-right: 1px lightgray dashed;
         }
     }
+
+    .img-positions {
+        grid-template-columns: 1fr 350px;
+        column-gap: 4rem;
+    }
+
 }

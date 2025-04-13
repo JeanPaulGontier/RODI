@@ -18,7 +18,10 @@
     user-select: none;
     transition: $transition;
 
-    &:hover{filter:brightness(.75);transition: $transition;}
+    &:hover{
+        filter:brightness(.75);
+        transition: $transition;
+    }
 
     &.btn-primary{
         background-color:$primary;

@@ -2,7 +2,7 @@
 <% 
     string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     string appID = "app" + ModuleId;
-
+    var colorsList = AIS.Block.ColorsList();
 %>
 <asp:HiddenField ID="ContextGuid" runat="server" />
 <script src="<%=libPath %>tinymce/tinymce.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
@@ -37,6 +37,7 @@
 
     var CATEGORIES = <%=Yemon.dnn.Functions.Serialize(categories)%>;
     var RECIPIENTS = <%=Yemon.dnn.Functions.Serialize(recipients)%>;
+    var BGCOLORSLIST = <%=Yemon.dnn.Functions.Serialize(colorsList)%>;
 
     var SENDER_EMAIL = '<%= sender_email%>';
     var DEFAULT_SENDERS = <%= Yemon.dnn.Functions.Serialize(default_senders) %>;

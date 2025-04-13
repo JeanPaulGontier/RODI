@@ -58,81 +58,233 @@
     {
         switch (block.Type)
         {
+            /* block genuine */
             case "ImageText":
                 Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
                 switch (p.Position)
                 {
                     case "G":
-                        <div class="row">
-                            @if (p.Title != null)
-                            {
-                                <h2 class="col-sm-12">@p.Title</h2>
-                            }
+                        <div class='grid block-image-text-g @(p.Type==1?"colored":"")' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
                             @if (p.Image != null)
                             {
-                                <div class="col-sm-6">
-                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                                <div class="col-sm-@p.Largeur  v-@p.VAlign">
+                                    @if (p.ImageUri != null)
+                                    {
+                                        <a href="@p.ImageUri.Href" target="@p.ImageUri.Target">
+                                            <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                                    }
                                 </div>
                             }
-                            @if (p.Html != null)
+                            @if (p.Title != null || p.Html != null || p.Uri != null)
                             {
-                                <div class="col-sm-6">@Html.Raw(p.Html)</div>
-                            }
-                        </div>
-                        break;
-                    case "D":
-                        <div class="row">
-                            @if (p.Title != null)
-                            {
-                                <h2 class="col-sm-12">@p.Title</h2>
-                            }
-                            @if (p.Html != null)
-                            {
-                                <div class="col-sm-6">@Html.Raw(p.Html)</div>
-                            }
-                            @if (p.Image != null)
-                            {
-                                <div class="col-sm-6">
-                                    <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
-                                </div>
-                            }
+                                <div class="col-sm-@(12-p.Largeur)" style="@(p.Type==1?"color:"+p.Color:"")">
+                                    @if (p.Title != null)
+                                    {
+                                        if (p.Type == 1)
+                                        {
+                                            <h2 style="color:@p.Color">@p.Title</h2>
+                                        }
+                                        else
+                                        {
+                                            <h2 style="color:@p.BGColor">@p.Title</h2>
+                                        }
 
+                                    }
+                                    @if (p.Html != null)
+                                    {
+                                        <div>
+                                            @Html.Raw(p.Html)
+                                        </div>
+                                    }
+                                    @if (p.Uri != null)
+                                    {
+                                        <div class="text-center pt-1">
+                                            @if (p.Type == 1)
+                                            {
+                                                <a href="@p.Uri.Href" target="@p.Uri.Target" style="border-color:@p.Color;color:@p.Color" class="btn">@p.Uri.Label</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a href="@p.Uri.Href" target="@p.Uri.Target" style="background-color:@p.BGColor;color:@p.Color" class="btn">@p.Uri.Label</a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </div>
                         break;
-                    case "B":
-                        if (p.Title != null)
-                        {
-                            <h2>@p.Title</h2>
-                        }
-                        if (p.Html != null)
-                        {
-                            <div>@Html.Raw(p.Html)</div>
-                        }
-                        if (p.Image != null)
-                        {
-                            <div>
-                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
-                            </div>
-                        }
+
+                    case "D":
+                        <div class='grid block-image-text-d @(p.Type==1?"colored":"")' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
+                            @if (p.Title != null || p.Html != null || p.Uri != null)
+                            {
+                                <div class="col-sm-@(12-p.Largeur)" style="@(p.Type==1?"color:"+p.Color:"")">
+                                    @if (p.Title != null)
+                                    {
+                                        if (p.Type == 1)
+                                        {
+                                            <h2 style="color:@p.Color">@p.Title</h2>
+                                        }
+                                        else
+                                        {
+                                            <h2 style="color:@p.BGColor">@p.Title</h2>
+                                        }
+                                    }
+                                    @if (p.Html != null)
+                                    {
+                                        <div>
+                                            @Html.Raw(p.Html)
+                                        </div>
+                                    }
+                                    @if (p.Uri != null)
+                                    {
+                                        <div class="text-center pt-1">
+                                            @if (p.Type == 1)
+                                            {
+                                                <a href="@p.Uri.Href" target="@p.Uri.Target" style="border-color:@p.Color;color:@p.Color" class="btn">@p.Uri.Label</a>
+
+                                            }
+                                            else
+                                            {
+                                                <a href="@p.Uri.Href" target="@p.Uri.Target" style="background-color:@p.BGColor;color:@p.Color" class="btn">@p.Uri.Label</a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            @if (p.Image != null)
+                            {
+                                <div class="col-sm-@p.Largeur v-@p.VAlign">
+                                    @if (p.ImageUri != null)
+                                    {
+                                        <a href="@p.ImageUri.Href" target="@p.ImageUri.Target">
+                                            <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+                                    }
+                                </div>
+                            }
+                        </div>
                         break;
-                    default:
-                        if (p.Title != null)
-                        {
-                            <h2>@p.Title</h2>
-                        }
-                        if (p.Image != null)
-                        {
-                            <div>
-                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" />
+
+                    case "B":
+                        <div class="block-image-text-b">
+                            <div class='@(p.Type==1?"colored":"")' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
+                                @if (p.Title != null)
+                                {
+                                    if (p.Type == 1)
+                                    {
+                                        <h2 style="color:@p.Color">@p.Title</h2>
+                                    }
+                                    else
+                                    {
+                                        <h2 style="color:@p.BGColor">@p.Title</h2>
+                                    }
+                                }
+                                @if (p.Html != null)
+                                {
+                                    <div style="@(p.Type==1?"color:"+p.Color:"")">@Html.Raw(p.Html)</div>
+                                }
+                                @if (p.Uri != null)
+                                {
+                                    <div class="text-center pt-1">
+                                        @if (p.Type == 1)
+                                        {
+                                            <a href="@p.Uri.Href" target="@p.Uri.Target" style="border-color:@p.Color;color:@p.Color" class="btn">@p.Uri.Label</a>
+
+                                        }
+                                        else
+                                        {
+                                            <a href="@p.Uri.Href" target="@p.Uri.Target" style="background-color:@p.BGColor;color:@p.Color" class="btn">@p.Uri.Label</a>
+                                        }
+                                    </div>
+                                }
                             </div>
-                        }
-                        if (p.Html != null)
-                        {
-                            <div>@Html.Raw(p.Html)</div>
-                        }
+
+                            @if (p.Image != null)
+                            {
+                                <div class='h-@p.HAlign pt-1' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
+                                    <div class="width-@p.Largeur">
+                                        @if (p.ImageUri != null)
+                                        {
+                                            <a href="@p.ImageUri.Href" target="@p.ImageUri.Target">
+                                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" class="img-r" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" class="img-r" />
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        break;
+
+                    default:
+                        <div class="block-image-text">
+                            @if (p.Image != null)
+                            {
+                                <div class='h-@p.HAlign' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
+                                    <div class="width-@p.Largeur">
+                                        @if (p.ImageUri != null)
+                                        {
+                                            <a href="@p.ImageUri.Href" target="@p.ImageUri.Target">
+                                                <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" class="img-r" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <img src="@mediaPath@p.Image.GUID" title="@p.Image.Name" class="img-r" />
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <div class='@(p.Type==1?"colored":"")' style="@(p.Type==1?"background-color:"+p.BGColor:"")">
+                                @if (p.Title != null)
+                                {
+                                    if (p.Type == 1)
+                                    {
+                                        <h2 style="color:@p.Color">@p.Title</h2>
+                                    }
+                                    else
+                                    {
+                                        <h2 style="color:@p.BGColor">@p.Title</h2>
+                                    }
+                                }
+                                @if (p.Html != null)
+                                {
+                                    <div style="@(p.Type==1?"color:"+p.Color:"")">@Html.Raw(p.Html)</div>
+                                }
+                                @if (p.Uri != null)
+                                {
+                                    <div class="text-center pt-1">
+                                        @if (p.Type == 1)
+                                        {
+                                            <a href="@p.Uri.Href" target="@p.Uri.Target" style="border-color:@p.Color;color:@p.Color" class="btn">@p.Uri.Label</a>
+
+                                        }
+                                        else
+                                        {
+                                            <a href="@p.Uri.Href" target="@p.Uri.Target" style="background-color:@p.BGColor;color:@p.Color" class="btn">@p.Uri.Label</a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
                         break;
                 }
                 break;
+
             case "FileCollection":
                 Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
                 if (fc.Title != null)
@@ -189,7 +341,9 @@
                             foreach (var i in imgs)
                             {
                                 <span>
-                                    <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />
+                                    <a data-fslightbox="@block.Guid" data-alt="@i.Name" href="@mediaPath@i.GUID">
+                                        <img src="@mediaPath@i.GUID" width="100%" title="@i.Name" />
+                                    </a>
                                 </span>
                                 <div class="pe-spacer size10"></div>
                             }
@@ -202,7 +356,9 @@
                             <div id='@("gallery"+block.Guid)' style="position:relative">
                                 @foreach (var i in imgs)
                                 {
-                                    <img id="@i.GUID" src="@mediaPath@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
+                                    <a data-fslightbox="@block.Guid" data-alt="@i.Name" href="@mediaPath@i.GUID">
+                                        <img id="@i.GUID" src="@mediaPath@i.GUID" title="@i.Name" style="position:absolute" width="@i.Width" height="@i.Height" />
+                                    </a>
                                 }
 
                             </div>
@@ -236,17 +392,40 @@
                                 });
                             }
 
-                            <script>typeof resizeslider=="undefined"&&(resizeslider=[]);var slfnname="@Html.Raw(slider_name)";resizeslider[slfnname]=function(){var i=document.getElementById("@slider_name"),r=i.getBoundingClientRect().width,t=@Html.Raw(Yemon.dnn.Functions.Serialize(ratios))",n=Number.MAX_SAFE_INTEGER;t.forEach(function(t){var i=Math.round(r*t.r,0);n=Math.min(n,i)});t.forEach(function(t){var i=document.getElementById(t.g);i.style.minHeight=n+"px"});i.style.height=n+"px";console.log("@slider_name",t)};</script>
 
                             <div class="@slider_name" id="@slider_name">
                                 @foreach (var i in imgs)
                                 {
-                                    <a>
+                                    <a data-fslightbox="@block.Guid" data-alt="@i.Name" href="@mediaPath@i.GUID">                                    
                                         <div id="@("image"+(""+i.GUID).Substring(0,6))" class="even_box" style="background-image: url('@mediaPath@i.GUID')" );">
                                         </div>
                                     </a>
                                 }
                             </div>
+                            <script>
+                                 if (typeof resizeslider == 'undefined')
+                                     resizeslider = [];
+                                 var slfnname = '@Html.Raw(slider_name)';
+                                resizeslider[slfnname] = function (slfnname) {
+                                     var container = document.getElementById(slfnname);
+                                     var width = container.getBoundingClientRect().width;
+                                     var ratios = @Html.Raw(Yemon.dnn.Functions.Serialize(ratios));
+                                     var height = Number.MAX_SAFE_INTEGER;
+                                     ratios.forEach((d) => {
+                                         var h = Math.round(width * d.r, 0);
+                                         height = Math.min(height, h);
+                                     });
+                                     ratios.forEach((d) => {
+                                         var el = document.getElementById(d.g);
+                                         el.style.minHeight = height + 'px';
+                                         //el.style.width = width + 'px';
+                                         //el.style.height = height + 'px';
+                                     });
+                                    container.style.width = width + 'px';
+                                     container.style.height = height + 'px';
+                                }
+                                resizeslider[slfnname](slfnname);
+                            </script>
                             <script>
                                 $('.@slider_name').slick({
                                     dots: true,
@@ -298,6 +477,8 @@
 
                 </script>
                 break;
+
+            /* block evo */
             case "Banner":
                 if (!blockEvo)
                 {
@@ -309,7 +490,7 @@
                     case 1: // picture
                         <div class="bc-banner picture animated fadeIn">
                             <span class="banner-pict" style="background-image: url('@ba.Image');"></span>
-                            <section class="content-wrapper">                               
+                            <section class="content-wrapper">
                                 <h2 style="color:@ba.Color">@ba.Title2</h2>
                                 <h1 style="color:@ba.Color">@ba.Title</h1>
                                 <p style="color:@ba.Color">@ba.Title3</p>
@@ -323,11 +504,11 @@
                     case 2: // video
                         <div class="bc-banner picture animated fadeIn">
                             <span class="banner-video">
-                                <video style="width:100%;height:auto" poster="@ba.VideoThumbnail()" autoplay muted loop >
+                                <video style="width:100%;height:auto" poster="@ba.VideoThumbnail()" autoplay muted loop>
                                     <source src="@ba.Video" type="video/mp4">
                                 </video>
                             </span>
-                            <section class="content-wrapper">                               
+                            <section class="content-wrapper">
                                 <h2 style="color:@ba.Color">@ba.Title2</h2>
                                 <h1 style="color:@ba.Color">@ba.Title</h1>
                                 <p style="color:@ba.Color">@ba.Title3</p>
@@ -340,7 +521,7 @@
                         break;
                     case 3: // texture
                         <div class="bc-banner picture animated fadeIn" style="background-image: url('@ba.Texture');">
-                            <section class="content-wrapper">                               
+                            <section class="content-wrapper">
                                 <h2 style="color:@ba.Color">@ba.Title2</h2>
                                 <h1 style="color:@ba.Color">@ba.Title</h1>
                                 <p style="color:@ba.Color">@ba.Title3</p>
@@ -353,7 +534,7 @@
                         break;
                     case 4: // color
                         <div class="bc-banner" style="background-color:@ba.BGColor;color:@ba.Color">
-                            <section class="content-wrapper">                               
+                            <section class="content-wrapper">
                                 <h2 style="color:@ba.Color">@ba.Title2</h2>
                                 <h1 style="color:@ba.Color">@ba.Title</h1>
                                 <p style="color:@ba.Color">@ba.Title3</p>
@@ -381,12 +562,12 @@
                             <p class="lead">@ca.Description</p>
                         </div>
 
-                        <div class="row">
+                        <div class="grid">
                             @foreach (News n in ca.News)
                             {
                                 string uri = ca.Uri_Clubs.Href + n.id;
                                 string target = ca.Uri_Clubs.Target;
-                                if (n.cric==0)
+                                if (n.cric == 0)
                                 {
                                     uri = ca.Uri_District.Href + n.id;
                                     target = ca.Uri_District.Target;
@@ -401,9 +582,9 @@
                                         <span class="news-date">@n.dt.ToString("dd MMM")</span>
                                         <span class="news-title">@n.title</span>
 
-                                        @if(n.cric!=0)
-                                        { 
-                                        <span class="news-location"><i class="fa-solid fa-location-dot"></i> @n.club_name</span>
+                                        @if (n.cric != 0)
+                                        {
+                                            <span class="news-location"><i class="fa-solid fa-location-dot"></i> @n.club_name</span>
                                         }
                                         <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: turquoise;"></i></span>
                                     </a>
@@ -427,7 +608,7 @@
                         <div class="color-bloc">
                             <h4 class="white-text">@bi.Title</h4>
                             <p>@bi.Title2</p>
-                            <div class="row col-3">
+                            <div class="grid col-3">
                                 <p><span>@bi.Counter1</span>@bi.Label1</p>
                                 <p><span>@bi.Counter2</span>@bi.Label2</p>
                                 <p><span>@bi.Counter3</span>@bi.Label3</p>
@@ -436,7 +617,7 @@
                                 @if (bi.Uri != null)
                                 {
                                     <a href="@bi.Uri.Href" target="@bi.Uri.Target" class="btn  btn-xl btn-warning">@bi.Uri.Label</a>
-                                }                              
+                                }
                             </div>
                         </div>
                     </div>
@@ -449,18 +630,18 @@
                 }
                 Block.Bulles bu = (Block.Bulles)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Bulles));
 
-                <div class="bc-bulles" >
+                <div class="bc-bulles">
                     <h5 data-aos="fade-up">@bu.Title</h5>
                     <pre>@bu.Description</pre>
-                    <div class="circle-list content-wrapper" >
+                    <div class="circle-list content-wrapper">
                         <div class="side-list">
                             <a href="@bu.List[5].Uri.Href" data-aos="fade-up" target="@bu.List[5].Uri.Target" class="causes-link">
-                                <span class="circle-image" style="background-image:url('@bu.List[5].Image')"  data-module="in-view" data-offset="50%" data-is="visible"></span>
+                                <span class="circle-image" style="background-image:url('@bu.List[5].Image')" data-module="in-view" data-offset="50%" data-is="visible"></span>
                                 <div data-animate="FadeInUpBig" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[5].Uri.Label</div>
                             </a>
 
                             <a href="@bu.List[4].Uri.Href" data-aos="fade-up" target="@bu.List[4].Uri.Target" class="causes-link">
-                                <span class="circle-image" data-animate="fade-up" style="background-image:url('@bu.List[4].Image')"  data-module="in-view" data-offset="50%" data-is="visible"></span>
+                                <span class="circle-image" data-animate="fade-up" style="background-image:url('@bu.List[4].Image')" data-module="in-view" data-offset="50%" data-is="visible"></span>
                                 <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[4].Uri.Label</div>
                             </a>
                         </div>
@@ -504,12 +685,12 @@
                 Block.Cards car = (Block.Cards)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Cards));
 
                 <div class="content-wrapper cards-col-@car.List.Count">
-                    <div class="card-header">                            
+                    <div class="card-header">
                         <h3 style="color:@car.BGColor">@car.Title</h3>
                         <pre class="lead">@car.Description</pre>
                     </div>
 
-                    <div class="row centered">
+                    <div class="grid centered">
                         @foreach (Block.Cards.Card card in car.List)
                         {
                             <div class="transparent-card">
@@ -566,7 +747,7 @@
                         </div>
                         @if (bg.List.Count > 0)
                         {
-                            <div class="row col-2">
+                            <div class="grid col-2">
                                 @foreach (Block.Uri u in bg.List)
                                 {
                                     <a href="@u.Href" style="color:@bg.Color;border-color:@bg.Color" target="@u.Target" class="btn  btn-xl btn-link">@u.Label</a>
@@ -579,4 +760,7 @@
                 break;
         }
     }
+
+
+    <script type="text/javascript" src="@(libPath)fslightbox-basic-3.5.1/fslightbox.js?cdv=@CDV"></script>
 }

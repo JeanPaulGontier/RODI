@@ -3,6 +3,7 @@
 <% 
     string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     string appID = "app" + ModuleId;
+    var colorsList = AIS.Block.ColorsList();
 
     if (AIS.Functions.CurrentCric > 0)
     {
@@ -53,6 +54,7 @@
     txt.innerHTML = <%=Server.HtmlDecode(Yemon.dnn.Functions.Serialize("" + Yemon.dnn.Helpers.GetItem("meeting:msgNotif1")))%>;
     const DEFAULTNOTIFICATIONMSG = txt.value;
     var RECIPIENTS = <%=Yemon.dnn.Functions.Serialize(recipients)%>;
+    var BGCOLORSLIST = <%=Yemon.dnn.Functions.Serialize(colorsList)%>;
 
     $(document).ready(function () {
         if (typeof _yemon == 'undefined')

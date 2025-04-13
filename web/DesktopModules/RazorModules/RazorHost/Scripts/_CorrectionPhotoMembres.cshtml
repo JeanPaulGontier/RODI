@@ -1,0 +1,53 @@
+﻿@using AIS;
+@using System.Text;
+@using DotNetNuke;
+@using DotNetNuke.Entities.Portals;
+@{
+    var membres = AIS.DataMapping.ListMembers(max: int.MaxValue);
+    PortalSettings ps = PortalSettings.Current;
+
+    if (!Directory.Exists(Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup")))
+    {
+        Directory.CreateDirectory(Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup"));
+    }
+    FileInfo[] files = new DirectoryInfo(Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX)).GetFiles("*.*");
+    foreach(var f in files){
+        f.CopyTo(
+            Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup\\"+f.Name),
+            true
+        );
+
+    }
+
+    foreach (var m in membres)
+    {
+        string oldFilename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower();
+
+        var MD5Name = Functions.CalculateMD5Hash(UTF8Encoding.UTF8.GetBytes(m.nim + ":" + m.name + ":" + m.surname));
+
+        string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower();
+
+        string _oldFilename = Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + oldFilename);
+        string _filename = Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename);
+
+        if (File.Exists(_oldFilename))
+        {
+            if (!File.Exists(_filename))
+            {
+                File.Move(_oldFilename, _filename);
+                <p>Rename : @oldFilename > @filename </p>
+                m.photo = filename;
+
+                DataMapping.UpdateMember(m);
+            }
+            else
+            {
+                <p>Delete ancien fichier : @oldFilename</p>
+            }
+
+        }
+
+    }
+    <p>Traitement terminé...</p>
+}
+

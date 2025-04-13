@@ -13,7 +13,39 @@ DesktopModules\RazorModules\RazorHost\Scripts\_Usage_Stats.cshtml
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 DesktopModules\AIS\Admin Membres Liste\Membres.ascx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_CorrectionPhotoMembres.cshtml
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\Admin Mailing2\Control.ascx
+App_Code\AIS\rotary\RotaryHelper.cs
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButton2Imgs.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButtonsBg.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockInfos.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css.map
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.scss
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\AIS\Admin District Board\District Board.ascx.cs
+DesktopModules\AIS\Admin District Board\Settings.ascx
+DesktopModules\AIS\Admin District Board\Settings.ascx.cs
+DesktopModules\AIS\District Board View\District Board View.ascx.cs
+DesktopModules\AIS\District Board View\Settings.ascx
+DesktopModules\AIS\District Board View\Settings.ascx.cs
 
+Portals\_default\Containers\Rodi2017\container.css
+
+Portals\0\blockcontent\imagetext-ico\*
+
+Portals\_default\Skins\Rodi2017\*
 Portals\_default\Skins\Rodi2025\*
 
 ```

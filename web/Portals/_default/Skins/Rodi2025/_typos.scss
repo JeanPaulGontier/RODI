@@ -14,7 +14,6 @@ A {
 
     &:hover {
         color:$info;
-        filter:brightness(.75);
         transition:$transition;
     }
     
@@ -32,10 +31,10 @@ h1 {
 h2 {
     font-size: 22px;
     line-height: 1.2em;
-    font-weight:$font-weight-bold;
+    font-weight:$font-weight-normal;
     font-family: $sans-serif;
+    color: $info;
 }
-
 
 h3{
     font-size:2em;
@@ -77,6 +76,9 @@ h6 {
 }
 .white-text{
     color: $default-bg;
+}
+.mute{
+    color:$secondary-text;
 }
 
 

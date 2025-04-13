@@ -4,6 +4,15 @@
 - ajout d'un module de statistiques d'usage des clubs
 - changement de fonctionnement sur la sélection de club quand on est ADG, Formateur Club ou Administration district, quand un de ces utilisateurs se connecte, son club est automatiquement sélectionné pour que la rubrique mon club pointe vers le bon club.
 	- correction bug apparu depuis la maj 23/03/2025 sur le mailing district, qui ne sélectionnait pas correctement les destinataires, le pb était lié au changement de fonctionnement de sélection de club.
+- création de gabarits de compatibilité 2017 > 2025 pour permettre la transistion entre l'ancien thème et le nouveau
+- le bloc liste de photos dispose maintenant d'une fonctionnalité de zoom plein écran sur la photo
+- le bloc photo & texte contient maintenant plus de fonctionnalités et permet plus de variétés de mise en page (espace public et membre du district)
+
+- l'année rotarienne sélectionnée dans l'organigramme district est conservée entre les différentes pages
+
+- modification du nommage des photos des membres, avant il était composé du prénom + nom.jpg, maintenant il est un numéro de série basé sur le nim, prenom & nom afin d'éviter les conflits en cas d'homonymes dans le district
+- un nouveau module razor : _CorrectionPhotoMembres.cshtml permet de convertir les photos des membres vers le nouveau format
+- réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 
 ###### 23/03/2025
 - ajout de fonctionnalités sur le module réunions clubs

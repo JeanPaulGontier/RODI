@@ -2,7 +2,7 @@
 .block-news-cards, .cards-col-3, .cards-col-2{
     padding: $spacer 0 calc($spacer * 2) 0;
 
-    .row{
+    .grid{
         margin: 0 $spacer;
         display:grid;
         gap:$spacer;
@@ -105,32 +105,125 @@
 
 }
 
+/* TRANSPARENT CARDS */
+
 .transparent-card{
     text-align: center;
-    padding-bottom: calc($spacer / 2);
+    /*padding-bottom: calc($spacer / 2);*/
     display: flex;
     flex-direction: column;
 
-    /*&:last-child{padding-bottom: 0;}*/
-
     .news-title{
-        font-size:120%;
         padding:calc($spacer / 2);
         line-height: 1.15em;
         color:$default-text;
         flex-grow: 1;
 
-        span{text-transform: uppercase;}
+        span{
+            text-transform: uppercase;
+            font-size:120%;
+        }
     }
-    
+
     .btn.btn-xl{margin:0 auto;}
+}
+
+
+
+
+/* PERSONA CARDS */
+.persona{
+    background:$default-bg;
+    position: relative;
+    margin:$spacer $spacer calc($spacer * 2.5) 125px;
+    padding:$spacer $spacer $spacer 200px;
+    border-radius: 5px;
+    transition: $transition;
+
+    &:hover{
+        box-shadow: $shadow-box;
+        transform: translateX(4px);
+        transition: $transition;
+    }
+
+    .lead{
+        text-align: center;
+        font-size:1.6em;
+
+        + p{font-size: 1.2em;}
+    }
+
+    blockquote{
+        border:none;
+        display: flex;
+        gap:1em;
+        padding:0;
+        color:$default-text;
+
+        &:before{
+            content:"\201C";
+            font-size:450%;
+            color:$secondary-text;
+            font-family: serif;
+            line-height: .7em;
+        }
+    }
+
+    .contacts{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size:180%;
+
+        > a{
+            display: block;
+            padding:.2em .5em;
+        }
+    }
+}
+
+.persona-p{
+    position: absolute;
+    top:-60px;
+    left:-80px;
+    width:250px;
+    height:250px;
+    overflow: hidden;
+    border-radius: 50%;
+
+    img{width:100%;}
+}
+
+.persona-right{
+    margin:$spacer 125px calc($spacer * 2.5) $spacer;
+    padding:$spacer 200px $spacer $spacer;
+
+    .persona-p{
+        left:auto;
+        right:-80px;
+    }
+}
+
+.persona-center{
+    margin:calc($spacer * 3.5) 125px calc($spacer * 2.5) 125px;
+    padding:$spacer;
+
+    .persona-p{
+        position:relative;
+        left:unset;
+        right:unset;
+        top:-120px;
+        margin:0 auto;
+
+        + div{margin-top:-90px;}
+    }
 }
 
 
 
 @media handheld, only screen and (min-width: 480px){
     .block-news-cards, .cards-col-3{
-        .row{
+        .grid{
             grid-template-columns: repeat(2, 1fr);
 
             .card:last-child, .transparent-card:last-child{grid-column: span 2;}
@@ -138,7 +231,7 @@
     }
 
     .cards-col-2{
-        .row{
+        .grid{
             grid-template-columns: repeat(2, 1fr);
         }
     }
@@ -147,7 +240,7 @@
 
 @media handheld, only screen and (min-width: 768px){
     .block-news-cards, .cards-col-3{
-        .row{
+        .grid{
             grid-template-columns: repeat(3, 1fr);
 
             .card:last-child, .transparent-card:last-child{grid-column: span 1;}
@@ -164,7 +257,7 @@
             padding:0 calc($spacer * 2) $spacer calc($spacer * 2);
         }
 
-        .row{
+        .grid{
             margin: 0 calc($spacer * 1.5);
         }
     }
@@ -187,7 +280,7 @@
             padding:0 calc($spacer * 3) $spacer calc($spacer * 3);
         }
 
-        .row{
+        .grid{
             margin: 0 calc($spacer * 3);
             gap:calc($spacer * 1.5);
         }

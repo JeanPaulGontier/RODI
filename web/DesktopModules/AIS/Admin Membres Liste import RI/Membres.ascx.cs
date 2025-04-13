@@ -78,6 +78,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
+using System.Text;
 
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
@@ -1291,8 +1292,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             {
 
                 HttpPostedFile file = FU_Photo2.PostedFile;
-              
-                string filename = Functions.ClearFileName(tbx_prenom.Text + "-"+tbx_nom.Text + ".jpg").ToLower();
+                var MD5Name = Functions.CalculateMD5Hash(UTF8Encoding.UTF8.GetBytes(tbx_nim.Text + ":" + tbx_prenom.Text + ":" + tbx_nom.Text));
+
+                string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower();
 
                 Bitmap bmp = new Bitmap(file.InputStream);
                 bmp = Functions.ThumbByWidth(bmp, Const.MEMBERS_PHOTOS_WIDTH);
@@ -1593,7 +1595,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 else
                     m.name = "";
 
-                string filename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower(); ;
+                
+                var MD5Name = Functions.CalculateMD5Hash(UTF8Encoding.UTF8.GetBytes(m.nim + ":" + m.name + ":" + m.surname));
+                string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower(); ;
                 if (File.Exists(Server.MapPath(PortalSettings.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename)))
                 {
                     m.photo = filename;

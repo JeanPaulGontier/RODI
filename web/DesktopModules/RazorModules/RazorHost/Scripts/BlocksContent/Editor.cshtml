@@ -39,6 +39,7 @@
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css?cdv=@CDV" />
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css?cdv=@CDV" />
 <script type="text/javascript" src="@(libPath)slick-carousel-1.8.1/slick.min.js?cdv=@CDV"></script>
+<script type="text/javascript" src="@(libPath)fslightbox-basic-3.5.1/fslightbox.js?cdv=@CDV"></script>
 
 <style>
     [v-cloak] {
@@ -60,9 +61,10 @@
 @RenderPage("BlockButtonsBg.cshtml")
 @RenderPage("BlockEditor.cshtml")
 <div class="admin" id='@appID' v-cloak>
-    <button type="button" v-on:click="toggling=true" v-if="!toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
-    <button type="button" v-on:click="toggling=false" v-if="toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
-    <blocks-editor v-on:changed="changed" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()"></blocks-editor>
+    <button type="button" v-on:click="toggling=true" v-if="blocks.length==0 && !toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
+    <button type="button" v-on:click="toggling=false" v-if="blocks.length==0 && toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
+
+    <blocks-editor v-on:changed="changed" v-on:toggle="toggle" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()" :toggleable="toggleable"></blocks-editor>
 </div>
 
 <script src="/DesktopModules/Yemon/API/Services/VueJS?cdv=@CDV"></script>
@@ -80,7 +82,7 @@
     var button2imgsimageList = AIS.Block.Button2Imgs.ImageList();
 }
 <script>
-
+    var BGLIBPATH = '@Html.Raw("/Portals/"+portalId+"/blockcontent")';
     var BGCOLORSLIST= @Html.Raw(Yemon.dnn.Functions.Serialize(colorsList));
 
     var BGBANNERVIDEOLIST = @Html.Raw(Yemon.dnn.Functions.Serialize(bannervideoList));
@@ -124,5 +126,6 @@
 
 
         InitApp('@appID',@moduleID,'@blocksSuffix',@editable.ToString().ToLower(),@toggleable.ToString().ToLower());
+        //setInterval(() => refreshFsLightbox(), 1000);
     });
 </script>

@@ -33,6 +33,9 @@
                     //}
                 )
             },
+            toggle(v) {
+                this.toggling = v;
+            },
             changed(data) {
                 if (!data)
                     return;
@@ -59,7 +62,8 @@
             this.getBlocks();
         }
     });
-    app.component('cropper', VueAdvancedCropper.Cropper);
 
+    app.component('cropper', VueAdvancedCropper.Cropper);
     app.mount('#' + appid);
+
 }

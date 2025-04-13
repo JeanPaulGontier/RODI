@@ -73,6 +73,7 @@ using System.Data.SqlClient;
 using DotNetNuke.Entities.Portals;
 using System.IO;
 using System.Globalization;
+using DotNetNuke.Entities.Users;
 
 
 /// <summary>
@@ -1392,7 +1393,10 @@ public class RotaryHelper
 
                     string chemin = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
                     chemin += "Portals\\0\\"+Const.MEMBERS_PHOTOS_PREFIX.Replace("/","\\");
-                    string filename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower();
+
+                    var MD5Name = Functions.CalculateMD5Hash(UTF8Encoding.UTF8.GetBytes(m.nim + ":" + m.name + ":" + m.surname));
+
+                    string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower();
                     chemin = Path.Combine(chemin, filename);
                     
                     FileInfo fileInfo = new FileInfo(chemin);
@@ -1410,7 +1414,16 @@ public class RotaryHelper
                         }
                     }
                     if (email != "")
+                    {
                         m.email = email;
+
+                        var huinfo = UserController.GetUserByEmail(0, email);
+                        if (huinfo != null)
+                        {
+                            m.userid = huinfo.UserID;
+                        }
+                    }
+                       
                     foreach (var ad in profile.Address)
                     {
                         if (ad.IsPrimary)

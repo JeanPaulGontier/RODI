@@ -27,6 +27,8 @@ img {
 
 .DNNEmptyPane {
     display: none !important;
+    margin:0 !important;
+    padding:0 !important;
 }
 
 .content-wrapper {
@@ -35,7 +37,6 @@ img {
     position: relative;
     padding: 0;
 }
-
 
 .bg-secondary{
     background: $secondary-bg url(images/concrete.jpg) repeat;
@@ -54,19 +55,44 @@ img {
 }
 
 /* Layout général */
-.row{
+.grid{
     display:grid;
-    gap:$spacer * 1.5;
+    grid-template-columns: repeat(12, 1fr);
+    padding:$spacer calc($spacer / 2);
+    row-gap:calc($spacer / 2);
+    column-gap: $spacer;
 
     &.col-2{
         grid-template-columns: repeat(2, 1fr);
+        gap:$spacer * 1.5;
+        padding:0;
     }
 
     &.col-3{
         grid-template-columns: repeat(3, 1fr);
+        gap:$spacer * 1.5;
+        padding:0;
     }
 
+    .col-sm-12{grid-column: span 12;}
+    .col-sm-11{grid-column: span 11;}
+    .col-sm-10{grid-column: span 10;}
+    .col-sm-9{grid-column: span 9;}
+    .col-sm-8{grid-column: span 8;}
+    .col-sm-7{grid-column: span 7;}
+    .col-sm-6{grid-column: span 6;}
+    .col-sm-5{grid-column: span 5;}
+    .col-sm-4{grid-column: span 4;}
+    .col-sm-3{grid-column: span 3;}
+    .col-sm-2{grid-column: span 2;}
+
+    > h2{text-align: center;}
 }
+
+
+
+/* ----- ATTENTION ----- */
+/*Ne pas utiliser "row" : il est réservé à la copatibilité des anciens modules et aux anciens block content !!! */
 
 /* alignements flex */
 .row-fluid{
@@ -83,7 +109,26 @@ img {
 /* Alignements */
 .text-center{text-align: center;}
 .text-right{text-align: right;}
+.text-left{text-align:left;}
+
 .relative{position:relative;}
+
+.v-top{align-self:start;}
+.v-middle{align-self:center;}
+.v-bottom{align-self:end;}
+
+
+/* Largeurs */
+.width-3{width:25%}
+.width-4{width:calc(100% / 3);}
+.width-6{width:50%;}
+.width-8{width:calc(100% * 2 / 3);}
+.width-9{width: 75%;}
+.width-12{width: 100%;}
+
+.h-center > *{margin-left:auto;margin-right:auto;}
+.h-right > *{margin-right: 0; margin-left:auto;}
+.h-left > *{margin-right: auto; margin-left:0;}
 
 
 /* Spacers */
@@ -147,10 +192,17 @@ img {
 .pb-5{padding-bottom: $spacer * 3;}
 
 
-
+/* Panes */
+.content{
+    margin-top:90px;
+    display:grid; /* évite le collapse des marges avec le header */
+}
 
 
 @media handheld, only screen and (min-width: 768px){
+    .content{
+        margin-top:106px;
+    }
     .row-fluid{
         column-gap: calc($spacer * 1.5);
     }
@@ -170,7 +222,7 @@ img {
 
 @media handheld, only screen and (min-width: 1280px){
     .content-wrapper {
-        max-width:1280px;
+        max-width:$content-width;
     }
     .row-fluid{
         column-gap: calc($spacer * 3);

@@ -2,8 +2,24 @@
     <div v-if="c">
         <div v-if="editing" class="bc-editing">
             <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+
+            <span class="bc-label">Fond du bloc :</span>
+            <div class="form-control">
+                <label class="radio-inline"><input type="radio" name="type" :value="0" v-model="e.Type" />Transparent</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="1" v-model="e.Type" />Coloré</label>
+            </div>
+
+            <span class="bc-label">Couleur :</span>
+            <div class="form-control color-picker">
+                <span v-for="(t,i) in colorsList">
+                    <label :for="'color'+i" :style="{'background-color': t[0],color: t[1]}">T</label>
+                    <input type="radio" v-model="color" name="color" :id="'color'+i" :value="t" />
+                </span>
+            </div>
+
             <span class="bc-label">Titre :</span>
             <input type="text" v-model="e.Title" class="form-control" />
+
             <span class="bc-label">Texte :</span>
             <tinymce :value="e.Html"
                      ref="editor"
@@ -11,56 +27,190 @@
                      :plugins="editorPlugins"
                      :toolbar1="editorToolbar"
                      :other="editorOptions" />
-            <div>
-                <span class="bc-label">Photo :</span><br />
-                <button type="button" class="btn btn-sm btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
-                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em>
 
-                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()"  style="display:none">
+            <div class="py-1">
+                <span class="bc-label">Photo :</span><br />
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
                 <div v-if="e.Image">
-                    <div class="bc-photo">
+                    <div class="bc-photo pb-1">
                         <image-editor :image="e.Image" :moduleid="moduleid" v-on:changed="imageChanged($event)"></image-editor>
                     </div>
                     <span class="bc-label">Nom de la photo (s'affiche au survol de l'image avec la souris) : </span>
                     <input type="text" v-model="e.Image.Name" class="form-control" />
-                    <span class="bc-label">Position de la photo :</span>
-                    <select v-model="e.Position" class="form-control">
-                        <option value="G">à gauche du texte</option>
-                        <option value="H">au dessus du texte</option>
-                        <option value="D">à droite du texte</option>
-                        <option value="B">en dessous du texte</option>
-                    </select>
-                    <br />
                     <button type="button" v-on:click="e.Image=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
                 </div>
 
+                <div class="row-fluid pt-1">
+                    <button type="button" class="btn btn-sm btn-primary" v-on:click="addDocument">Choisir / changer la photo</button>
+                    <em class="text-info"><small>Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</small></em>
+                </div>
             </div>
+
+            <div v-if="e.Image" class="img-positions">
+                <div class="v-middle">
+                    <label class="bc-label">Position de la photo :</label>
+                    <div class="form-control">
+                        <label class="radio-inline"><input type="radio" name="position" :value="'G'" v-model="e.Position" />à gauche</label>
+                        <label class="radio-inline"><input type="radio" name="position" :value="'H'" v-model="e.Position" />en haut</label>
+                        <label class="radio-inline"><input type="radio" name="position" :value="'D'" v-model="e.Position" />à droite</label>
+                        <label class="radio-inline"><input type="radio" name="position" :value="'B'" v-model="e.Position" />en bas</label>
+                    </div>
+
+                    <label class="bc-label">Largeur de l'image :</label>
+                    <div class="form-control" v-if="e.Position=='G' || e.Position=='D'">
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="3" v-model="e.Largeur" />25%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="4" v-model="e.Largeur" />33%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="6" v-model="e.Largeur" />50%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="8" v-model="e.Largeur" />66%</label>
+                    </div>
+                    <div class="form-control" v-if="e.Position!='G' && e.Position!='D'">
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="3" v-model="e.Largeur" />25%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="4" v-model="e.Largeur" />33%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="6" v-model="e.Largeur" />50%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="8" v-model="e.Largeur" />66%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="9" v-model="e.Largeur" />75%</label>
+                        <label class="radio-inline"><input type="radio" name="largeur" :value="12" v-model="e.Largeur" />Pleine largeur</label>
+                    </div>
+
+                    <label class="bc-label" v-if="e.Largeur!=12">Alignement de l'image :</label>
+                    <div class="form-control" v-if="e.Position=='G' || e.Position=='D'">
+                        <label class="radio-inline"><input type="radio" name="typehv" :value="'top'" v-model="e.VAlign" />Haut</label>
+                        <label class="radio-inline"><input type="radio" name="typehv" :value="'middle'" v-model="e.VAlign" />Milieu</label>
+                        <label class="radio-inline"><input type="radio" name="typehv" :value="'bottom'" v-model="e.VAlign" />Bas</label>
+                    </div>
+                    <div class="form-control" v-if="e.Position!='G' && e.Position!='D' && e.Largeur!=12">
+                        <label class="radio-inline"><input type="radio" name="typeha" :value="'left'" v-model="e.HAlign" />Gauche</label>
+                        <label class="radio-inline"><input type="radio" name="typeha" :value="'center'" v-model="e.HAlign" />Centre</label>
+                        <label class="radio-inline"><input type="radio" name="typeha" :value="'right'" v-model="e.HAlign" />Droite</label>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <img v-if="e.Position=='G' || e.Position=='D'" :src="icopath+e.Position+e.Largeur+e.VAlign+'.svg'" />
+                    <img v-if="e.Position!='G' && e.Position!='D' && e.Largeur==12" :src="icopath+e.Position+e.Largeur+'.svg'" />
+                    <img v-if="e.Position!='G' && e.Position!='D' && e.Largeur!=12" :src="icopath+e.Position+e.Largeur+e.HAlign+'.svg'" />
+                </div>
+            </div>
+
+            <label class="bc-label">Lien sur l'image :</label>
+            <div class="form-inline">
+                <label for="roci0" class="radio-inline"><input type="radio" v-model="redirectOnImageClick" :value="false" name="roci" id="roci0" />Non</label>
+                <label for="roci1" class="radio-inline"><input type="radio" v-model="redirectOnImageClick" :value="true" name="roci" id="roci1" />Oui</label>
+            </div>
+            <div v-if="redirectOnImageClick">
+                <small>Url de destination :</small>
+                <input type="text" v-model="e.ImageUri.Href" class="form-control" />
+                <span class="form-inline">
+                    <small for="targeti0" class="radio-inline"><input type="radio" v-model="e.ImageUri.Target" value="" name="targeti" id="targeti0" />Même fenêtre</small>
+                    <small for="targeti1" class="radio-inline"><input type="radio" v-model="e.ImageUri.Target" value="_blank" name="targeti" id="targeti1" />Nouvelle fenêtre</small>
+                </span>
+            </div>
+
+
+            <span class="bc-label">Bouton :</span>
+            <div class="form-control">
+                <label for="roc0" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="false" name="roc" id="roc0" />Non</label>
+                <label for="roc1" class="radio-inline"><input type="radio" v-model="redirectOnClick" :value="true" name="roc" id="roc1" />Oui</label>
+            </div>
+            <div v-if="redirectOnClick">
+                <small>Url de destination :</small>
+                <input type="text" v-model="e.Uri.Href" class="form-control" />
+                <div class="form-inline">
+                    <small for="target0" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="" name="target" id="target0" />Même fenêtre</small>
+                    <small for="target1" class="radio-inline"><input type="radio" v-model="e.Uri.Target" value="_blank" name="target" id="target1" />Nouvelle fenêtre</small>
+                </div>
+            </div>
+            <div v-if="redirectOnClick">
+                <small>Libellé du bouton :</small>
+                <input type="text" class="form-control" v-model="e.Uri.Label" />
+            </div>
+
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
             </div>
         </div>
-        <div v-if="!editing && c.Position=='G'" class="row">
-            <h2 class="col-sm-12">{{c.Title}}</h2>
-            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
-            <div class="col-sm-6" v-html="c.Html"></div>
+
+
+        <div v-if="!editing && c.Position=='G'" :class='classG1(c.Type)' :style="styleType(c.Type,{'background-color':c.BGColor})">
+            <div v-if="c.Image" :class="'col-sm-' + c.Largeur + ' v-' + c.VAlign">
+                <a v-if="c.ImageUri" :href="c.ImageUri.Href" :target="c.ImageUri.Target">
+                    <img :src="mediaPath+c.Image.GUID" :title="c.Image.Name" />
+                </a>
+                <img v-else :src="mediaPath+c.Image.GUID" :title="c.Image.Name" />
+            </div>
+            <div v-if="c.Title || c.Html || p.Uri" :class="'col-sm-'+(12-c.Largeur)" :style="styleType(c.Type,{color:c.Color})">
+                <h2 v-if="c.Title && c.Type==1" :style="{color:c.Color}">{{c.Title}}</h2>
+                <h2 v-if="c.Title && c.Type!=1" :style="{color:c.BGColor}">{{c.Title}}</h2>
+                <div v-html="c.Html"></div>
+                <div v-if="c.Uri" class="text-center pt-1">
+                    <a v-if="c.Type==1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'border-color':c.Color,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                    <a v-if="c.Type!=1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'background-color':c.BGColor,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                </div>
+            </div>
         </div>
-        <div v-if="!editing && c.Position=='D'" class="row">
-            <h2 class="col-sm-12">{{c.Title}}</h2>
-            <div class="col-sm-6" v-html="c.Html"></div>
-            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
+
+        <div v-if="!editing && c.Position=='D'" :class='classD1(c.Type)' :style="styleType(c.Type,{'background-color':c.BGColor})">
+            <div v-if="c.Title || c.Html || p.Uri" :class="'col-sm-'+(12-c.Largeur)" :style="styleType(c.Type,{color:c.Color})">
+                <h2 v-if="c.Title && c.Type==1" :style="{color:c.Color}">{{c.Title}}</h2>
+                <h2 v-if="c.Title && c.Type!=1" :style="{color:c.BGColor}">{{c.Title}}</h2>
+                <div v-html="c.Html"></div>
+                <div v-if="c.Uri" class="text-center pt-1">
+                    <a v-if="c.Type==1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'border-color':c.Color,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                    <a v-if="c.Type!=1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'background-color':c.BGColor,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                </div>
+            </div>
+            <div v-if="c.Image" :class="'col-sm-' + c.Largeur + ' v-' + c.VAlign">
+                <a v-if="c.ImageUri" :href="c.ImageUri.Href" :target="c.ImageUri.Target">
+                    <img :src="mediaPath+c.Image.GUID" :title="c.Image.Name" />
+                </a>
+                <img v-else :src="mediaPath+c.Image.GUID" :title="c.Image.Name" />
+            </div>
         </div>
-        <div v-if="!editing && (c.Position=='B')">
-            <h2>{{c.Title}}</h2>
-            <div v-html="c.Html"></div>
-            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
+
+        <div v-if="!editing && c.Position=='B'" class="block-image-text-b">
+            <div v-if="c.Title || c.Html || p.Uri" :class='classB1(c.Type)' :style="styleType(c.Type,{'background-color':c.BGColor})">
+                <h2 v-if="c.Title && c.Type==1" :style="{color:c.Color}">{{c.Title}}</h2>
+                <h2 v-if="c.Title && c.Type!=1" :style="{color:c.BGColor}">{{c.Title}}</h2>
+                <div v-html="c.Html"  :style="styleType(c.Type,{'color':c.Color})"></div>
+                <div v-if="c.Uri" class="text-center pt-1">
+                    <a v-if="c.Type==1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'border-color':c.Color,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                    <a v-if="c.Type!=1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'background-color':c.BGColor,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                </div>
+            </div>
+            <div v-if="c.Image" :class="'h-' + c.HAlign +' pt-1'" :style="styleType(c.Type,{'background-color':c.BGColor})">
+                <div :class="'width-'+c.Largeur">
+                    <a v-if="c.ImageUri" :href="c.ImageUri.Href" :target="c.ImageUri.Target">
+                        <img :src="mediaPath+c.Image.GUID" :title="c.Image.Name" class="img-r" />
+                    </a>
+                    <img v-else :src="mediaPath+c.Image.GUID" :title="c.Image.Name" class="img-r" />
+                </div>
+            </div>
         </div>
-        <div v-if="!editing && (c.Position=='H' || c.Position=='' || !c.Position)">
-            <h2>{{c.Title}}</h2>
-            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID"  /></div>
-            <div v-html="c.Html"></div>
+
+        <div v-if="!editing && c.Position=='H'" class="block-image-text">
+            <div v-if="c.Image" :class="'h-' + c.HAlign" :style="styleType(c.Type,{'background-color':c.BGColor})">
+                <div :class="'width-'+c.Largeur">
+                    <a v-if="c.ImageUri" :href="c.ImageUri.Href" :target="c.ImageUri.Target">
+                        <img :src="mediaPath+c.Image.GUID" :title="c.Image.Name" class="img-r" />
+                    </a>
+                    <img v-else :src="mediaPath+c.Image.GUID" :title="c.Image.Name" class="img-r" />
+                </div>
+            </div>
+            <div v-if="c.Title || c.Html || p.Uri" :class='classH1(c.Type)' :style="styleType(c.Type,{'background-color':c.BGColor})">
+                <h2 v-if="c.Title && c.Type==1" :style="{color:c.Color}">{{c.Title}}</h2>
+                <h2 v-if="c.Title && c.Type!=1" :style="{color:c.BGColor}">{{c.Title}}</h2>
+                <div v-html="c.Html" :style="styleType(c.Type,{'color':c.Color})"></div>
+                <div v-if="c.Uri" class="text-center pt-1">
+                    <a v-if="c.Type==1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'border-color':c.Color,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                    <a v-if="c.Type!=1" :href="c.Uri.Href" :target="c.Uri.Target" :style="{'background-color':c.BGColor,color:c.Color}" class="btn">{{c.Uri.Label}}</a>
+                </div>
+            </div>
+
         </div>
+       
     </div>
 </script>
+
 <script>
     if (typeof BlockImageText == 'undefined') {
 
@@ -76,7 +226,13 @@
             ],
             data() {
                 return {
+                    mediaPath: '/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=',
+                    icopath: BGLIBPATH+'/imagetext-ico/',
                     editing: false,
+                    redirectOnClick: false,
+                    redirectOnImageClick: false,
+                    colorsList: BGCOLORSLIST,
+                    color: null,
                     c: {
                    
                     },
@@ -92,7 +248,7 @@
                         'insertdatetime media table paste code directionality template textpattern'
                     ],
 
-                    editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | forecolor backcolor | bullist numlist | removeformat',
+                    editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | bullist numlist | removeformat',
                     editorOptions: {
                         //height: 200,
                         relative_urls: false,
@@ -112,17 +268,71 @@
                 'tinymce': VueEasyTinyMCE,
                 'image-editor': ImageEditor
             },
-            methods: {           
+            methods: {    
+                styleType(t,s) {
+                    if (!t || t == 0)
+                        return {};
+                    return s;
+                },
+                classType(t) {
+                    return t == 1 ? ' colored' : '';
+                },
+                classG1(t) {
+                    if(t==1)
+                        return { 'grid block-image-text-g colored': true };
+                    return { 'grid block-image-text-g': true };
+                },
+                classD1(t) {
+                    if (t == 1)
+                        return { 'grid block-image-text-d colored': true };
+                    return { 'grid block-image-text-d': true };
+                },  
+                classB1(t) {
+                    if (t == 1)
+                        return { 'colored': true };
+                    return { '': true };
+                },  
+                classH1(t) {
+                    if (t == 1)
+                        return { 'colored': true };
+                    return { '': true };
+                },  
                 imageChanged(e) {
                     this.e.Image = e;
                 },
                 edit() {
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
+                    var i = this.colorsList.findIndex(c => c[0] == this.e.BGColor);
+                    if (i > -1)
+                        this.color = this.colorsList[i];
+                    else
+                        this.color = this.colorsList[0];
+                    this.redirectOnClick = this.e.Uri != null;
+                    if (!this.e.Uri)
+                        this.e.Uri = { Href: '', Target: '', Label: 'Plus de détail' };
+                    this.redirectOnImageClick = this.e.ImageUri != null;
+                    if (!this.e.ImageUri)
+                        this.e.ImageUri = { Href: '', Target: '' };
+                    if (!this.e.Type)
+                        this.e.Type = 0;
+                    if (!this.e.Largeur)
+                        this.e.Largeur = 12;
+                    if (!this.e.HAlign)
+                        this.e.HAlign = 'left';
+                    if (!this.e.VAlign)
+                        this.e.VAlign = 'top';
                 },
                 validate() {
                     this.e.Html = this.$refs.editor.objTinymce.getContent();
                     this.c = JSON.parse(JSON.stringify(this.e));
+                    this.c.BGColor = this.color[0];
+                    this.c.Color = this.color[1];
+                    if (!this.redirectOnClick)
+                        this.c.Uri = null;
+                    if (!this.redirectOnImageClick)
+                        this.c.ImageUri = null;
+
                     this.editing = false;
                     this.onChange();
                 },

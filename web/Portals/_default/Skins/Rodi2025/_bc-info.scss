@@ -90,15 +90,15 @@
       font-size: 130%;
   
       h4{font-size: 2.5em;}
-    }
 
-    .col-3 {
-      margin: 2em 0;
-      gap:calc($spacer * 2);
+      .col-3 {
+        margin: 2em 0;
+        gap:calc($spacer * 2);
 
-      span{
-        font-size: 200%;
-      }
+        span{
+          font-size: 200%;
+        }
+      }      
     }
   }
 

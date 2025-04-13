@@ -78,50 +78,8 @@ namespace AIS
     public class Block : Yemon.dnn.BlocksContent.Block
     {
 
-        public static string[,] ColorsList(){
-             try {
-                var path = "/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/colors.txt";
-                var dir = HttpContext.Current.Server.MapPath(path);
-
-                string colors = System.IO.File.ReadAllText(dir);
-                string[] c = colors.Split(new string[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
-                string[,] list = new string[c.Length, 2];
-                int i = 0;
-                foreach (var s in c)
-                {
-                    if(s.IndexOf(";")>0)
-                    {
-                        list[i, 0] = s.Substring(0, s.IndexOf(";"));
-                        list[i, 1] = s.Substring(s.IndexOf(";")+1);
-                        i++;
-                    }
-                }
-                return list;
-            }catch(Exception ex){
-                Functions.Error(new Exception("blockcontent colors not found"));
-            }
-            return null;
-        }
-
-        private static List<string> FileList(string path)
-        {
-            var list = new List<string>();
-            var dir = HttpContext.Current.Server.MapPath(path);
-
-            foreach (var fi in Directory.GetFiles(dir))
-            {
-
-                list.Add(path + fi.Replace(dir, "").Replace("\\", "/"));
-            }
-            return list;
-        }
-
-        public class Uri {
-            public string Href { get; set; }
-            public string Target { get; set; }
-            public string Label { get; set; }
-        }
-
+        
+       
         public class NewsClub
         {
             public string Title { get; set; }

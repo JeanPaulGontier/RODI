@@ -2,7 +2,7 @@
 <% 
     string libPath = TabController.CurrentPage.SkinPath + "echoppe/";
     string appID = "app" + ModuleId;
-
+    var colorsList = AIS.Block.ColorsList();
 %>
 <asp:HiddenField ID="ContextGuid" runat="server" />
 <script src="<%=libPath %>tinymce/tinymce.min.js?cdv=<%=Yemon.dnn.Functions.CDV %>"></script>
@@ -46,6 +46,7 @@
     var HOST = '<%=AIS.Const.DISTRICT_URL%>';
 
     var CATEGORIES =  <%=Yemon.dnn.Functions.Serialize(categories)%>;
+    var BGCOLORSLIST = <%=Yemon.dnn.Functions.Serialize(colorsList)%>;
 
     $(document).ready(function () {
 
