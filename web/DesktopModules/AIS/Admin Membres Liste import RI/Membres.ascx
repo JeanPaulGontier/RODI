@@ -408,19 +408,24 @@
 <asp:Panel runat="server" ID="PanelSynchro" Visible="false">
 <h2>Votre club est synchronisé avec Rotary.org :</h2>
     <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
-        La modification des membres se fait sur le site du Rotary International, 
-        la synchronisation vers le district est automatique chaque nuit.
+         La modification des membres se fait sur le site du Rotary International, 
+         la synchronisation vers le district est automatique chaque nuit.
     </asp:Panel>
-    <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
-        La synchronisation des membres est autorisée, 
-        mais la mise à jour dans le district est désactivé pour analyse, 
-        contactez un responsable district pour la réactiver.
-    </asp:Panel>
+     <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
+         La synchronisation des membres est autorisée, 
+         mais la mise à jour dans le district est désactivé pour analyse, 
+         contactez un responsable district pour la réactiver.
+     </asp:Panel>
      <asp:Panel runat="server" ID="PanelSynchroNonConfiguree" CssClass="alert alert-danger">
-     La synchronisation des membres est autorisée, 
-     mais la mise à jour dans le district n'a pas encore été configurée, 
-     contactez un responsable district pour la réactiver.
- </asp:Panel>
+         La synchronisation des membres est autorisée, 
+         mais la mise à jour dans le district n'a pas encore été configurée, 
+         contactez un responsable district pour la réactiver.
+     </asp:Panel>
+     <asp:Panel runat="server" ID="PanelSynchroNonAutorisee" CssClass="alert alert-danger">
+         La synchronisation des membres n'est pas autorisée par votre club sur le site du Rotary International, 
+         demandez à un responsable de votre club d'autoriser RODI Association,
+         comme prestataire de gestion de club sur le site <a href='https://my.rotary.org/fr/' target='_blank'>My Rotary</a>
+     </asp:Panel>
 <div>
     <asp:Button runat="server" CssClass="btn btn-primary" ID="Button2" Text="Fermer" CausesValidation="false" OnClick="Bti_Annuler_Click" />
 </div>
