@@ -1396,7 +1396,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                 PanelSynchroAnalyse.Visible = false;
                 PanelSynchroAuto.Visible = false;
                 PanelSynchroNonConfiguree.Visible = false;
-                if (Functions.CurrentClub.rotary_agreement_date != null)
+                if (!Const.ROTARY_SYNCHRO_ALLOW_IMPORT_FOR_NON_SYNCHRONIZED_CLUB || Functions.CurrentClub.rotary_agreement_date != null)
                 {
                     switch(Functions.CurrentClub.rotary_agreement_type){
                         case "":
