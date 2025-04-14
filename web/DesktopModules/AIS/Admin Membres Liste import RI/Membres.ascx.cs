@@ -1393,20 +1393,28 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             { 
                 Panel1.Visible = false;
                 Panel2.Visible = false;
+                PanelSynchroNonAutorisee.Visible = false;
                 PanelSynchroAnalyse.Visible = false;
                 PanelSynchroAuto.Visible = false;
                 PanelSynchroNonConfiguree.Visible = false;
                 if (!Const.ROTARY_SYNCHRO_ALLOW_IMPORT_FOR_NON_SYNCHRONIZED_CLUB || Functions.CurrentClub.rotary_agreement_date != null)
                 {
-                    switch(Functions.CurrentClub.rotary_agreement_type){
-                        case "":
+
+                    switch (Functions.CurrentClub.GetSynchroRI()){
+                        case "Non autorisée":
+                            PanelSynchroNonAutorisee.Visible = true;
+                            break;
+                        case "Non configurée":
                             PanelSynchroNonConfiguree.Visible = true;
                             break;
-                        case "auto":
+                        case "Automatique":
                             PanelSynchroAuto.Visible = true;
                             break;
-                        case "analyse":
+                        case "Seulement analyse":
                             PanelSynchroAnalyse.Visible = true;
+                            break;
+                        default:
+                            
                             break;
                     }
                 
