@@ -406,7 +406,7 @@
 	</div>
 </asp:Panel>
 <asp:Panel runat="server" ID="PanelSynchro" Visible="false">
-<h2>Votre club est synchronisé avec Rotary.org :</h2>
+<h2>Etat de la synchronisation de votre club depuis Rotary.org vers le district :</h2>
     <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
          La modification des membres se fait sur le site du Rotary International, 
          la synchronisation vers le district est automatique chaque nuit.
