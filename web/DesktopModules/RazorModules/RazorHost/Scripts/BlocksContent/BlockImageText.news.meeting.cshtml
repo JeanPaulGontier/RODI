@@ -1,0 +1,192 @@
+﻿<script type="text/x-template" id="blockimagetext-template">
+    <div v-if="c">
+        <div v-if="editing" class="bc-editing">
+            <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <span class="bc-label">Titre :</span>
+            <input type="text" v-model="e.Title" class="form-control" />
+            <span class="bc-label">Texte :</span>
+            <tinymce :value="e.Html"
+                     ref="editor"
+                     class="form-control"
+                     :plugins="editorPlugins"
+                     :toolbar1="editorToolbar"
+                     :other="editorOptions" />
+            <div>
+                <span class="bc-label">Photo :</span><br />
+                <button type="button" class="btn btn-sm btn-primary" v-on:click="addDocument">Choisir une photo</button><br />
+                <em class="text-info">Le fichier doit être une photo et ne doit pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em>
+
+                <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none">
+                <div v-if="e.Image">
+                    <div class="bc-photo">
+                        <image-editor :image="e.Image" :moduleid="moduleid" v-on:changed="imageChanged($event)"></image-editor>
+                    </div>
+                    <span class="bc-label">Nom de la photo (s'affiche au survol de l'image avec la souris) : </span>
+                    <input type="text" v-model="e.Image.Name" class="form-control" />
+                    <span class="bc-label">Position de la photo :</span>
+                    <select v-model="e.Position" class="form-control">
+                        <option value="G">à gauche du texte</option>
+                        <option value="H">au dessus du texte</option>
+                        <option value="D">à droite du texte</option>
+                        <option value="B">en dessous du texte</option>
+                    </select>
+                    <br />
+                    <button type="button" v-on:click="e.Image=null" class="btn btn-sm btn-danger">Supprimer la photo</button>
+                </div>
+
+            </div>
+            <div style="text-align:center;margin-top:1em;">
+                <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
+            </div>
+        </div>
+        <div v-if="!editing && c.Position=='G'" class="row">
+            <h2 class="col-sm-12">{{c.Title}}</h2>
+            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+            <div class="col-sm-6" v-html="c.Html"></div>
+        </div>
+        <div v-if="!editing && c.Position=='D'" class="row">
+            <h2 class="col-sm-12">{{c.Title}}</h2>
+            <div class="col-sm-6" v-html="c.Html"></div>
+            <div class="col-sm-6" v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+        </div>
+        <div v-if="!editing && (c.Position=='B')">
+            <h2>{{c.Title}}</h2>
+            <div v-html="c.Html"></div>
+            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+        </div>
+        <div v-if="!editing && (c.Position=='H' || c.Position=='' || !c.Position)">
+            <h2>{{c.Title}}</h2>
+            <div v-if="c.Image"><img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+c.Image.GUID" /></div>
+            <div v-html="c.Html"></div>
+        </div>
+    </div>
+</script>
+<script>
+    if (typeof BlockImageText == 'undefined') {
+
+        BlockImageText = {
+            template: '#blockimagetext-template',
+            name: 'BlockImageText',
+            props: [
+                'content', 'moduleid'
+            ],
+            emits: [
+                'changed',
+                'cancel'
+            ],
+            data() {
+                return {
+                    editing: false,
+                    c: {
+
+                    },
+                    fichiers: [],
+                    e: {
+
+                    },
+
+
+                    editorPlugins: [
+                        'autoresize advlist autolink lists link charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code directionality template textpattern'
+                    ],
+
+                    editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | forecolor backcolor | bullist numlist | removeformat',
+                    editorOptions: {
+                        //height: 200,
+                        relative_urls: false,
+                        document_base_url: '/',
+                        remove_script_host: false,
+                        images_upload_url: this.serviceurl,
+                        automatic_uploads: false,
+                        menubar: false,
+                        statusbar: false,
+                        language: 'fr_FR',
+                        table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
+
+                    }
+                }
+            },
+            components: {
+                'tinymce': VueEasyTinyMCE,
+                'image-editor': ImageEditor
+            },
+            methods: {
+                imageChanged(e) {
+                    this.e.Image = e;
+                },
+                edit() {
+                    this.editing = true;
+                    this.e = JSON.parse(JSON.stringify(this.c));
+                },
+                validate() {
+                    this.e.Html = this.$refs.editor.objTinymce.getContent();
+                    this.c = JSON.parse(JSON.stringify(this.e));
+                    this.editing = false;
+                    this.onChange();
+                },
+                cancel() {
+                    this.editing = false;
+                    this.$emit('cancel');
+                },
+                onChange() {
+                    this.$emit('changed', this.c);
+                },
+
+                addDocument(event) {
+                    event.preventDefault();
+                    this.$refs.document.click();
+                },
+                onChangeDocumentUpload() {
+                    if (this.$refs.document.files.length == 0)
+                        return;
+                    this.fichiers.push({
+                        file: this.$refs.document.files[0],
+                        uploaded: false
+                    });
+                    this.uploadMedia({
+                        type: 'photo'
+                    }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
+                },
+                onDocumentUploaded(r) {
+                    this.e.Image = r.data;
+                    this.e.Image.Name = this.e.Image.Filename;
+                    this.fichiers = [];
+                    Array.from(this.$refs.document.files).splice(1, 1);
+                },
+                uploadMedia(meta, callbackok, callbackerror) {
+                    let fichier = this.fichiers[this.fichiers.length - 1];
+                    if (fichier.file.size > 28 * 1024 * 1024) {
+                        alert('Le fichier est trop gros, taille maximum 28 Mo, veuillez re-tenter avec un fichier plus petit ou nous contacter');
+                        this.fichiers = [];
+                        return;
+                    }
+                    let formData = new FormData();
+                    formData.append('file', fichier.file);
+                    formData.append('allowPdf2Image', true);
+                    if (meta) {
+                        for (let p in meta) {
+                            formData.append(p, meta[p]);
+                        }
+                    }
+                    _yemon[this.moduleid].service.postFile('/setMedia',
+                        formData,
+                        (r) => callbackok(r),
+                        (r) => callbackerror(r)
+                    );
+
+                },
+            },
+
+            mounted() {
+
+                this.c = this.content;
+                this.imageEditor = false;
+
+
+            }
+        }
+    }
+
+</script>

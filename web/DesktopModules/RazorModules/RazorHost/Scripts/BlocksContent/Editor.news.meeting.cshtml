@@ -24,7 +24,6 @@
     var Html = PageData["HTML"];
     bool editable = PageData["editable"];
     bool toggleable = PageData["toggleable"] ?? false;
-    var blockEvo = libPath.Contains("rodi2025");
 }
 <script src="@(libPath)tinymce/tinymce.min.js?cdv=@CDV"></script>
 <script src="@(libPath)vue/3.2.23/vue.js?cdv=@CDV"></script>
@@ -39,7 +38,6 @@
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick.css?cdv=@CDV" />
 <link rel="stylesheet" type="text/css" href="@(libPath)slick-carousel-1.8.1/slick-theme.css?cdv=@CDV" />
 <script type="text/javascript" src="@(libPath)slick-carousel-1.8.1/slick.min.js?cdv=@CDV"></script>
-<script type="text/javascript" src="@(libPath)fslightbox-pro-3.7.1/fslightbox.js?cdv=@CDV"></script>
 
 <style>
     [v-cloak] {
@@ -47,74 +45,22 @@
     }
 </style>
 @RenderPage("ImageEditor.cshtml")
-@RenderPage("BlockImageText.cshtml")
-@RenderPage("BlockImageCollection.cshtml")
+@RenderPage("BlockImageText.news.meeting.cshtml")
+@RenderPage("BlockImageCollection.news.meeting.cshtml")
 @RenderPage("BlockFileCollection.cshtml")
 @RenderPage("BlockRaw.cshtml")
 @RenderPage("BlockVideo.cshtml")
-@RenderPage("BlockBanner.cshtml")
-@RenderPage("BlockNewsCards.cshtml")
-@RenderPage("BlockInfos.cshtml")
-@RenderPage("BlockBulles.cshtml")
-@RenderPage("BlockCards.cshtml")
-@RenderPage("BlockButton2Imgs.cshtml")
-@RenderPage("BlockButtonsBg.cshtml")
-@RenderPage("BlockEditor.cshtml")
+@RenderPage("BlockEditor.news.meeting.cshtml")
 <div class="admin" id='@appID' v-cloak>
-    <button type="button" v-on:click="toggling=true" v-if="blocks.length==0 && !toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
-    <button type="button" v-on:click="toggling=false" v-if="blocks.length==0 && toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
-
+    <button type="button" v-on:click="toggling=true" v-if="!toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
+    <button type="button" v-on:click="toggling=false" v-if="toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
     <blocks-editor v-on:changed="changed" v-on:toggle="toggle" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()" :toggleable="toggleable"></blocks-editor>
 </div>
 
 <script src="/DesktopModules/Yemon/API/Services/VueJS?cdv=@CDV"></script>
 <script src="/DesktopModules/RazorModules/RazorHost/Scripts/BlocksContent/app.min.js?cdv=@CDV"></script>
-@{
-    var bannertextureList = AIS.Block.Banner.TextureList();
-    var bannerimageList = AIS.Block.Banner.ImageList();
-    var bannervideoList = AIS.Block.Banner.VideoList();
-    var colorsList = AIS.Block.ColorsList();
-    var districtnewsurlprefix = AIS.Const.DISTRICT_NEWS_URL_PREFIX;
-    var clubsnewsurlprefix = AIS.Const.CLUB_NEWS_URL_PREFIX;
-    var infosimageList = AIS.Block.Infos.ImageList();
-    var bullesimageList = AIS.Block.Bulles.ImageList();
-    var cardsimageList = AIS.Block.Cards.ImageList();
-    var button2imgsimageList = AIS.Block.Button2Imgs.ImageList();
-}
+
 <script>
-    var BGLIBPATH = '@Html.Raw("/Portals/"+portalId+"/blockcontent")';
-    var BGCOLORSLIST= @Html.Raw(Yemon.dnn.Functions.Serialize(colorsList));
-
-    var BGBANNERVIDEOLIST = @Html.Raw(Yemon.dnn.Functions.Serialize(bannervideoList));
-    var BGBANNERIMAGELIST =  @Html.Raw(Yemon.dnn.Functions.Serialize(bannerimageList));
-    var BGBANNERTEXTURELIST = @Html.Raw(Yemon.dnn.Functions.Serialize(bannertextureList));
-
-    var BGNEWSCARDSCATLIST = @Html.Raw(Yemon.dnn.Functions.Serialize(AIS.Block.NewsCards.TagsList()));
-    var BGDISTRICTNEWSURL = '@Html.Raw(districtnewsurlprefix)';
-    var BGCLUBSNEWSURL = '@Html.Raw(clubsnewsurlprefix)';
-
-    var BGINFOSIMAGELIST =  @Html.Raw(Yemon.dnn.Functions.Serialize(infosimageList));
-
-    var BGBULLESIMAGELIST =  @Html.Raw(Yemon.dnn.Functions.Serialize(bullesimageList));
-
-    var BGCARDSIMAGELIST =  @Html.Raw(Yemon.dnn.Functions.Serialize(cardsimageList));
-
-    var BGBUTTON2IMGSIMAGELIST =  @Html.Raw(Yemon.dnn.Functions.Serialize(button2imgsimageList));
-
-    var BGEVO = @Html.Raw(blockEvo ? "true":"false");
-
-    if (typeof BGTHUMBNAIL == 'undefined')
-        BGTHUMBNAIL = [];
-
-    BGTHUMBNAIL['Banner'] = '@Html.Raw(AIS.Block.Banner.THUMBNAIL)';
-    BGTHUMBNAIL['NewsCards'] = '@Html.Raw(AIS.Block.NewsCards.THUMBNAIL)';
-    BGTHUMBNAIL['Infos'] = '@Html.Raw(AIS.Block.Infos.THUMBNAIL)';
-    BGTHUMBNAIL['Bulles'] = '@Html.Raw(AIS.Block.Bulles.THUMBNAIL)';
-    BGTHUMBNAIL['Cards'] = '@Html.Raw(AIS.Block.Cards.THUMBNAIL)';
-    BGTHUMBNAIL['Button2Imgs'] = '@Html.Raw(AIS.Block.Button2Imgs.THUMBNAIL)';
-    BGTHUMBNAIL['ButtonsBg'] = '@Html.Raw(AIS.Block.ButtonsBg.THUMBNAIL)';
-
-
     $(document).ready(function () {
         if (typeof _yemon =='undefined')
             _yemon = [];

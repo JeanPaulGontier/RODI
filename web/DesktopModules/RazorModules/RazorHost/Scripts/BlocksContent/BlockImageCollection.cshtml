@@ -10,16 +10,16 @@
                 <label class="radio-inline"><input type="radio" name="type" :value="'gallery'" v-model="e.Type" />Galerie</label>
                 <label class="radio-inline"><input type="radio" name="type" :value="'slider'" v-model="e.Type" />Caroussel</label>
             </div>
+         
             <div class="row">
-                <span>Titre :</span>
+                <span>Titre&nbsp;:</span>
                 <input type="text" v-model="e.Title" class="form-control" />
             </div>
             <div>
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none" multiple>
-                <div v-if="e.Images" v-for="(i,index) in e.Images" class="row">
+                <div v-if="e.Images" v-for="(i,index) in e.Images" class="grid">
                     <div class="col-sm-4">
                         <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" />
-
                     </div>
                     <div class="col-sm-8">
                         <span> Légende :</span>
@@ -48,14 +48,14 @@
             <h2>{{c.Title}}</h2>
             <div class="Grow" ref="imagescollection" v-if="c.Type=='gallery'">
                 <div class="Gcolumn" v-for="(c,index) in columns()" :style="getColumnStyle()">
-                    <a :data-fslightbox="guid" v-for="i in c" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
+                    <a :data-fslightbox="guid" v-for="i in c"  :data-title="i.Name" :data-alt="i.Name" :data-caption="i.Name" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
                         <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
                    </a>
                  </div>
             </div>
 
             <div class="Lrow" v-if="!c.Type">
-                <a :data-fslightbox="guid" v-for="i in c.Images" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
+                <a :data-fslightbox="guid" v-for="i in c.Images" :data-alt="i.Name" :data-caption="i.Name" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
                     <img  :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
                 </a>
             </div>
@@ -64,7 +64,7 @@
 
             </div>
             <div :class="sliderName" :id="sliderName" ref="imagesslider" v-if="c.Type=='slider'">
-                <a :data-fslightbox="guid" v-for="i in c.Images" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
+                <a :data-fslightbox="guid" v-for="i in c.Images" :data-alt="i.Name" :data-caption="i.Name" :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID">
                     <div :class="evenBox" :style="{ backgroundImage: 'url(/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID }">
                     </div>
                 </a>
@@ -156,27 +156,43 @@
                 },
                 updateWidthHeight() {
                     var images = null;
-                    if (this.$refs.imagescollection)
+                    var parentRect = null;
+                    if (this.$refs.imagescollection) {
                         images = this.$refs.imagescollection;
-                    else if (this.$refs.imagesslider)
+                        parentRect = this.$refs.imagescollection.parentElement;
+                    }
+                    else if (this.$refs.imagesslider) {
                         images = this.$refs.imagesslider;
+                        parentRect = this.$refs.imagesslider.parentElement;
+                    }                        
                     else
                         return;
 
                     this.$nextTick(() => {
                         var rect = images.getBoundingClientRect();
                         this.width = rect.width;
+                        debugger
+                        if (parentRect && this.width < parentRect.getBoundingClientRect().width)
+                            this.width = parentRect.getBoundingClientRect().width;
+                        if (rect.width > window.innerWidth)
+                            this.width = window.innerWidth;
 
                         this.height = Number.MAX_SAFE_INTEGER;
                         this.c.Images.forEach((i) => {
                             let ratio = i.Height / i.Width;
                             let height = Math.round(this.width * ratio, 0);
                             this.height = Math.min(this.height, height);
-                        })
+                        });
+
+                        if (this.$refs.imagesslider) {
+                            
+                            this.$refs.imagesslider.style.width = this.width +'px';
+                        };
 
 
                         this.$nextTick(() => {
                             refreshFsLightbox();
+                            setTimeout(()=>refreshFsLightbox(),1000);
                         });
 
                         
@@ -254,6 +270,12 @@
                     this.editing = false;
                 
                     this.$emit('cancel');
+
+                    this.$nextTick(() => {
+                        this.updateWidthHeight();
+                        if (this.c.Type == 'slider')
+                            $('.' + this.sliderName).slick(this.slickOptions);
+                    });
                 },
                 onChange() {
                     this.$emit('changed', this.c);

@@ -4,8 +4,14 @@
     <div v-if="c">
         <div v-if="editing" class="bc-editing">
             <button type="button" v-on:click="cancel()" class="btn btn-close"><i class="fa fa-times"></i></button>
+            <div class="row" style="margin-bottom:1em;">
+                <span style="padding-right:1em">Présentation :</span>
+                <label class="radio-inline"><input type="radio" name="type" :value="''" v-model="e.Type" />Liste</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="'gallery'" v-model="e.Type" />Galerie</label>
+                <label class="radio-inline"><input type="radio" name="type" :value="'slider'" v-model="e.Type" />Caroussel</label>
+            </div>
             <div class="row">
-                <span>Titre&nbsp;:</span>
+                <span>Titre&nbsp;:&nbsp;</span>
                 <input type="text" v-model="e.Title" class="form-control" />
             </div>
             <div>
@@ -15,7 +21,7 @@
                         <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" />
 
                     </div>
-                    <div class="col-sm-8 text-left">
+                    <div class="col-sm-8">
                         <span> Légende :</span>
                         <input type="text" v-model="i.Name" class="form-control" /><br />
                         <button type="button" v-on:click="deleteImage(index)" class="btn btn-sm btn-danger">Supprimer Photo</button>&nbsp;
@@ -34,17 +40,32 @@
                 <button type="button" v-if="!uploading()" class="btn btn-primary" v-on:click="addDocument">Choisir une ou plusieurs photo(s)</button><br />
                 <em class="text-info">Les fichiers doivent être des photos et ne doivent pas dépasser 28 Mo<br />(si vous choisissez un fichier PDF, la 1ere page est convertie automatiquement en photo)</em><br />
             </div>
-
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
             </div>
         </div>
         <div v-if="!editing">
             <h2>{{c.Title}}</h2>
+            <div class="Grow" ref="imagescollection" v-if="c.Type=='gallery'">
+                <div class="Gcolumn" v-for="(c,index) in columns()" :style="getColumnStyle()">
+                    <img v-for="i in c" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
+                </div>
+            </div>
 
             <div class="Lrow" v-if="!c.Type">
                 <img v-for="i in c.Images" :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" :title="i.Name" />
             </div>
+
+            <div v-html="slickStyles()">
+
+            </div>
+            <div :class="sliderName" :id="sliderName" ref="imagesslider" v-show="c.Type=='slider'">
+                <a v-for="i in c.Images">
+                    <div :class="evenBox" :style="{ backgroundImage: 'url(/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID }">
+                    </div>
+                </a>
+            </div>
+
         </div>
     </div>
 </script>
@@ -66,12 +87,25 @@
                     c: {},
                     nbuploaded: 0,
                     width: 0,
+                    height: 452,
                     pct: 100,
                     fichiers: [],
                     e: {
                         Images: []
                     },
-                    lastY: window.screenY
+                    sliderName: 'slider' + this.guid.substring(0, 6),
+                    evenBox: 'evenbox' + this.guid.substring(0, 6),
+                    lastY: window.screenY,
+                    slickOptions: {
+                        dots: true,
+                        slidesToShow: 1,
+                        infinite: false,
+                        autoplay: true,
+                        autoplaySpeed: 2000,
+                        pauseOnFocus: true,
+                        pauseOnHover: true,
+                        pauseOnDotsHover: true,
+                    },
                 }
             },
             methods: {
@@ -106,11 +140,80 @@
                     const b = this.e.Images.splice(i, 1)[0];
                     this.e.Images.push(b);
                 },
+                slickStyles() {
+                    return "<style>." + this.evenBox + "{position:relative;width:100%;min-height:" + this.height + "px;background-size:cover;background-position:center}." + this.evenBox + " img{position:absolute;z-index:2;display:block;top:0;left:0;width:100%}." + this.evenBox + " h3{position:absolute;z-index:3;display:block;top:0;left:15px;width:auto;text-align:left;color:#fff;background-color:#000;padding:15px 15px 15px 10px;max-width:calc(100% - 30px);border-radius:4px}." + this.sliderName + " .slick-next{right:5px;z-index:9}." + this.sliderName + " .slick-prev{left:5px;z-index:9}." + this.sliderName + " .slick-dots{position:absolute;bottom:3px;width:60%;left:50%;transform:translateX(-50%);border-radius:3px}." + this.sliderName + " .slick-dots li button:before{color:#fff;opacity:1;border-radius:50%;border:1px solid #00246c;background-color:#fff}." + this.sliderName + " .slick-dots li.slick-active button:before{opacity:1;color:#00246c;background-color:#00246c}." + this.sliderName + " .slick-prev:before,.slick-next:before{font-size:40px}." + this.sliderName + " .slick-prev,.slick-next{width:40px;height:40px}." + this.sliderName + " .slick-dots li button:before{font-family:'slick';font-size:16px}." + this.sliderName + " .slick-dots li{margin:7px 5px 3px 5px}." + this.sliderName + " .slick-dots li button:before{width:10px;height:10px;content:' '}." + this.sliderName + "{margin:3px}</style>";
+                },
                 getColumnStyle() {
                     return 'flex:' + this.pct + '%;max-width:' + this.pct + '%;';
                 },
+                updateWidthHeight() {
+                    var images = null;
+                    if (this.$refs.imagescollection)
+                        images = this.$refs.imagescollection;
+                    else if (this.$refs.imagesslider)
+                        images = this.$refs.imagesslider;
+                    else
+                        return;
+
+                    this.$nextTick(() => {
+                        var rect = images.getBoundingClientRect();
+                        this.width = rect.width;
+
+                        this.height = Number.MAX_SAFE_INTEGER;
+                        this.c.Images.forEach((i) => {
+                            let ratio = i.Height / i.Width;
+                            let height = Math.round(this.width * ratio, 0);
+                            this.height = Math.min(this.height, height);
+                        })
+
+                    });
+
+                },
+
+                columns() {
+                    var cols = [];
+                    if (!this.c.Images || this.width == 0 || this.c.Type != 'gallery')
+                        return cols;
+                    const padding = 8;
+                    const marginv = 8;
+                    var y = [];
+                    var col = 0;
+                    var maxcol = Math.round(this.width / 300, 0);
+                    this.pct = Math.round(100 / maxcol, 0);
+                    var colWidth = Math.round((this.width - (padding * maxcol)) / maxcol, 0);
+                    for (var i = 0; i < maxcol; i++) {
+                        cols.push([]);
+                        y.push(0);
+                    }
+                    this.c.Images.forEach((c) => {
+                        if (c.Height) {
+                            let ratio = c.Height / c.Width;
+                            let height = Math.round(colWidth * ratio, 0) + marginv;
+                            let max = Number.MAX_SAFE_INTEGER;
+                            col = 0;
+                            for (var i = 0; i < maxcol; i++) {
+                                if (y[i] < max) {
+                                    col = i;
+                                    max = y[i];
+                                }
+                            }
+                            y[col] += height;
+                            cols[col].push(c);
+                        } else {
+                            cols[col].push(c);
+                            col++;
+                            if (col == maxcol)
+                                col = 0;
+                        }
+
+                    });
+                    this.y = y;
+                    return cols;
+                },
                 edit() {
                     this.lastY = window.scrollY;
+                    if (this.c.Type == 'slider')
+                        $('.' + this.sliderName).slick('unslick');
                     this.editing = true;
                     this.e = JSON.parse(JSON.stringify(this.c));
                 },
@@ -123,6 +226,11 @@
 
                     this.onChange();
 
+                    this.$nextTick(() => {
+                        this.updateWidthHeight();
+                        if (this.c.Type == 'slider')
+                            $('.' + this.sliderName).slick(this.slickOptions);
+                    });
                 },
                 cancel() {
                     this.editing = false;
@@ -157,6 +265,8 @@
                     }, this.onDocumentUploaded, (r) => { alert('une erreur est survenue, veuillez re-tenter ou nous contacter') });
                 },
                 onDocumentUploaded(r) {
+
+                    console.log('onDocumentUploaded', r);
                     const image = r.data;
                     image.Name = image.Filename;
                     this.e.Images.push(image);
@@ -166,6 +276,7 @@
                             f.uploaded = true;
                         };
                     });
+
                 },
                 uploadMedia(meta, callbackok, callbackerror) {
                     this.fichiers.forEach(fichier => {
@@ -188,11 +299,30 @@
                             (r) => callbackok(r),
                             (r) => callbackerror(r)
                         );
+
                     });
-                }
+                    /* let fichier = this.fichiers[this.fichiers.length - 1];*/
+
+                },
+            },
+            created() {
+                window.addEventListener("resize", this.updateWidthHeight);
+            },
+            destroyed() {
+                window.removeEventListener("resize", this.updateWidthHeight);
             },
             mounted() {
                 this.c = this.content;
+
+                this.$nextTick(() => {
+                    this.updateWidthHeight();
+                    if (this.c.Type == 'slider')
+                        $('.' + this.sliderName).slick(this.slickOptions);
+
+
+
+                });
+
             },
 
         }

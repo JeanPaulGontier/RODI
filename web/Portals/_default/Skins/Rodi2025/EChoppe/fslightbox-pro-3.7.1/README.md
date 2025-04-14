@@ -1,30 +1,15 @@
-# Vanilla JavaScript Fullscreen Lightbox Basic
+# Vanilla JavaScript Fullscreen Lightbox Pro
 
 ## Description
 A vanilla JavaScript plug-in without production dependencies for displaying images, videos, or, through custom sources, anything you want in a clean overlying box.
 The project's website: https://fslightbox.com.
-
-## Installation
-### Through an archive downloaded from the website.
-Just before the end of the &lt;body&gt; tag:
-```html
-<script src="fslightbox.js"></script>
-```
-### Or, through a package manager.
-```
-npm install fslightbox
-```
-And import it in your project's JavaScript file, for example through the Node.js "require" function:
-```
-require("fslightbox")
-```
 
 ## Basic usage
 ```html
 <a data-fslightbox="gallery" href="https://i.imgur.com/fsyrScY.jpg">
 	Open the first slide (an image)
 </a>
-<a 
+<a
 	data-fslightbox="gallery"
 	href="https://www.youtube.com/watch?v=xshEZzpS4CQ"
 >
@@ -36,7 +21,10 @@ require("fslightbox")
 >
 	Open the third slide (an HTML video)
 </a>
-<a data-fslightbox="gallery" href="#vimeo">
+<a
+	data-fslightbox="gallery"
+	href="#vimeo"
+>
 	Open the fourth slide (a Vimeo video—a custom source)
 </a>
 <iframe
@@ -48,13 +36,12 @@ require("fslightbox")
 	allow="autoplay; fullscreen"
 	allowFullScreen
 ></iframe>
+
+<script src="fslightbox.js"></script>
 ```
 
 ## Documentation
 Available at: https://fslightbox.com/javascript/documentation.
-
-## Demo
-Available at: https://fslightbox.com/javascript.
 
 ## Browser Compatibility
 

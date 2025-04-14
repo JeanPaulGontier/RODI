@@ -1,9 +1,9 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
-// Copyright (c) 2012-2016
-// by SAS AIS : http://www.aisdev.net
+// RODI - https://rodi-platform.org
+// Copyright (c) 2012-2025
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -94,6 +94,7 @@ public partial class DesktopModules_AIS_Presidents_View_Presidents_View : Portal
     {
 
         rotary_year = int.Parse(ddl_rotaryYear.SelectedValue);
+        Session["district_board_view_year"] = rotary_year;
 
         List<Affectation> affs = new List<Affectation>();
 
@@ -123,18 +124,18 @@ public partial class DesktopModules_AIS_Presidents_View_Presidents_View : Portal
         da.Fill(ds);
         foreach (DataRow rd in ds.Tables[0].Rows)
         {
-            //if ((rd["rotary_year"]!= null && ""+ rd["rotary_year"]!="") && int.Parse(""+rd["rotary_year"]) <= Functions.GetRotaryYear())
-            //{
                 int year = (int)rd["rotary_year"];
                 ddl_rotaryYear.Items.Add(new ListItem("" + year + "-" + (year + 1), "" + year));
-
-            //}
-
+        }
+        int rotary_year = Functions.GetRotaryYear();
+        if (Session["district_board_view_year"] != null)
+        {
+            rotary_year = (int)Session["district_board_view_year"];
         }
 
         foreach (ListItem li in ddl_rotaryYear.Items)
         {
-            if (li.Value == "" + Functions.GetRotaryYear())
+            if (li.Value == "" +rotary_year)
                 li.Selected = true;
         }
     }

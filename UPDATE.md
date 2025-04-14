@@ -14,6 +14,9 @@
 - un nouveau module razor : _CorrectionPhotoMembres.cshtml permet de convertir les photos des membres vers le nouveau format
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 
+- correction d'un bug d'affichage de l'état de la synchronisation Rotary>District dans l'écran membres des clubs qui affichait une information erronée quand le club n'avait pas encore autorisé RODI Association
+sur myRotary
+
 ###### 23/03/2025
 - ajout de fonctionnalités sur le module réunions clubs
 	- on peut maintenant filtrer les réunions sur le critère 'prochaines' ou 'passées'

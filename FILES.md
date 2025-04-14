@@ -40,6 +40,24 @@ DesktopModules\AIS\Admin District Board\Settings.ascx.cs
 DesktopModules\AIS\District Board View\District Board View.ascx.cs
 DesktopModules\AIS\District Board View\Settings.ascx
 DesktopModules\AIS\District Board View\Settings.ascx.cs
+DesktopModules\AIS\Admin News Liste\Control.ascx
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\AIS\Presidents View\Presidents View.ascx
+DesktopModules\AIS\Presidents View\Presidents View.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
 
 Portals\_default\Containers\Rodi2017\container.css
 

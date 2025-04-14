@@ -92,12 +92,12 @@
                 </div>
             </div>
 
-            <label class="bc-label">Lien sur l'image :</label>
-            <div class="form-inline">
+            <label v-if="e.Image" class="bc-label">Lien sur l'image :</label>
+            <div v-if="e.Image" class="form-inline">
                 <label for="roci0" class="radio-inline"><input type="radio" v-model="redirectOnImageClick" :value="false" name="roci" id="roci0" />Non</label>
                 <label for="roci1" class="radio-inline"><input type="radio" v-model="redirectOnImageClick" :value="true" name="roci" id="roci1" />Oui</label>
             </div>
-            <div v-if="redirectOnImageClick">
+            <div v-if="e.Image && redirectOnImageClick">
                 <small>Url de destination :</small>
                 <input type="text" v-model="e.ImageUri.Href" class="form-control" />
                 <span class="form-inline">
