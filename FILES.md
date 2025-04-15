@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+##### 15/04/2025
+```txt
 App_Code\AIS\Const.cs
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Admin Club Selecteur\Control.ascx.cs
@@ -58,6 +61,8 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Init.mailing.html
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\customization.md
 
 Portals\_default\Containers\Rodi2017\container.css
 

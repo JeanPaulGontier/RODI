@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 15/04/2025
 - ajout d'un nouveau Rôle "Formateur Clubs" qui permet aux utilisateurs qu'on y ajoute d'administrer tous les clubs dans le but de les former, sans avoir besoin d'être Administrateur District
 	Attention : il faut ajouter le rôle dans le module sélecteur de club pour qu'il apparaisse aux utilisateurs concernés
 - ajout d'un module de statistiques d'usage des clubs

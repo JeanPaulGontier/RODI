@@ -1,0 +1,311 @@
+﻿@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using AIS;
+@{
+    var CDV = Yemon.dnn.Functions.CDV;
+    var moduleID = PageData["moduleID"];
+    var blocksSuffix = PageData["blocksSuffix"];
+    var Html = PageData["HTML"];
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+    var mediaPath = "/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=";
+    var blockEvo = libPath.Contains("rodi2025");
+
+    Block block = PageData["Block"];
+    switch (block.Type)
+    {
+        /* block evo */
+        case "Banner":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.Banner ba = (Block.Banner)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Banner));
+            switch (ba.Type)
+            {
+                case 1: // picture
+                    <div class="bc-banner picture animated fadeIn">
+                        <span class="banner-pict" style="background-image: url('@ba.Image');"></span>
+                        <section class="content-wrapper">
+                            <h2 style="color:@ba.Color">@ba.Title2</h2>
+                            <h1 style="color:@ba.Color">@ba.Title</h1>
+                            <p style="color:@ba.Color">@ba.Title3</p>
+                            @if (ba.Uri != null)
+                            {
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                            }
+                        </section>
+                    </div>
+                    break;
+                case 2: // video
+                    <div class="bc-banner picture animated fadeIn">
+                        <span class="banner-video">
+                            <video style="width:100%;height:auto" poster="@ba.VideoThumbnail()" autoplay muted loop>
+                                <source src="@ba.Video" type="video/mp4">
+                            </video>
+                        </span>
+                        <section class="content-wrapper">
+                            <h2 style="color:@ba.Color">@ba.Title2</h2>
+                            <h1 style="color:@ba.Color">@ba.Title</h1>
+                            <p style="color:@ba.Color">@ba.Title3</p>
+                            @if (ba.Uri != null)
+                            {
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                            }
+                        </section>
+                    </div>
+                    break;
+                case 3: // texture
+                    <div class="bc-banner picture animated fadeIn" style="background-image: url('@ba.Texture');">
+                        <section class="content-wrapper">
+                            <h2 style="color:@ba.Color">@ba.Title2</h2>
+                            <h1 style="color:@ba.Color">@ba.Title</h1>
+                            <p style="color:@ba.Color">@ba.Title3</p>
+                            @if (ba.Uri != null)
+                            {
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                            }
+                        </section>
+                    </div>
+                    break;
+                case 4: // color
+                    <div class="bc-banner" style="background-color:@ba.BGColor;color:@ba.Color">
+                        <section class="content-wrapper">
+                            <h2 style="color:@ba.Color">@ba.Title2</h2>
+                            <h1 style="color:@ba.Color">@ba.Title</h1>
+                            <p style="color:@ba.Color">@ba.Title3</p>
+                            @if (ba.Uri != null)
+                            {
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                            }
+                        </section>
+                    </div>
+                    break;
+            }
+
+            break;
+        case "NewsCards":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.NewsCards ca = (Block.NewsCards)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.NewsCards));
+
+            <div class="block-news-cards">
+                <div class="content-wrapper">
+                    <div class="card-header">
+                        <h3>@ca.Title</h3>
+                        <p class="lead">@ca.Description</p>
+                    </div>
+
+                    <div class="grid">
+                        @foreach (News n in ca.News)
+                        {
+                            string uri = ca.Uri_Clubs.Href + n.id;
+                            string target = ca.Uri_Clubs.Target;
+                            if (n.cric == 0)
+                            {
+                                uri = ca.Uri_District.Href + n.id;
+                                target = ca.Uri_District.Target;
+                            }
+                            <div class="card">
+                                <a href="@uri" target="@target">
+                                    <img src="@n.GetPhoto()" alt="@n.title">
+                                    <span class="news-type" style="color:turquoise;">
+                                        <span>@n.tag1</span>
+                                    </span>
+
+                                    <span class="news-date">@n.dt.ToString("dd MMM")</span>
+                                    <span class="news-title">@n.title</span>
+
+                                    @if (n.cric != 0)
+                                    {
+                                        <span class="news-location"><i class="fa-solid fa-location-dot"></i> @n.club_name</span>
+                                    }
+                                    <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: turquoise;"></i></span>
+                                </a>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            break;
+        case "Infos":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.Infos bi = (Block.Infos)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Infos));
+
+            <div class="content-wrapper">
+                <div class="bc-info">
+                    <img src="@bi.Image" class="img-r">
+                    <div class="color-bloc">
+                        <h4 class="white-text">@bi.Title</h4>
+                        <p>@bi.Title2</p>
+                        <div class="grid col-3">
+                            <p><span>@bi.Counter1</span>@bi.Label1</p>
+                            <p><span>@bi.Counter2</span>@bi.Label2</p>
+                            <p><span>@bi.Counter3</span>@bi.Label3</p>
+                        </div>
+                        <div class="text-right">
+                            @if (bi.Uri != null)
+                            {
+                                <a href="@bi.Uri.Href" target="@bi.Uri.Target" class="btn  btn-xl btn-warning">@bi.Uri.Label</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+        case "Bulles":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.Bulles bu = (Block.Bulles)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Bulles));
+
+            <div class="bc-bulles">
+                <h5 data-aos="fade-up">@bu.Title</h5>
+                <pre>@bu.Description</pre>
+                <div class="circle-list content-wrapper">
+                    <div class="side-list">
+                        <a href="@bu.List[5].Uri.Href" data-aos="fade-up" target="@bu.List[5].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[5].Image')" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="FadeInUpBig" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[5].Uri.Label</div>
+                        </a>
+
+                        <a href="@bu.List[4].Uri.Href" data-aos="fade-up" target="@bu.List[4].Uri.Target" class="causes-link">
+                            <span class="circle-image" data-animate="fade-up" style="background-image:url('@bu.List[4].Image')" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[4].Uri.Label</div>
+                        </a>
+                    </div>
+
+                    <div class="aof-middle">
+                        <a href="@bu.List[0].Uri.Href" data-aos="fade-up" target="@bu.List[0].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[0].Image')" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[0].Uri.Label</div>
+                        </a>
+
+                        <a href="@bu.List[6].Uri.Href" data-aos="fade-up" target="@bu.List[6].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[6].Image')" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[6].Uri.Label</div>
+                        </a>
+
+                        <a href="@bu.List[3].Uri.Href" data-aos="fade-up" target="@bu.List[3].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[3].Image')" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[3].Uri.Label</div>
+                        </a>
+                    </div>
+
+                    <div class="side-list">
+                        <a href="@bu.List[1].Uri.Href" data-aos="fade-up" target="@bu.List[1].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[1].Image')" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[1].Uri.Label</div>
+                        </a>
+
+                        <a href="@bu.List[2].Uri.Href" data-aos="fade-up" target="@bu.List[2].Uri.Target" class="causes-link">
+                            <span class="circle-image" style="background-image:url('@bu.List[2].Image')" data-animate="fade-up" data-module="in-view" data-offset="50%" data-is="visible"></span>
+                            <div data-animate="fade-up" data-module="in-view" data-offset="80%" data-is="visible">@bu.List[2].Uri.Label</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            break;
+        case "Cards":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.Cards car = (Block.Cards)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Cards));
+
+            <div class="content-wrapper cards-col-@car.List.Count">
+                <div class="card-header">
+                    <h3 style="color:@car.BGColor">@car.Title</h3>
+                    <pre class="lead">@car.Description</pre>
+                </div>
+
+                <div class="grid centered">
+                    @foreach (Block.Cards.Card card in car.List)
+                    {
+                        <div class="transparent-card">
+                            <img src="@card.Image" alt="@card.Title">
+                            <div class="news-title">
+                                <span>@card.Title</span>
+                                <pre>@card.Description</pre>
+                            </div>
+                            @if (card.Uri != null)
+                            {
+                                <a href="@card.Uri.Href" target="@card.Uri.Target" style="background-color:@car.BGColor;color:@car.Color" class="btn btn-xl">@card.Uri.Label</a>
+                            }
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+            break;
+        case "Button2Imgs":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.Button2Imgs b2i = (Block.Button2Imgs)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Button2Imgs));
+
+            <div class="bg-secondary">
+                <div class="bc-info-2 card-header">
+                    <img data-aos="fade-right" src="@b2i.ImageGauche">
+                    <div data-aos="zoom-in">
+                        <h3 style="color:@b2i.BGColor">@b2i.Title</h3>
+                        <p class="lead pb-4">@b2i.Description</p>
+                        @if (b2i.Uri != null)
+                        {
+                            <a href="@b2i.Uri.Href" target="@b2i.Uri.Target" style="background-color:@b2i.BGColor;color:@b2i.Color" class="btn  btn-xl">@b2i.Uri.Label</a>
+                        }
+                    </div>
+                    <img data-aos="fade-left" src="@b2i.ImageDroite">
+                </div>
+            </div>
+            break;
+        case "ButtonsBg":
+            if (!blockEvo)
+            {
+                break;
+            }
+            Block.ButtonsBg bg = (Block.ButtonsBg)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ButtonsBg));
+
+            <div class="bg-colored bc-info-3" style="background-color:@bg.BGColor">
+                <div class="content-wrapper" data-aos="zoom-in">
+                    <div class="card-header">
+                        <h3 style="color:@bg.Color">@bg.Title</h3>
+                        <p style="color:@bg.Color" class="lead">@bg.Title2</p>
+                    </div>
+                    @if (bg.List.Count > 0)
+                    {
+                        <div class="grid col-2">
+                            @foreach (Block.Uri u in bg.List)
+                            {
+                                <a href="@u.Href" style="color:@bg.Color;border-color:@bg.Color" target="@u.Target" class="btn  btn-xl btn-link">@u.Label</a>
+                            }
+                        </div>
+                    }
+
+                </div>
+            </div>
+            break;
+    }
+}
+
+
