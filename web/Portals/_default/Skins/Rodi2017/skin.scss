@@ -2563,13 +2563,13 @@ div.form-control{
 
 
 .header {
-    background-color: $default-bg;
+    background-color: #ffffff;
     position: fixed;
     z-index: 10;
     left: 0;
     right: 0;
     top: 0;
-    height: 106px;
+    height: 102px;
 }
 
 .personabar-visible {
@@ -2591,6 +2591,13 @@ div.form-control{
     padding: 10px 0 12px 0;
 }
 
+.content-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    padding: 0;
+}
+
 .mobile-display {
     header {
         display: flex;
@@ -2602,7 +2609,7 @@ div.form-control{
         left: 0;
         right: 0;
         top: 0;
-        background-color: $default-bg;
+        background-color: #ffffff;
 
         a + a {
             display: block;
@@ -2615,23 +2622,23 @@ div.form-control{
         text-align: center;
         font-size: 0.9em;
         padding: 20px 0 0 0;
-        border-bottom: 1px solid $secondary-bg;
-        color: $secondary-text;
+        border-bottom: 1px solid #e7e7e8;
+        color: #898A8D;
 
         a, a.visited {
             padding: 0 10px;
             font-size: 1.3em;
-            color: $primary;
+            color: #005daa;
 
             &:hover {
-                color: $info;
+                color: #01b4e7;
             }
         }
 
         .user-m {
             display: block;
             padding: 10px 0;
-            color: $dark;
+            color: #17458f;
         }
 
         .info-text {
@@ -2647,9 +2654,9 @@ div.form-control{
     justify-content: center;
     height: 90px;
     width: 90px;
-    border-right: 1px solid $secondary-bg;
+    border-right: 1px solid #e7e7e8;
     text-decoration: none;
-    background: $default-bg;
+    background: #ffffff;
 
     img {
         width: 40px;
@@ -2690,11 +2697,11 @@ div.form-control{
 
             a {
                 display: block;
-                color: $default-text;
+                color: #3b3b3b;
                 line-height: 1.2em;
 
                 &:hover {
-                    color: $info;
+                    color: #01b4e7;
                 }
             }
 
@@ -2702,7 +2709,7 @@ div.form-control{
                 padding: 10px 20px 10px 15px;
                 font-size: 105%;
                 text-transform: uppercase;
-                font-weight: $font-weight-bold;
+                font-weight: bold;
             }
         }
     }
@@ -2729,11 +2736,11 @@ div.form-control{
 
 /*--------- Footer ----------*/
 footer {
-    background-color: $dark;
-    padding: $spacer;
+    background-color: #17458f;
+    padding: 2rem;
 
     > section {
-        color: $default-bg;
+        color: #ffffff;
         font-size: 80%;
         text-align: center;
 
@@ -2742,10 +2749,10 @@ footer {
         }
 
         a {
-            color: $default-bg !important;
+            color: #ffffff !important;
 
             &:hover {
-                color: $secondary-text !important;
+                color: #898A8D !important;
             }
         }
 
@@ -2761,9 +2768,16 @@ footer {
 /*--------- CSS Reset for Tablet & Mobile ----------*/
 
 @media screen and (min-width: 768px) {
+    .pc-display{display:block;}
+    .mobile-display{display:none;}
+    .content-wrapper {
+        max-width:1100px;
+    }
+    .pc-display + .rodi2025{margin-top:102px;}
+
     .header {
         .logo-style {
-            max-height: 90px;
+            max-height: 70px;
             padding: 0;
         }
 
@@ -2771,17 +2785,17 @@ footer {
             display: block;
             position: absolute;
             z-index: 999;
-            max-height: 82px;
-            padding: 0 0 12px 0;
+            max-height: 78px;
+            padding: 0 0 10px 0;
         }
 
         .menu-bar {
-            background-color: $default-bg;
+            background-color: #ffffff;
             position: fixed;
             left: 0;
             right: 0;
             display: flex;
-            height: 82px;
+            height: 78px;
             overflow: hidden;
             box-shadow: 0 8px 6px rgba(0,0,0,.4);
             transition: all .3s ease-in-out;
@@ -2795,6 +2809,7 @@ footer {
             .m-lvl1 {
                 margin-left: 210px;
                 display: flex;
+                justify-content: space-evenly;
 
                 > div {
                     margin-top: 10px;
@@ -2806,8 +2821,8 @@ footer {
                         content: "";
                         display: block;
                         height: 4px;
-                        transition: $transition;
-                        background-color: $info;
+                        transition: all .6s ease-in-out;
+                        background-color: #01b4e7;
                         width: 0;
                         opacity: 0;
                     }
@@ -2820,17 +2835,18 @@ footer {
                     > a {
                         display: block;
                         text-transform: uppercase;
-                        color: $default-text;
+                        color: #3b3b3b;
                         font-size: 105%;
                         padding-top: 1rem;
+                        padding-right: 1em;
                     }
 
                     &:hover, &:active {
-                        border-top-color: $info;
-                        transition: $transition;
+                        border-top-color: #01b4e7;
+                        transition: all .6s ease-in-out;
 
                         > a {
-                            color: $info;
+                            color: #01b4e7;
                         }
                     }
                 }
@@ -2839,7 +2855,7 @@ footer {
             .m-lvl2 {
                 /*height:0;*/
                 padding: 0 1em 0 .5em;
-                border-left: 1px solid $secondary-bg;
+                border-left: 1px solid #e7e7e8;
                 margin: 0 0 .75em 1px;
                 transition: all .3s ease-in-out;
                 display: flex;
@@ -2855,13 +2871,13 @@ footer {
 
                 a {
                     display: block;
-                    color: $default-text;
+                    color: #3b3b3b;
                     padding: .5em 0;
                     font-size: 100%;
                     transition: all .01s ease-in-out;
 
                     &:hover {
-                        color: $info;
+                        color: #01b4e7;
                     }
                 }
 
@@ -2871,7 +2887,7 @@ footer {
                     line-height: 1.1em;
 
                     &:hover {
-                        color: $info;
+                        color: #01b4e7;
                     }
                 }
 
@@ -2885,14 +2901,14 @@ footer {
             font-size: 0.8em;
             padding: 5px 0 0 0;
             text-align: right;
-            color: $secondary-text;
+            color: #898A8D;
 
             a, a:visited {
                 padding: 0 5px;
-                color: $primary;
+                color: #005daa;
 
                 &:hover {
-                    color: $info;
+                    color: #01b4e7;
                 }
             }
 
@@ -2909,10 +2925,10 @@ footer {
         }
 
         a.btn-connexion {
-            background: $highlight;
+            background: #f7a81b;
             padding: 5px 18px 7px 18px !important;
             border-radius: 0 0 20px 20px;
-            color: $default-bg !important;
+            color: #ffffff !important;
             text-align: center;
             text-transform: uppercase;
             position: relative;
@@ -2920,13 +2936,13 @@ footer {
 
             &:hover {
                 text-decoration: none !important;
-                background-color: $orange;
+                background-color: #ff7600;
             }
         }
     }
 
     footer {
-        padding: calc($spacer * 1.5) $spacer;
+        padding: 3rem 2rem;
 
         > section {
             display: flex;

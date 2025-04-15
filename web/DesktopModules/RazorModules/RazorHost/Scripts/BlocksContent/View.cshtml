@@ -31,21 +31,17 @@
     AOS.init();
 </script>
 @{
-    List<Block>
-    blocks = PageData["blocks"];
+    List<Block> blocks = PageData["blocks"];
     if (blocks == null)
     {
-        blocks = new List<Block>
-            ();
+        blocks = new List<Block>();
     }
     try
     {
         string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix);
         if (sblocks != "")
         {
-            blocks = (List<Block>
-                )Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>
-                    ));
+            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
         }
 
     }
@@ -489,7 +485,7 @@
                 break;
         }
         PageData["Block"] = block;
-        RenderPage("View.custom.cshtml");
+        @RenderPage("View.custom.cshtml");
 
     }
 }
