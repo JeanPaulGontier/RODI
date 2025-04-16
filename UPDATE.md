@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 ###### 15/04/2025
 - ajout d'un nouveau Rôle "Formateur Clubs" qui permet aux utilisateurs qu'on y ajoute d'administrer tous les clubs dans le but de les former, sans avoir besoin d'être Administrateur District
 	Attention : il faut ajouter le rôle dans le module sélecteur de club pour qu'il apparaisse aux utilisateurs concernés
@@ -13,7 +14,7 @@
 
 - modification du nommage des photos des membres, avant il était composé du prénom + nom.jpg, maintenant il est un numéro de série basé sur le nim, prenom & nom afin d'éviter les conflits en cas d'homonymes dans le district
 - un nouveau module razor : _CorrectionPhotoMembres.cshtml permet de convertir les photos des membres vers le nouveau format
-- réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
+
 
 - correction d'un bug d'affichage de l'état de la synchronisation Rotary>District dans l'écran membres des clubs qui affichait une information erronée quand le club n'avait pas encore autorisé RODI Association
 sur myRotary

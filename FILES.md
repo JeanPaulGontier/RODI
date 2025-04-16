@@ -19,6 +19,8 @@ DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_CorrectionPhotoMembres.cshtml
 DesktopModules\AIS\Admin News Liste\Control.ascx
 DesktopModules\AIS\Admin Mailing2\Control.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste\Membres.ascx
 App_Code\AIS\rotary\RotaryHelper.cs
 DesktopModules\AIS\OuKiKan\Control.ascx
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
