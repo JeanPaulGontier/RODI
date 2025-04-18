@@ -248,7 +248,7 @@
                         'insertdatetime media table paste code directionality template textpattern'
                     ],
 
-                    editorToolbar: 'undo redo | table | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | link | bullist numlist | removeformat',
+                    editorToolbar: 'undo redo | table | bold italic underline strikethrough blockquote | alignleft aligncenter alignright alignjustify | link | bullist numlist | removeformat',
                     editorOptions: {
                         //height: 200,
                         relative_urls: false,
@@ -317,7 +317,7 @@
                     if (!this.e.Type)
                         this.e.Type = 0;
                     if (!this.e.Largeur)
-                        this.e.Largeur = 12;
+                        this.e.Largeur = 6;
                     if (!this.e.HAlign)
                         this.e.HAlign = 'left';
                     if (!this.e.VAlign)
@@ -387,11 +387,20 @@
                     );
 
                 },
+               
             },
        
             mounted() {
                
                 this.c = this.content;
+                if (!this.c.Type)
+                    this.c.Type = 0;
+                if (!this.c.Largeur)
+                    this.c.Largeur = 6;
+                if (!this.c.HAlign)
+                    this.c.HAlign = 'left';
+                if (!this.c.VAlign)
+                    this.c.VAlign = 'top';
                 this.imageEditor = false;
 
                 

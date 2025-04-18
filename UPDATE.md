@@ -1,5 +1,7 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
+###### 18/04/2025
+- ajustement des styles blockcontent pour une meilleure compatibilité avec l'existant
 ###### 15/04/2025
 - ajout d'un nouveau Rôle "Formateur Clubs" qui permet aux utilisateurs qu'on y ajoute d'administrer tous les clubs dans le but de les former, sans avoir besoin d'être Administrateur District
 	Attention : il faut ajouter le rôle dans le module sélecteur de club pour qu'il apparaisse aux utilisateurs concernés

@@ -57,6 +57,10 @@
             /* block genuine */
             case "ImageText":
                 Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                if(p.Largeur==0)
+                {
+                    p.Largeur = 6;
+                }
                 switch (p.Position)
                 {
                     case "G":

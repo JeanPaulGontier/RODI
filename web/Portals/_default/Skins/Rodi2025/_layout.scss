@@ -8,6 +8,8 @@ html, body {
     line-height: 1.2em;
 }
 
+*{box-sizing: border-box;}
+
 img, object, embed, iframe {
     max-width: 100%;
 }
@@ -57,34 +59,22 @@ img {
 /* Layout général */
 .grid{
     display:grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: 1fr;
     padding:$spacer calc($spacer / 2);
     row-gap:calc($spacer / 2);
     column-gap: $spacer;
 
     &.col-2{
-        grid-template-columns: repeat(2, 1fr);
-        gap:$spacer * 1.5;
+        grid-template-columns: 1fr;
+        gap:calc($spacer / 2);
         padding:0;
     }
 
     &.col-3{
-        grid-template-columns: repeat(3, 1fr);
-        gap:$spacer * 1.5;
+        grid-template-columns: 1fr;
+        gap:calc($spacer / 2);
         padding:0;
     }
-
-    .col-sm-12{grid-column: span 12;}
-    .col-sm-11{grid-column: span 11;}
-    .col-sm-10{grid-column: span 10;}
-    .col-sm-9{grid-column: span 9;}
-    .col-sm-8{grid-column: span 8;}
-    .col-sm-7{grid-column: span 7;}
-    .col-sm-6{grid-column: span 6;}
-    .col-sm-5{grid-column: span 5;}
-    .col-sm-4{grid-column: span 4;}
-    .col-sm-3{grid-column: span 3;}
-    .col-sm-2{grid-column: span 2;}
 
     > h2{text-align: center;}
 }
@@ -205,6 +195,39 @@ img {
     }
     .row-fluid{
         column-gap: calc($spacer * 1.5);
+    }
+
+    .grid{
+        grid-template-columns: repeat(12, 1fr);
+        padding:$spacer calc($spacer / 2);
+        row-gap:calc($spacer / 2);
+        column-gap: $spacer;
+    
+        &.col-2{
+            grid-template-columns: repeat(2, 1fr);
+            gap:$spacer * 1.5;
+            padding:0;
+        }
+    
+        &.col-3{
+            grid-template-columns: repeat(3, 1fr);
+            gap:$spacer * 1.5;
+            padding:0;
+        }
+    
+        .col-sm-12{grid-column: span 12;}
+        .col-sm-11{grid-column: span 11;}
+        .col-sm-10{grid-column: span 10;}
+        .col-sm-9{grid-column: span 9;}
+        .col-sm-8{grid-column: span 8;}
+        .col-sm-7{grid-column: span 7;}
+        .col-sm-6{grid-column: span 6;}
+        .col-sm-5{grid-column: span 5;}
+        .col-sm-4{grid-column: span 4;}
+        .col-sm-3{grid-column: span 3;}
+        .col-sm-2{grid-column: span 2;}
+    
+        > h2{text-align: center;}
     }
 }
 

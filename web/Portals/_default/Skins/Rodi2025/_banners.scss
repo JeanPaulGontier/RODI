@@ -51,6 +51,12 @@
             overflow: hidden;
             height:100%;
             width:100%;
+
+            video{
+                height:100% !important;
+                width: 100% !important;
+                object-fit:cover;
+            }
         }
     }
 
@@ -59,7 +65,7 @@
         font-family: $sans-serif;
         text-shadow: 0 5px 20px $dark-text;
 
-        p{
+        pre{
             font-size:120%;
             text-transform: uppercase;
             padding:1em 2em;
@@ -72,7 +78,7 @@
 
 @media screen and (min-width: 360px) {
     .bc-banner{
-        h1{font-size:300%;}
+        h1{font-size:290%;}
         h2{font-size:150%;}
         &.picture {min-height:200px;}
     }
@@ -83,7 +89,10 @@
     .bc-banner{
         h1{font-size:380%;}
         h2{font-size: 250%;}
-        &.picture {min-height:250px;}
+
+        &.picture {
+            min-height:250px;
+        }
     }
 }
 
@@ -92,6 +101,6 @@
         h1{font-size:650%;}
         h2{font-size: 350%;}
         &.picture {min-height:480px;}
-        section p{font-size: 150%;padding:1em 4em;}
+        section pre{font-size: 150%;padding:1em 4em;}
     }
 }

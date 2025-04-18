@@ -40,7 +40,7 @@
                         <section class="content-wrapper">
                             <h2 style="color:@ba.Color">@ba.Title2</h2>
                             <h1 style="color:@ba.Color">@ba.Title</h1>
-                            <p style="color:@ba.Color">@ba.Title3</p>
+                            <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
                                 <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
@@ -51,14 +51,14 @@
                 case 2: // video
                     <div class="bc-banner picture animated fadeIn">
                         <span class="banner-video">
-                            <video style="width:100%;height:auto" poster="@ba.VideoThumbnail()" autoplay muted loop>
+                            <video poster="@ba.VideoThumbnail()" autoplay muted loop preload="auto">
                                 <source src="@ba.Video" type="video/mp4">
                             </video>
-                        </span>
+                        </span>                      
                         <section class="content-wrapper">
                             <h2 style="color:@ba.Color">@ba.Title2</h2>
                             <h1 style="color:@ba.Color">@ba.Title</h1>
-                            <p style="color:@ba.Color">@ba.Title3</p>
+                            <pre style='color:@ba.Color'>@ba.Title3</pre>                          
                             @if (ba.Uri != null)
                             {
                                 <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
@@ -71,7 +71,7 @@
                         <section class="content-wrapper">
                             <h2 style="color:@ba.Color">@ba.Title2</h2>
                             <h1 style="color:@ba.Color">@ba.Title</h1>
-                            <p style="color:@ba.Color">@ba.Title3</p>
+                            <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
                                 <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
@@ -84,7 +84,7 @@
                         <section class="content-wrapper">
                             <h2 style="color:@ba.Color">@ba.Title2</h2>
                             <h1 style="color:@ba.Color">@ba.Title</h1>
-                            <p style="color:@ba.Color">@ba.Title3</p>
+                            <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
                                 <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
@@ -150,7 +150,7 @@
             Block.Infos bi = (Block.Infos)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.Infos));
 
             <div class="content-wrapper">
-                <div class="bc-info">
+                <div data-aos="fade-zoom-in" class="bc-info">
                     <img src="@bi.Image" class="img-r">
                     <div class="color-bloc">
                         <h4 class="white-text">@bi.Title</h4>
@@ -240,7 +240,7 @@
                 <div class="grid centered">
                     @foreach (Block.Cards.Card card in car.List)
                     {
-                        <div class="transparent-card">
+                        <div data-aos="fade-up" class="transparent-card">
                             <img src="@card.Image" alt="@card.Title">
                             <div class="news-title">
                                 <span>@card.Title</span>

@@ -18,7 +18,7 @@
             <span class="bc-label">Sous titre :</span>
             <input type="text" v-model="e.Title2" class="form-control" />
             <span class="bc-label">Description :</span>
-            <input type="text" v-model="e.Title3" class="form-control" />
+            <textarea rows="3" v-model="e.Title3" class="form-control"></textarea>
 
             <span v-if="e.Type==1" class="bc-label">Image d'arrière plan :</span>
             <div v-if="e.Type==1" class="form-control">
@@ -34,7 +34,7 @@
                     <label :for="'image'+i"><img :src="videoThumbnail(t)" width="120" /></label>
                     <input type="radio" v-model="e.Video" name="image" :id="'image'+i" :value="t" />
                 </span>
-            </div>       
+            </div>
 
             <span v-if="e.Type==3" class="bc-label">Texture d'arrière plan :</span>
             <div v-if="e.Type==3" class="form-control">
@@ -83,7 +83,7 @@
                 <section class="content-wrapper">
                     <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
                     <h1 :style="{color: c.Color}">{{c.Title}}</h1>
-                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <pre :style="{color: c.Color}">{{c.Title3}}</pre>
                     <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
                 </section>
             </div>
@@ -98,7 +98,7 @@
                 <section class="content-wrapper">
                     <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
                     <h1 :style="{color: c.Color}">{{c.Title}}</h1>
-                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <pre :style="{color: c.Color}">{{c.Title3}}</pre>
                     <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
                 </section>
             </div>
@@ -109,7 +109,7 @@
                 <section class="content-wrapper">
                     <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
                     <h1 :style="{color: c.Color}">{{c.Title}}</h1>
-                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <pre :style="{color: c.Color}">{{c.Title3}}</pre>
                     <a v-if="c.Uri" :href="c.Uri.Href" :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
                 </section>
             </div>
@@ -118,7 +118,7 @@
                 <section class="content-wrapper">
                     <h2 :style="{color: c.Color}">{{c.Title2}}</h2>
                     <h1 :style="{color: c.Color}">{{c.Title}}</h1>
-                    <p :style="{color: c.Color}">{{c.Title3}}</p>
+                    <pre :style="{color: c.Color}">{{c.Title3}}</pre>
                     <a v-if="c.Uri" :href="c.Uri.Href"  :style="{color: c.Color,'border-color': c.Color}" :target="c.Uri.Target" class="btn  btn-xl btn-link animated bounce">{{c.Uri.Label}}</a>
                 </section>
             </div>

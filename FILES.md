@@ -1,6 +1,22 @@
 ##### Modified files per commit
 ```txt
 ```
+##### 18/04/2025
+```txt
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
+Portals\_default\Skins\Rodi2025\_banners.scss
+Portals\_default\Skins\Rodi2025\_bc-info.scss
+Portals\_default\Skins\Rodi2025\_cards.scss
+Portals\_default\Skins\Rodi2025\_header.scss
+Portals\_default\Skins\Rodi2025\_layout.scss
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.css.map
+Portals\_default\Skins\Rodi2025\skin.min.css
+```
 ##### 15/04/2025
 ```txt
 App_Code\AIS\Const.cs
