@@ -316,8 +316,13 @@
                         this.e.ImageUri = { Href: '', Target: '' };
                     if (!this.e.Type)
                         this.e.Type = 0;
-                    if (!this.e.Largeur)
-                        this.e.Largeur = 6;
+                    if (!this.e.Largeur) {
+                        if (this.e.Position == 'G' || this.e.Position == 'D')
+                            this.e.Largeur = 6;
+                        else
+                            this.e.Largeur = 12;
+                    }
+                        
                     if (!this.e.HAlign)
                         this.e.HAlign = 'left';
                     if (!this.e.VAlign)
@@ -396,7 +401,10 @@
                 if (!this.c.Type)
                     this.c.Type = 0;
                 if (!this.c.Largeur)
-                    this.c.Largeur = 6;
+                    if (this.c.Position == 'G' || this.c.Position == 'D')
+                        this.c.Largeur = 6;
+                    else
+                        this.c.Largeur = 12;
                 if (!this.c.HAlign)
                     this.c.HAlign = 'left';
                 if (!this.c.VAlign)
