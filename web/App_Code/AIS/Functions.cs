@@ -95,6 +95,7 @@ using System.Data.SqlClient;
 using System.Data;
 
 using Lucene.Net.Analysis;
+using SmarterMailSchedule;
 //using Org.BouncyCastle.Asn1.Ocsp;
 //using System.Web.Http;
 //using System.Activities.Expressions;
@@ -553,9 +554,12 @@ namespace AIS
             logInfo.AddProperty("Source de l'erreur", e.Source);
             logInfo.AddProperty("Message d'erreur", e.Message);
             logInfo.AddProperty("Pile d'appel", e.StackTrace);
-            logInfo.AddProperty("Erreur complete", e.ToString());
+            logInfo.AddProperty("Erreur complète", e.ToString());
 
             eventLog.AddLog(logInfo);
+
+            var error = new Error(e.Source, "" + e.InnerException,e.StackTrace,e.Message,e.ToString());
+            DataMapping.Log("error","",Serialize(error),Globals.GetPortalSettings().UserId);
         }
 
         public static void Log(Exception e,EventLogController.EventLogType logtype)
@@ -569,9 +573,12 @@ namespace AIS
             logInfo.AddProperty("Source", e.Source);
             logInfo.AddProperty("Message", e.Message);
             logInfo.AddProperty("Pile d'appel", e.StackTrace);
-           
+            logInfo.AddProperty("Erreur complète", e.ToString());
 
             eventLog.AddLog(logInfo);
+
+            var error = new Error(e.Source, "" + e.InnerException, e.StackTrace, e.Message, e.ToString());
+            DataMapping.Log("error", "", Serialize(error), Globals.GetPortalSettings().UserId);
         }
 
 

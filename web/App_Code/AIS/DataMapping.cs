@@ -3,8 +3,8 @@
 
 //
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2020
-// by SAS AIS : https://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -8878,6 +8878,19 @@ namespace AIS
             }
 
         }
+
+        public static void Log(string type, string oldvalue, string newvalue, int userid)
+        {
+            Dictionary<string, object> row = new Dictionary<string, object>();
+            row["portalid"] = Yemon.dnn.Functions.GetPortalId();
+            row["type"] = type;
+            row["oldvalue"] = oldvalue;
+            row["newvalue"] = newvalue;
+            row["userid"] = userid;
+            row["dtlastupdate"] = DateTime.Now;
+            Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX+ "logs", "id", row);
+        }
+
     }
 
 }
