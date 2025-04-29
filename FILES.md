@@ -3,8 +3,10 @@
 Portals\_default\Skins\Rodi2025\images\blank.gif
 Portals\_default\Skins\Rodi2025\images\mail.png
 Portals\_default\Skins\Rodi2025\images\Web.png
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 ```
 ##### 18/04/2025
 ```txt
