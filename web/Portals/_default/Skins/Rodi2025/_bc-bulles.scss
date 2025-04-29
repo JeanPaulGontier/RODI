@@ -1,13 +1,17 @@
-.bc-bulles{
-  background-color: $dark;
-  text-align: center;
-  padding:$spacer;
+.bc-bulles {
+    background-color: $dark;
+    text-align: center;
+    padding: $spacer;
 
-  h5{
-    font-size:2.25em;
-    line-height: 1.1em;
-    margin-bottom: $spacer;
-  }
+    h5 {
+        font-size: 2.25em;
+        line-height: 1.1em;
+        margin-bottom: $spacer;
+    }
+
+    pre {
+        color: $default-bg;
+    }
 }
 
 .circle-list{

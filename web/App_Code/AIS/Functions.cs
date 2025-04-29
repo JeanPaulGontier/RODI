@@ -557,9 +557,8 @@ namespace AIS
             logInfo.AddProperty("Erreur complète", e.ToString());
 
             eventLog.AddLog(logInfo);
-
-            var error = new Error(e.Source, "" + e.InnerException,e.StackTrace,e.Message,e.ToString());
-            DataMapping.Log("error","",Serialize(error),Globals.GetPortalSettings().UserId);
+            var error = new Error(e.Source, "" + e.InnerException, Environment.StackTrace, e.Message,e.ToString());
+            DataMapping.Log("error","",Yemon.dnn.Functions.Serialize(error),Globals.GetPortalSettings().UserId);
         }
 
         public static void Log(Exception e,EventLogController.EventLogType logtype)
@@ -577,8 +576,8 @@ namespace AIS
 
             eventLog.AddLog(logInfo);
 
-            var error = new Error(e.Source, "" + e.InnerException, e.StackTrace, e.Message, e.ToString());
-            DataMapping.Log("error", "", Serialize(error), Globals.GetPortalSettings().UserId);
+            var error = new Error(e.Source, "" + e.InnerException, Environment.StackTrace, e.Message, e.ToString());
+            DataMapping.Log("error", "", Yemon.dnn.Functions.Serialize(error), Globals.GetPortalSettings().UserId);
         }
 
 

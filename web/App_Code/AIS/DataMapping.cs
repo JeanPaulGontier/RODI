@@ -8881,14 +8881,37 @@ namespace AIS
 
         public static void Log(string type, string oldvalue, string newvalue, int userid)
         {
-            Dictionary<string, object> row = new Dictionary<string, object>();
-            row["portalid"] = Yemon.dnn.Functions.GetPortalId();
-            row["type"] = type;
-            row["oldvalue"] = oldvalue;
-            row["newvalue"] = newvalue;
-            row["userid"] = userid;
-            row["dtlastupdate"] = DateTime.Now;
-            Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX+ "logs", "id", row);
+            int portalid = Yemon.dnn.Functions.GetPortalId();
+            try
+            {
+                Dictionary<string, object> row = new Dictionary<string, object>();
+                row["portalid"] = portalid;
+                row["type"] = type;
+                row["oldvalue"] = oldvalue;
+                row["newvalue"] = newvalue;
+                row["userid"] = userid;
+                row["dtlastupdate"] = DateTime.Now;
+                if (Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "logs", "id", row).Key == "error")
+                {
+                    if(Yemon.dnn.DataMapping.lastException!=null){
+                        throw Yemon.dnn.DataMapping.lastException;
+                    }
+                    else
+                    {
+                        throw new Exception(newvalue);
+                    }
+                }
+               
+            }
+            catch (Exception ee)
+            {
+                try{ 
+                    var path = System.Web.HttpContext.Current.Server.MapPath("/Portals/"+portalid+"-System/Cache/AIS");
+                    Directory.CreateDirectory(path);
+                    File.WriteAllText(Path.Combine(path,DateTime.Now.Ticks+ ".error.resources"), ee.ToString());
+                }
+                catch{ }
+            }
         }
 
     }

@@ -3,6 +3,9 @@
 App_Code\AIS\Functions.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Error.cs
+Portals\_default\Skins\Rodi2025\_bc-bulles.scss
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.min.css
 Portals\_default\Skins\Rodi2025\images\blank.gif
 Portals\_default\Skins\Rodi2025\images\mail.png
 Portals\_default\Skins\Rodi2025\images\Web.png
