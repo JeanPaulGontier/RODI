@@ -49,6 +49,17 @@
             {
                 case "ImageText":
                     Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                    if (p.Largeur == 0)
+                    {
+                        if (p.Position == "G" || p.Position == "D")
+                        {
+                            p.Largeur = 6;
+                        }
+                        else
+                        {
+                            p.Largeur = 12;
+                        }
+                    }
                     if (p.Image != null)
                     {
                         mustShowOnlineLink = true;
