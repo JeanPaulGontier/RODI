@@ -70,6 +70,7 @@
                     editing: -1,
                     thumbnail: BGTHUMBNAIL,
                     evo: BGEVO,
+                    start: true
                 }
             },
             methods: {
@@ -302,7 +303,7 @@
 
             },
             mounted() {
-
+                
                 toastr.options = {
                     "closeButton": false,
                     "debug": false,
@@ -328,7 +329,10 @@
                     deep: true,
 
                     handler() {
-
+                        if (this.start) {
+                            this.start = false;
+                            return;
+                        }
                         this.onChange();
                     }
                 },

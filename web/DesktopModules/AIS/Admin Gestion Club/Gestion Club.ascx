@@ -141,6 +141,30 @@
             <asp:TextBox ID="tbx_town" Width="500" runat="server"></asp:TextBox>
         </div>
     </div>
+     <div class="row">
+         <div class="col-sm-4">
+             <strong>Latitude : </strong>
+         </div>
+         <div class="col-sm-8">
+             <asp:TextBox ID="tbx_latitude" Width="500" runat="server" ></asp:TextBox>
+         </div>
+     </div>
+      <div class="row">
+         <div class="col-sm-4">
+             <strong>Longitude : </strong>
+         </div>
+         <div class="col-sm-8">
+             <asp:TextBox ID="tbx_longitude" Width="500" runat="server"></asp:TextBox>
+         </div>
+     </div>
+      <div class="row">
+        <div class="col-sm-4">
+    
+        </div>
+        <div class="col-sm-8">
+            <asp:LinkButton runat="server" ID="bt_autolocate" Text="Déterminer à partir de l'adresse" OnClick="bt_autolocate_Click"></asp:LinkButton>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-4">
             <strong>Fanion : </strong>

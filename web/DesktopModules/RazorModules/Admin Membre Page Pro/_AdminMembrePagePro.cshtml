@@ -23,9 +23,16 @@
         return;
     }
 
+    PageData["appID"] = "app" + Dnn.Module.ModuleID;
+    PageData["PortalId"] = Dnn.Portal.PortalId;
+    PageData["moduleID"] = Dnn.Module.ModuleID;
+    PageData["HTML"] = Html;
+    PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
+
     if (IsPost)
     {
-        member.presentation = ("" + Request["presentationvisible"]).Equals(Const.YES);
+      
+        member.presentation= ("" + Request["presentationvisible"]).Equals(Const.YES);
         member.job = "" + Request["job"];
         member.industry = "" + Request["industry"];
         if (!DataMapping.UpdateMember(member))
@@ -68,17 +75,13 @@
     </div>
    
     <div class="form-group">
-        <label for="presentationvisible">Rendre visible ma page professionnelle :</label>
+        <label for="presentationvisible">Apparaitre dans l'annuaire professionnel :</label>
         <label class="radio-inline"><input type="radio" value="@Const.YES" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(member.presentation ? "checked" : "")>Oui</label>
         <label class="radio-inline"><input type="radio" value="@Const.NO" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(!member.presentation ? "checked" : "")>Non</label>
     </div>
     <div>&nbsp;</div>
 
-    PageData["appID"] = "app" + Dnn.Module.ModuleID;
-    PageData["PortalId"] = Dnn.Portal.PortalId;
-    PageData["moduleID"] = Dnn.Module.ModuleID;
-    PageData["HTML"] = Html;
-    PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
+    
 
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
@@ -87,10 +90,10 @@
 
     if (editable)
     {
-        @RenderPage("../RazorHost/Scripts/BlocksContent/Editor.cshtml")
+        @RenderPage("../RazorHost/Scripts/BlocksContent/Editor.news.meeting.cshtml")
     }
     else
     {
-        @RenderPage("../RazorHost/Scripts/BlocksContent/View.cshtml")
+        @RenderPage("../RazorHost/Scripts/BlocksContent/View.news.meeting.cshtml")
     }
 }

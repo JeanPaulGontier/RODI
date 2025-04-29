@@ -48,13 +48,13 @@
                     if (r.status != 200) {
                         toastr["error"]("Erreur");
                     }
-                    //this.changed = false;
-                    //toastr["success"]("enregistrée");
+                    this.changed = false;
+                    toastr["success"]("Enregistré");
                     
                 }
-                    //, (e) => {
-                    //toastr["error"]("Erreur : " + e.response.data.Message);
-                    //}
+                , (e) => {
+                     toastr["error"]("Erreur : " + e.response.data.Message);
+                }
                 )
             }
         },

@@ -171,7 +171,7 @@
                     this.$nextTick(() => {
                         var rect = images.getBoundingClientRect();
                         this.width = rect.width;
-                        debugger
+                 
                         if (parentRect && this.width < parentRect.getBoundingClientRect().width)
                             this.width = parentRect.getBoundingClientRect().width;
                         if (rect.width > window.innerWidth)

@@ -31,7 +31,16 @@
         return;
     }
 
-
+    if (!member.presentation)
+    {
+        <script>
+           var m = document.getElementsByClassName('DnnModule-@Dnn.Module.ModuleID');
+           if (m && m.length > 0) {
+               m[0].style.display="none";
+           }
+        </script>
+        return;
+    }
 
 }
 <div class="text-center">

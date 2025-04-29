@@ -56,7 +56,8 @@
             data() {
                 return {
                     adding: false,
-                    editing: -1
+                    editing: -1,
+                    start: true
                 }
             },
             methods: {
@@ -157,7 +158,10 @@
                     deep: true,
 
                     handler() {
-
+                        if (this.start) {
+                            this.start = false;
+                            return;
+                        }
                         this.onChange();
                     }
                 },

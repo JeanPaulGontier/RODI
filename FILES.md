@@ -13,6 +13,20 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButtonsBg.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembreProfil.cshtml
+DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 ```
 ##### 18/04/2025
 ```txt

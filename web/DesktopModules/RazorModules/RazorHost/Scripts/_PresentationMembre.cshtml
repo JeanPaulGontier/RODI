@@ -31,6 +31,7 @@
         return;
     }
 
+
     PageData["appID"] = "app" + Dnn.Module.ModuleID;
     PageData["PortalId"] = Dnn.Portal.PortalId;
     PageData["moduleID"] = Dnn.Module.ModuleID;
@@ -38,30 +39,19 @@
     PageData["blocksSuffix"] = "membrepagepro:" + member.nim;
 
 
-    List<Block> blocks = new List<Block>();
-
-    try
-    {
-        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + PageData["blocksSuffix"]);
-        if (sblocks != "")
-        {
-            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
-
-        }
-
-    }
-    catch
-    {
-
-    }
+    List<Block> blocks = AIS.DataMapping.GetBlocksPagePro(member.nim);
     PageData["blocks"] = blocks;
-    if (blocks.Count==0 || !member.presentation)
+    if (blocks.Count == 0 || !member.presentation)
     {
-        <h1>Le membre n'a pas créé de page de présentation...</h1>
+        <script>
+          var m = document.getElementsByClassName('DnnModule-@Dnn.Module.ModuleID');
+          if (m && m.length > 0) {
+              m[0].style.display="none";
+          }
+        </script>
         return;
 
     }
+    @RenderPage("BlocksContent/View.membrepagepro.cshtml")
 }
-@RenderPage("BlocksContent/View.cshtml")
-
 

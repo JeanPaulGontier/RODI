@@ -19,10 +19,10 @@
             <span class="bc-label">Boutons :</span>
             <div v-for="(u,i) in e.List">
                 <small>Url de destination :</small>
-                <input type="text" v-model="u.Href" class="form-control" style="margin:0;" />
+                <input type="text" v-model="u.Href" class="form-control" />
                 <div class="form-inline">
-                    <input type="radio" v-model="u.Target" value="" :name="'target'+i" :id="'target0'+i" /><label :for="'target0'+i"> Même fenêtre</label>
-                    <input type="radio" v-model="u.Target" value="_blank" :name="'target'+i" :id="'target1'+i" /><label :for="'target1'+i"> Nouvelle fenêtre</label>
+                    <label :for="'target0'+i" class="radio-online"><input type="radio" v-model="u.Target" value="" :name="'target'+i" :id="'target0'+i" /> Même fenêtre</label>
+                    <label :for="'target1'+i" class="radio-online"> <input type="radio" v-model="u.Target" value="_blank" :name="'target'+i" :id="'target1'+i" /> Nouvelle fenêtre</label>
                 </div>
                 <small>Libellé du bouton :</small>
                 <input type="text" v-model="u.Label" class="form-control" />

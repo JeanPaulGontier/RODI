@@ -2,8 +2,8 @@
 #region Copyrights
 
 // RODI - https://www.rodi-platform.org
-// Copyright (c) 2012-2023
-// by SAS AIS : https://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -77,6 +77,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
+using System.Net;
 
 public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
 {
@@ -129,6 +130,8 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         tbx_tel.Text = club.telephone;
         tbx_text.Text = club.text;
         tbx_town.Text = club.town;
+        tbx_latitude.Text = club.latitude;
+        tbx_longitude.Text = club.longitude;
         tbx_web.Text = club.web;
         tbx_zip.Text = club.zip;
         img_fanion.ImageUrl = club.GetPennant();
@@ -232,6 +235,12 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         club.telephone = tbx_tel.Text;
         club.text = tbx_text.Text;
         club.town = tbx_town.Text;
+        float latitude = 0;
+        float.TryParse(tbx_latitude.Text.Replace(".",","), out latitude);
+        club.latitude = "" + latitude;
+        float longitude = 0;
+        float.TryParse(tbx_longitude.Text.Replace(".", ","), out longitude);
+        club.longitude = "" + longitude;
         club.web = tbx_web.Text;
         club.zip = tbx_zip.Text;
         club.pennant = hfd_filename.Value;
@@ -287,12 +296,42 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         }
     }
 
+    protected void bt_autolocate_Click(object sender, EventArgs e)
+    {
+        try {
+            WebClient client = new WebClient();
+            string url = "https://api-adresse.data.gouv.fr/search/?q=";
+            url += HttpUtility.UrlEncode(tbx_adr1.Text) + "," + HttpUtility.UrlEncode(tbx_adr2.Text) + "," + HttpUtility.UrlEncode(tbx_zip.Text) + " " + HttpUtility.UrlEncode(tbx_town.Text);
+            string result = client.DownloadString(url);
+            var apiAdresseResponse = Yemon.dnn.Functions.Deserialize<ApiAdresseResponse>(result);
 
+            if(apiAdresseResponse.features.Count>0 && apiAdresseResponse.features[0].geometry.coordinates.Length>0)
+            {
+                tbx_latitude.Text = "" + apiAdresseResponse.features[0].geometry.coordinates[1];
+                tbx_longitude.Text = "" + apiAdresseResponse.features[0].geometry.coordinates[0];
+            }
+            else{
+                Response.Write("<script>window.onload = (e)=>{alert(\"impossible de récupérer les coordonnées à partir de l'adresse\")};</script>");
+            }
 
+        } catch(Exception ee){
+            Functions.Error(ee);
+        }
+    }
 
+    public class ApiAdresseResponse {
+        public string type{ get; set; }
+        public List<Feature> features { get; set; }
 
+        public class Feature {
+            public string type { get; set; }
+            public Geometry geometry { get; set; }
 
+            public class Geometry {
+                public string type { get; set; }
+                public double[] coordinates { get; set; }
 
-
-
+            }
+        }
+    }
 }

@@ -3001,6 +3001,26 @@ namespace AIS
             return false;
         }
 
+        public static List<Block> GetBlocksPagePro(int nim)
+        {
+            var blocks = new List<Block>();
+            try
+            {
+                string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:membrepagepro:" + nim);
+                if (sblocks != "")
+                {
+                    blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+                }
+
+            }
+            catch(Exception ee) 
+            { 
+                Functions.Error(ee); 
+            }
+            return blocks;
+        }
+
+
         /// <summary>
         /// Get a list of the members presentation
         /// </summary>
@@ -3017,7 +3037,7 @@ namespace AIS
         {
 
 
-            List<Member> list = new List<Member>();
+            List<Member> list = new List<Member>(); 
             SqlConnection conn = new SqlConnection(Config.GetConnectionString());
 
             string[] keywords = criterion.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -3110,11 +3130,12 @@ namespace AIS
                         if (court == false)
                         {
                             Member m = GetMemberByRD(rd);
-                            Content cont = GetContentPagePro(m.userid);
-                            if (cont != null && !string.IsNullOrEmpty(cont.title))
-                            {
-                                m.title = cont.title;
-                            }
+                            //Content cont = GetContentPagePro(m.userid);
+                            //if (cont != null && !string.IsNullOrEmpty(cont.title))
+                            //{
+                            //    m.title = cont.title;
+                            //}
+
                             list.Add(m);
                         }
                         else
@@ -3140,10 +3161,10 @@ namespace AIS
                         }
                         c++;
                     }
-                    else
-                    {
-                        list.Add(new Member());
-                    }
+                    //else
+                    //{
+                    //    list.Add(new Member());
+                    //}
                     i++;
                 }
 
