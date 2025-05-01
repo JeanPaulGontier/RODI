@@ -28,6 +28,7 @@ DesktopModules\AIS\Admin Club\Control.ascx
 DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 ```
 ##### 18/04/2025
 ```txt
