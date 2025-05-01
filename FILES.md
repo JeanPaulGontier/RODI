@@ -23,6 +23,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.c
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembreProfil.cshtml
 DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
 DesktopModules\AIS\Admin Club\Control.ascx
 DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
