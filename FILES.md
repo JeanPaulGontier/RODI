@@ -33,6 +33,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.scss
 Portals\_default\Skins\Rodi2025\_bc-text-image.scss
 Portals\_default\Skins\Rodi2025\skin.css
+Portals\0\blockcontent\Colors.txt
 ```
 ##### 18/04/2025
 ```txt
