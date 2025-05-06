@@ -1,6 +1,18 @@
-.block-image-text-g{
-    margin:$spacer 0;
+.block-image-text-g, .block-image-text-d, .block-image-text-b, .block-image-text{
+    margin:$spacer;
     padding:0;
+    a{
+            text-decoration: underline;
+    }
+
+    div[style="color: rgb(255, 255, 255);"] {
+        a{
+            color:$secondary-bg;
+        }
+    }
+}
+
+.block-image-text-g{
 
     h2{
         font-size:160%;
@@ -15,14 +27,11 @@
     > div > div > p:last-child{margin-bottom:0;}
 
     &.colored > div + div{
-        margin: $spacer $spacer $spacer 0;
+        margin: 0 $spacer $spacer $spacer;
     }
 }
 
 .block-image-text-d{
-    margin:$spacer 0;
-    padding:0;
-
     h2{
         font-size:160%;
         margin:-.25em 0 0 0;
@@ -36,13 +45,11 @@
     > div > div > p:last-child{margin-bottom:0;}
 
     &.colored > div:first-child{
-        margin:$spacer 0 $spacer $spacer;
+        margin:$spacer $spacer 1rem $spacer;
     }
 }
 
 .block-image-text-b{
-    margin:$spacer 0;
-
     h2{
         font-size:160%;
         margin:0;
@@ -66,8 +73,6 @@
 }
 
 .block-image-text{
-    margin:$spacer 0;
-
     h2{
         font-size:160%;
         margin:0;
@@ -90,7 +95,17 @@
 
 
 @media handheld, only screen and (min-width: 768px){
+    .block-image-text-g{    
+        &.colored > div + div{
+            margin: $spacer $spacer $spacer 0;
+        }
+    }
 
+    .block-image-text-d{
+        &.colored > div:first-child{
+            margin:$spacer 0 $spacer $spacer;
+        }
+    }
 }
 
 
@@ -100,11 +115,16 @@
 }
 
 @media handheld, only screen and (min-width: 1024px){
-
+    .block-image-text-g, .block-image-text-d, .block-image-text-b, .block-image-text{
+        max-width: calc($content-width - ($spacer * 8));
+        margin: $spacer auto;
+    }
 }
 
 @media handheld, only screen and (min-width: 1280px){
-
+    .block-image-text-g, .block-image-text-d, .block-image-text-b, .block-image-text{
+        max-width: calc($content-width - ($spacer * 7));
+    }
 }
 
 

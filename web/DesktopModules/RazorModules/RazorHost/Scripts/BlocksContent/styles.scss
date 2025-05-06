@@ -148,7 +148,12 @@ small + .form-control{margin: 0 0 1em 0;}
     label{
         font-weight: bold;
         padding:.75em 1.1em !important;
-    }        
+    }
+    
+    > span:hover > label{
+        box-shadow: 1px 1px 4px 1px rgba(0,0,0,.2);
+        transition: all .6s ease-in-out;
+    }
 }
 
 .bc-photo > div > img{

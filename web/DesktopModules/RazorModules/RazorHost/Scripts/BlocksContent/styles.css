@@ -141,6 +141,10 @@ small + .form-control {
   font-weight: bold;
   padding: 0.75em 1.1em !important;
 }
+.form-control.color-picker > span:hover > label {
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.6s ease-in-out;
+}
 
 .bc-photo > div > img {
   max-height: 400px;

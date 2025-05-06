@@ -11,7 +11,7 @@ Portals\_default\Skins\Rodi2025\images\mail.png
 Portals\_default\Skins\Rodi2025\images\Web.png
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
@@ -23,12 +23,16 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.c
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_PresentationMembreProfil.cshtml
 DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
-DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting..cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cshtml
 DesktopModules\AIS\Admin Club\Control.ascx
 DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.scss
+Portals\_default\Skins\Rodi2025\_bc-text-image.scss
+Portals\_default\Skins\Rodi2025\skin.css
 ```
 ##### 18/04/2025
 ```txt
