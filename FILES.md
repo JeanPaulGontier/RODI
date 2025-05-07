@@ -34,6 +34,8 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.scss
 Portals\_default\Skins\Rodi2025\_bc-text-image.scss
 Portals\_default\Skins\Rodi2025\skin.css
 Portals\0\blockcontent\Colors.txt
+DesktopModules\AIS\Admin Comptabilité\Control.ascx
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
 ```
 ##### 18/04/2025
 ```txt

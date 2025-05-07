@@ -607,7 +607,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
     protected void BT_Send_Emails_Click(object sender, EventArgs e)
     {
-        TXT_Result_Mails.Text = "";
+        TXT_Result_Mails.Text = "<p>Rapport envoi emails :</p>";
         List<Order> commandes = DataMapping.ListOrderByPayment(HF_id.Value);
         foreach(Order order in commandes)
         {

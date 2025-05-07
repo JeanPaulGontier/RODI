@@ -37,12 +37,12 @@
 </div>   
 <div>
 	<span>Description : </span>
-    <blockquote class="blockquote">
+    <div class="alert alert-info">
         <p class="text-info">
             On peut saisir <strong>#url#</strong> dans le corps du texte, ce tag sera remplacé automatiquement par l'url de la facture adaptée à chaque destinataire. Ce qui permet au destinataire de récupérer sa facture directement sans avoir besoin de s'identifier dans le site.<br />
             <strong>#id#</strong> pour le n° de facture, <strong>#cric#</strong> pour le cric du club, <strong>#montant#</strong> pour le montant à payer
         </p>
-    </blockquote>
+    </div>
 </div>
 <div>
     <dnn:TextEditor runat="server" ID="TXT_Editor" style="width:100%;"></dnn:TextEditor>
@@ -62,7 +62,8 @@
     <div class="txtCenter">
         <asp:ValidationSummary ID="ValidationSummary1" runat="server" DisplayMode="BulletList" HeaderText="Veuillez compléter le formulaire avant de valider..." ShowMessageBox="true" ShowSummary="false" />
         <asp:Button CssClass="btn btn-danger" runat="server" ID="BT_Supprimer" Text="Supprimer" CausesValidation="false" OnClick="BT_Supprimer_Click" OnClientClick="Javascript: return confirm('Voulez-vous vraiment supprimer cet appel ?');" />&nbsp;
-        <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Valider" Text="Valider" OnClick="BT_Valider_Click" />&nbsp;<asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Annuler" Text="Retour" OnClick="BT_Annuler_Click" CausesValidation="false" />
+        <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Valider" Text="Valider" OnClick="BT_Valider_Click" />&nbsp;
+        <asp:Button CssClass="btn btn-default" runat="server" ID="BT_Annuler" Text="Retour" OnClick="BT_Annuler_Click" CausesValidation="false" />
     </div>
 
     <div class="pe-spacer size20"></div>
@@ -86,27 +87,40 @@
 
 <div class="pe-spacer size10"></div>
 
-<asp:Panel runat="server" ID="P_SendMail">
-<div>Envoi des emails :</div>
+<asp:Panel runat="server" ID="P_SendMail" >
+<div><h3>Envoi des emails & rappels :</h3></div>
+
+<div class="alert alert-info">
 <div class="txtCenter">
-    <div class="text-info"><em>Les emails sont envoyés à chaque trésorier, président et secrétaire. Dans le cas ou un club n'aurait ni trésorier ni président ni secrétaire déclaré, l'email n'est pas envoyé, il faut alors contacter le club par un autre moyen.</em></div>
-    <div class="text-info"><em>Les emails ne sont envoyés qu'aux destinataires qui n'ont pas encore réglé leurs factures, vous pouvez utiliser l'envoi de mail en changeant le texte pour faire des relances.</em></div>
+    <div class="text-info">
+        <ul>
+            <li>Lors de l'envoi des emails, le titre est le sujet et la description le corps du message</li>
+            <li>Les emails sont envoyés à chaque trésorier, président et secrétaire. Dans le cas ou un club n'aurait ni trésorier ni président ni secrétaire déclaré, l'email n'est pas envoyé, il faut alors contacter le club par un autre moyen.</li>
+            <li>Les emails ne sont envoyés qu'aux destinataires qui n'ont pas encore réglé leurs factures, vous pouvez utiliser l'envoi de mail en changeant le texte pour faire des relances.</li>
+            <li>Pour effectuer un envoi d'emails de rappel, il suffit de modifier le titre et la description et de cliquer sur [envoir des emails] comme lors de l'appel initial (ATTENTION : ne pas recréer un appel de cotisation pour faire les rappels).</li>
+        </ul>
+    </div>
+ </div>
+</div>
+<div>
     <div>
         <span>Email expéditeur : </span>
         <asp:TextBox runat="server" ID="TXT_Email_Sender" MaxLength="255" Width="300px"></asp:TextBox><br />
-        <asp:CheckBox runat="server" ID="CB_Just_A_Test" Checked="true" Text="&nbsp;Juste un test&nbsp;" /><em>Quand cette option est cochée, un test sur un club au hasard est envoyé à l'adresse expéditeur. Il faut décocher pour envoyer les messages a tout les clubs.</em>
+        <asp:CheckBox runat="server" ID="CB_Just_A_Test" Checked="true" Text="&nbsp;Juste un test&nbsp;" />
+        <div class="alert alert-info">Quand cette option est cochée, un test sur un club au hasard est envoyé à l'email expéditeur. Il faut décocher pour envoyer les messages a tous les clubs.</div>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Il manque l'email expéditeur" Display="None" ControlToValidate="TXT_Email_Sender" ></asp:RequiredFieldValidator>
     </div>
     <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Send_Emails" Text="Envoi des emails" OnClick="BT_Send_Emails_Click" />
+    <div class="pe-spacer size10"></div>
     <div>
-    <asp:Literal runat="server" ID="TXT_Result_Mails"></asp:Literal>
+        <asp:Literal runat="server"  ID="TXT_Result_Mails"></asp:Literal>
     </div>
 </div>
 </asp:Panel>
 
-    <div class="pe-spacer size20"></div>
+<div class="pe-spacer size20"></div>
 
-<div>Liste des factures :</div>
+<div><h3>Liste des factures et suivi des paiements :</h3></div>
 <asp:GridView ID="GridView2" runat="server" CssClass="table table-stripped"  AllowSorting="True"  GridLines="None" OnRowCommand="GridView2_RowCommand" AutoGenerateColumns="False" OnSorting="GridView2_Sorting" OnRowDataBound="GridView2_RowDataBound">
 <Columns>
     
@@ -114,7 +128,7 @@
     <asp:BoundField DataField="id" HeaderText="N°" SortExpression="id" />
     <asp:BoundField DataField="club" HeaderText="Club"  SortExpression="club" />
     <asp:BoundField DataField="amount" HeaderText="Montant" SortExpression="amount" ItemStyle-HorizontalAlign="Right" DataFormatString="{0:n}" />
-    <asp:TemplateField ItemStyle-Width="150"  HeaderText="Réglée" SortExpression="rule" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center">
+    <asp:TemplateField ItemStyle-Width="50"  HeaderText="Réglée" SortExpression="[rule]" ItemStyle-HorizontalAlign="Center">
         <ItemTemplate>
             <asp:Label ID="lbl_paid" runat="server"></asp:Label>
         </ItemTemplate>
@@ -135,7 +149,7 @@
     </asp:TemplateField>
     <asp:TemplateField>
         <ItemTemplate>
-            <asp:HyperLink runat="server" ID="HL_Detail" Text="Détail" Target="_blank"></asp:HyperLink>
+            <asp:HyperLink runat="server" ID="HL_Detail" Text="Facture" Target="_blank"></asp:HyperLink>
         </ItemTemplate>
     </asp:TemplateField>
 
