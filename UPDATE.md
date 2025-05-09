@@ -5,6 +5,7 @@
 - quand un membre choisit d'apparaitre dans l'espace professionnel et qu'il n'a pas créé de page de présentation, alors le module page de présentation disparait au lieu d'afficher 'le membre n'a pas créé de page de présentation'
 - correction d'un pb d'enregistrement occasionnel du BlockContent, avec affichage d'un toast indiquant 'enregistré'
 - on peut maintenant saisir les coordonnées gps du club dans l'écran de paramètres du club
+- dans l'administration des cotisations de district, modification des textes d'aide pour plus de clarté, le tri par (payé) fonctionne correctement
 
 ###### 18/04/2025
 - ajustement des styles blockcontent pour une meilleure compatibilité avec l'existant

@@ -70,7 +70,7 @@
                     editing: -1,
                     thumbnail: BGTHUMBNAIL,
                     evo: BGEVO,
-                    start: true
+                   /* start: true*/
                 }
             },
             methods: {
@@ -268,26 +268,32 @@
                     if (confirm('Supprimer le bloc ?')) {
                         this.blocks.splice(i, 1);
                         this.blocks = JSON.parse(JSON.stringify(this.blocks));
+                        this.onChange();
                     }
                 },
                 firstBlock(i) {
                     const b = this.blocks.splice(i, 1)[0];
                     this.blocks.splice(0, 0, b);
+                    this.onChange();
                 },
                 upBlock(i) {
                     const b = this.blocks.splice(i, 1)[0];
                     this.blocks.splice(i - 1, 0, b);
+                    this.onChange();
                 },
                 downBlock(i) {
                     const b = this.blocks.splice(i, 1)[0];
                     this.blocks.splice(i + 1, 0, b);
+                    this.onChange();
                 },
                 lastBlock(i) {
                     const b = this.blocks.splice(i, 1)[0];
                     this.blocks.push(b);
+                    this.onChange();
                 },
                 blockChanged(i, e) {
                     this.blocks[i].Content = e;
+                    this.onChange();
                 },
                 blockCancel() {
                     this.editing = -1;
@@ -324,20 +330,20 @@
 
                 sessionStorage.removeItem(window.location.pathname + ":scroll");
             },
-            watch: {
-                blocks: {
-                    deep: true,
+            //watch: {
+            //    blocks: {
+            //        deep: true,
 
-                    handler() {
-                        if (this.start) {
-                            this.start = false;
-                            return;
-                        }
-                        this.onChange();
-                    }
-                },
+            //        handler() {
+            //            if (this.start) {
+            //                this.start = false;
+            //                return;
+            //            }
+            //            this.onChange();
+            //        }
+            //    },
 
-            }
+            //}
         }
     }
 

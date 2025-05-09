@@ -36,6 +36,29 @@ Portals\_default\Skins\Rodi2025\skin.css
 Portals\0\blockcontent\Colors.txt
 DesktopModules\AIS\Admin Comptabilité\Control.ascx
 DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.news.meeting.cshtml
+Portals\0\blockcontent\banner-img\20150427_MX_103.jpg
+Portals\0\blockcontent\banner-img\20180622_CA_0154.jpg
+Portals\0\blockcontent\banner-img\20210812_US_193.jpg
+Portals\0\blockcontent\banner-img\20211113_US_238.jpg
+Portals\0\blockcontent\banner-img\20220407_US_088.jpg
+Portals\0\blockcontent\banner-img\causes-aof-environment-hero - Copie (2).jpg
+Portals\0\blockcontent\banner-img\causes-aof-environment-hero - Copie.jpg
+Portals\0\blockcontent\banner-img\causes-aof-environment-hero.jpg
+Portals\0\blockcontent\banner-tex\henry-co--odUkx8C2gg-unsplash.jpg
+Portals\0\blockcontent\banner-tex\pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg
+Portals\0\blockcontent\banner-tex\tina-dawson-Kim9COAIEGc-unsplash.jpg
+Portals\0\blockcontent\banner-tex\wesley-tingey-_0sEjWfAK3Q-unsplash.jpg
+Portals\0\blockcontent\banner-tex\white-wall-textures.jpg
+Portals\0\blockcontent\banner-vid\2018_002_PeopleofActionPSACutdown90_FR.mp4
+Portals\0\blockcontent\banner-vid\2018_156_PowerInOurConnections_Omnibus70_FR_1080.mp4
+Portals\0\blockcontent\banner-vid\vecteezy_abstract-blue-particles-background-particles-and-blue_4747804.mp4
+Portals\0\blockcontent\infos-img\20240629_IN_023.jpg
+Portals\0\blockcontent\infos-img\20240826_US_070.jpg
+Portals\0\blockcontent\infos-img\md_nFnP4IYhbw024AS4.jpg
+
 ```
 ##### 18/04/2025
 ```txt
