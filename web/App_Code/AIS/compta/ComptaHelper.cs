@@ -138,7 +138,7 @@ public class ComptaHelper
 
                 var lignes = Yemon.dnn.Functions.Deserialize<List<Compta.Element.Ligne>>(facture.detail);
 
-                Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("DELETE FROM " + Const.TABLE_PREFIX + "c_lignes WHERE reference='clubfacture:" + guid + "'",conn,trans));
+                int nb=Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("DELETE FROM " + Const.TABLE_PREFIX + "c_lignes WHERE reference='clubfacture:" + guid + "'"), conn, trans);
 
                 foreach(var l in lignes)
                 {
@@ -270,14 +270,13 @@ public class ComptaHelper
         return element;
     }
 
-    public static bool SetElement(Compta.Element element, bool createFactureNum = false, SqlConnection conn=null,SqlTransaction trans=null)
+    public static bool SetElement(Compta.Element element, bool createElementNum = false, bool forceFactureProduction=false, SqlConnection conn=null,SqlTransaction trans=null)
     {
 
-        if (createFactureNum && element.numero==null)
+        if (createElementNum && element.numero==null && element.type==1) // facture
         {
             int numero = 0;
-            int.TryParse("" + Yemon.dnn.DataMapping.ExecSqlScalar(new SqlCommand("SELECT MAX(numero) FROM " + Const.TABLE_PREFIX + "c_elements WHERE type=1 AND cric=" + element.cric + " AND district_id=" + element.district_id),conn,trans), out numero);
-            element.type = 1;
+            int.TryParse("" + Yemon.dnn.DataMapping.ExecSqlScalar(new SqlCommand("SELECT MAX(numero) FROM " + Const.TABLE_PREFIX + "c_elements WHERE type="+element.type+" AND cric=" + element.cric + " AND district_id=" + element.district_id),conn,trans), out numero);
             element.numero = numero + 1;
 
         }
@@ -317,7 +316,8 @@ public class ComptaHelper
         row["detail"] = element.detail;
         try
         {
-            row["document_id"] = ComptaHelper.ProductionClubFacture((Guid)element.guid, forceprod: true);
+            if(element.type==1 && element.numero!=null && forceFactureProduction)
+                row["document_id"] = ComptaHelper.ProductionClubFacture((Guid)element.guid, forceprod: true);
 
         }
         catch (Exception e)
@@ -373,7 +373,7 @@ public class ComptaHelper
             else
                 total -= element.montant;
 
-            if (!SetElement(element,true,conn,trans))
+            if (!SetElement(element,true,true,conn,trans))
                 throw new Exception("Erreur maj element " + element.id);
         }
         if(total>0)
@@ -391,7 +391,7 @@ public class ComptaHelper
             element.nim = nim;
             element.provisoire = false;
             element.district_id = Const.DISTRICT_ID;
-            if (!SetElement(element, false, conn, trans))
+            if (!SetElement(element, false,false, conn, trans))
                 throw new Exception("Erreur création note de crédit");
         }
         trans.Commit();
@@ -422,7 +422,7 @@ public class ComptaHelper
         {
             element.provisoire = false;
          
-            if (!SetElement(element, true, conn, trans))
+            if (!SetElement(element, true, true, conn, trans))
                 throw new Exception("Erreur maj element " + element.id);
         }
        
@@ -432,5 +432,19 @@ public class ComptaHelper
         return true;
 
 
+    }
+
+    public static bool DeleteElement(int cric,Guid guid)
+    {
+        var element = GetElement(cric, guid);
+        if (element == null)
+            return false;
+
+        if (element.document_id != 0)
+            Yemon.dnn.SIPro.SIPro.DeleteProduction(Yemon.dnn.Functions.GetPortalId(), element.document_id);
+        var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "c_elements where cric=@cric and guid=@guid");
+        sql.Parameters.AddWithValue("cric", cric);
+        sql.Parameters.AddWithValue("guid", guid);
+        return Yemon.dnn.DataMapping.ExecSqlNonQuery(sql)>0;
     }
 }

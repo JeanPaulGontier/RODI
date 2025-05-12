@@ -322,6 +322,30 @@ namespace AIS.controller
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteElement(string context, Guid guid)
+        {
+            try
+            {
+                if (!CheckRole()) return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                int cric = 0;
+                int.TryParse("" + HttpContext.Current.Application[context], out cric);
+
+                if (cric == 0)
+                    return Request.CreateResponse(HttpStatusCode.NoContent);
+
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, ComptaHelper.DeleteElement(cric,guid));
+            }
+            catch (Exception ee)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
+            }
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public HttpResponseMessage Lettrage(dynamic param)

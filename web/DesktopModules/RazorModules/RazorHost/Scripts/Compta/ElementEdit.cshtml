@@ -16,8 +16,8 @@
             <span class="label label-info" v-if="element.provisoire">Provisoire</span>
         </div>
 
-        <div class="col-sm-2">
-            <button type="button" v-on:click="deleteElement()" class="btn btn-sm btn-danger" title="Supprimer" v-if="guid!='new' && element.brouillon">Supprimer</button>
+        <div class="col-sm-2 text-right">
+            <button type="button" v-on:click="deleteElement()" class="btn btn-sm btn-danger" title="Supprimer" v-if="guid!='new' && element.provisoire">Supprimer</button>
         </div>
     </div>
     <div class="form-group  col-sm-12">
@@ -266,6 +266,16 @@
                          this.element.nim=this.nim;
                     this.element.date = new Date(this.element.date + 'Z').toISOString().substr(0, 10);
                 });
+            },
+            deleteElement() {
+                if (confirm("Supprimer l'élément ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteElement", {
+                        context: this.context,
+                        guid: this.guid
+                    }, (r) => {
+                        this.$router.push(this.returnurl);
+                    });
+                }
             }
 
         },

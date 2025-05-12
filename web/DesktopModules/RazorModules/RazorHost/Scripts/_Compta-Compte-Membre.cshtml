@@ -20,72 +20,86 @@
     }
     var compte = ComptaHelper.GetMembreCompte(membre.nim, complet: true);
 
-
-}
-<table class="table table-striped table-hover">
-    <tbody>
-        <tr>
-            <th class="col-sm-1">Date</th>
-            <th class="col-sm-2">Type</th>
-            <th class="col-sm-3">Libelle</th>
-            <th class="col-sm-2 text-right">Débit</th>
-            <th class="col-sm-2 text-right">Crédit</th>
-            <th class="col-sm-2 text-right">Solde</th>
-
-        </tr>
-        @foreach (var l in compte.lignes)
+    bool haslignes=false;
+    foreach (var l in compte.lignes)
+    {
+        if (!(bool)l.provisoire)
         {
-            if (!(bool)l.provisoire)
-            {
-                <tr>
-                    @if (l.document_id > 0)
-                    {
-                        Media media = new Media() {
-                            filename = l.typeLibelle + "-" + l.numero + ".pdf",
-                            content_id = l.document_id,
-                            content_mime = "application/pdf",
-
-                        };
-                        string guid = Guid.NewGuid().ToString();
-                        Request.RequestContext.HttpContext.Application[guid]= media;
-
-                        <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.date.ToShortDateString()</a></td>
-                        <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">
-                            @l.typeLibelle
-                            @if (l.numero > 0)
-                            {
-                                @l.numero
-                            }
-                            </a>
-                        </td>
-                        <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.libelle</a></td>
-                        <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.debit)</a></td>
-                        <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.credit)</a></td>
-                        <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.solde, true)</a></td>
-                    }
-                    else
-                    {
-                        <td>@l.date.ToShortDateString()</td>
-                        <td>
-                            @l.typeLibelle
-                            @if (l.numero > 0)
-                            {
-                                @l.numero
-                            }
-                        </td>
-                        <td>@l.libelle</td>
-                        <td class="text-right">@Nombre(l.debit)</td>
-                        <td class="text-right">@Nombre(l.credit)</td>
-                        <td class="text-right">@Nombre(l.solde, true)</td>
-                    }
-
-
-                </tr>
-            }
-
+            haslignes = true;
+            break;
         }
-    </tbody>
-</table>
+    }
+
+    if (!haslignes)
+    {
+        <div class="alert alert-warning">Votre compte ne contient aucune information pour le moment...</div>
+    }
+    else
+    {
+        <table class="table table-striped table-hover">
+        <tbody>
+            <tr>
+                <th class="col-sm-1">Date</th>
+                <th class="col-sm-2">Type</th>
+                <th class="col-sm-3">Libelle</th>
+                <th class="col-sm-2 text-right">Débit</th>
+                <th class="col-sm-2 text-right">Crédit</th>
+                <th class="col-sm-2 text-right">Solde</th>
+
+            </tr>
+            @foreach (var l in compte.lignes)
+            {
+                if (!(bool)l.provisoire)
+                {
+                    <tr>
+                        @if (l.document_id > 0)
+                        {
+                            Media media = new Media()
+                            {
+                                filename = l.typeLibelle + "-" + l.numero + ".pdf",
+                                content_id = l.document_id,
+                                content_mime = "application/pdf",
+
+                            };
+                            string guid = Guid.NewGuid().ToString();
+                            Request.RequestContext.HttpContext.Application[guid] = media;
+
+                            <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.date.ToShortDateString()</a></td>
+                            <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">
+                                @l.typeLibelle
+                                @if (l.numero > 0)
+                                {
+                                    @l.numero
+                                }
+                                </a>
+                            </td>
+                            <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.libelle</a></td>
+                            <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.debit)</a></td>
+                            <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.credit)</a></td>
+                            <td class="text-right"><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@Nombre(l.solde, true)</a></td>
+                        }
+                        else
+                        {
+                            <td>@l.date.ToShortDateString()</td>
+                            <td>
+                                @l.typeLibelle
+                                @if (l.numero > 0)
+                                {
+                                    @l.numero
+                                }
+                            </td>
+                            <td>@l.libelle</td>
+                            <td class="text-right">@Nombre(l.debit)</td>
+                            <td class="text-right">@Nombre(l.credit)</td>
+                            <td class="text-right">@Nombre(l.solde, true)</td>
+                        }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+}
 @functions{ 
     public string Nombre(decimal n,bool showZero=false){
         if(n==0 && !showZero)

@@ -10,161 +10,161 @@
             <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
             <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid() ? 'visible' : 'hidden'}">Valider</button>
         </div>
-        <!--<div class="col-sm-7 ">
+        <div class="col-sm-7 text-center">
+            <span class="label label-info" v-if="facture.provisoire">Provisoire</span>
+        </div>
+        <div class="col-sm-2 text-right">
+            <button type="button" v-on:click="deleteElement()" class="btn btn-sm btn-danger" title="Supprimer" v-if="guid!='new' && facture.provisoire">Supprimer</button>
         </div>
 
-        <div class="col-sm-2">-->
-        @*<button type="button" v-on:click="deleteNews()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>*@
-        <!--</div>-->
-    </div>
-    <div class="form-group  col-sm-12">
-        <h3 v-if="guid=='new'">Nouvelle facture</h3>
-        <h3 v-if="guid!='new' && facture.numero">Modification facture n°{{num(facture.numero)}}</h3>
-        <h3 v-if="guid!='new' && !facture.numero">Modification facture provisoire</h3>
-    </div>
-    <div class="row">
         <div class="form-group  col-sm-12">
-            <div class="col-sm-2">
-                Libellé :
-            </div>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" v-model="facture.libelle" maxlength="100" required />
-            </div>
-            <div class="col-sm-2">
-                Date :
-            </div>
-            <div class="col-sm-2">
-                <input type="date" class="form-control text-center" v-model="facture.date" title="Saisir la date de la facture"  required />
-            </div>
-            
-            <div class="col-sm-8 text-right">
-                Montant : {{nombre(facture.montant)}} €
-            </div>
+            <h3 v-if="guid=='new'">Nouvelle facture</h3>
+            <h3 v-if="guid!='new' && facture.numero">Modification facture n°{{num(facture.numero)}}</h3>
+            <h3 v-if="guid!='new' && !facture.numero">Modification facture provisoire</h3>
         </div>
-        <hr />
-    </div>
+        <div class="row">
+            <div class="form-group  col-sm-12">
+                <div class="col-sm-2">
+                    Libellé :
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="facture.libelle" maxlength="100" required />
+                </div>
+                <div class="col-sm-2">
+                    Date :
+                </div>
+                <div class="col-sm-2">
+                    <input type="date" class="form-control text-center" v-model="facture.date" title="Saisir la date de la facture" required />
+                </div>
 
-    <div class="row">
-        <div class="form-group col-sm-6 ">
-            <div class="col-sm-4">
-                Membre :
+                <div class="col-sm-8 text-right">
+                    Montant : {{nombre(facture.montant)}} €
+                </div>
             </div>
-            <div class="col-sm-8">
-                <select class="form-control" v-model="facture.nim" v-on:change="updateCoords()" required>
-                    <option :value="null">Non membre</option>
-                    <option :value="m.nim" v-for="m in membres">{{m.name}} {{m.surname}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group col-sm-6 ">
-            <div></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="form-group col-sm-6 ">
-            <div class="col-sm-4">
-                Raison sociale :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.raisonSociale" maxlength="50"  v-on:keyup="facture.raisonSociale = facture.raisonSociale.toTitleCase()"/>
-            </div>
-            <div class="col-sm-4">
-                Nom :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.nom" maxlength="50"  v-on:keyup="facture.nom = facture.nom.toUpperCase()"  required />
-            </div>
-            <div class="col-sm-4">
-                Prénom :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.prenom" maxlength="50"  v-on:keyup="facture.prenom = facture.prenom.toTitleCase()"  required />
-            </div>
-            <div class="col-sm-4">
-                E-mail :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.email" maxlength="50"  v-on:keyup="facture.email = facture.email.toLowerCase()" />
-            </div>
-        </div>
-        <div class="form-group col-sm-6">
-            <div class="col-sm-4">
-                Adresse :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.ad1" maxlength="50" />
-            </div>
-
-            <div class="col-sm-4">
-                Complément :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.ad2" maxlength="50" />
-            </div>
-            <div class="col-sm-4">
-                CP / Ville :
-            </div>
-            <div class="col-sm-3">
-                <input type="text" class="form-control" v-model="facture.cp" maxlength="50"  />
-            </div>
-            <div class="col-sm-5">
-                <input type="text" class="form-control" v-model="facture.ville" maxlength="50" v-on:keyup="facture.ville = facture.ville.toUpperCase()"/>
-            </div>
-            <div class="col-sm-4">
-                Pays :
-            </div>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" v-model="facture.pays" maxlength="50"  v-on:keyup="facture.pays = facture.pays.toTitleCase()" />
-            </div>
-        </div>
-        <hr />
-    </div>
-    <div class="form-group col-sm-12">
-        <table class="table table-striped" dropzone="onDrop()">
-            <thead>
-                <tr>
-                    <th class="col-sm-8">Libellé</th>
-                    <th class="col-sm-1 text-right">Montant</th>
-                    <th class="col-sm-1 text-center">Qté</th>
-                    <th class="col-sm-1 text-right">Total</th>
-                    <th style="width:20px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="l in facture.lignes" v-on:click="ligne=l">
-                    <td v-if="l==ligne">
-                        <input type="text" class="form-control" ref="libelle" v-model="l.libelle" />
-                    </td>
-                    <td v-if="l==ligne">
-                        <input type="number" class="form-control text-right" v-model="l.montant" onfocus="this.select();" v-on:change="recalc()" />
-                    </td>
-                    <td v-if="l==ligne">
-                        <input type="number" class="form-control text-right" v-model="l.qte" onfocus="this.select();" v-on:change="recalc()"/>
-                    </td>
-                    <td v-if="l!=ligne" >
-                        {{l.libelle}}
-                    </td>
-                    <td class="text-right" v-if="l!=ligne">
-                        {{nombre(l.montant)}}
-                    </td>
-                    <td class="text-center" v-if="l!=ligne">
-                        {{l.qte}}
-                    </td>
-                    <td class="text-right">
-                        {{nombre(l.total)}}
-                    </td>
-                    <td v-if="l==ligne">
-                        <button v-if="l==ligne" type="button" class="btn btn-warning btn-xs" title="Supprimer la ligne" v-on:click="delLigne(l)"><i class="fa fa-trash-o"></i></button>
-                    </td>
-                    <td v-else></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="text-right">
-            <button type="button" v-on:click="addLigne()" class="btn btn-primary"><i class="fa fa-plus"></i> Nouvelle ligne</button>
+            <hr />
         </div>
 
-    </div>
+        <div class="row">
+            <div class="form-group col-sm-6 ">
+                <div class="col-sm-4">
+                    Membre :
+                </div>
+                <div class="col-sm-8">
+                    <select class="form-control" v-model="facture.nim" v-on:change="updateCoords()" required>
+                        <option :value="null">Non membre</option>
+                        <option :value="m.nim" v-for="m in membres">{{m.name}} {{m.surname}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 ">
+                <div></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 ">
+                <div class="col-sm-4">
+                    Raison sociale :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.raisonSociale" maxlength="50" v-on:keyup="facture.raisonSociale = facture.raisonSociale.toTitleCase()" />
+                </div>
+                <div class="col-sm-4">
+                    Nom :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.nom" maxlength="50" v-on:keyup="facture.nom = facture.nom.toUpperCase()" required />
+                </div>
+                <div class="col-sm-4">
+                    Prénom :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.prenom" maxlength="50" v-on:keyup="facture.prenom = facture.prenom.toTitleCase()" required />
+                </div>
+                <div class="col-sm-4">
+                    E-mail :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.email" maxlength="50" v-on:keyup="facture.email = facture.email.toLowerCase()" />
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <div class="col-sm-4">
+                    Adresse :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.ad1" maxlength="50" />
+                </div>
+
+                <div class="col-sm-4">
+                    Complément :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.ad2" maxlength="50" />
+                </div>
+                <div class="col-sm-4">
+                    CP / Ville :
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" v-model="facture.cp" maxlength="50" />
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" v-model="facture.ville" maxlength="50" v-on:keyup="facture.ville = facture.ville.toUpperCase()" />
+                </div>
+                <div class="col-sm-4">
+                    Pays :
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" v-model="facture.pays" maxlength="50" v-on:keyup="facture.pays = facture.pays.toTitleCase()" />
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="form-group col-sm-12">
+            <table class="table table-striped" dropzone="onDrop()">
+                <thead>
+                    <tr>
+                        <th class="col-sm-8">Libellé</th>
+                        <th class="col-sm-1 text-right">Montant</th>
+                        <th class="col-sm-1 text-center">Qté</th>
+                        <th class="col-sm-1 text-right">Total</th>
+                        <th style="width:20px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="l in facture.lignes" v-on:click="ligne=l">
+                        <td v-if="l==ligne">
+                            <input type="text" class="form-control" ref="libelle" v-model="l.libelle" />
+                        </td>
+                        <td v-if="l==ligne">
+                            <input type="number" class="form-control text-right" v-model="l.montant" onfocus="this.select();" v-on:change="recalc()" />
+                        </td>
+                        <td v-if="l==ligne">
+                            <input type="number" class="form-control text-right" v-model="l.qte" onfocus="this.select();" v-on:change="recalc()" />
+                        </td>
+                        <td v-if="l!=ligne">
+                            {{l.libelle}}
+                        </td>
+                        <td class="text-right" v-if="l!=ligne">
+                            {{nombre(l.montant)}}
+                        </td>
+                        <td class="text-center" v-if="l!=ligne">
+                            {{l.qte}}
+                        </td>
+                        <td class="text-right">
+                            {{nombre(l.total)}}
+                        </td>
+                        <td v-if="l==ligne">
+                            <button v-if="l==ligne" type="button" class="btn btn-warning btn-xs" title="Supprimer la ligne" v-on:click="delLigne(l)"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                        <td v-else></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-right">
+                <button type="button" v-on:click="addLigne()" class="btn btn-primary"><i class="fa fa-plus"></i> Nouvelle ligne</button>
+            </div>
+
+        </div>
 </script>
 <script>
 
@@ -283,6 +283,16 @@
                     this.facture.date = new Date(this.facture.date + 'Z').toISOString().substr(0, 10);
                     this.recalc();
                 });
+            },
+            deleteElement() {
+                if (confirm("Supprimer la facture ?")) {
+                    _yemon[this.moduleid].service.getData("/DeleteElement", {
+                        context: this.context,
+                        guid: this.guid
+                    }, (r) => {
+                        this.$router.push("/");
+                    });
+                }
             }
             
         },
