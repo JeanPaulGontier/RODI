@@ -1,0 +1,81 @@
+﻿<script type="text/x-template" id="compta-comptesmembres-template">
+    <div v-if="comptes.length==0">
+        <div class="panel-body">Aucun compte pour le moment...</div>
+    </div>
+    <table class="table table-striped table-hover" v-if="comptes.length>0">
+        <tbody>
+            <tr>
+                <th class="col-sm-4">Nom</th>
+                <th class="col-sm-4">Prénom</th>
+                <th class="col-sm-4 text-right">Solde</th>
+            </tr>
+            <tr v-for="c in comptes" :class="style(c)" >
+                <td v-on:click="viewCompte(c)">{{c.nom}}</td>
+                <td v-on:click="viewCompte(c)">{{c.prenom}}</td>
+                <td v-on:click="viewCompte(c)" class="text-right">{{nombre(c.compte.solde)}} €</td>               
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    const ComptaComptesMembres = {
+        template: '#compta-comptesmembres-template',
+        name: 'ComptaComptesMembres',
+        props: {
+            moduleid: Number,
+            context: String
+        },
+        data: function () {
+            return {
+                comptes: []
+            }
+        },
+
+        methods: {
+            style(c) {
+                //if (c.compte.solde<0) {
+                //   return 'fw-bold text-danger';                  
+                //}
+                //if (c.compte.solde > 0) {
+                //    return 'fw-bold text-success';
+                //}
+                return '';
+            },
+            nombre(n) {
+                if (n == null || n == undefined)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            viewCompte(c) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                this.$router.push("/view/" + c.nim);
+            },
+            getComptes() {
+     
+                _yemon[this.moduleid].service.getData("/GetComptesMembres", {
+                    context: this.context
+                }, (r) => {
+                    this.comptes = r.data;
+                });
+            }
+        },
+        mounted() {
+            var e = document.getElementById("dnn_ctr" + this.moduleid + "_dnnTITLE_titleLabel");
+            if (e) {
+                e.innerHTML = "Comptes Membres"; 
+            }
+            this.getComptes();
+        }
+    }
+</script>

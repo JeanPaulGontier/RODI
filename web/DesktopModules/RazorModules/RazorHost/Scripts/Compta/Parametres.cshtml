@@ -1,0 +1,125 @@
+﻿@using AIS;
+@{
+    int cric = Functions.CurrentCric;
+    var parametres = ComptaHelper.GetParametres(cric);
+    if(parametres==null)
+    {
+        parametres = new Compta.Parametres();
+    }
+}
+<script type="text/x-template" id="compta-parametres-template">
+
+
+    <div class="form-group row">
+        <div class="col-sm-3">Périodicité cotisation :</div>
+        <div class="col-sm-4">
+            <select v-model="parametres.cotisation" class="form-control">
+                <option v-for="t in cotisationTypes">{{t.libelle}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row" v-if="parametres.cotisation=='Annuelle'">
+        <div class="col-sm-3">Cotisation jour / mois :</div>
+        <div class="col-sm-2">
+            <select v-model="parametres.jourCotisationAnnuelle" class="form-control">
+                <option v-for="t in 31">{{t}}</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <select v-model="parametres.moisCotisationAnnuelle" class="form-control">
+                <option v-for="t in 12">{{t}}</option>
+            </select>
+        </div>
+    </div>    
+    <hr />
+    <div class="form-group row">
+        <div class="col-sm-3">Repas inclus :</div>
+        <div class="col-sm-6">
+            <label class="radio-inline"><input type="radio" name="repasinclus" v-model="parametres.repasInclus" :value="true"> Oui</label>
+            <label class="radio-inline"><input type="radio" name="repasinclus" v-model="parametres.repasInclus" :value="false"> Non</label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3">Prix du repas :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.prixDuRepas" class="form-control text-right" />
+        </div>
+
+        <div class="col-sm-4">Prix de l'apéritif :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.prixDeLAperitif" class="form-control text-right" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3">Prix du repas visiteur :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.prixDuRepasVisiteur" class="form-control text-right" />
+        </div>
+
+        <div class="col-sm-4">Prix de l'apéritif visiteur :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.prixDeLAperitifVisiteur" class="form-control text-right" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3">Montant cotisation :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.montantCotisation" class="form-control text-right" />
+        </div>
+        <div class="col-sm-4">Montant cotisation dispensé assiduité :</div>
+        <div class="col-sm-1">
+            <input type="number" step="0.01" v-model="parametres.montantCotisationDipenseAssiduite" class="form-control text-right" />
+        </div>
+    </div>
+    <hr />
+    <div class="text-center">
+        <button type="button" v-on:click="setParametres()" v-if="modified" class="btn btn-primary">Enregistrer</button>
+        <button type="button" v-if="!modified" class="btn btn-default disabled">Enregistrer</button>
+    </div>
+
+</script>
+<script>
+    const ComptaParametres = {
+        template: '#compta-parametres-template',
+        name: 'ComptaParametres',
+        props: {
+            moduleid: Number,
+            context: String
+        },
+        data: function () {
+            return {
+                cotisationTypes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(ComptaHelper.GetDomaine("PeriodiciteCotisation"))),
+                parametres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(parametres)),
+                modified: null
+            }
+        },
+
+        methods: {
+            setParametres() {
+                _yemon[this.moduleid].service.postData("/SetParametres", {
+                    context: this.context,
+                    data: this.parametres
+                }, (r) => {
+                    this.modified = false;
+                }, (e) => {
+                    toastr["error"](e);
+                });
+            }
+        },
+        mounted() {
+          
+        },
+        watch: {
+            parametres: {
+                handler() {
+                    if (this.modified == null) {
+                        this.modified = false;
+                        return;
+                    }
+                    this.modified = true;
+                },
+                deep: true
+            }
+        },
+    }
+</script>

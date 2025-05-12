@@ -1,0 +1,85 @@
+﻿<script type="text/x-template" id="compta-facturesclub-template">
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="button" v-on:click="addFacture()" class="btn btn-primary">Ajouter une facture</button>
+        </div>
+    </div>
+    <div class="pe-spacer size10"></div>
+    <div v-if="factures.length==0">
+        <div class="panel-body">Aucune facture pour le moment...</div>
+    </div>
+    <table class="table table-striped table-hover" v-if="factures.length>0">
+        <tbody>
+            <tr>
+                <th class="col-sm-1">Date</th>
+                <th class="col-sm-1 text-center">N°</th>
+                <th class="col-sm-5">Libellé</th>
+                <th class="col-sm-2 text-right">Montant</th>
+                <th class="col-sm-4">Nom / Prénom</th>
+
+            </tr>
+            <tr v-for="f in factures">
+                <td v-on:click="editFacture(f)">{{date(f.date)}}</td>
+                <td v-on:click="editFacture(f)" class="text-center">{{num(f.numero)}}<span class="label label-info" v-if="f.provisoire" title="Provisoire">P</span></td>
+                <td v-on:click="editFacture(f)">{{f.libelle}}</td>
+                <td v-on:click="editFacture(f)" class="text-right">{{nombre(f.montant)}} €</td>
+                <td v-on:click="editFacture(f)">{{f.nom +' '+f.prenom}}</td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+<script>
+    const ComptaFacturesClub = {
+        template: '#compta-facturesclub-template',
+        name: 'ComptaFacturesClub',
+        props: {
+            moduleid: Number,
+            context: String
+        },
+        data: function () {
+            return {
+                factures: []
+            }
+        },
+
+        methods: {
+            nombre(n) {
+                if (n == null || n == undefined)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            addFacture() {
+                this.$router.push("/edit/new");
+            },
+            editFacture(f) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                if(f.provisoire)
+                    this.$router.push("/edit/" + f.guid);
+                else
+                    this.$router.push("/view/" + f.guid + "/returnurl/" + encodeURIComponent(this.$router.currentRoute.value.fullPath));
+                
+            },
+            getFactures() {
+                _yemon[this.moduleid].service.getData("/GetFacturesClub", {
+                    context: this.context
+                }, (r) => {
+                    this.factures = r.data;
+                });
+            }
+        },
+        mounted() {
+            this.getFactures();
+        }
+    }
+</script>

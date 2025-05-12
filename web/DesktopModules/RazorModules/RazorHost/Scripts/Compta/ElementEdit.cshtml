@@ -1,0 +1,292 @@
+﻿@using AIS;
+@{ 
+    var membres = DataMapping.ListMembers(Functions.CurrentCric,sort:"surname asc");
+
+    var types = ComptaHelper.GetElementsTypes().FindAll(t => t.membre == true).ToList();
+
+    var moyensPaiements = ComptaHelper.GetDomaine("MoyenPaiement");
+}
+<script type="text/x-template" id="compta-elementedit-template">
+    <div class="row">
+        <div class="col-sm-3 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
+            <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid ? 'visible' : 'hidden'}">Valider</button>&nbsp;
+        </div>
+        <div class="col-sm-7 text-center">
+            <span class="label label-info" v-if="element.provisoire">Provisoire</span>
+        </div>
+
+        <div class="col-sm-2">
+            <button type="button" v-on:click="deleteElement()" class="btn btn-sm btn-danger" title="Supprimer" v-if="guid!='new' && element.brouillon">Supprimer</button>
+        </div>
+    </div>
+    <div class="form-group  col-sm-12">
+        <h3 v-if="guid=='new'">Nouvel élément financier</h3>
+        <h3 v-if="guid!='new'">Modification élément financier</h3>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-12">
+            <div class="col-sm-2">
+                Type d'élement :
+            </div>
+            <div class="col-sm-2">
+                <select class="form-control" v-model="element.type" required>
+                    <option v-for="t in types" :value="t.id">{{t.libelle}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" v-if="element.type==5">
+            <div class="col-sm-2">
+                Moyen paiement :
+            </div>
+            <div class="col-sm-2">
+                <select class="form-control" v-model="element.moyenPaiement">
+                    <option v-for="t in moyensPaiements" :value="t.val">{{t.libelle}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" v-if="element.type==5">
+            <div class="col-sm-2">
+                Référence
+            </div>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" v-model="element.reference" />
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <div class="col-sm-2">
+                Date :
+            </div>
+            <div class="col-sm-2">
+                <input type="date" class="form-control text-center" v-model="element.date" title="Saisir la date de l'élément financier"  required />
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <div class="col-sm-2">
+                Montant
+            </div>
+            <div class="col-sm-2">
+                <input type="number" ref="montant" class="form-control text-right" v-model="element.montant" step=".01" required />
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <div class="col-sm-2">
+                Libellé :
+            </div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" v-model="element.libelle" maxlength="50" required />
+            </div>
+
+        </div>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-6 ">
+            <div class="col-sm-4">
+                Membre :
+            </div>
+            <div class="col-sm-8">
+                <select class="form-control" v-model="element.nim" v-on:change="updateCoords()">
+                    <option :value="null">Non membre</option>
+                    <option :value="m.nim" v-for="m in membres">{{m.name}} {{m.surname}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-6 ">
+            <div></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6 ">
+            <div class="col-sm-4">
+                Raison sociale :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.raisonSociale" maxlength="50" v-on:keyup="element.raisonSociale = element.raisonSociale.toTitleCase()" />
+            </div>
+            <div class="col-sm-4">
+                Nom :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.nom" maxlength="50" v-on:keyup="element.nom = element.nom.toUpperCase()"  required />
+            </div>
+            <div class="col-sm-4">
+                Prénom :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.prenom" maxlength="50" v-on:keyup="element.prenom = element.prenom.toTitleCase()"  required />
+            </div>
+            <div class="col-sm-4">
+                E-mail :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.email" maxlength="50" v-on:keyup="element.email = element.email.toLowerCase()" />
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <div class="col-sm-4">
+                Adresse :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.ad1" maxlength="50" />
+            </div>
+
+            <div class="col-sm-4">
+                Complément :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.ad2" maxlength="50" />
+            </div>
+            <div class="col-sm-4">
+                CP / Ville :
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" v-model="element.cp" maxlength="50" />
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" v-model="element.ville" maxlength="50" v-on:keyup="element.ville = element.ville.toUpperCase()" />
+            </div>
+            <div class="col-sm-4">
+                Pays :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="element.pays" maxlength="50" v-on:keyup="element.pays = element.pays.toTitleCase()" />
+            </div>
+        </div>
+        <hr />
+    </div>
+</script>
+<script>
+
+    String.prototype.toTitleCase = function () {
+        let arr = this.split(' ');
+        let x = arr.map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+        return x.join(' ');
+    }
+
+    const ComptaElementEdit = {
+        template: '#compta-elementedit-template',
+        name: 'ComptaElementEdit',
+        props: {
+            moduleid: Number,
+            context: String,
+            guid: String,
+            returnurl: String,
+            type: String,
+            nim: String
+        },
+        data: function () {
+            return {
+                element: {
+                    provisoire:true
+                },
+                modified: null,
+                membres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(membres)),
+                types: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(types)),
+                moyensPaiements: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(moyensPaiements)),
+            }
+        }, 
+        computed: {
+             isValid() {
+                 return this.element.provisoire && this.element.type && this.element.libelle && this.element.date && this.element.montant && this.element.prenom && this.element.nom;
+            }
+        },
+        methods: {
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+            updateCoords() {
+                var m = this.membres.find(m => m.nim == this.element.nim);
+                this.element.raisonSociale = '';
+                this.element.prenom = '';
+                this.element.nom = '';
+                this.element.ad1 = '';
+                this.element.ad2 = '';
+                this.element.cp = '';
+                this.element.ville = '';
+                this.element.pays = '';
+                this.element.email = '';
+
+                if (m) {
+                    this.element.professionnal_company = m.professionnal_company;
+                    this.element.prenom = m.name;
+                    this.element.nom = m.surname;
+                    this.element.ad1 = m.ri_ad1;
+                    this.element.ad2 = m.ri_ad2;
+                    this.element.cp = m.zip_code;
+                    this.element.ville = m.town;
+                    this.element.pays = m.country;
+                    this.element.email = m.email;
+                };
+
+            },
+           
+            nombre(n) {
+                if (n == null || n == undefined)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            cancel() {
+                this.$router.push(this.returnurl);
+            },
+            valider() {
+                _yemon[this.moduleid].service.postData("/SetElement", {
+                    context: this.context,
+                    data: JSON.stringify(this.element)
+                }, (r) => {
+                    this.$router.push(this.returnurl);
+
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+            },
+            getElement() {
+                _yemon[this.moduleid].service.getData("/GetElement", {
+                    context: this.context,
+                    guid: this.guid
+                }, (r) => {
+                    this.element = r.data;
+                    if(this.type)
+                         this.element.type=this.type;
+                    if(this.nim)
+                         this.element.nim=this.nim;
+                    this.element.date = new Date(this.element.date + 'Z').toISOString().substr(0, 10);
+                });
+            }
+
+        },
+        mounted() {
+            
+            if (this.guid != 'new')
+                this.getElement();
+            else {               
+                this.element.date= new Date().toISOString().substr(0, 10);
+                this.element.type = this.type;
+                if(this.nim)
+                {
+                    this.element.nim= this.nim;
+                    var t = this.types.find(t=>t.id==this.type);
+                    if(t)
+                        this.element.libelle = t.libelle;
+                    this.updateCoords();
+                }
+                this.$refs.montant.focus();
+            }
+
+        }
+    }
+</script>

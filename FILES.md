@@ -66,7 +66,15 @@ App_Code\AIS\webapi\compta\ComptaController.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Compte-Membre.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Comptes-Membres.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Factures-Club.cshtml
-
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\ComptesMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\ComptesMembres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\ElementEdit.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureEdit.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FacturesClub.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureView.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Init.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Parametres.cshtml
 
 
 ```

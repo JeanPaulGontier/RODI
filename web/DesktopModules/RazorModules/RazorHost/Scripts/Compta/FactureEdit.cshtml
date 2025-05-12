@@ -1,0 +1,296 @@
+﻿@using AIS;
+@{ 
+    var membres = DataMapping.ListMembers(Functions.CurrentCric,sort:"surname asc");
+    //int cric = Functions.CurrentCric;
+    //var factures = ComptaHelper.GetFacturesClub(cric);
+}
+<script type="text/x-template" id="compta-factureedit-template">
+    <div class="row">
+        <div class="col-sm-3 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
+            <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid() ? 'visible' : 'hidden'}">Valider</button>
+        </div>
+        <!--<div class="col-sm-7 ">
+        </div>
+
+        <div class="col-sm-2">-->
+        @*<button type="button" v-on:click="deleteNews()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>*@
+        <!--</div>-->
+    </div>
+    <div class="form-group  col-sm-12">
+        <h3 v-if="guid=='new'">Nouvelle facture</h3>
+        <h3 v-if="guid!='new' && facture.numero">Modification facture n°{{num(facture.numero)}}</h3>
+        <h3 v-if="guid!='new' && !facture.numero">Modification facture provisoire</h3>
+    </div>
+    <div class="row">
+        <div class="form-group  col-sm-12">
+            <div class="col-sm-2">
+                Libellé :
+            </div>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" v-model="facture.libelle" maxlength="100" required />
+            </div>
+            <div class="col-sm-2">
+                Date :
+            </div>
+            <div class="col-sm-2">
+                <input type="date" class="form-control text-center" v-model="facture.date" title="Saisir la date de la facture"  required />
+            </div>
+            
+            <div class="col-sm-8 text-right">
+                Montant : {{nombre(facture.montant)}} €
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <div class="row">
+        <div class="form-group col-sm-6 ">
+            <div class="col-sm-4">
+                Membre :
+            </div>
+            <div class="col-sm-8">
+                <select class="form-control" v-model="facture.nim" v-on:change="updateCoords()" required>
+                    <option :value="null">Non membre</option>
+                    <option :value="m.nim" v-for="m in membres">{{m.name}} {{m.surname}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-6 ">
+            <div></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6 ">
+            <div class="col-sm-4">
+                Raison sociale :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.raisonSociale" maxlength="50"  v-on:keyup="facture.raisonSociale = facture.raisonSociale.toTitleCase()"/>
+            </div>
+            <div class="col-sm-4">
+                Nom :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.nom" maxlength="50"  v-on:keyup="facture.nom = facture.nom.toUpperCase()"  required />
+            </div>
+            <div class="col-sm-4">
+                Prénom :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.prenom" maxlength="50"  v-on:keyup="facture.prenom = facture.prenom.toTitleCase()"  required />
+            </div>
+            <div class="col-sm-4">
+                E-mail :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.email" maxlength="50"  v-on:keyup="facture.email = facture.email.toLowerCase()" />
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <div class="col-sm-4">
+                Adresse :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.ad1" maxlength="50" />
+            </div>
+
+            <div class="col-sm-4">
+                Complément :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.ad2" maxlength="50" />
+            </div>
+            <div class="col-sm-4">
+                CP / Ville :
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" v-model="facture.cp" maxlength="50"  />
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" v-model="facture.ville" maxlength="50" v-on:keyup="facture.ville = facture.ville.toUpperCase()"/>
+            </div>
+            <div class="col-sm-4">
+                Pays :
+            </div>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" v-model="facture.pays" maxlength="50"  v-on:keyup="facture.pays = facture.pays.toTitleCase()" />
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="form-group col-sm-12">
+        <table class="table table-striped" dropzone="onDrop()">
+            <thead>
+                <tr>
+                    <th class="col-sm-8">Libellé</th>
+                    <th class="col-sm-1 text-right">Montant</th>
+                    <th class="col-sm-1 text-center">Qté</th>
+                    <th class="col-sm-1 text-right">Total</th>
+                    <th style="width:20px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="l in facture.lignes" v-on:click="ligne=l">
+                    <td v-if="l==ligne">
+                        <input type="text" class="form-control" ref="libelle" v-model="l.libelle" />
+                    </td>
+                    <td v-if="l==ligne">
+                        <input type="number" class="form-control text-right" v-model="l.montant" onfocus="this.select();" v-on:change="recalc()" />
+                    </td>
+                    <td v-if="l==ligne">
+                        <input type="number" class="form-control text-right" v-model="l.qte" onfocus="this.select();" v-on:change="recalc()"/>
+                    </td>
+                    <td v-if="l!=ligne" >
+                        {{l.libelle}}
+                    </td>
+                    <td class="text-right" v-if="l!=ligne">
+                        {{nombre(l.montant)}}
+                    </td>
+                    <td class="text-center" v-if="l!=ligne">
+                        {{l.qte}}
+                    </td>
+                    <td class="text-right">
+                        {{nombre(l.total)}}
+                    </td>
+                    <td v-if="l==ligne">
+                        <button v-if="l==ligne" type="button" class="btn btn-warning btn-xs" title="Supprimer la ligne" v-on:click="delLigne(l)"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                    <td v-else></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <button type="button" v-on:click="addLigne()" class="btn btn-primary"><i class="fa fa-plus"></i> Nouvelle ligne</button>
+        </div>
+
+    </div>
+</script>
+<script>
+
+    String.prototype.toTitleCase = function () {
+        let arr = this.split(' ');
+        let x = arr.map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+        return x.join(' ');
+    }
+
+    const ComptaFactureEdit = {
+        template: '#compta-factureedit-template',
+        name: 'ComptaFactureEdit',
+        props: {
+            moduleid: Number,
+            context: String,
+            guid: String
+        },
+        data: function () {
+            return {
+                facture: {
+                    lignes:[]
+                },
+                modified: null,
+                membres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(membres)),
+                ligne: {}
+            }
+        },
+        methods: {
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+            recalc() {
+                this.facture.montant = 0;
+                this.facture.lignes.forEach(l => {
+                    l.total = l.montant * l.qte;
+                    this.facture.montant += l.total;
+                })
+            },
+            addLigne() {
+                this.facture.lignes.push({montant:0.00, qte: 1, total:0.00});
+                this.ligne = this.facture.lignes[this.facture.lignes.length - 1];
+                this.$nextTick(() => this.$refs.libelle.focus());                
+            },
+            delLigne() {
+                if (!this.ligne)
+                    return;
+                this.facture.lignes = this.facture.lignes.filter(li => li !== this.ligne);
+                this.ligne = null;
+            },
+            updateCoords() {
+                var m = this.membres.find(m => m.nim == this.facture.nim);
+                this.facture.raisonSociale = '';
+                this.facture.prenom = '';
+                this.facture.nom = '';
+                this.facture.ad1 = '';
+                this.facture.ad2 = '';
+                this.facture.cp = '';
+                this.facture.ville = '';
+                this.facture.pays = '';
+                this.facture.email = '';
+
+                if (m) {
+                    this.facture.professionnal_company = m.professionnal_company;
+                    this.facture.prenom = m.name;
+                    this.facture.nom = m.surname;
+                    this.facture.ad1 = m.ri_ad1;
+                    this.facture.ad2 = m.ri_ad2;
+                    this.facture.cp = m.zip_code;
+                    this.facture.ville = m.town;
+                    this.facture.pays = m.country;
+                    this.facture.email = m.email;
+                };
+
+            },
+            isValid() {
+                return this.facture.libelle && this.facture.date && this.facture.prenom && this.facture.nom;
+            },
+            nombre(n) {
+                if (n == null || n == undefined)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            cancel() {
+                this.$router.push("/");
+            },
+            valider() {
+                this.facture.detail = JSON.stringify(this.facture.lignes);
+                _yemon[this.moduleid].service.postData("/SetFacture", {
+                    context: this.context,
+                    data: JSON.stringify(this.facture)
+                }, (r) => {
+                    this.$router.push("/");
+
+                }
+                    //, (e) => {
+                    //toastr["error"]("Erreur : " + e.response.data.Message);
+                    //}
+                )
+            },
+            getFacture() {
+                _yemon[this.moduleid].service.getData("/GetFacture", {
+                    context: this.context,
+                    guid: this.guid
+                }, (r) => {
+                    this.facture = r.data;                    
+                    this.facture.date = new Date(this.facture.date + 'Z').toISOString().substr(0, 10);
+                    this.recalc();
+                });
+            }
+            
+        },
+        mounted() {
+            if (this.guid != 'new')
+                this.getFacture();
+            else
+                this.facture.date = new Date().toISOString().substr(0, 10);
+        }
+    }
+</script>

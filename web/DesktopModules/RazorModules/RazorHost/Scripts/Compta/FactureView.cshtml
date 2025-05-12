@@ -1,0 +1,152 @@
+﻿<script type="text/x-template" id="compta-factureview-template">
+    <div class="row">
+        <div class="col-sm-3 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;            
+        </div>
+    </div>
+    <div class="form-group  col-sm-12">
+        <h3 v-if="facture.numero">Facture n°{{num(facture.numero)}}</h3>
+        <h3 v-else>Facture provisoire n° non attribué</h3>
+    </div>
+    <div class="row">
+        <div class="form-group  col-sm-12">
+            <div class="col-sm-2">
+                Libellé :
+            </div>
+            <div class="col-sm-10">
+                {{facture.libelle}}
+            </div>
+            <div class="col-sm-2">
+                Date :
+            </div>
+            <div class="col-sm-3">
+                {{date(facture.date)}}
+            </div>
+            
+            <div class="col-sm-7 text-right">
+                Montant : {{nombre(facture.montant)}} €
+            </div>
+        </div>
+        <hr />
+    </div>
+   
+    <div >
+        <div class="form-group col-sm-6 ">
+            <div>
+                {{facture.raisonSociale}}
+            </div>          
+            <div>
+                {{facture.nom}} {{facture.prenom}}
+            </div>                        
+            <div>
+                {{facture.email}}
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+           
+            <div>
+                {{facture.ad1}}
+            </div>         
+            <div v-if="facture.ad2">
+                {{facture.ad2}}
+            </div>         
+            <div>
+                {{facture.cp}} {{facture.ville}}
+            </div>          
+            <div>
+                {{facture.pays}}
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="form-group col-sm-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-sm-9">Libellé</th>
+                    <th class="col-sm-1 text-right">Montant</th>
+                    <th class="col-sm-1 text-right">Qté</th>
+                    <th class="col-sm-1 text-right">Total</th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="l in facture.lignes">
+                    <td>
+                        {{l.libelle}}
+                    </td>
+                    <td class="text-right">
+                        {{l.montant}}
+                    </td>
+                    <td class="text-right">
+                        {{l.qte}}
+                    </td>
+                    <td class="text-right">
+                        {{nombre(l.total)}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+<script>
+
+    String.prototype.toTitleCase = function () {
+        let arr = this.split(' ');
+        let x = arr.map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+        return x.join(' ');
+    }
+
+    const ComptaFactureView = {
+        template: '#compta-factureview-template',
+        name: 'ComptaFactureView',
+        props: {
+            moduleid: Number,
+            context: String,
+            guid: String,
+            returnurl: String
+        },
+        data: function () {
+            return {
+                facture: {
+                    lignes:[]
+                },
+            }
+        },
+        methods: {
+       
+            nombre(n) {
+                if (n == null || n == undefined)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            cancel() {
+                this.$router.push(this.returnurl);
+            },
+            getFacture() {
+                _yemon[this.moduleid].service.getData("/GetFacture", {
+                    context: this.context,
+                    guid: this.guid
+                }, (r) => {
+                    this.facture = r.data;                    
+                    this.facture.date = new Date(this.facture.date + 'Z').toISOString().substr(0, 10);                   
+                });
+            },
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+        },
+        mounted() {         
+           this.getFacture();           
+        }
+    }
+</script>

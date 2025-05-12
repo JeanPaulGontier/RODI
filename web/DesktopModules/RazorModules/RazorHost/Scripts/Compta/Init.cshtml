@@ -1,0 +1,11 @@
+﻿@using DotNetNuke.Entities.Tabs;
+@{
+    var libPath = TabController.CurrentPage.SkinPath + "echoppe/";
+}
+<script src="@(libPath)vue/3.2.23/vue.js?cdv=@Yemon.dnn.Functions.CDV"></script>
+<script src="@(libPath)vue-router/4.0.12/vue-router.js?cdv=@Yemon.dnn.Functions.CDV"></script>
+<script src="@(libPath)axios/0.24.0/axios.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
+<script src="@(libPath)toastr/toastr.min.js?cdv=@Yemon.dnn.Functions.CDV"></script>
+<link href="@(libPath)toastr/toastr.min.css?cdv=@Yemon.dnn.Functions.CDV" rel="stylesheet" />
+<script src="~/DesktopModules/Yemon/API/Services/VueJS?cdv=@Yemon.dnn.Functions.CDV"></script>
+<script src="~/DesktopModules/RazorModules/RazorHost/Scripts/Compta/app.js?cdv=@Yemon.dnn.Functions.CDV"></script>
