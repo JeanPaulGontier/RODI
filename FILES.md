@@ -75,7 +75,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\Compta\FacturesClub.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureView.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\Compta\Init.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\Compta\Parametres.cshtml
-
+AIS\ServeDocument.ashx
 
 ```
 ##### 18/04/2025
