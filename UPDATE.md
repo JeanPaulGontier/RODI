@@ -8,6 +8,7 @@
 - on peut maintenant saisir les coordonnées gps du club dans l'écran de paramètres du club
 - dans l'administration des cotisations de district, modification des textes d'aide pour plus de clarté, le tri par (payé) fonctionne correctement
 - préparation déploiement compta club (en accès anticipé pour le groupe 'Commission Compta Club')
+- ajout d'un bouton ouvrant la vidéo d'explication dans l'écran de connexion
 
 ###### 18/04/2025
 - ajustement des styles blockcontent pour une meilleure compatibilité avec l'existant
