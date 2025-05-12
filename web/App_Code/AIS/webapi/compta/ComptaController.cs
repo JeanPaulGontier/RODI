@@ -111,8 +111,7 @@ namespace AIS.controller
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage GetFacturesClub(string context)
         {
             if (!CheckRole()) return Request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -128,8 +127,7 @@ namespace AIS.controller
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage SetParametres(dynamic param){
             try
             {
@@ -155,8 +153,7 @@ namespace AIS.controller
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage SetFacture(dynamic param)
         {
             try
@@ -189,8 +186,7 @@ namespace AIS.controller
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage SetElement(dynamic param)
         {
             try
@@ -225,8 +221,7 @@ namespace AIS.controller
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage GetFacture(string context, string guid)
         {
             try
@@ -249,8 +244,7 @@ namespace AIS.controller
         }
        
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage GetElement(string context, string guid)
         {
             try
@@ -273,8 +267,7 @@ namespace AIS.controller
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage GetComptesMembres(string context)
         {
             try
@@ -297,8 +290,7 @@ namespace AIS.controller
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage GetCompteMembre(string context,int nim)
         {
             try
@@ -331,8 +323,7 @@ namespace AIS.controller
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage Lettrage(dynamic param)
         {
             try
@@ -364,8 +355,7 @@ namespace AIS.controller
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage Confirmer(dynamic param)
         {
             try
