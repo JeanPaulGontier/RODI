@@ -270,7 +270,7 @@ public class ComptaHelper
         return element;
     }
 
-    public static bool SetElement(Compta.Element element, bool createElementNum = false, bool forceFactureProduction=false, SqlConnection conn=null,SqlTransaction trans=null)
+    public static bool SetElement(Compta.Element element, bool createElementNum = false,SqlConnection conn=null,SqlTransaction trans=null)
     {
 
         if (createElementNum && element.numero==null && element.type==1) // facture
@@ -314,18 +314,7 @@ public class ComptaHelper
         row["montant"] = element.montant;
 
         row["detail"] = element.detail;
-        try
-        {
-            if(element.type==1 && element.numero!=null && forceFactureProduction)
-                row["document_id"] = ComptaHelper.ProductionClubFacture((Guid)element.guid, forceprod: true);
-
-        }
-        catch (Exception e)
-        {
-            AIS.Functions.Error(e);
-        }
-
-
+       
         var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "c_elements", "id", row,conn,trans);
         return r.Key != "error";
     }
@@ -373,8 +362,10 @@ public class ComptaHelper
             else
                 total -= element.montant;
 
-            if (!SetElement(element,true,true,conn,trans))
+            if (!SetElement(element,true,conn,trans))
                 throw new Exception("Erreur maj element " + element.id);
+
+          
         }
         if(total>0)
         {
@@ -391,11 +382,19 @@ public class ComptaHelper
             element.nim = nim;
             element.provisoire = false;
             element.district_id = Const.DISTRICT_ID;
-            if (!SetElement(element, false,false, conn, trans))
+            if (!SetElement(element, false, conn, trans))
                 throw new Exception("Erreur création note de crédit");
         }
         trans.Commit();
         conn.Close();
+
+        foreach(var element in elements)
+        {
+            if (element.type == 1)
+                if(ComptaHelper.ProductionClubFacture((Guid)element.guid, forceprod: true)==0)
+                   throw new Exception("Erreur création document facture " + cric + " : " + element.guid);        
+        }
+
 
         return true;
        
@@ -422,12 +421,20 @@ public class ComptaHelper
         {
             element.provisoire = false;
          
-            if (!SetElement(element, true, true, conn, trans))
+            if (!SetElement(element, true, conn, trans))
                 throw new Exception("Erreur maj element " + element.id);
         }
        
         trans.Commit();
         conn.Close();
+
+        foreach (var element in elements)
+        {
+            if (element.type == 1)
+                if (ComptaHelper.ProductionClubFacture((Guid)element.guid, forceprod: true) == 0)
+                    throw new Exception("Erreur création document facture " + cric + " : " + element.guid);
+        }
+
 
         return true;
 

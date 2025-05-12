@@ -21,13 +21,23 @@
     var compte = ComptaHelper.GetMembreCompte(membre.nim, complet: true);
 
     bool haslignes=false;
-    foreach (var l in compte.lignes)
+
+    for (int i=0;i<compte.lignes.Count;i++)
     {
+        var l = compte.lignes[i];
         if (!(bool)l.provisoire)
         {
             haslignes = true;
-            break;
         }
+        //if(i==0)
+        //{
+        //    l.solde = -l.debit + l.credit;
+        //}
+        //else
+        //{
+        //    l.solde = compte.lignes[i - 1].solde - l.debit + l.credit;
+        //}
+
     }
 
     if (!haslignes)
