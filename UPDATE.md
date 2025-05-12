@@ -3,7 +3,7 @@
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 - correction de styles sur le nouveau thème graphique 2025
 - correction d'un bug d'affichage dans l'annuaire professionnel
-- quand un membre choisit d'apparaitre dans l'espace professionnel et qu'il n'a pas créé de page de présentation, alors le module page de présentation disparait au lieu d'afficher 'le membre n'a pas créé de page de présentation'
+- quand un membre choisi d'apparaitre dans l'espace professionnel et qu'il n'a pas créé de page de présentation, alors le module page de présentation disparait au lieu d'afficher 'le membre n'a pas créé de page de présentation'
 - correction d'un pb d'enregistrement occasionnel du BlockContent, avec affichage d'un toast indiquant 'enregistré'
 - on peut maintenant saisir les coordonnées gps du club dans l'écran de paramètres du club
 - dans l'administration des cotisations de district, modification des textes d'aide pour plus de clarté, le tri par (payé) fonctionne correctement
