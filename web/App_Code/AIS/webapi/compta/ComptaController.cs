@@ -83,6 +83,7 @@ namespace AIS.controller
             if (UserInfo.IsAdmin || UserInfo.IsSuperUser) return true;
             if (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB)) return true;
             if (UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT)) return true;            
+            if (UserInfo.IsInRole("Commission Compta Club")) return true;
             return false;
         }
 
