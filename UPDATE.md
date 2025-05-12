@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+###### 12/05/2025
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 - correction de styles sur le nouveau thème graphique 2025
 - correction d'un bug d'affichage dans l'annuaire professionnel
@@ -6,6 +7,7 @@
 - correction d'un pb d'enregistrement occasionnel du BlockContent, avec affichage d'un toast indiquant 'enregistré'
 - on peut maintenant saisir les coordonnées gps du club dans l'écran de paramètres du club
 - dans l'administration des cotisations de district, modification des textes d'aide pour plus de clarté, le tri par (payé) fonctionne correctement
+- préparation déploiement compta club
 
 ###### 18/04/2025
 - ajustement des styles blockcontent pour une meilleure compatibilité avec l'existant

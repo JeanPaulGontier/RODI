@@ -25,6 +25,7 @@
 </div>
 @RenderPage("Compta/FacturesClub.cshtml")
 @RenderPage("Compta/FactureEdit.cshtml")
+@RenderPage("Compta/FactureView.cshtml")
 <script>
 $(document).ready(function () {
     if (typeof _yemon =='undefined')
@@ -34,6 +35,7 @@ $(document).ready(function () {
     const routes = [
         { path: '/', component: ComptaFacturesClub, props: true },
         { path: '/edit/:guid', component: ComptaFactureEdit, props: true },
+        { path: '/view/:guid/returnurl/:returnurl', component: ComptaFactureView, props: true },
     ];
     InitApp('@appID',@moduleID,'@context',routes);
 });

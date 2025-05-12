@@ -1,4 +1,6 @@
 ##### Modified files per commit
+```
+##### 12/05/2025
 ```txt
 App_Code\AIS\Functions.cs
 App_Code\AIS\DataMapping.cs
@@ -58,6 +60,14 @@ Portals\0\blockcontent\banner-vid\vecteezy_abstract-blue-particles-background-pa
 Portals\0\blockcontent\infos-img\20240629_IN_023.jpg
 Portals\0\blockcontent\infos-img\20240826_US_070.jpg
 Portals\0\blockcontent\infos-img\md_nFnP4IYhbw024AS4.jpg
+App_Code\AIS\compta\Compta.cs
+App_Code\AIS\compta\ComptaHelper.cs
+App_Code\AIS\webapi\compta\ComptaController.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Compte-Membre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Comptes-Membres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Factures-Club.cshtml
+
+
 
 ```
 ##### 18/04/2025
