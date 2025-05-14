@@ -1,7 +1,10 @@
 ##### Modified files per commit
-```
-##### 12/05/2025
 ```txt
+DesktopModules\RazorModules\RazorHost\Scripts\_QRCodeGenerator.cshtml
+```
+
+##### 12/05/2025
+
 App_Code\AIS\Functions.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Error.cs

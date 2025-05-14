@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors de la prochaine MAJ
+- ajout d'un module razor de création de qr code (QRCodeGenerator)
 ###### 12/05/2025
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 - correction de styles sur le nouveau thème graphique 2025
