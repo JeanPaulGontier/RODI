@@ -1,6 +1,11 @@
 ##### Modified files per commit
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_QRCodeGenerator.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cshtml
 ```
 
 ##### 12/05/2025

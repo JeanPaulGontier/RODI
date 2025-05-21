@@ -40,7 +40,7 @@
     }
     try
     {
-        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix);
+        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix, Yemon.dnn.Functions.GetPortalId());
         if (sblocks != "")
         {
             blocks = (List<Block>
