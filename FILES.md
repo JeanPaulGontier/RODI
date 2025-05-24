@@ -9,6 +9,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 ```
 
 ##### 12/05/2025
