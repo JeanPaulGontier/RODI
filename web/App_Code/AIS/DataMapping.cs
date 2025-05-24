@@ -4925,15 +4925,15 @@ namespace AIS
                 int c = 0;
                 foreach (DataRow rd in ds.Tables[0].Rows)
                 {
-                    if (i >= (index * max) && c < max)
-                    {
+                    //if (i >= (index * max) && c < max)
+                    //{
                         list.Add(GetNewsletterByRD(rd));
                         c++;
-                    }
-                    else
-                    {
-                        list.Add(new Newsletter());
-                    }
+                    //}
+                    //else
+                    //{
+                    //    list.Add(new Newsletter());
+                    //}
                     i++;
                 }
             }

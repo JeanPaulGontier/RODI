@@ -19,7 +19,8 @@
                     </asp:TemplateField>
                     <asp:ButtonField ButtonType="Link" runat="server" Text="Détail" CommandName="detail" />
                 </Columns>    
-       <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
+                <PagerStyle CssClass="GVPager" />
+       <PagerSettings Mode="NumericFirstLast"  Position="Bottom" /> 
         <EmptyDataTemplate>Aucun mail associé à ce club</EmptyDataTemplate>
     </asp:GridView>
 

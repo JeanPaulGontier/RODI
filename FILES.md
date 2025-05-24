@@ -6,6 +6,9 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cshtml
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Mailing\Control.ascx
+DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 ```
 
 ##### 12/05/2025

@@ -92,6 +92,11 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
         }
     }
+    public string GVID {
+        get {
+            return GridView1.ClientID;
+        }
+    }
     string CHK_AR_0_TEXT
     {
         get
