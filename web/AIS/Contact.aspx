@@ -82,7 +82,7 @@
         </td>
     
         <td id="td_Coord" runat="server" visible="false" style="vertical-align:top;">
-            <asp:Panel runat="server" ID="Pnl_Coord" Visible="false"  Style="margin-left: 20px;">
+            <asp:Panel runat="server" ID="Pnl_Coord" Visible="false"  Style="margin-left: 20px">
                 
             </asp:Panel>
            

@@ -268,10 +268,10 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                         LBL_DT_Entree_Rotary.Text = membre.year_membership_rotary != null ? "" + ((DateTime)membre.year_membership_rotary).Year : "inconnue";
                     }
                     catch { }
-                    try { 
-                    LBL_DT_Naissance.Text = membre.birth_year != null ? "" + ((DateTime)membre.birth_year).Year + " (" + ((int)((DateTime.Now - (DateTime)membre.birth_year).TotalDays / 365.25)) + " ans)" : "inconnue";
-                    }
-                    catch { }
+                    //try { 
+                    //LBL_DT_Naissance.Text = membre.birth_year != null ? "" + ((DateTime)membre.birth_year).Year + " (" + ((int)((DateTime.Now - (DateTime)membre.birth_year).TotalDays / 365.25)) + " ans)" : "inconnue";
+                    //}
+                    //catch { }
 
                     IMG_Photo.ImageUrl = membre.GetPhoto();
                     

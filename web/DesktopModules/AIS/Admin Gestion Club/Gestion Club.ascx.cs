@@ -1,7 +1,7 @@
 ﻿
 #region Copyrights
 
-// RODI - http://rodi.aisdev.net
+// RODI - https://rodi-platform.org
 // Copyright (c) 2012-2025
 // by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
@@ -162,6 +162,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_zip.Text = "";
         tbx_name.Text = "";
         img_fanion.ImageUrl = "";
+        BT_Effacer_Fanion.Visible = false;
         hfd_cric.Text = "";
         RB_Type_Club.SelectedIndex = 0;
         rbl_type.SelectedIndex = -1;
@@ -170,6 +171,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         p_synchro_ri.Visible = false;
         p_synchro_ri_na.Visible = false;
         RB_synchroRI.SelectedIndex=0;
+
         BindRoleList();
         //btn_addClub.Text = "Ajouter le club rotaract";
         btn_addClub.Text = "Ajouter un club";
@@ -238,6 +240,7 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_web.Text = club.web;
         tbx_zip.Text = club.zip;
         img_fanion.ImageUrl = club.GetPennant();
+        BT_Effacer_Fanion.Visible = !string.IsNullOrEmpty(club.pennant);
         hfd_filename.Value = club.pennant;
         RB_Type_Club.SelectedValue = "" + club.club_type;
         SEO_MODE.SelectedValue = "" + club.seo_mode;
@@ -388,8 +391,9 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
             hfd_filename.Value = fileName;
             club.pennant = fileName;
             img_fanion.ImageUrl = club.GetPennant();
-            
+            BT_Effacer_Fanion.Visible = true;
         }
+        
     }
 
 
@@ -447,5 +451,12 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
 
             }
         }
+    }
+
+    protected void BT_Effacer_Fanion_Click(object sender, EventArgs e)
+    {
+        hfd_filename.Value = "";
+        img_fanion.ImageUrl = "";
+        BT_Effacer_Fanion.Visible = false;
     }
 }

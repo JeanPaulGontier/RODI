@@ -32,8 +32,8 @@ public partial class AIS_Contact : System.Web.UI.Page
                     Pnl_Coord.Visible = true;
 
                     Table tbC = new Table();
-                
 
+        
                     #region Cartouche
                     //if(!string.IsNullOrEmpty(membre.photo))
                     //{
@@ -133,9 +133,10 @@ public partial class AIS_Contact : System.Web.UI.Page
                     Pnl_Coord.Controls.Add(tbC);
 
                     Table tb = new Table();
-                  
+
 
                     #region Coordonnées Pro
+                    member.professionnal_adress = "";
                     if (!string.IsNullOrEmpty(member.professionnal_adress) || !string.IsNullOrEmpty(member.professionnal_tel) || !string.IsNullOrEmpty(member.professionnal_fax) || !string.IsNullOrEmpty(member.professionnal_mobile) || !string.IsNullOrEmpty(member.professionnal_email))
                     {
                         TableRow trH = new TableRow();
@@ -149,43 +150,43 @@ public partial class AIS_Contact : System.Web.UI.Page
                         tb.Controls.Add(trH);
 
 
-                        if(!string.IsNullOrEmpty(member.professionnal_adress))
-                        {
-                            TableRow tr = new TableRow();
+                        //if(!string.IsNullOrEmpty(member.professionnal_adress))
+                        //{
+                        //    TableRow tr = new TableRow();
 
-                            TableCell tdLabel = new TableCell();
-                            Label lab = new Label();
-                            lab.Text = "Adresse : ";
-                            lab.Width = Unit.Pixel(80);
-                            tdLabel.Controls.Add(lab);
-                            tr.Controls.Add(tdLabel);
+                        //    TableCell tdLabel = new TableCell();
+                        //    Label lab = new Label();
+                        //    lab.Text = "Adresse : ";
+                        //    lab.Width = Unit.Pixel(80);
+                        //    tdLabel.Controls.Add(lab);
+                        //    tr.Controls.Add(tdLabel);
 
-                            TableCell td = new TableCell();
-                            Label l = new Label();
-                            l.Text = member.professionnal_adress;
-                            td.Controls.Add(l);
-                            tr.Controls.Add(td);
-                            tb.Controls.Add(tr);
+                        //    TableCell td = new TableCell();
+                        //    Label l = new Label();
+                        //    l.Text = member.professionnal_adress;
+                        //    td.Controls.Add(l);
+                        //    tr.Controls.Add(td);
+                        //    tb.Controls.Add(tr);
 
-                            if (!string.IsNullOrEmpty(member.professionnal_zip_code) && !string.IsNullOrEmpty(member.professionnal_town))
-                            {
-                                TableRow tr2 = new TableRow();
+                        //    if (!string.IsNullOrEmpty(member.professionnal_zip_code) && !string.IsNullOrEmpty(member.professionnal_town))
+                        //    {
+                        //        TableRow tr2 = new TableRow();
 
-                                TableCell tdLabel2 = new TableCell();
-                                Label lab2 = new Label();
-                                lab2.Text = "";
-                                lab2.Width = Unit.Pixel(80);
-                                tdLabel2.Controls.Add(lab2);
-                                tr2.Controls.Add(tdLabel2);
+                        //        TableCell tdLabel2 = new TableCell();
+                        //        Label lab2 = new Label();
+                        //        lab2.Text = "";
+                        //        lab2.Width = Unit.Pixel(80);
+                        //        tdLabel2.Controls.Add(lab2);
+                        //        tr2.Controls.Add(tdLabel2);
 
-                                TableCell td2 = new TableCell();
-                                Label l2 = new Label();
-                                l2.Text = member.professionnal_zip_code + " " + member.professionnal_town;
-                                td2.Controls.Add(l2);
-                                tr2.Controls.Add(td2);
-                                tb.Controls.Add(tr2);
-                            }
-                        }
+                        //        TableCell td2 = new TableCell();
+                        //        Label l2 = new Label();
+                        //        l2.Text = member.professionnal_zip_code + " " + member.professionnal_town;
+                        //        td2.Controls.Add(l2);
+                        //        tr2.Controls.Add(td2);
+                        //        tb.Controls.Add(tr2);
+                        //    }
+                        //}
 
                         if (!string.IsNullOrEmpty(member.professionnal_tel))
                         {
@@ -283,6 +284,7 @@ public partial class AIS_Contact : System.Web.UI.Page
                     #endregion Coordonnées Pro
 
                     #region Coordonnées Perso
+                    member.adress_1 = "";
                     if (!string.IsNullOrEmpty(member.adress_1) || !string.IsNullOrEmpty(member.telephone) || !string.IsNullOrEmpty(member.fax) || !string.IsNullOrEmpty(member.gsm) || !string.IsNullOrEmpty(member.email))
                     {
                         TableRow trH = new TableRow();
@@ -296,81 +298,81 @@ public partial class AIS_Contact : System.Web.UI.Page
                         tb.Controls.Add(trH);
 
 
-                        if (!string.IsNullOrEmpty(member.adress_1))
-                        {
-                            TableRow tr = new TableRow();
+                        //if (!string.IsNullOrEmpty(member.adress_1))
+                        //{
+                        //    TableRow tr = new TableRow();
 
-                            TableCell tdLabel = new TableCell();
-                            Label lab = new Label();
-                            lab.Text = "Adresse : ";
-                            lab.Width = Unit.Pixel(80);
-                            tdLabel.Controls.Add(lab);
-                            tr.Controls.Add(tdLabel);
+                        //    TableCell tdLabel = new TableCell();
+                        //    Label lab = new Label();
+                        //    lab.Text = "Adresse : ";
+                        //    lab.Width = Unit.Pixel(80);
+                        //    tdLabel.Controls.Add(lab);
+                        //    tr.Controls.Add(tdLabel);
 
-                            TableCell td = new TableCell();
-                            Label l = new Label();
-                            l.Text = member.adress_1;
-                            td.Controls.Add(l);
-                            tr.Controls.Add(td);
-                            tb.Controls.Add(tr);
+                        //    TableCell td = new TableCell();
+                        //    Label l = new Label();
+                        //    l.Text = member.adress_1;
+                        //    td.Controls.Add(l);
+                        //    tr.Controls.Add(td);
+                        //    tb.Controls.Add(tr);
 
-                            if (!string.IsNullOrEmpty(member.adress_2) )
-                            {
-                                TableRow tr2 = new TableRow();
+                        //    if (!string.IsNullOrEmpty(member.adress_2) )
+                        //    {
+                        //        TableRow tr2 = new TableRow();
 
-                                TableCell tdLabel2 = new TableCell();
-                                Label lab2 = new Label();
-                                lab2.Text = "";
-                                lab2.Width = Unit.Pixel(80);
-                                tdLabel2.Controls.Add(lab2);
-                                tr2.Controls.Add(tdLabel2);
+                        //        TableCell tdLabel2 = new TableCell();
+                        //        Label lab2 = new Label();
+                        //        lab2.Text = "";
+                        //        lab2.Width = Unit.Pixel(80);
+                        //        tdLabel2.Controls.Add(lab2);
+                        //        tr2.Controls.Add(tdLabel2);
 
-                                TableCell td2 = new TableCell();
-                                Label l2 = new Label();
-                                l2.Text = member.adress_2;
-                                td2.Controls.Add(l2);
-                                tr2.Controls.Add(td2);
-                                tb.Controls.Add(tr2);
-                            }
+                        //        TableCell td2 = new TableCell();
+                        //        Label l2 = new Label();
+                        //        l2.Text = member.adress_2;
+                        //        td2.Controls.Add(l2);
+                        //        tr2.Controls.Add(td2);
+                        //        tb.Controls.Add(tr2);
+                        //    }
 
-                            if (!string.IsNullOrEmpty(member.adress_3))
-                            {
-                                TableRow tr2 = new TableRow();
+                        //    if (!string.IsNullOrEmpty(member.adress_3))
+                        //    {
+                        //        TableRow tr2 = new TableRow();
 
-                                TableCell tdLabel2 = new TableCell();
-                                Label lab2 = new Label();
-                                lab2.Text = "";
-                                lab2.Width = Unit.Pixel(80);
-                                tdLabel2.Controls.Add(lab2);
-                                tr2.Controls.Add(tdLabel2);
+                        //        TableCell tdLabel2 = new TableCell();
+                        //        Label lab2 = new Label();
+                        //        lab2.Text = "";
+                        //        lab2.Width = Unit.Pixel(80);
+                        //        tdLabel2.Controls.Add(lab2);
+                        //        tr2.Controls.Add(tdLabel2);
 
-                                TableCell td2 = new TableCell();
-                                Label l2 = new Label();
-                                l2.Text = member.adress_3;
-                                td2.Controls.Add(l2);
-                                tr2.Controls.Add(td2);
-                                tb.Controls.Add(tr2);
-                            }
+                        //        TableCell td2 = new TableCell();
+                        //        Label l2 = new Label();
+                        //        l2.Text = member.adress_3;
+                        //        td2.Controls.Add(l2);
+                        //        tr2.Controls.Add(td2);
+                        //        tb.Controls.Add(tr2);
+                        //    }
 
-                            if (!string.IsNullOrEmpty(member.zip_code) && !string.IsNullOrEmpty(member.town))
-                            {
-                                TableRow tr2 = new TableRow();
+                        //    if (!string.IsNullOrEmpty(member.zip_code) && !string.IsNullOrEmpty(member.town))
+                        //    {
+                        //        TableRow tr2 = new TableRow();
 
-                                TableCell tdLabel2 = new TableCell();
-                                Label lab2 = new Label();
-                                lab2.Text = "";
-                                lab2.Width = Unit.Pixel(80);
-                                tdLabel2.Controls.Add(lab2);
-                                tr2.Controls.Add(tdLabel2);
+                        //        TableCell tdLabel2 = new TableCell();
+                        //        Label lab2 = new Label();
+                        //        lab2.Text = "";
+                        //        lab2.Width = Unit.Pixel(80);
+                        //        tdLabel2.Controls.Add(lab2);
+                        //        tr2.Controls.Add(tdLabel2);
 
-                                TableCell td2 = new TableCell();
-                                Label l2 = new Label();
-                                l2.Text = member.zip_code + " " + member.town;
-                                td2.Controls.Add(l2);
-                                tr2.Controls.Add(td2);
-                                tb.Controls.Add(tr2);
-                            }
-                        }
+                        //        TableCell td2 = new TableCell();
+                        //        Label l2 = new Label();
+                        //        l2.Text = member.zip_code + " " + member.town;
+                        //        td2.Controls.Add(l2);
+                        //        tr2.Controls.Add(td2);
+                        //        tb.Controls.Add(tr2);
+                        //    }
+                        //}
 
                         if (!string.IsNullOrEmpty(member.telephone))
                         {

@@ -1,5 +1,10 @@
 ###### en cours, sera installé lors de la prochaine MAJ
 - ajout d'un module razor de création de qr code (QRCodeGenerator)
+- correction de styles divers
+- suppression de la date de naissance et de l'age dans la fiche membre (accessible uniquement aux admins du club)
+- dans le pop up contact de l'annuaire suppression des adresses postales, inutiles pour contacter le membre
+- ajout d'un bouton supprimer le fanion dans les paramètres club et gestion clubs admin district
+
 ###### 12/05/2025
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club
 - correction de styles sur le nouveau thème graphique 2025

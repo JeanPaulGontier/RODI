@@ -1,6 +1,20 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_Admin_Club" %>
 <script src="/AIS/TextEditor/ckeditor/ckeditor.js"></script>
-
+ <style>
+    input[type=file]::-webkit-file-upload-button {
+        color: #ffffff;
+        border: none;
+        cursor: pointer;            
+        background-image: linear-gradient(to right,#428bca,#428bca);
+        border-color: #357edb;
+        border-radius: 4px;
+           
+        font-size: 12px;
+        padding: 6px 12px;
+        user-select: none;
+        white-space: nowrap;
+    }
+</style>
 <asp:Panel ID="pnl_edit" runat="server" Visible="false">
     <asp:HiddenField ID="hf_synchroRI" runat="server" />
     <div class="row">
@@ -114,15 +128,25 @@
             <asp:LinkButton runat="server" ID="bt_autolocate" Text="Déterminer à partir de l'adresse" OnClick="bt_autolocate_Click"></asp:LinkButton>
         </div>
     </div>
+      <div class="pe-spacer size40"></div>
+ <hr />
      <div class="row">
         <div class="col-sm-4">
             <strong>Fanion : </strong>
         </div>
-        <div class="col-sm-8">
-            <asp:HiddenField ID="hfd_filename" runat="server" />
+        <div class="col-sm-4">
             <asp:Image ID="img_fanion" runat="server" />
-            <asp:FileUpload ID="ful_img" runat="server" />
-            <asp:Button ID="btn_img" runat="server" OnClick="btn_img_Click" Text="Modifier le fanion" CssClass="btn btn-primary" />
+            <asp:FileUpload ID="ful_img" runat="server" onchange="OnClientPhotoUploaded2(this, this.files[0])" accept=".png, .jpeg, .jpg"/>
+            <div style="display: none">
+                <asp:Button ID="btn_img" runat="server" OnClick="btn_img_Click" Text="Modifier le fanion" CssClass="btn btn-primary" />
+                <script>function OnClientPhotoUploaded2(sender, args) { var bt = document.getElementById('<%=btn_img.ClientID %>'); bt.click(); }</script>
+            </div>
+            <asp:HiddenField ID="hfd_filename" runat="server" />
+            <div class="pe-spacer size10"></div>
+            <asp:Button runat="server"  CssClass="btn btn-xs btn-danger" ID="BT_Effacer_Fanion" Text="Supprimer le fanion" CausesValidation="false" OnClick="BT_Effacer_Fanion_Click" />
+        </div>   
+        <div class="col-sm-4">
+      
         </div>
     </div>
     <div class="pe-spacer size10"></div>

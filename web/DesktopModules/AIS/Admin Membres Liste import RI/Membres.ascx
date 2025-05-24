@@ -148,10 +148,7 @@
 		            <asp:Label runat="server" ID="LBL_Member_Honneur" Visible="false" />
                      </p>
                 </div>
-                <div>
-			        <p>Année naissance : <asp:Label runat="server" ID="LBL_DT_Naissance" /></p>
-		        </div>
-		
+
 		        <div>
 			        <p>Branche d'activité : <asp:Label runat="server" ID="LBL_Branche_Activite" /></p>
 			        <p>Année d&#39;entrée au <asp:Label runat="server" ID="LBL_Club_Type" /> : <asp:Label runat="server" ID="LBL_DT_Entree_Rotary" /></p>
@@ -292,6 +289,7 @@
             <script>function OnClientPhotoUploaded2(sender, args) { var bt = document.getElementById('<%=BT_Upload_Photo2.ClientID %>'); bt.click(); }</script>
         </div>
         <asp:HiddenField runat="server" ID="HF_Photo2" />
+        <div class="pe-spacer size10"></div>
         <asp:Button runat="server" CssClass="btn btn-xs btn-danger" ID="BT_Effacer_Photo2" Text="Supprimer la photo" CausesValidation="false" OnClick="BT_Effacer_Photo2_Click" />
     </asp:Panel>
 

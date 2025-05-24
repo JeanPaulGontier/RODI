@@ -10,6 +10,14 @@ App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
+AIS\Contact.aspx
+AIS\Contact.aspx.cs
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 ```
 
 ##### 12/05/2025
