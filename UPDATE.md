@@ -4,6 +4,9 @@
 - suppression de la date de naissance et de l'age dans la fiche membre (accessible uniquement aux admins du club)
 - dans le pop up contact de l'annuaire suppression des adresses postales, inutiles pour contacter le membre
 - ajout d'un bouton supprimer le fanion dans les paramètres club et gestion clubs admin district
+- suppression du module commité du club dans la page d'accueil du site de club, afin de laisser le choix au club d'afficher l'information ou pas
+- le module d'affichage mailing district et archive mailing club affiche maintenant directement le message au lieu de l'éditeur pour que les liens fonctionnent
+
 
 ###### 12/05/2025
 - réaffectation de l'utilisateur de connexion aux membres d'honneurs, afin qu'ils puissent continuer à accéder aux informations du club

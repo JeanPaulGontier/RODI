@@ -77,6 +77,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Installer;
+using System.Text;
+using MimeKit;
 
 
 public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
@@ -90,11 +93,6 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         {
             return "" + Settings["mode"];
 
-        }
-    }
-    public string GVID {
-        get {
-            return GridView1.ClientID;
         }
     }
     string CHK_AR_0_TEXT
@@ -187,50 +185,10 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                     CHK_AR_0.Text = "&nbsp;" + annee_0 + "/" + (annee_0 + 1);
                     CHK_AR_1.Text = "&nbsp;" + (annee_0 + 1) + "/" + (annee_0 + 2);
                   
-                //    // Peuplement du filtre departemental
-                //    List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
-                //    RB_Role_Dept.Items.Clear();
-                //    var counts =
-                //    from c in clubs
-                //    orderby c.zip
-                //    group c by ((c.zip + "  ").Substring(0, 2).Replace("04", "06")).Trim() into g
-                //    select new { Cp = g.Key, Count = g.Count() };
-                //    RB_Role_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
-                //    foreach (var o in counts)
-                //    {
-                //        switch (o.Cp)
-                //        {
-                //            case "06":
-                //                RB_Role_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
-                //                break;
-                //            case "20":
-                //                RB_Role_Dept.Items.Add(new ListItem("Corse", o.Cp));
-                //                break;
-                //            case "83":
-                //                RB_Role_Dept.Items.Add(new ListItem("Var", o.Cp));
-                //                break;
-                //            case "98":
-                //                RB_Role_Dept.Items.Add(new ListItem("Monaco", o.Cp));
-                //                break;
-                //        }
-                //    }
+                
                 }
 
-                // Custum image manager
-                //string filename_Img = Functions.ClearFileName(@"~/Portals/0/District/Images");
-                //TXT_Editor.ImageManager.ViewPaths = new string[] { filename_Img };
-                //TXT_Editor.ImageManager.UploadPaths = new string[] { filename_Img };
-                //TXT_Editor.ImageManager.DeletePaths = new string[] { filename_Img };
-
-                // Custum document manager
-                //string filename_Doc = Functions.ClearFileName(@"~/Portals/0/District");
-                //TXT_Editor.DocumentManager.ViewPaths = new string[] { filename_Doc };
-                //TXT_Editor.DocumentManager.UploadPaths = new string[] { filename_Doc };
-                //TXT_Editor.DocumentManager.DeletePaths = new string[] { filename_Doc };
-
-
-                //TXT_Editor.DocumentManager.MaxUploadFileSize = 4194304;
-                //TXT_Editor.ImageManager.MaxUploadFileSize = 1048576;
+               
             }
             else // Member CLUB
             {
@@ -248,55 +206,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                 //    {
                 Panel_Club.Visible = true;
 
-                //if (IsPostBack == false)
-                //{
-                    //List<Club> clubs = DataMapping.ListClubs(sort: tri.Value + " " + sens.Value);
-                    //RB_Dept.Items.Clear();
-                    //var counts =
-                    //from c in clubs
-                    //orderby c.zip
-                    //group c by ((c.zip+"  ").Substring(0, 2).Replace("04", "06")).Trim() into g
-                    //select new { Cp = g.Key, Count = g.Count() };
-                    //RB_Dept.Items.Add(new ListItem("Tous", "") { Selected = true });
-                    //foreach (var o in counts)
-                    //{
-                    //    switch (o.Cp)
-                    //    {
-                    //        case "06":
-                    //            RB_Dept.Items.Add(new ListItem("Alpes-Maritimes", o.Cp));
-                    //            break;
-                    //        case "20":
-                    //            RB_Dept.Items.Add(new ListItem("Corse", o.Cp));
-                    //            break;
-                    //        case "83":
-                    //            RB_Dept.Items.Add(new ListItem("Var", o.Cp));
-                    //            break;
-                    //        case "98":
-                    //            RB_Dept.Items.Add(new ListItem("Monaco", o.Cp));
-                    //            break;
-                    //    }
-                    //}
-                //}
-
-               
-                //string filename_Img = Functions.ClearFileName(@"~/Portals/0/Clubs/" + Functions.CurrentClub.seo + "/Images"); //Documents
-
-                //TXT_Editor.ImageManager.ViewPaths = new string[] { filename_Img };
-                //TXT_Editor.ImageManager.UploadPaths = new string[] { filename_Img };
-                //TXT_Editor.ImageManager.DeletePaths = new string[] { filename_Img };
-
-                //string filename_Doc = Functions.ClearFileName(@"~/Portals/0/Clubs/" + Functions.CurrentClub.seo + "/Documents");
-                //TXT_Editor.DocumentManager.ViewPaths = new string[] { filename_Doc };
-                //TXT_Editor.DocumentManager.UploadPaths = new string[] { filename_Doc };
-                //TXT_Editor.DocumentManager.DeletePaths = new string[] { filename_Doc };
-
-                //TXT_Editor.Modules[0].Visible = false;
-                //TXT_Editor.Modules[1].Visible = false;
-                //TXT_Editor.Modules[2].Visible = false;
-                //TXT_Editor.Modules[3].Visible = false;
-
-                //TXT_Editor.DocumentManager.MaxUploadFileSize = 4194304;
-                //TXT_Editor.ImageManager.MaxUploadFileSize = 1048576;
+                
             }
             //}
             //}
@@ -369,7 +279,21 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
         lbl_date.Text = n.dt.ToString("dd/MM/yyyy");
         lbl_Sujet.Text = n.title;
-        rad_Resutat.Text = n.text.Replace("<body", "<p").Replace("</body>", "</p>").Replace("<head>", "").Replace("</head>", "").Replace("<html", "<p").Replace("</html>", "</p>");
+        string resultat_content = n.text.Replace("<body", "<p").Replace("</body>", "</p>").Replace("<head>", "").Replace("</head>", "").Replace("<html", "<p").Replace("</html>", "</p>");
+        rad_Resutat.Text = resultat_content;
+        string guid=Guid.NewGuid().ToString();
+        var media = new Media()
+        {
+            content = Functions.StringToBytes(n.text),
+            content_mime = "text/html",
+            content_type = "text/html",
+
+        };
+        media.content_size = media.content.Length;
+        Session[guid] = media;
+
+
+        iframe_Resultat.Text = "<iframe style='width:100%;height:500px' src='/AIS/ContentView.aspx?id=" + guid + "'></iframe>";
 
         string[] splits = n.recipient.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
         foreach (string s in splits)
@@ -559,28 +483,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                         LBL_Result.Text = "L'envoi de la newsletter est terminé mais a rencontré des problèmes.";
                         //LBL_Nb_E.Text = "Sur les " + La_List.Count() + " destinataires de la newsletter, " + nb_Mail_T + " destinataire(s)  l'ont reçu et " + nb_Mail_E + " ne l'ont pas reçu.";
 
-                        try
-                        {
-                            //SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-                            //conn.Open();
-
-                            //SqlCommand sql = new SqlCommand("select N.nim as 'NIM',N.email as 'Email',M.nom_club as 'Club', erreur as 'Erreur' from ais_newsletters_out N,ais_members M where N.status='E' and N.nim = M.nim and newsletter_id=@newsletter_id", conn);
-                            //sql.Parameters.AddWithValue("newsletter_id",""+HF_id.Value);
-                            //SqlDataAdapter da = new SqlDataAdapter(sql);
-                            //DataSet ds = new DataSet();
-                            //da.Fill(ds);
-                            //if (ds.Tables.Count > 0)
-                            //{
-                            //    GV_Emails_Erreur.DataSource = ds.Tables[0].DefaultView;
-                            //    GV_Emails_Erreur.DataBind();
-                            //    GV_Emails_Erreur.Visible = ds.Tables[0].Rows.Count > 0;
-                            //    LBL_Titre_E.Visible = ds.Tables[0].Rows.Count > 0;
-                            //}
-                        }
-                        catch (Exception ee)
-                        {
-                            Functions.Error(ee);
-                        }
+                        
                     }
 
                     try
@@ -590,20 +493,23 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
 
                         SqlCommand sql = new SqlCommand("select count(*) from ais_newsletters_out N,ais_members M where N.status='E' and N.nim = M.nim and newsletter_id=@newsletter_id", conn);
                         sql.Parameters.AddWithValue("newsletter_id", "" + HF_id.Value);
-                        int nberreur = int.Parse("" + sql.ExecuteScalar());
+                        int nberreur = 0;
+                        int.TryParse("" + sql.ExecuteScalar(),out nberreur);
 
                         sql = new SqlCommand("select count(*) from ais_newsletters_out N where N.[read]!='N' and newsletter_id=@newsletter_id", conn);
                         sql.Parameters.AddWithValue("newsletter_id", "" + HF_id.Value);
-                        int nblus = int.Parse("" + sql.ExecuteScalar());
+                        int nblus = 0;
+                        int.TryParse("" + sql.ExecuteScalar(),out nblus);
 
                         sql = new SqlCommand("select count(*) from ais_newsletters_out N where N.[read]='N' and newsletter_id=@newsletter_id", conn);
                         sql.Parameters.AddWithValue("newsletter_id", "" + HF_id.Value);
-                        int nbnonlus = int.Parse("" + sql.ExecuteScalar());
+                        int nbnonlus = 0;
+                        int.TryParse("" + sql.ExecuteScalar(),out nbnonlus);
                         int total = nblus + nbnonlus;
 
-                        LBL_NB_MSG_ERREUR.Text = nberreur + " (" + Math.Round(((float)nberreur * 100.0 / (float)total), 1) + "%)";
-                        LBL_NB_MSG_LU.Text = nblus + " (" + Math.Round(((float)nblus * 100.0 / (float)total), 1) + "%)";
-                        LBL_NB_MSG_NONLU.Text = nbnonlus + " (" + Math.Round(((float)nbnonlus * 100.0 / (float)total), 1) + "%)";
+                        LBL_NB_MSG_ERREUR.Text = total == 0 ? "..." : nberreur + " (" + Math.Round(((float)nberreur * 100.0 / (float)total), 1) + "%)";
+                        LBL_NB_MSG_LU.Text = total == 0 ? "..." : nblus + " (" + Math.Round(((float)nblus * 100.0 / (float)total), 1) + "%)";
+                        LBL_NB_MSG_NONLU.Text = total == 0 ? "..." : nbnonlus + " (" + Math.Round(((float)nbnonlus * 100.0 / (float)total), 1) + "%)";
 
                     }
                     catch (Exception ee)
@@ -656,27 +562,9 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
         List<Newsletter> news = new List<Newsletter>();
         if(mode=="club")
         {
-          //  if (Functions.CurrentCric == 0 && DataMapping.isADG())
-            //if (Functions.CurrentCric == 0 )
-            //{
-                
-                //List<Domain> listeDom = DataMapping.GetListDomain("ADG", "");
-                //foreach (Domain dom in listeDom)
-                //{
-                //    if (UserInfo.IsInRole(dom.subdomain))
-                //    {
-                //        foreach (Newsletter newsletter in DataMapping.ListNewsletters(cric: int.Parse(dom.value), index: GridView1.PageIndex, max: GridView1.PageSize))
-                //        {
-                //            news.Add(newsletter);
-                //        }
-
-                //    }
-                //}
-            //}
-            //else
-            //{
-                news = DataMapping.ListNewsletters(cric: Functions.CurrentCric, index: GridView1.PageIndex, max: GridView1.PageSize);
-            //}
+         
+           news = DataMapping.ListNewsletters(cric: Functions.CurrentCric, index: GridView1.PageIndex, max: GridView1.PageSize);
+         
         }
         else
         {

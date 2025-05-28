@@ -1,0 +1,230 @@
+﻿<script type="text/x-template" id="compta-comptemembre-template">
+    <div class="row">
+        <div class="form-group  col-sm-12">
+            <div class="col-sm-7">
+                <button type="button" class="btn btn-default" v-on:click="retour()">Retour</button>&nbsp;
+                <button type="button" class="btn btn-warning" v-on:click="ajouter(5)"><i class="fa fa-plus"></i> Paiement</button>&nbsp;
+                <button type="button" class="btn btn-warning" v-on:click="ajouter(4)"><i class="fa fa-plus"></i> Acompte</button>&nbsp;
+                <button type="button" class="btn btn-warning" v-on:click="ajouter(2)"><i class="fa fa-plus"></i> Note de crédit</button>&nbsp;
+            </div>
+            <div class="col-sm-3 text-center">
+                <button type="button" class="btn btn-info" v-if="lettrageOk>=0" v-on:click="lettrage()"><i class="fa fa-link"></i> Lettrage</button>&nbsp;
+                <button type="button" class="btn btn-success" v-if="confirmable" v-on:click="confirmer()"><i class="fa fa-check"></i> Confirmer</button>&nbsp;
+
+            </div>
+            <div class="col-sm-2 text-right">
+                Solde : {{nombre(membre.compte.solde,true)}} €
+            </div>
+        </div>
+       
+    </div>
+    <div v-if="membre.compte.lignes.length==0">
+        <div class="panel-body">Aucun détail pour le moment...</div>
+    </div>
+    <table class="table table-striped table-hover" v-if="membre.compte.lignes.length>0">
+        <tbody>
+            <tr>
+                <th class="col-sm-1">Date</th>
+                <th class="col-sm-2">Type</th>
+                <th class="col-sm-3">Libelle</th>
+                <th class="col-sm-2 text-right">Débit</th>
+                <th class="col-sm-2 text-right">Crédit</th>
+                <th class="col-sm-2 text-right">Solde</th>
+                <th>
+                    <input type="checkbox" v-if="provisoires && !all" v-on:change="select(true)"  />
+                    <input type="checkbox" v-if="provisoires && all" v-on:change="select(false)" checked />
+                </th>
+            </tr>
+            <tr v-for="l in membre.compte.lignes" >
+                <td v-on:click="view(l)">{{date(l.date)}}</td>
+                <td v-on:click="view(l)">
+                    <span class="label label-info" v-if="l.provisoire" title="Provisoire">P</span>
+                    {{l.typeLibelle}} {{num(l.numero)}}
+                </td>
+                <td v-on:click="view(l)">{{l.libelle}}</td>
+                <td v-on:click="view(l)" class="text-right">{{nombre(l.debit,false)}}</td>
+                <td v-on:click="view(l)" class="text-right">{{nombre(l.credit,false)}}</td>
+                <td v-on:click="view(l)" class="text-right">{{nombre(l.solde,true)}}</td>
+                <td><input type="checkbox" v-if="l.provisoire || !l.lettrage" v-on:change="checkAll(l)" :value="l.guid" v-model="selection" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</script>
+<script>
+    const ComptaCompteMembre = {
+        template: '#compta-comptemembre-template',
+        name: 'ComptaCompteMembre',
+        props: {
+            moduleid: Number,
+            context: String,
+            nim: String
+        },
+        data: function () {
+            return {
+                membre: {
+                    compte: {
+                        lignes: []
+                    }                    
+                },
+                selection: [],
+                all:false
+            }
+        },
+        computed: {
+            confirmable() {
+                var count = 0;
+                this.membre.compte.lignes.forEach(l => {
+                    if (l.provisoire && this.selection.find(s => s == l.guid))
+                        count++;
+                });
+                return count > 0;
+            },
+            provisoires() {
+                return this.membre.compte.lignes.find(l => l.provisoire && !l.lettrage);
+            },
+            lettrageOk() {
+                if (this.selection.length == 0)
+                    return -1;
+                var total = 0;
+                var containFacture = false;
+                debugger
+                this.membre.compte.lignes.forEach(l => {
+                    if (this.selection.find(s => s == l.guid)) {
+                        total = total + l.credit - l.debit;
+                        containFacture = containFacture || l.type == '1';
+                    }
+                        
+                })
+                
+                if (!containFacture)
+                    return -1;
+                return total;
+            },
+        },
+        methods: {   
+            checkAll(l) {
+                var found = this.selection.find(i => i == l.guid);
+                if (this.all && !found)
+                    this.all = false;
+            },
+            select(all) {
+
+                this.selection = [];
+                if (all) {                  
+                    this.all = true;
+
+                    this.membre.compte.lignes.forEach(l => {
+                        if (l.provisoire && !l.lettrage)
+                            this.selection.push(l.guid);
+                    });
+
+
+                } else 
+                    this.all = false;
+                
+             
+            },
+            confirmer() {
+                var ok = false;
+                if (this.selection.length > 1)
+                    ok = confirm('Voulez-vous confirmer ces éléments ?\nATTENTION : ils ne seront plus modifiables');
+                else
+                    ok = confirm('Voulez-vous confirmer cet élément ?\nATTENTION : il ne sera plus modifiable');
+                if (ok)
+                {
+                    _yemon[this.moduleid].service.postData("/Confirmer", {
+                        context: this.context,
+                        data: JSON.stringify(this.selection),
+                        nim: this.nim
+
+                    }, (r) => {
+                        this.getCompte();
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    }
+                    )
+                }
+            },         
+            lettrage() {
+                var ok = false;
+                if (this.lettrageOk > 0)
+                    ok = confirm('Voulez-vous lettrer ces éléments ?\nATTENTION : une note de crédit de ' + this.lettrageOk + '€ va être créée');
+                else 
+                    ok = confirm('Voulez-vous lettrer ces éléments ?');
+
+                if(ok) {
+                    _yemon[this.moduleid].service.postData("/Lettrage", {
+                        context: this.context,
+                        data: JSON.stringify(this.selection),
+                        nim: this.nim
+
+                    }, (r) => {
+                        this.getCompte();
+                    }, (e) => {
+                        toastr["error"]("Erreur : " + e.response.data.Message);
+                    }
+                    )
+                }
+            },         
+            ajouter(t) {
+                this.$router.push("/element/new/type/" + t + "/nim/" + this.membre.nim + "/returnurl/" + encodeURIComponent(this.$router.currentRoute.value.fullPath));
+            },
+            view(l) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                if(l.type==1)
+                    this.$router.push("/facture/" + l.guid + "/returnurl/" + encodeURIComponent(this.$router.currentRoute.value.fullPath));
+                else
+                    this.$router.push("/element/" + l.guid + "/type/" + l.type + "/nim/" + this.membre.nim + "/returnurl/" + encodeURIComponent(this.$router.currentRoute.value.fullPath));
+            },
+            nombre(n, s) {
+                if (n == null || n == undefined)
+                    return '';
+                if (!s && n == 0)
+                    return '';
+                return n.toLocaleString('fr-FR', { currency: 'EUR', style: 'currency' }).replace('€', '');
+            },
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+            date(d) {
+                if (!d)
+                    return '';
+                let dd = new Date(d);
+                return dd.toLocaleDateString();
+            },
+            retour() {
+                this.$router.push("/");
+            },
+            viewCompte(c) {
+                sessionStorage.setItem(window.location.pathname + ":scroll", window.scrollY);
+                this.$router.push("/view/" + c.nim);                
+            },
+            getCompte() {     
+                _yemon[this.moduleid].service.getData("/GetCompteMembre", {
+                    context: this.context,
+                    nim: this.nim
+                }, (r) => {
+                    this.membre = r.data;
+                    this.selection = [];
+                    this.all = false;
+                    var e = document.getElementById("dnn_ctr" + this.moduleid + "_dnnTITLE_titleLabel");
+                    if (e) {
+                        e.innerHTML = "Compte Membre " + this.membre.nom + " " + this.membre.prenom;
+                    }
+                });
+            },
+            num(d) {
+                if (!d)
+                    return '';
+                return d.toString().padStart(5, '0')
+            },
+        },
+        mounted() {            
+            this.getCompte();
+        }
+    }
+</script>

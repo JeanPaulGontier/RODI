@@ -19,8 +19,8 @@
                     </asp:TemplateField>
                     <asp:ButtonField ButtonType="Link" runat="server" Text="Détail" CommandName="detail" />
                 </Columns>    
-                <PagerStyle CssClass="GVPager" />
-       <PagerSettings Mode="NumericFirstLast"  Position="Bottom" /> 
+        <PagerStyle CssClass="GVPager" />
+        <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
         <EmptyDataTemplate>Aucun mail associé à ce club</EmptyDataTemplate>
     </asp:GridView>
 
@@ -157,14 +157,17 @@
                 <tr><td><asp:Label ID="Label3" runat="server" Text="Nombre de messages en erreur : "></asp:Label></td><td><asp:Label ID="LBL_NB_MSG_ERREUR" runat="server" Text=""></asp:Label></td></tr>
                 </table><br />
 
-            <p>Date : <asp:Label runat="server" ID="lbl_date" ></asp:Label></p>	
-	        <p>Sujet : <asp:Label runat="server" ID="lbl_Sujet" /></p>
+            <p>Date : <strong><asp:Label runat="server" ID="lbl_date" ></asp:Label></strong></p>	
+	        <p>Sujet : <strong><asp:Label runat="server" ID="lbl_Sujet" /></strong></p>
             <span>Contenu : </span>
-            <dnn:TextEditor runat="server" ID="rad_Resutat" Width="100%" Height="500"/>
+            <asp:Literal runat="server" ID="iframe_Resultat">
+
+            </asp:Literal>
+            <dnn:TextEditor runat="server" ID="rad_Resutat" Width="100%" Height="800" Visible="false"/>
              <p>
-            <asp:Button ID="BTN_Export_Lists" runat="server" OnClick="BTN_Export_Lists_Click" CssClass="btn btn-primary"  Text="Export listes messages" />
-		    <asp:Button ID="BTN_Copier" runat="server" OnClick="BTN_Copier_Click" CssClass="btn btn-primary"  Text="Copier ce message" />
-		    <asp:Button ID="BTN_Result" runat="server" OnClick="BTN_Result_Click" CssClass="btn btn-primary"   Text="Fermer"/>
+                <asp:Button ID="BTN_Export_Lists" runat="server" OnClick="BTN_Export_Lists_Click" CssClass="btn btn-primary"  Text="Export listes messages" />
+		        <asp:Button ID="BTN_Copier" runat="server" OnClick="BTN_Copier_Click" CssClass="btn btn-primary"  Text="Copier ce message" />
+		        <asp:Button ID="BTN_Result" runat="server" OnClick="BTN_Result_Click" CssClass="btn btn-primary"   Text="Fermer"/>
             </p>
 	    </div>
     </div>      
