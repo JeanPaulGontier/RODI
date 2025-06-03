@@ -8,13 +8,13 @@
                 <input class="input-file" type="file" ref="document" v-on:change="onChangeDocumentUpload()" style="display:none" multiple>
                 <div v-if="e.Files" v-for="(i,index) in e.Files">
                     Nom affiché : <input type="text" v-model="i.Name" style="width:50%" />&nbsp;
-                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID+'&noattach=true'" class="btn btn-link" target="_blank"><i class="fa fa-eye" aria-hidden="true"> Ouvrir</i></a>&nbsp;
-                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-link" target="_blank"><i class="fa fa-download" aria-hidden="true"> Télécharger</i></a>&nbsp;
+                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID+'&noattach=true'" class="btn btn-outline-light" target="_blank" title="Ouvrir"><i class="fa fa-eye" aria-hidden="true"></i></a>&nbsp;
+                    <a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+i.GUID" class="btn btn-outline-light" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>&nbsp;
+                    <button type="button" v-on:click="upFirst(index)" v-if="index>0" class="btn btn-default" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
+                    <button type="button" v-on:click="up(index)" v-if="index>0" class="btn btn-default" title="Monter"><i class="fa fa-angle-up"></i></button>
+                    <button type="button" v-on:click="down(index)" v-if="index<e.Files.length-1" class="btn btn-default" title="Descendre"><i class="fa fa-angle-down"></i></button>
+                    <button type="button" v-on:click="downLast(index)" v-if="index<e.Files.length-1" class="btn btn-default" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button> 
                     <button type="button" v-on:click="deleteFile(index)" class="btn btn-sm btn-danger" title="Supprimer"><i class="fa fa-trash-o"></i></button>&nbsp;
-                    <button type="button" v-on:click="upFirst(index)" v-if="index>0" class="btn btn-sm btn-default" title="Tout en haut"><i class="fa fa-angle-double-up"></i></button>
-                    <button type="button" v-on:click="up(index)" v-if="index>0" class="btn btn-sm btn-default" title="Monter"><i class="fa fa-angle-up"></i></button>
-                    <button type="button" v-on:click="down(index)" v-if="index<e.Files.length-1" class="btn btn-sm btn-default" title="Descendre"><i class="fa fa-angle-down"></i></button>
-                    <button type="button" v-on:click="downLast(index)" v-if="index<e.Files.length-1" class="btn btn-sm btn-default" title="Tout en bas"><i class="fa fa-angle-double-down"></i></button> 
                     <hr/>
                 </div>
                 <div v-if="uploading()">
@@ -28,7 +28,7 @@
                 <button type="button" v-on:click="validate()" class="btn btn-success">Valider</button>
             </div>
         </div>
-        <div v-if="!editing">
+        <div v-if="!editing" class="text-center">
             <h2>{{c.Title}}</h2>
             <div v-if="c.Files" v-for="i in c.Files"><a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=' + i.GUID+ '&noattach=true'" class="btn btn-link" target="_blank">{{i.Name}}</a>&nbsp;<a :href="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=' + i.GUID " title="Télécharger" class="btn btn-link" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></div>          
 

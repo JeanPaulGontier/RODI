@@ -472,19 +472,19 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
                 {
                     int nb_fait = 0;
                     int.TryParse(nb_Mail_T, out nb_fait);
-                    if (nb_fait > 0 && nb_fait == La_List.Count())
-                    {
-                        LBL_Result.Text = "L'envoi de la newsletter est terminé.";
-                        LBL_Nb_E.Text = "La newsletter a été expédiée au(x) " + nb_Mail_T + " destinataire(s).";
-                    }
-                    else
-                    {
-                        string nb_Mail_E = DataMapping.Get_Nb_Mails_by_status(HF_id.Value, "E");
-                        LBL_Result.Text = "L'envoi de la newsletter est terminé mais a rencontré des problèmes.";
-                        //LBL_Nb_E.Text = "Sur les " + La_List.Count() + " destinataires de la newsletter, " + nb_Mail_T + " destinataire(s)  l'ont reçu et " + nb_Mail_E + " ne l'ont pas reçu.";
+                    //if (nb_fait > 0 && nb_fait == La_List.Count())
+                    //{
+                    LBL_Result.Text = "L'envoi de la newsletter est terminé.";
+                    LBL_Nb_E.Text = "La newsletter a été expédiée au(x) " + nb_Mail_T + " destinataire(s).";
+                    //}
+                    //else
+                    //{
+                    //    string nb_Mail_E = DataMapping.Get_Nb_Mails_by_status(HF_id.Value, "E");
+                    //    LBL_Result.Text = "L'envoi de la newsletter est terminé mais a rencontré des problèmes.";
+                    //    //LBL_Nb_E.Text = "Sur les " + La_List.Count() + " destinataires de la newsletter, " + nb_Mail_T + " destinataire(s)  l'ont reçu et " + nb_Mail_E + " ne l'ont pas reçu.";
 
                         
-                    }
+                    //}
 
                     try
                     {

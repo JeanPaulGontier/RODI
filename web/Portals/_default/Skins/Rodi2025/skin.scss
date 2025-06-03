@@ -14,11 +14,13 @@
 @import 'bc-bulles';
 @import 'compat-v1';
 @import 'bc-text-image';
+@import 'news';
 
 .partager{
     display: flex;
     align-items:center;
     margin-top:1.5em;
+    justify-content: end;
 
     ul{
         display: flex;

@@ -55,11 +55,41 @@
 
     &.btn-link{
         background-color: transparent;
+        border:none;
+        text-decoration: underline;
+    }
+
+    &.btn-outline{
+        background-color: transparent;
         border: 2px $default-text solid;
     }
-  }
+
+    &.btn-outline-light{
+        background-color: transparent;
+        border: 2px $light-text solid;
+    }
+}
 
 
+/* Hack Boutons du Calendrier */
+.fc .fc-button-primary {
+    background-color:$info;
+    border-color:$info;
+    color:$default-bg;
+    transition: $transition;
+
+    &:hover{
+        transition: $transition;
+        background-color: $primary;
+        border-color:$primary;
+    }
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color: $primary;
+    border-color:$primary;
+    color:$default-bg;
+}
 
 
 

@@ -6,6 +6,7 @@
 - ajout d'un bouton supprimer le fanion dans les paramètres club et gestion clubs admin district
 - suppression du module commité du club dans la page d'accueil du site de club, afin de laisser le choix au club d'afficher l'information ou pas
 - le module d'affichage mailing district et archive mailing club affiche maintenant directement le message au lieu de l'éditeur pour que les liens fonctionnent
+- l'annuaire de l'app mobile n'est plus accessible si on n'est pas loggué (préparation de l'arrivée de la nouvelle version)
 
 
 ###### 12/05/2025

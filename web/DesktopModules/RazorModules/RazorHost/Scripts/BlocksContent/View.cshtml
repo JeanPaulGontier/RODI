@@ -296,14 +296,14 @@
                 Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
                 if (fc.Title != null)
                 {
-                    <h2>@fc.Title</h2>
+                    <h2 class="text-center">@fc.Title</h2>
                 }
                 if (fc.Files.Count > 0)
                 {
                     <ul>
                         @foreach (var f in fc.Files)
                         {
-                            <li>
+                            <li class="text-center" style="list-style:none">
                                 <a href="@mediaPath@f.GUID&noattach=true" class="btn btn-link" target="_blank" title="Ouvrir">@f.Name</a>&nbsp;
                                 <a href="@mediaPath@f.GUID" class="btn btn-link" target="_blank" title="Télécharger"><i class="fa fa-download" aria-hidden="true"></i></a>
                             </li>

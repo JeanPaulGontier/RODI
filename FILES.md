@@ -6,6 +6,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.membrepagepro.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockFileCollection.cshtml
 App_Code\AIS\DataMapping.cs
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
@@ -23,6 +24,15 @@ AIS\ContentView.aspx.cs
 DesktopModules\AIS\Admin Mailing\Control.ascx
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\Compta\CompteMembre.cshtml
+App_Code\AIS\webapi\mobile\MobileController.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css.map
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
+Portals\_default\Skins\Rodi2025\_header.scss
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.css.map
+Portals\_default\Skins\Rodi2025\skin.min.css
+Portals\_default\Skins\Rodi2025\skin.scss
+Portals\_default\Skins\Rodi2025\_buttons.scss
 ```
 
 ##### 12/05/2025

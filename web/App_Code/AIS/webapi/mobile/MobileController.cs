@@ -275,7 +275,7 @@ namespace AIS.controller
 
 
         [HttpGet]
-        [AllowAnonymous]
+       
         [DnnAuthorize(AuthTypes = "JWT")]
         public HttpResponseMessage GetMembers()
         {

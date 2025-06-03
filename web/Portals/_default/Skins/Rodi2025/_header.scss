@@ -148,6 +148,583 @@
     .m-lvl4{display:none;}
 }
 
+
+
+
+
+/*---------------- HEADER MEMBRE ---------------*/
+.header-membre{
+    background: $dark;
+    position: relative;
+    z-index: 1000;
+    color: $default-bg;
+
+    .content-wrapper{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    h1{
+        margin:0 10px;
+        text-align:center;
+        flex-grow:1;
+    }
+
+    .logo_style {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        img {
+            max-height:90px;
+            padding:7px 10px;
+        }
+    }
+
+    #Login {
+        color: $secondary-text;
+        margin-bottom:10px;
+        gap:10px;
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        font-size: 0.8em;
+
+        > a{color:$secondary-text;}
+    }
+
+    .icons-menu {
+        flex-grow:1;
+        margin: 20px 7px 2px 0;
+        position: relative;
+        z-index: 1000;
+        font-size: 0.9em;
+
+        > a{color: $default-bg;}
+
+        .titres-membre{
+            text-align:center;
+            flex-grow:1;
+
+            > a{color:$secondary-text;}
+            p{color: $default-bg;}
+
+            p:first-child{
+                font-size:22px;
+            }
+        }
+
+        .user-head{
+            display: flex;
+            justify-content: flex-end;
+            gap:10px;
+
+            > a{color: $default-bg;}
+        }
+    }
+}
+
+.menubar-membre {
+    background-color: #18365d;
+    box-shadow: 0 0 18px rgba(0,0,0,.3);
+    /*min-height: 50px;*/
+    position: relative;
+    margin:0 0 20px 0;
+
+    #MENUMOB {
+        margin: 0;
+        width: 100%;
+        padding: 0;
+        position: relative;
+    }
+
+    .menu {
+        z-index: 9999;
+        padding: 0;
+    }
+
+    .m-lvl1{
+        position: relative;
+        display:flex;
+        justify-content:center;
+
+        > div {
+            display:block;
+            float:left;
+            padding: 0;
+            margin: 0;
+
+            > a {
+                display: block;
+                height: 50px;
+                line-height: 50px;
+                font-size: 0.95em;
+                white-space: nowrap;
+                color: #ffffff;
+                background: transparent url('../Rodi2025/images/menu.png') no-repeat center 80px;
+                padding:0 2.8rem;
+            }
+
+            &:hover{
+                > a {
+                    background-position: center 40px;
+                    transition: background-position .3s ease-out .2s;
+                } 
+                .m-lvl2 {
+                    visibility: visible;
+                    display: flex;
+                    justify-content: center;
+                    opacity: 1;
+                    transition: all 0.3s ease-out;
+                    transition-delay:.4s;
+                }
+            } 
+        }
+    }
+
+    .m-lvl2 {
+        visibility: hidden;
+        position: absolute;
+        width: 100%;
+        z-index: 3;
+        top: 50px;
+        left: 0;
+        right: 0;
+        background: $default-bg;
+        box-shadow: 0 5px 5px 0 rgba(0,0,0,.1);
+        padding: 25px 0 50px 0;
+        opacity: 0;
+        margin: 0;
+
+        > div {
+            display: inline-block;
+            padding: 0 15px;
+            border-left: #e8ebee 1px solid;
+            vertical-align: top;
+
+            &:first-child {
+                border-left:none;
+            }
+
+            &:hover > a {
+                background-position: 10px center;
+                cursor: pointer;
+                transition: all 0.3s ease-in;
+            }
+
+            > a {
+                color: #39424a;
+                font-size: 1rem;
+                background: url("../Rodi2025/images/arrow1.png") no-repeat -12px center;
+                display: block;
+                float: none;
+                font-weight:700;
+                padding:0 20px;
+            }
+        }
+    }
+
+    .m-lvl3, .m-lvl4 {
+        display: block;
+        padding: 10px 0 0 0;
+        font-size: 0.9em;
+        margin: 0;
+    }
+
+    .m-lvl3 > div {
+        display: block;
+
+        &:hover > a {
+            background-position: 10px center;
+            cursor: pointer;
+            transition: all 0.3s ease-in;
+        }
+
+        > a {
+            padding: 5px 27px;
+            background: url("../Rodi2025/images/arrow1.png") no-repeat -12px center;
+            display: block;
+            float: none;
+            color: #39424a;
+        }        
+    }
+    
+    .m-lvl4 {
+        padding-top: 0;
+
+        div {
+            &:hover a {
+                background-position: 10px center;
+                cursor: pointer;
+                transition: all 0.3s ease-in;
+            }
+
+            a {
+                margin-left: 10px;
+                padding: 2px 30px;
+                display: block;
+                float: none;
+                color: #39424a;
+                background: url("../images/arrow1.png") no-repeat -12px center;
+            }
+        }
+    }
+
+    .m-lvl1 > div:hover > a,
+    .m-lvl2 > div:hover > a,
+    .m-lvl3 > div:hover > a,
+    .m-lvl4 > div:hover a {
+        color: #0197c1;
+    }
+}
+
+
+
+/*--------- CSS Reset for Tablet ----------*/
+@media handheld, only screen and (min-width: 1024px) and (max-width: 1140px) {
+    .m-lvl2 > div > a {
+        font-size: 0.9rem;
+    }
+}
+
+@media handheld, only screen and (max-width: 1140px) {
+    .menu_box {
+        display: none;
+        float: none;
+        padding: 10px 0 0 0;
+    }
+
+    .menu_shadow {
+        display: none;
+    }
+}
+
+/*--------- CSS Reset for Mobile ----------*/
+@media handheld, only screen and (max-width: 1024px) {
+    .menubar-membre {
+        position: inherit !important;
+        margin: 0;
+    }
+    .logo_style img {
+        max-height:60px;
+    }
+    .menuclick{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height: 60px;
+        width: 60px;
+        border-right: 1px solid #e8ebee;
+        text-decoration: none;
+        background: #ffffff;
+    }
+    .menuclick img{width:29px;}
+
+    .header-membre h1{
+        margin:0 10px;
+        font-size:20px;
+    }
+    .icons-menu {
+        border-bottom: 1px solid #e8ebee;
+        margin:0 10px;
+        padding:10px 0;
+    }
+    .icon_user{
+        padding-top:0;
+    }
+    .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active {
+        margin-bottom: 0;
+        padding: 0 15px;
+    }
+
+
+    .mobile_nav {
+        display: block;
+        position: absolute;
+    }
+
+    .header-membre{
+        position:fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+
+
+
+    .Membre .menuclick {
+        background: transparent;
+        border-right: 1px solid #3465a5;
+    }
+
+    .MenuMob {
+        position: fixed;
+        background: rgba(0,0,0,0.4);
+        left: 0px;
+        width: 100%;
+        bottom: 0;
+        top: 60px;
+        z-index: 100;
+        visibility: hidden;
+    }
+
+    .more-links{
+    	position: fixed;
+    	bottom: 0;
+    	z-index: 200;
+    	padding-left: 22px;
+    	padding-bottom: 20px;
+    	font-size: 0.8em;
+    	left:-800px;
+    }
+
+    .menu {
+        z-index: 1;
+    }
+
+    .menubar-membre{
+        position: relative;
+        z-index: auto;
+
+        .m-lvl1 {
+            margin: 0;
+            display: block;
+            width: 100%;
+            padding: 0;
+
+            > div {
+                display: block;
+                padding: 0;
+                margin: 0;
+                width: auto;
+
+                > a {
+                    display: block;
+                    padding: 0 27px;
+                    height: 50px;
+                    line-height: 50px;
+                    font-size: 1em;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .m-lvl2 > div {
+            &:hover > a {
+                background-position: 10px center;
+                cursor: pointer;
+                transition: all 0.3s ease-in;
+            }        
+
+            > a {
+                color: #39424a;
+                font-size: 1rem;
+                background: url("../images/arrow1.png") no-repeat -12px center;
+                display: block;
+                float: none;
+                padding: 0 27px;
+            }
+        }
+
+        .m-lvl3, .m-lvl4 {
+            display: block;
+            padding: 10px 0 0 0;
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        .m-lvl3 > div {
+            &:hover > a {
+                background-position: 10px center;
+                cursor: pointer;
+                transition: all 0.3s ease-in;
+            }  
+
+            > a {
+                padding: 5px 37px;
+                background: url("../images/arrow1.png") no-repeat -12px center;
+                display: block;
+                float: none;
+                color: #39424a;
+            }
+        }
+        
+        .m-lvl4 {
+            padding-top: 0;
+
+            div a {
+                margin-left: 10px;
+                padding: 2px 30px;
+                display: block;
+                float: none;
+                color: #39424a;
+                background: url("../images/arrow1.png") no-repeat -12px center;
+
+                &:hover a {
+                    background-position: 10px center;
+                    cursor: pointer;
+                    transition: all 0.3s ease-in;
+                }
+            }
+        }
+
+        .m-lvl1, .m-lvl1 > div:hover .m-lvl2{display:block;}
+    }
+    
+
+
+    #MENUMOB {
+        position: fixed;
+        left: -800px;
+        width: 65%;
+        bottom: 0;
+        top: 60px;
+        z-index: 100;
+        overflow-y: auto;
+        background: #ffffff;
+    }
+
+    .showControlBar .Public .m-lvl1 {
+        top: 113px;
+    }
+
+
+    .header-membre {
+        box-shadow: 0 5px 5px 0 rgba(0,0,0,.1);
+
+        #MENUMOB {
+            position: fixed;
+            left: -800px;
+            width: 65%;
+            bottom: 0;
+            top: 60px;
+            z-index: 100;
+            overflow-y: auto;
+            background-color: #1e3c64;
+        }
+
+        .icons-menu {
+            border-bottom: 1px solid #3465a5;
+        }
+    }
+    
+
+    .showControlBar .Membre .m-lvl1 {
+        top: 113px;
+    }
+
+    .menubar-membre .m-lvl1 > div {
+        float: none;
+        width: 100%;
+    }
+
+        .menubar-membre .m-lvl1 > div > a {
+            color: #ffffff;
+            background: transparent url('../images/arrow1.png') no-repeat -12px center;
+            display: block;
+        }
+
+    .menubar-membre .m-lvl2 {
+        visibility: visible;
+        z-index: 100;
+        opacity: 1;
+        margin: 0 0 20px 45px;
+        padding: 0;
+        width: auto;
+        background-color: #1e3c64;
+        position: unset;
+        box-shadow: none;
+        transition-delay: 0.4s;
+    }
+
+        .Membre .m-lvl1 > li:hover > a {
+            background-position: 10px center;
+            width: auto;
+            transition: all 0.3s ease-in;
+        }
+
+
+    .Membre .m-lvl1:hover .m-lvl2 {
+        padding-bottom: 0;
+        visibility: visible;
+        position:unset;
+        display:block;
+    }
+
+        .Membre .m-lvl2 > li {
+            border-left: 1px solid #3465a5;
+            display: block;
+            padding: 0;
+        }
+		.Membre .m-lvl2 > li:first-child {
+		    border-left: 1px solid #3465a5;
+		}
+            .Membre .m-lvl2 > li > a {
+                color: #ffffff;
+                font-family: "Open Sans",sans-serif;
+                padding: 7px 27px;
+            }
+            
+
+    .Membre .m-lvl3, .Membre .m-lvl4 {
+        padding: 0 0 0 15px;
+    }
+
+        .Membre .m-lvl3 a, .Membre .m-lvl4 a {
+            color: #ffffff;
+        }
+}
+
+
+@media handheld, only screen and (max-width:640px) {
+    .logo_style {
+        height: 60px;
+    }
+
+    .pattern_header h1 {
+        font-size: 13px;
+    }
+}
+
+@media handheld, only screen and (max-width:480px) {
+
+
+    .logo_style::after {
+        padding: 5px;
+    }
+    .logo_style > a > div + div{display:none;}
+    .personabar-visible .Membre .logo_style a {
+        margin-left: 80px;
+    }
+    a.btn-profil{right:15px;}
+}
+
+
+/*--------- Retina Styles ----------*/
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2) {
+    .menuclick {
+        background-image: url("../../Rodi2017/images/retina/btn_menu@2x.png");
+        -webkit-background-size: 29px 19px;
+        -moz-background-size: 29px 19px;
+        background-size: 29px 19px;
+    }
+
+    #standardMenu .rootMenu a span .navarrow, #standardMenu .rootMenu a span .navarrow2 {
+        background-image: url("../../Rodi2017/images/retina/mobile_navarrow@2x.png");
+        -webkit-background-size: 17px 80px;
+        -moz-background-size: 17px 80px;
+        background-size: 17px 80px;
+    }
+}
+
+
+
+
+
+
+
 /*--------- Footer ----------*/
 footer{
     background-color: $dark;
