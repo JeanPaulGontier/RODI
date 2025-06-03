@@ -43,7 +43,7 @@
                             <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
-                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-outline animated bounce">@ba.Uri.Label</a>
                             }
                         </section>
                     </div>
@@ -61,7 +61,7 @@
                             <pre style='color:@ba.Color'>@ba.Title3</pre>                          
                             @if (ba.Uri != null)
                             {
-                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-outline animated bounce">@ba.Uri.Label</a>
                             }
                         </section>
                     </div>
@@ -74,7 +74,7 @@
                             <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
-                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-outline animated bounce">@ba.Uri.Label</a>
                             }
                         </section>
                     </div>
@@ -87,7 +87,7 @@
                             <pre style="color:@ba.Color">@ba.Title3</pre>
                             @if (ba.Uri != null)
                             {
-                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-link animated bounce">@ba.Uri.Label</a>
+                                <a href="@ba.Uri.Href" target="@ba.Uri.Target" style="border-color:@ba.Color;color:@ba.Color" class="btn  btn-xl btn-outline animated bounce">@ba.Uri.Label</a>
                             }
                         </section>
                     </div>
@@ -140,9 +140,9 @@
                         }
                     </div>
 
-                    <div class ="text-center">
+                    @*<div class ="text-center">
                         <a href="#" style="" class="btn btn-outline animated bounce">voir toutes les nouvelles</a>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             break;
@@ -301,7 +301,7 @@
                         <div class="grid col-2">
                             @foreach (Block.Uri u in bg.List)
                             {
-                                <a href="@u.Href" style="color:@bg.Color;border-color:@bg.Color" target="@u.Target" class="btn  btn-xl btn-link">@u.Label</a>
+                                <a href="@u.Href" style="color:@bg.Color;border-color:@bg.Color" target="@u.Target" class="btn  btn-xl btn-outline">@u.Label</a>
                             }
                         </div>
                     }

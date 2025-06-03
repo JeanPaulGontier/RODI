@@ -47,7 +47,7 @@
                         <p :style="{color: c.Color}" class="lead">{{c.Title2}}</p>
                     </div>
                     <div class="grid col-2" v-if="c.List && c.List.length>0">
-                        <a :href="u.Href"  :target="u.Target"  :style="{color: c.Color,'border-color':c.Color}" class="btn  btn-xl btn-link" v-for="u in c.List">{{u.Label}}</a>
+                        <a :href="u.Href"  :target="u.Target"  :style="{color: c.Color,'border-color':c.Color}" class="btn  btn-xl btn-outline" v-for="u in c.List">{{u.Label}}</a>
                     </div>
                 </div>
             </div>

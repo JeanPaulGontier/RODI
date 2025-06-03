@@ -1,6 +1,9 @@
 ##### Modified files per commit
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_QRCodeGenerator.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButtonsBg.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.cshtml
