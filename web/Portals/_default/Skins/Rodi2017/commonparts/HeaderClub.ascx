@@ -56,7 +56,8 @@
                             <%If Not Request.IsAuthenticated Then%>
                                 <div class="icon_user text-center">
 						            <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-						            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
+						            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a> |  
+                                    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>/espace-membre" class="Breadcrumb HeadUser">Espace Membre</a>
                                     <div class="relative">
                                         <%If Request.RawUrl = "/" Then %>
                                         <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode("/.") %>" class="btn-connexion" title="connexion">connexion</a>
@@ -110,7 +111,8 @@
                         <% End If %>
                         <div class="user_style">
                             <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-						    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
+						    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a> |
+                            <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>/espace-membre" class="Breadcrumb HeadUser">Espace Membre</a>
                         </div>
                     </div>
                 <% End If%>

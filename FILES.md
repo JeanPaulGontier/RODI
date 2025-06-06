@@ -36,6 +36,7 @@ Portals\_default\Skins\Rodi2025\skin.css.map
 Portals\_default\Skins\Rodi2025\skin.min.css
 Portals\_default\Skins\Rodi2025\skin.scss
 Portals\_default\Skins\Rodi2025\_buttons.scss
+Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
 ```
 
 ##### 12/05/2025
