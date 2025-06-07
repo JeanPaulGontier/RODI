@@ -37,6 +37,13 @@ Portals\_default\Skins\Rodi2025\skin.min.css
 Portals\_default\Skins\Rodi2025\skin.scss
 Portals\_default\Skins\Rodi2025\_buttons.scss
 Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+App_Code\AIS\Functions.cs
+DesktopModules\AIS\Club Detail\Control.ascx.cs
+DesktopModules\AIS\News Visu\News.ascx
+DesktopModules\AIS\News Visu\News.ascx.cs
+DesktopModules\AIS\News Visu\Settings.ascx
+DesktopModules\AIS\News Visu\Settings.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
 ```
 
 ##### 12/05/2025

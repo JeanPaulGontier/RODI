@@ -78,12 +78,11 @@ public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
         if (Page.IsPostBack)
             return;
 
-        DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
         int tabid = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["tabid"], out tabid);
+        int.TryParse("" + Settings["tabid"], out tabid);
         
         int nbnews = 0;
-        int.TryParse("" + objModules.GetModuleSettings(ModuleId)["nbnews"], out nbnews);
+        int.TryParse("" + Settings["nbnews"], out nbnews);
         TXT_NB_News.Text = ""+nbnews;
 
         Tab.DataTextField = "Text";
@@ -92,16 +91,18 @@ public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
         Tab.DataBind();
         Tab.SelectedValue = ""+tabid;
 
-        RB_Categorie.SelectedValue = "" + objModules.GetModuleSettings(ModuleId)["category"];
+        RB_Categorie.SelectedValue = "" + Settings["category"];
 
-        TXT_Tags_Inclus.Text = "" + objModules.GetModuleSettings(ModuleId)["tags_included"];
-        TXT_Tags_Exclus.Text = "" + objModules.GetModuleSettings(ModuleId)["tags_excluded"];
+        TXT_Tags_Inclus.Text = "" + Settings["tags_included"];
+        TXT_Tags_Exclus.Text = "" + Settings["tags_excluded"];
+
+        CHK_Mask.Checked = ("" + Settings["mask_empty"]).Equals("True");
     }
     public override void UpdateSettings()
     {
         base.UpdateSettings();
 
-        DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
+        ModuleController objModules = new ModuleController();
         objModules.UpdateModuleSetting(ModuleId, "tabid", Tab.SelectedValue);
         objModules.UpdateModuleSetting(ModuleId, "category", RB_Categorie.SelectedValue);
 
@@ -111,5 +112,8 @@ public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
 
         objModules.UpdateModuleSetting(ModuleId, "tags_included", TXT_Tags_Inclus.Text.Trim());
         objModules.UpdateModuleSetting(ModuleId, "tags_excluded", TXT_Tags_Exclus.Text.Trim());
+
+
+        objModules.UpdateModuleSetting(ModuleId, "mask_empty", ""+CHK_Mask.Checked);
     }
 }

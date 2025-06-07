@@ -410,6 +410,7 @@ namespace AIS
             nom = nom.Replace("!", "");
             nom = nom.Replace("*", "");
             nom = nom.Replace(".", "");
+            nom = nom.Replace(",", "");
             nom = nom.Replace(">", "");
             nom = nom.Replace("<", "");
             //nom = nom.Replace("é", "e");
@@ -1614,8 +1615,8 @@ namespace AIS
                     //TXT_Result.Text += TXT_Result.Text + nom + "<br/>";
 
                     zonesb.Append(nom + "\tCNAME\t" + host + "." + Environment.NewLine);
-                    redirsb.Append(nom +  domain + " " + Const.DISTRICT_URL + "/" + nom + "/ 301" + Environment.NewLine);
-                    iisbindings.Append("<binding protocol=\"http\" bindingInformation=\"*:80:"+ nom + domain + "\" />" + Environment.NewLine);
+                    redirsb.Append(nom +"."+  domain + " " + Const.DISTRICT_URL + "/" + nom + "/ 301" + Environment.NewLine);
+                    iisbindings.Append("<binding protocol=\"http\" bindingInformation=\"*:80:"+ nom +"."+ domain + "\" />" + Environment.NewLine);
 
                     string chemin = httpContext.Server.MapPath("/Portals/0/Clubs/" + nom);
                     try

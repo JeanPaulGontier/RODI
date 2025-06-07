@@ -98,6 +98,7 @@ public partial class DesktopModules_AIS_Club_Detail_Control : PortalModuleBase
                 LBL_telephone.Text = club.telephone;
                 LBL_fax.Text = club.fax;
                 HL_email.NavigateUrl = "mailto:" + club.email;
+                HL_email.Visible = club.email != "";
                 HL_web.NavigateUrl = club.web;
                 HL_web.Visible = club.web != "";
                 LBL_texte.Text = club.text;
