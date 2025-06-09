@@ -360,7 +360,12 @@ h1.DetailedArticle a:hover {
 }
 
 .img-ronde {
-    border-radius: 50%;
+    
+    border-radius: 5% !important;
+    margin: 5px;
+    height: 150px;
+    width: auto;
+    
 }
 
 

@@ -657,6 +657,11 @@ ul#myTab {
     min-height: 650px;
 }
 
+.skin_main_membre {
+    min-width: 640px;
+    margin-top:90px!important;
+}
+
 .skin_content {
     padding: 10px 0;
 }
@@ -2049,7 +2054,12 @@ h1.DetailedArticle a:hover {
 
 
 .img-ronde {
-    border-radius: 50%;
+   
+    border-radius: 5% !important;
+    margin: 5px;
+    height: 150px;
+    width: auto;
+   
 }
 
 /*------ pcr communication ------*/
@@ -2561,6 +2571,9 @@ div.form-control{
 }
 
 
+.pc-display{
+    display:none;
+}
 
 .header {
     background-color: #ffffff;
@@ -2734,6 +2747,32 @@ div.form-control{
     }
 }
 
+
+.rodi2025 {
+    header {
+        height: 60px;
+    }
+
+    .menu-click {
+        height: 60px;
+        width: 60px;
+
+        img {
+            width: 30px;
+        }
+    }
+
+    .menu-mob, #MENUMOB {top: 60px;}
+
+    .logo-style {
+        padding: 7px 10px;
+    }
+
+    &.skin_wrapper {
+        margin-top: 60px;
+    }
+}
+
 /*--------- Footer ----------*/
 footer {
     background-color: #17458f;
@@ -2765,7 +2804,7 @@ footer {
 
 
 
-/*--------- CSS Reset for Tablet & Mobile ----------*/
+/*--------- Desktop ----------*/
 
 @media screen and (min-width: 768px) {
     .pc-display{display:block;}

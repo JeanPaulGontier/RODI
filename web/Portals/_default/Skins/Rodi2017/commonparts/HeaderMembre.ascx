@@ -42,7 +42,7 @@
             <div class="text-center" style="flex-grow:1;">
                 <h4>Espace Membre</h4>
                 <%If AIS.Functions.CurrentCric > 0 Then %>
-                <p><%= AIS.Functions.CurrentClub.name %></p>
+                <p class="header-nom-club"><%= AIS.Functions.CurrentClub.name %></p>
                 <%End If %>
             </div>
         </div>

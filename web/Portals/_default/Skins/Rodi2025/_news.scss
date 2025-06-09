@@ -280,16 +280,22 @@
         background-color: $default-bg;
         border-radius: 5px;
         border: 1px solid var(--fc-border-color);
-
         /*.fc-list-table {
             margin: 1em;
             width: calc(100% - 2em);
         }*/
     }
 
-    table{margin:0;}
-}
+    table {
+        margin: 0;
+    }
 
+    
+}
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1.5em;
+    font-size: 0.8em;
+}
 
 
 /* Detail view */

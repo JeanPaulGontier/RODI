@@ -32,7 +32,7 @@
   </section>
   <!--end skin banner-->
   <!--start main area-->
-  <div class="skin_main">
+  <div class="skin_main skin_main_membre">
     <section class="content_whitebg">
       <div class="skin_width">
         <div class="skin_content">

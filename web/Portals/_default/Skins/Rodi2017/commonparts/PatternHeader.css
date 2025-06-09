@@ -33,7 +33,12 @@
     color: #00246c;
 }
 
-
+.header-nom-club {
+    max-height:2rem;
+    overflow:hidden;
+    font-size:0.9em;
+    
+}
 
 a.btn-connexion {
     position: absolute;

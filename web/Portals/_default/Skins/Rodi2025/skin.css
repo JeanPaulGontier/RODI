@@ -5907,6 +5907,11 @@ table tr:nth-child(1):hover {
   margin: 0;
 }
 
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 1.5em;
+  font-size: 0.8em;
+}
+
 /* Detail view */
 .ais-news-detail-head {
   display: flex;
@@ -6330,7 +6335,10 @@ h1.DetailedArticle a:hover {
 }
 
 .img-ronde {
-  border-radius: 50%;
+  border-radius: 5% !important;
+  margin: 5px;
+  height: 150px;
+  width: auto;
 }
 
 /* Galeries photos */

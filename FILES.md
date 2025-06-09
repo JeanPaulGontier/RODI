@@ -52,9 +52,14 @@ Portals\_default\Skins\Rodi2025\_typos.scss
 Portals\_default\Skins\Rodi2025\Membres.ascx
 Portals\_default\Skins\Rodi2025\Membres.doctype.xml
 Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.min.css
 Portals\_default\Skins\Rodi2025\skin.css.map
 Portals\_default\Skins\Rodi2025\skin.scss
-
+Portals\_default\Skins\Rodi2017\skin.scss
+Portals\_default\Skins\Rodi2017\skin.css
+Portals\_default\Skins\Rodi2017\Membres.ascx
+Portals\_default\Skins\Rodi2017\commonparts\HeaderMembre.ascx
+Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.css
 ```
 
 ##### 12/05/2025
