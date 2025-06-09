@@ -44,6 +44,17 @@ DesktopModules\AIS\News Visu\News.ascx.cs
 DesktopModules\AIS\News Visu\Settings.ascx
 DesktopModules\AIS\News Visu\Settings.ascx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubNewsDetail.cshtml
+Portals\_default\Skins\Rodi2025\_buttons.scss
+Portals\_default\Skins\Rodi2025\_header.scss
+Portals\_default\Skins\Rodi2025\_layout.scss
+Portals\_default\Skins\Rodi2025\_news.scss
+Portals\_default\Skins\Rodi2025\_typos.scss
+Portals\_default\Skins\Rodi2025\Membres.ascx
+Portals\_default\Skins\Rodi2025\Membres.doctype.xml
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.css.map
+Portals\_default\Skins\Rodi2025\skin.scss
+
 ```
 
 ##### 12/05/2025

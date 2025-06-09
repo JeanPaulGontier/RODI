@@ -152,7 +152,7 @@ img {
 .pb-0{padding-bottom:0;}
 
 .p-1{padding:calc($spacer / 2);}
-.px-1{padding-left:calc($spacer / 2); padding-right:calc($spacer / 2);}
+.px-1{padding-left:calc($spacer / 2) !important; padding-right:calc($spacer / 2) !important;}
 .py-1{padding-top:calc($spacer / 2); padding-bottom:calc($spacer / 2);}
 .pt-1{padding-top:calc($spacer / 2);}
 .pb-1{padding-bottom: calc($spacer / 2);}
@@ -184,8 +184,20 @@ img {
 
 /* Panes */
 .content{
-    margin-top:90px;
+    margin-top:60px;
     display:grid; /* évite le collapse des marges avec le header */
+}
+
+.content-membre{
+    margin-top:65px;
+}
+
+
+/* Tableau de bord Espace Membre (le reste est géré directement par news) */
+.dashboard{
+    padding:0 calc($spacer / 2) !important;
+
+    > div:first-child{order:3;}
 }
 
 
@@ -211,7 +223,7 @@ img {
     
         &.col-3{
             grid-template-columns: repeat(3, 1fr);
-            gap:$spacer * 1.5;
+            /*gap:$spacer * 1.5;*/
             padding:0;
         }
     
@@ -229,6 +241,8 @@ img {
     
         > h2{text-align: center;}
     }
+
+    .dashboard > div:first-child{order:0;}
 }
 
 
@@ -239,6 +253,13 @@ img {
 
     .content-wrapper {
         max-width:940px;
+    }
+    .grid.col-3{gap:calc($spacer * 1.5);}
+
+    .content.content-membre{
+        margin-top:140px;
+
+        .bg-secondary{padding-top:$spacer;}
     }
 }
 

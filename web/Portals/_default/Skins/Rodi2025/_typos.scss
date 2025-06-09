@@ -7,7 +7,7 @@
     -o-user-select:none;
 }
 
-A {
+A, a:visited {
     color: $primary;
     text-decoration: none;
     transition:$transition;
@@ -68,7 +68,7 @@ h6 {
 
 
 /* Textes */
-.primary-text, a.primary-link:visited{
+.primary-text{
     color: $primary;
 }
 .info-text{
@@ -82,18 +82,42 @@ h6 {
 }
 
 
+.Head {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.SubHead {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.SubSubHead {
+    font-size: 13px;
+}
+
+.Normal {
+    font-size: 1em;
+    line-height: 1.2em;
+}
+
+.SmallLink, .small {
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
 /* Liens */
-.primary-link{
+.primary-link, .primary-link:visited{
     color:$primary;
     &:hover{color:$info;}
 }
 
-.info-link{
+.info-link, .info-link:visited{
     color:$info;
     &:hover{color:$primary;}
 }
 
-.secondary-link{
+.secondary-link, .secondary-link:visited{
     color:$secondary-text;
     &:hover{color:$light-text;}
 }

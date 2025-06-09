@@ -37,6 +37,10 @@
   top: 0;
   height: 102px;
 }
+.header .logo-style {
+  max-height: 80px;
+  padding: 10px 0 12px 0;
+}
 
 .personabar-visible .mobile-display header {
   left: 80px !important;
@@ -47,10 +51,11 @@
 .personabar-visible .pc-display.header .m-lvl1 {
   margin-left: 260px !important;
 }
-
-.logo-style {
-  max-height: 80px;
-  padding: 10px 0 12px 0;
+.personabar-visible .pc-display.header-membre {
+  left: 80px;
+}
+.personabar-visible .pc-display.header-membre .m-lvl1 {
+  margin-left: 260px !important;
 }
 
 .mobile-display header {
@@ -59,7 +64,7 @@
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   z-index: 9999;
   position: fixed;
-  height: 90px;
+  height: 60px;
   left: 0;
   right: 0;
   top: 0;
@@ -69,6 +74,10 @@
   display: block;
   text-align: center;
   flex-grow: 1;
+}
+.mobile-display header .logo-style {
+  max-height: 60px;
+  padding: 7px 10px;
 }
 .mobile-display .head-menu-m {
   text-align: center;
@@ -99,14 +108,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90px;
-  width: 90px;
+  height: 60px;
+  width: 60px;
   border-right: 1px solid #e7e7e8;
   text-decoration: none;
   background: #ffffff;
 }
 .menu-click img {
-  width: 40px;
+  width: 30px;
 }
 
 .menu-mob {
@@ -115,7 +124,7 @@
   left: 0px;
   width: 100%;
   bottom: 0;
-  top: 90px;
+  top: 60px;
   z-index: 100;
   visibility: hidden;
 }
@@ -125,7 +134,7 @@
   left: -800px;
   width: 87%;
   bottom: 0;
-  top: 90px;
+  top: 60px;
   z-index: 100;
   overflow-y: auto;
   background: #ffffff;
@@ -171,45 +180,47 @@
 
 /*---------------- HEADER MEMBRE ---------------*/
 .header-membre {
-  background: #17458f;
+  background: #1e3c64 !important;
   position: relative;
   z-index: 1000;
-  color: #ffffff;
+  color: #ffffff !important;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .header-membre .content-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.header-membre h1 {
-  margin: 0 10px;
-  text-align: center;
-  flex-grow: 1;
-}
-.header-membre .logo_style {
+.header-membre .logo-style {
   display: flex;
   align-items: center;
   position: relative;
+  flex-grow: 0;
 }
-.header-membre .logo_style img {
-  max-height: 90px;
+.header-membre .logo-style img {
+  max-height: 60px;
   padding: 7px 10px;
 }
 .header-membre #Login {
-  color: #898A8D;
+  color: #bbbbbb;
   margin-bottom: 10px;
-  gap: 10px;
+  margin-right: 10px;
+  gap: 5px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 0.8em;
+  align-items: end;
+  font-size: 13px;
 }
 .header-membre #Login > a {
-  color: #898A8D;
+  color: #bbbbbb;
+}
+.header-membre #Login > a:hover {
+  text-decoration: underline;
+  color: #ffffff;
 }
 .header-membre .icons-menu {
   flex-grow: 1;
-  margin: 20px 7px 2px 0;
+  margin: 8px px 7px 2px 0;
   position: relative;
   z-index: 1000;
   font-size: 0.9em;
@@ -217,40 +228,57 @@
 .header-membre .icons-menu > a {
   color: #ffffff;
 }
-.header-membre .icons-menu .titres-membre {
-  text-align: center;
-  flex-grow: 1;
-}
-.header-membre .icons-menu .titres-membre > a {
-  color: #898A8D;
-}
-.header-membre .icons-menu .titres-membre p {
-  color: #ffffff;
-}
-.header-membre .icons-menu .titres-membre p:first-child {
-  font-size: 22px;
-}
 .header-membre .icons-menu .user-head {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-right: 10px;
+  line-height: 2em;
 }
 .header-membre .icons-menu .user-head > a {
   color: #ffffff;
 }
+.header-membre .titres-membre {
+  text-align: center;
+  flex-grow: 1;
+}
+.header-membre .titres-membre > a {
+  color: #898A8D;
+}
+.header-membre .titres-membre p {
+  color: #ffffff;
+}
+.header-membre .titres-membre p:first-child {
+  font-size: 16px;
+  line-height: 1.2em;
+  font-weight: bold;
+  margin: 10px 0;
+}
+.header-membre .menuclick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+  border-right: 1px solid #005daa;
+  text-decoration: none;
+}
+.header-membre .menuclick img {
+  width: 29px;
+}
+.header-membre + .menu-mob {
+  top: 65px;
+}
 
+/* menu membre desktop */
 .menubar-membre {
-  background-color: #18365d;
+  /*background-color: #18365d;*/
+  background: #18365d;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
   /*min-height: 50px;*/
   position: relative;
   margin: 0 0 20px 0;
-}
-.menubar-membre #MENUMOB {
-  margin: 0;
-  width: 100%;
-  padding: 0;
-  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
 }
 .menubar-membre .menu {
   z-index: 9999;
@@ -370,274 +398,146 @@
   color: #0197c1;
 }
 
+.personabar-visible #MENUMOB {
+  width: calc(87% - 80px);
+}
+
+/* menu membre mobile */
+#MENUMOB.menu-membre {
+  background: #1e3c64 !important;
+  top: 65px;
+}
+#MENUMOB.menu-membre .icons-menu {
+  border-bottom: #01b4e7 1px solid;
+  color: #01b4e7;
+  padding: 10px;
+  margin: 0 10px;
+}
+#MENUMOB.menu-membre .icons-menu .text-center > a {
+  color: #9BA4B4;
+  display: inline-block;
+  padding: 0 0 0.5em 0;
+}
+#MENUMOB.menu-membre .icons-menu .user-head {
+  padding-top: 10px;
+}
+#MENUMOB.menu-membre .icons-menu .user-head a {
+  color: #ffffff;
+  display: inline-block;
+  padding: 0.5em 0 0 0;
+}
+#MENUMOB.menu-membre .m-lvl1 {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 100% !important;
+}
+#MENUMOB.menu-membre .m-lvl1 > div {
+  padding: 0;
+  background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 20px;
+  transition: all 0.3s ease-in;
+}
+#MENUMOB.menu-membre .m-lvl1 > div:hover {
+  background-position: 10px 20px;
+  transition: all 0.3s ease-in;
+}
+#MENUMOB.menu-membre .m-lvl1 > div:hover > a {
+  color: #01b4e7 !important;
+}
+#MENUMOB.menu-membre .m-lvl1 a {
+  color: #ffffff !important;
+}
+#MENUMOB.menu-membre .m-lvl1 a:hover {
+  color: #01b4e7 !important;
+}
+#MENUMOB.menu-membre .m-lvl1 > div > a {
+  text-transform: none;
+  font-weight: normal;
+  font-size: 16px;
+  display: block;
+  padding: 0 2.8rem;
+  height: 50px;
+  line-height: 50px;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl2 {
+  margin: 0 0 20px 2.8rem;
+  padding: 0;
+  border-left: 1px solid #005daa;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl2 > div {
+  background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 11px;
+  transition: all 0.3s ease-in;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl2 > div:hover {
+  background-position: 10px 11px;
+  transition: all 0.3s ease-in;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl2 > div:hover > a {
+  color: #01b4e7 !important;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl2 > div > a {
+  padding: 7px 27px;
+  font-weight: bold;
+  font-size: 16px;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl3 > div {
+  background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 9px;
+  transition: all 0.3s ease-in;
+  margin-left: 15px;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl3 > div:hover {
+  background-position: 10px 9px;
+  transition: all 0.3s ease-in;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl3 > div:hover > a {
+  color: #01b4e7 !important;
+}
+#MENUMOB.menu-membre .m-lvl1 .m-lvl3 > div > a {
+  padding: 5px 37px;
+  font-size: 14px;
+}
+
+.mobile-display .header-membre {
+  height: 65px;
+}
+
 /*--------- CSS Reset for Tablet ----------*/
 @media handheld, only screen and (min-width: 1024px) and (max-width: 1140px) {
   .m-lvl2 > div > a {
     font-size: 0.9rem;
   }
 }
-@media handheld, only screen and (max-width: 1140px) {
-  .menu_box {
-    display: none;
-    float: none;
-    padding: 10px 0 0 0;
+@media screen and (min-width: 960px) {
+  .pc-display.membre {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 100;
   }
-  .menu_shadow {
-    display: none;
+  .personabar-visible .pc-display.membre {
+    left: 80px;
+  }
+  .header-membre .content-wrapper {
+    max-width: 1140px;
+  }
+  .header-membre .titres-membre p:first-child {
+    font-size: 22px;
+    margin-bottom: 5px;
+    font-weight: normal;
+  }
+  .header-membre .logo-style img {
+    max-height: 90px;
+  }
+  .menubar-membre .content-wrapper {
+    max-width: 1140px;
   }
 }
 /*--------- CSS Reset for Mobile ----------*/
-@media handheld, only screen and (max-width: 1024px) {
-  .menubar-membre {
-    position: inherit !important;
-    margin: 0;
-  }
-  .logo_style img {
-    max-height: 60px;
-  }
-  .menuclick {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    width: 60px;
-    border-right: 1px solid #e8ebee;
-    text-decoration: none;
-    background: #ffffff;
-  }
-  .menuclick img {
-    width: 29px;
-  }
-  .header-membre h1 {
-    margin: 0 10px;
-    font-size: 20px;
-  }
-  .icons-menu {
-    border-bottom: 1px solid #e8ebee;
-    margin: 0 10px;
-    padding: 10px 0;
-  }
-  .icon_user {
-    padding-top: 0;
-  }
-  .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active {
-    margin-bottom: 0;
-    padding: 0 15px;
-  }
-  .mobile_nav {
-    display: block;
-    position: absolute;
-  }
-  .header-membre {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-  }
-  .Membre .menuclick {
-    background: transparent;
-    border-right: 1px solid #3465a5;
-  }
-  .MenuMob {
-    position: fixed;
-    background: rgba(0, 0, 0, 0.4);
-    left: 0px;
-    width: 100%;
-    bottom: 0;
-    top: 60px;
-    z-index: 100;
-    visibility: hidden;
-  }
-  .more-links {
-    position: fixed;
-    bottom: 0;
-    z-index: 200;
-    padding-left: 22px;
-    padding-bottom: 20px;
-    font-size: 0.8em;
-    left: -800px;
-  }
-  .menu {
-    z-index: 1;
-  }
-  .menubar-membre {
-    position: relative;
-    z-index: auto;
-  }
-  .menubar-membre .m-lvl1 {
-    margin: 0;
-    display: block;
-    width: 100%;
-    padding: 0;
-  }
-  .menubar-membre .m-lvl1 > div {
-    display: block;
-    padding: 0;
-    margin: 0;
-    width: auto;
-  }
-  .menubar-membre .m-lvl1 > div > a {
-    display: block;
-    padding: 0 27px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 1em;
-    white-space: nowrap;
-  }
-  .menubar-membre .m-lvl2 > div:hover > a {
-    background-position: 10px center;
-    cursor: pointer;
-    transition: all 0.3s ease-in;
-  }
-  .menubar-membre .m-lvl2 > div > a {
-    color: #39424a;
-    font-size: 1rem;
-    background: url("../images/arrow1.png") no-repeat -12px center;
-    display: block;
-    float: none;
-    padding: 0 27px;
-  }
-  .menubar-membre .m-lvl3, .menubar-membre .m-lvl4 {
-    display: block;
-    padding: 10px 0 0 0;
-    font-size: 0.9em;
-    margin: 0;
-  }
-  .menubar-membre .m-lvl3 > div:hover > a {
-    background-position: 10px center;
-    cursor: pointer;
-    transition: all 0.3s ease-in;
-  }
-  .menubar-membre .m-lvl3 > div > a {
-    padding: 5px 37px;
-    background: url("../images/arrow1.png") no-repeat -12px center;
-    display: block;
-    float: none;
-    color: #39424a;
-  }
-  .menubar-membre .m-lvl4 {
-    padding-top: 0;
-  }
-  .menubar-membre .m-lvl4 div a {
-    margin-left: 10px;
-    padding: 2px 30px;
-    display: block;
-    float: none;
-    color: #39424a;
-    background: url("../images/arrow1.png") no-repeat -12px center;
-  }
-  .menubar-membre .m-lvl4 div a:hover a {
-    background-position: 10px center;
-    cursor: pointer;
-    transition: all 0.3s ease-in;
-  }
-  .menubar-membre .m-lvl1, .menubar-membre .m-lvl1 > div:hover .m-lvl2 {
-    display: block;
-  }
-  #MENUMOB {
-    position: fixed;
-    left: -800px;
-    width: 65%;
-    bottom: 0;
-    top: 60px;
-    z-index: 100;
-    overflow-y: auto;
-    background: #ffffff;
-  }
+@media handheld, only screen and (max-width: 960px) {
   .showControlBar .Public .m-lvl1 {
     top: 113px;
   }
-  .header-membre {
-    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
-  }
-  .header-membre #MENUMOB {
-    position: fixed;
-    left: -800px;
-    width: 65%;
-    bottom: 0;
-    top: 60px;
-    z-index: 100;
-    overflow-y: auto;
-    background-color: #1e3c64;
-  }
-  .header-membre .icons-menu {
-    border-bottom: 1px solid #3465a5;
-  }
   .showControlBar .Membre .m-lvl1 {
     top: 113px;
-  }
-  .menubar-membre .m-lvl1 > div {
-    float: none;
-    width: 100%;
-  }
-  .menubar-membre .m-lvl1 > div > a {
-    color: #ffffff;
-    background: transparent url("../images/arrow1.png") no-repeat -12px center;
-    display: block;
-  }
-  .menubar-membre .m-lvl2 {
-    visibility: visible;
-    z-index: 100;
-    opacity: 1;
-    margin: 0 0 20px 45px;
-    padding: 0;
-    width: auto;
-    background-color: #1e3c64;
-    position: unset;
-    box-shadow: none;
-    transition-delay: 0.4s;
-  }
-  .Membre .m-lvl1 > li:hover > a {
-    background-position: 10px center;
-    width: auto;
-    transition: all 0.3s ease-in;
-  }
-  .Membre .m-lvl1:hover .m-lvl2 {
-    padding-bottom: 0;
-    visibility: visible;
-    position: unset;
-    display: block;
-  }
-  .Membre .m-lvl2 > li {
-    border-left: 1px solid #3465a5;
-    display: block;
-    padding: 0;
-  }
-  .Membre .m-lvl2 > li:first-child {
-    border-left: 1px solid #3465a5;
-  }
-  .Membre .m-lvl2 > li > a {
-    color: #ffffff;
-    font-family: "Open Sans", sans-serif;
-    padding: 7px 27px;
-  }
-  .Membre .m-lvl3, .Membre .m-lvl4 {
-    padding: 0 0 0 15px;
-  }
-  .Membre .m-lvl3 a, .Membre .m-lvl4 a {
-    color: #ffffff;
-  }
-}
-@media handheld, only screen and (max-width: 640px) {
-  .logo_style {
-    height: 60px;
-  }
-  .pattern_header h1 {
-    font-size: 13px;
-  }
-}
-@media handheld, only screen and (max-width: 480px) {
-  .logo_style::after {
-    padding: 5px;
-  }
-  .logo_style > a > div + div {
-    display: none;
-  }
-  .personabar-visible .Membre .logo_style a {
-    margin-left: 80px;
-  }
-  a.btn-profil {
-    right: 15px;
   }
 }
 /*--------- Retina Styles ----------*/
@@ -675,10 +575,14 @@ footer > section img {
   padding: 0 5px;
 }
 
+.membre + .content footer {
+  background-color: #1e3c64;
+}
+
 /*--------- CSS Reset for Tablet & Mobile ----------*/
 @media screen and (min-width: 768px) {
   .header .logo-style {
-    max-height: 70px;
+    max-height: 90px;
     padding: 0;
   }
   .header #dnn_LOGO1_hypLogo {
@@ -1096,8 +1000,8 @@ img.img-r {
 }
 
 .px-1 {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
 }
 
 .py-1 {
@@ -1203,8 +1107,20 @@ img.img-r {
 
 /* Panes */
 .content {
-  margin-top: 90px;
+  margin-top: 60px;
   display: grid; /* évite le collapse des marges avec le header */
+}
+
+.content-membre {
+  margin-top: 65px;
+}
+
+/* Tableau de bord Espace Membre (le reste est géré directement par news) */
+.dashboard {
+  padding: 0 1rem !important;
+}
+.dashboard > div:first-child {
+  order: 3;
 }
 
 @media handheld, only screen and (min-width: 768px) {
@@ -1229,7 +1145,7 @@ img.img-r {
   }
   .grid.col-3 {
     grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
+    /*gap:$spacer * 1.5;*/
     padding: 0;
   }
   .grid .col-sm-12 {
@@ -1268,6 +1184,9 @@ img.img-r {
   .grid > h2 {
     text-align: center;
   }
+  .dashboard > div:first-child {
+    order: 0;
+  }
 }
 @media screen and (min-width: 960px) {
   html, body {
@@ -1281,6 +1200,15 @@ img.img-r {
   }
   .content-wrapper {
     max-width: 940px;
+  }
+  .grid.col-3 {
+    gap: 3rem;
+  }
+  .content.content-membre {
+    margin-top: 140px;
+  }
+  .content.content-membre .bg-secondary {
+    padding-top: 2rem;
   }
 }
 @media handheld, only screen and (min-width: 1280px) {
@@ -1305,6 +1233,7 @@ img.img-r {
   margin: 0 3px;
   line-height: 1.4em;
   border-radius: 24px;
+  width: auto;
   font-family: "Open Sans", sans-serif;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3016,16 +2945,16 @@ img.img-r {
   -o-user-select: none;
 }
 
-A {
+A, a:visited {
   color: #005daa;
   text-decoration: none;
   transition: all 0.6s ease-in-out;
 }
-A:hover {
+A:hover, a:visited:hover {
   color: #01b4e7;
   transition: all 0.6s ease-in-out;
 }
-A img {
+A img, a:visited img {
   border: 0;
 }
 
@@ -3078,7 +3007,7 @@ h6 {
 }
 
 /* Textes */
-.primary-text, a.primary-link:visited {
+.primary-text {
   color: #005daa;
 }
 
@@ -3094,25 +3023,49 @@ h6 {
   color: #898A8D;
 }
 
+.Head {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.SubHead {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.SubSubHead {
+  font-size: 13px;
+}
+
+.Normal {
+  font-size: 1em;
+  line-height: 1.2em;
+}
+
+.SmallLink, .small {
+  font-size: 0.8em;
+  white-space: nowrap;
+}
+
 /* Liens */
-.primary-link {
+.primary-link, .primary-link:visited {
   color: #005daa;
 }
-.primary-link:hover {
+.primary-link:hover, .primary-link:visited:hover {
   color: #01b4e7;
 }
 
-.info-link {
+.info-link, .info-link:visited {
   color: #01b4e7;
 }
-.info-link:hover {
+.info-link:hover, .info-link:visited:hover {
   color: #005daa;
 }
 
-.secondary-link {
+.secondary-link, .secondary-link:visited {
   color: #898A8D;
 }
-.secondary-link:hover {
+.secondary-link:hover, .secondary-link:visited:hover {
   color: #9BA4B4;
 }
 
@@ -3600,6 +3553,22 @@ table tr:nth-child(1):hover {
   transform: translateX(4px);
 }
 
+/* Hack largeur & marges des cartes dans une grid */
+.grid .ais-news-layout {
+  margin: 0;
+}
+.grid .ais-news-layout .mini-news {
+  width: 100%;
+  margin: 0;
+}
+
+.grid .ais-news-layout-list .info-link.small {
+  margin-top: -30px;
+  display: block;
+  padding: 10px 0;
+  font-style: italic;
+}
+
 /* List view */
 .ais-news-layout-list .mini-news {
   display: flex;
@@ -3658,6 +3627,12 @@ table tr:nth-child(1):hover {
 .ais-news-layout-list .mini-news .news-date p::first-line {
   color: #f7a81b;
   font-size: 200%;
+}
+.ais-news-layout-list .mini-news .news-date.danger {
+  background-color: #f7a81b;
+}
+.ais-news-layout-list .mini-news .news-date.danger p::first-line {
+  color: #000;
 }
 .ais-news-layout-list .mini-news .news-title {
   display: block;
@@ -3903,30 +3878,6 @@ table tr:nth-child(1):hover {
   color: #fff;
   transition: all 0.4s ease-in-out;
   -webkit-transition: all 0.4s ease-in-out;
-}
-
-.Head {
-  font-weight: bold;
-  font-size: 15px;
-}
-
-.SubHead {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.SubSubHead {
-  font-size: 13px;
-}
-
-.Normal {
-  font-size: 1em;
-  line-height: 1.2em;
-}
-
-.SmallLink {
-  font-size: 0.8em;
-  white-space: nowrap;
 }
 
 input[type=radio] + label, .ModAISNewsDetailC a.Normal {
@@ -4180,6 +4131,22 @@ h1.DetailedArticle a:hover {
   margin-top: 8px;
   vertical-align: middle;
   width: 100%;
+}
+
+/* Hack ancien container et skin spring */
+.RoyalBlue_ct2_style {
+  min-width: none;
+}
+
+.LoginPanel {
+  width: 100%;
+  padding-right: 0;
+}
+.LoginPanel .dnnLabel {
+  float: none;
+  padding-right: 0px;
+  margin-right: 0;
+  text-align: left;
 }
 
 @media handheld, only screen and (max-width: 768px) {

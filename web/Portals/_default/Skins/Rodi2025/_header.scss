@@ -6,6 +6,11 @@
     right:0;
     top:0;
     height:102px;
+
+    .logo-style {
+        max-height: 80px;
+        padding: 10px 0 12px 0;
+    }
 }
 
 .personabar-visible{
@@ -15,12 +20,14 @@
 
         .m-lvl1{margin-left:260px !important;}
     }
+    .pc-display.header-membre{
+        left:80px;
+
+        .m-lvl1{margin-left:260px !important;}
+    }
 } 
 
-.logo-style {
-    max-height: 80px;
-    padding: 10px 0 12px 0;
-}
+
 
 .mobile-display{
     header{
@@ -29,7 +36,7 @@
         box-shadow: 0 8px 15px rgba(0,0,0,.1);
         z-index:9999;
         position: fixed;
-        height:90px;
+        height:60px;
         left:0;
         right:0;
         top:0;
@@ -40,6 +47,8 @@
             text-align: center;
             flex-grow: 1;
         }
+
+        .logo-style{max-height:60px;padding:7px 10px;}
     }
 
     .head-menu-m{
@@ -70,13 +79,13 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    height: 90px;
-    width: 90px;
+    height: 60px;
+    width: 60px;
     border-right: 1px solid $secondary-bg;
     text-decoration: none;
     background:$default-bg;
 
-    img{width:40px;}
+    img{width:30px;}
 }
 
 .menu-mob {
@@ -85,7 +94,7 @@
     left: 0px;
     width: 100%;
     bottom: 0;
-    top: 90px;
+    top: 60px;
     z-index: 100;
     visibility: hidden;
 }
@@ -95,7 +104,7 @@
     left: -800px;
     width: 87%;
     bottom: 0;
-    top: 90px;
+    top: 60px;
     z-index: 100;
     overflow-y: auto;
     background: #ffffff;
@@ -154,10 +163,11 @@
 
 /*---------------- HEADER MEMBRE ---------------*/
 .header-membre{
-    background: $dark;
+    background: #1e3c64 !important;
     position: relative;
     z-index: 1000;
-    color: $default-bg;
+    color: $default-bg !important;
+    font-family: Arial, Helvetica, sans-serif;
 
     .content-wrapper{
         display:flex;
@@ -165,79 +175,98 @@
         align-items:center;
     }
 
-    h1{
-        margin:0 10px;
-        text-align:center;
-        flex-grow:1;
-    }
-
-    .logo_style {
+    .logo-style {
         display: flex;
         align-items: center;
         position: relative;
+        flex-grow: 0;
 
-        img {
-            max-height:90px;
+        img{
+            max-height:60px;
             padding:7px 10px;
-        }
+        }    
+
     }
 
     #Login {
-        color: $secondary-text;
+        color: #bbbbbb;
         margin-bottom:10px;
-        gap:10px;
+        margin-right:10px;
+        gap:5px;
         display: flex;
         justify-content:space-between;
-        align-items:center;
-        font-size: 0.8em;
+        align-items:end;
+        font-size:13px;
 
-        > a{color:$secondary-text;}
+        > a{
+            color:#bbbbbb;
+
+            &:hover{
+                text-decoration: underline;
+                color: #ffffff;
+            }
+        }
     }
 
     .icons-menu {
         flex-grow:1;
-        margin: 20px 7px 2px 0;
+        margin: 8px px 7px 2px 0;
         position: relative;
         z-index: 1000;
         font-size: 0.9em;
 
         > a{color: $default-bg;}
 
-        .titres-membre{
-            text-align:center;
-            flex-grow:1;
-
-            > a{color:$secondary-text;}
-            p{color: $default-bg;}
-
-            p:first-child{
-                font-size:22px;
-            }
-        }
-
         .user-head{
             display: flex;
             justify-content: flex-end;
             gap:10px;
+            margin-right:10px;
+            line-height:2em;
 
             > a{color: $default-bg;}
         }
     }
+
+    .titres-membre{
+        text-align:center;
+        flex-grow:1;
+
+        > a{color:$secondary-text;}
+        p{color: $default-bg;}
+
+        p:first-child{
+            font-size:16px;
+            line-height: 1.2em;
+            font-weight:bold;
+            margin:10px 0;
+        }
+    }
+
+    .menuclick{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height: 60px;
+        width: 60px;
+        border-right: 1px solid $primary;
+        text-decoration: none;
+
+        img{width:29px;}
+    }
+    + .menu-mob{top:65px;}
 }
 
+
+/* menu membre desktop */
 .menubar-membre {
-    background-color: #18365d;
+    /*background-color: #18365d;*/
+    background: #18365d;
     box-shadow: 0 0 18px rgba(0,0,0,.3);
     /*min-height: 50px;*/
     position: relative;
     margin:0 0 20px 0;
-
-    #MENUMOB {
-        margin: 0;
-        width: 100%;
-        padding: 0;
-        position: relative;
-    }
+    font-family: Arial, Helvetica, sans-serif;
 
     .menu {
         z-index: 9999;
@@ -379,6 +408,121 @@
     }
 }
 
+.personabar-visible #MENUMOB{
+    width: calc(87% - 80px);
+}
+
+/* menu membre mobile */
+#MENUMOB.menu-membre{
+    background: #1e3c64 !important;
+    top:65px;
+    
+
+    .icons-menu{
+        border-bottom:$info 1px solid;
+        color: $info;
+        padding:10px;
+        margin:0 10px;
+        
+        .text-center > a{
+            color:$light-text;
+            display: inline-block;
+            padding:0 0 .5em 0;
+        }
+
+        .user-head {
+            padding-top:10px;
+
+            a{
+                color:$default-bg;
+                display: inline-block;
+                padding:.5em 0 0 0;
+            }
+        }    
+    }
+
+    .m-lvl1{
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size:100% !important;
+
+        > div{
+            padding:0;
+            background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 20px;
+            transition: all 0.3s ease-in;
+
+            &:hover{
+                background-position: 10px 20px;
+                transition: all 0.3s ease-in;
+
+                > a{color:$info !important;}
+            }
+        }
+
+        a{
+            color:$default-bg !important;
+
+            &:hover{
+                color:$info !important;
+            }
+        }
+
+        > div > a{
+            text-transform: none;
+            font-weight: normal;
+            font-size: 16px;
+            display: block;
+            padding: 0 2.8rem;
+            height:50px;
+            line-height:50px;
+        }
+
+        .m-lvl2{
+            margin: 0 0 20px 2.8rem;
+            padding: 0;
+            border-left: 1px solid $primary;
+
+            > div{
+                background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 11px;
+                transition: all 0.3s ease-in;
+
+                &:hover{
+                    background-position: 10px 11px;
+                    transition: all 0.3s ease-in;
+
+                    > a{color:$info !important;}
+                }
+            }
+
+            > div > a{
+                padding: 7px 27px;
+                font-weight: bold;
+                font-size: 16px;
+            }
+        }
+
+        .m-lvl3 {
+            > div{
+                background: transparent url(../Rodi2025/images/arrow1.png) no-repeat -12px 9px;
+                transition: all 0.3s ease-in;
+                margin-left:15px;
+
+                &:hover{
+                    background-position: 10px 9px;
+                    transition: all 0.3s ease-in;
+
+                    > a{color:$info !important;}
+                }
+            }
+        
+            > div > a{
+                padding: 5px 37px;
+                font-size:14px;
+            }
+        }
+    }
+}
+
+.mobile-display .header-membre{height:65px;}
 
 
 /*--------- CSS Reset for Tablet ----------*/
@@ -388,318 +532,46 @@
     }
 }
 
-@media handheld, only screen and (max-width: 1140px) {
-    .menu_box {
-        display: none;
-        float: none;
-        padding: 10px 0 0 0;
+
+
+@media screen and (min-width: 960px) {
+    .pc-display.membre {
+        position: fixed;
+        left:0;
+        right:0;
+        top:0;
+        z-index: 100;
+    }
+    .personabar-visible .pc-display.membre{left:80px;}
+
+    .header-membre {
+        .content-wrapper{max-width: 1140px;}
+        .titres-membre p:first-child {
+            font-size: 22px;
+            margin-bottom:5px;
+            font-weight: normal;
+        }
+        .logo-style img{max-height: 90px;}
     }
 
-    .menu_shadow {
-        display: none;
-    }
+    .menubar-membre .content-wrapper{max-width: 1140px;}
 }
 
+
+
+
 /*--------- CSS Reset for Mobile ----------*/
-@media handheld, only screen and (max-width: 1024px) {
-    .menubar-membre {
-        position: inherit !important;
-        margin: 0;
-    }
-    .logo_style img {
-        max-height:60px;
-    }
-    .menuclick{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        height: 60px;
-        width: 60px;
-        border-right: 1px solid #e8ebee;
-        text-decoration: none;
-        background: #ffffff;
-    }
-    .menuclick img{width:29px;}
-
-    .header-membre h1{
-        margin:0 10px;
-        font-size:20px;
-    }
-    .icons-menu {
-        border-bottom: 1px solid #e8ebee;
-        margin:0 10px;
-        padding:10px 0;
-    }
-    .icon_user{
-        padding-top:0;
-    }
-    .icon_user .Breadcrumb, A.Breadcrumb:link, A.Breadcrumb:visited, A.Breadcrumb:active {
-        margin-bottom: 0;
-        padding: 0 15px;
-    }
-
-
-    .mobile_nav {
-        display: block;
-        position: absolute;
-    }
-
-    .header-membre{
-        position:fixed;
-        top: 0;
-        right: 0;
-        left: 0;
-    }
-
-
-
-
-    .Membre .menuclick {
-        background: transparent;
-        border-right: 1px solid #3465a5;
-    }
-
-    .MenuMob {
-        position: fixed;
-        background: rgba(0,0,0,0.4);
-        left: 0px;
-        width: 100%;
-        bottom: 0;
-        top: 60px;
-        z-index: 100;
-        visibility: hidden;
-    }
-
-    .more-links{
-    	position: fixed;
-    	bottom: 0;
-    	z-index: 200;
-    	padding-left: 22px;
-    	padding-bottom: 20px;
-    	font-size: 0.8em;
-    	left:-800px;
-    }
-
-    .menu {
-        z-index: 1;
-    }
-
-    .menubar-membre{
-        position: relative;
-        z-index: auto;
-
-        .m-lvl1 {
-            margin: 0;
-            display: block;
-            width: 100%;
-            padding: 0;
-
-            > div {
-                display: block;
-                padding: 0;
-                margin: 0;
-                width: auto;
-
-                > a {
-                    display: block;
-                    padding: 0 27px;
-                    height: 50px;
-                    line-height: 50px;
-                    font-size: 1em;
-                    white-space: nowrap;
-                }
-            }
-        }
-
-        .m-lvl2 > div {
-            &:hover > a {
-                background-position: 10px center;
-                cursor: pointer;
-                transition: all 0.3s ease-in;
-            }        
-
-            > a {
-                color: #39424a;
-                font-size: 1rem;
-                background: url("../images/arrow1.png") no-repeat -12px center;
-                display: block;
-                float: none;
-                padding: 0 27px;
-            }
-        }
-
-        .m-lvl3, .m-lvl4 {
-            display: block;
-            padding: 10px 0 0 0;
-            font-size: 0.9em;
-            margin: 0;
-        }
-        
-        .m-lvl3 > div {
-            &:hover > a {
-                background-position: 10px center;
-                cursor: pointer;
-                transition: all 0.3s ease-in;
-            }  
-
-            > a {
-                padding: 5px 37px;
-                background: url("../images/arrow1.png") no-repeat -12px center;
-                display: block;
-                float: none;
-                color: #39424a;
-            }
-        }
-        
-        .m-lvl4 {
-            padding-top: 0;
-
-            div a {
-                margin-left: 10px;
-                padding: 2px 30px;
-                display: block;
-                float: none;
-                color: #39424a;
-                background: url("../images/arrow1.png") no-repeat -12px center;
-
-                &:hover a {
-                    background-position: 10px center;
-                    cursor: pointer;
-                    transition: all 0.3s ease-in;
-                }
-            }
-        }
-
-        .m-lvl1, .m-lvl1 > div:hover .m-lvl2{display:block;}
-    }
-    
-
-
-    #MENUMOB {
-        position: fixed;
-        left: -800px;
-        width: 65%;
-        bottom: 0;
-        top: 60px;
-        z-index: 100;
-        overflow-y: auto;
-        background: #ffffff;
-    }
-
+@media handheld, only screen and (max-width: 960px) {
     .showControlBar .Public .m-lvl1 {
         top: 113px;
     }
-
-
-    .header-membre {
-        box-shadow: 0 5px 5px 0 rgba(0,0,0,.1);
-
-        #MENUMOB {
-            position: fixed;
-            left: -800px;
-            width: 65%;
-            bottom: 0;
-            top: 60px;
-            z-index: 100;
-            overflow-y: auto;
-            background-color: #1e3c64;
-        }
-
-        .icons-menu {
-            border-bottom: 1px solid #3465a5;
-        }
-    }
-    
 
     .showControlBar .Membre .m-lvl1 {
         top: 113px;
     }
 
-    .menubar-membre .m-lvl1 > div {
-        float: none;
-        width: 100%;
-    }
-
-        .menubar-membre .m-lvl1 > div > a {
-            color: #ffffff;
-            background: transparent url('../images/arrow1.png') no-repeat -12px center;
-            display: block;
-        }
-
-    .menubar-membre .m-lvl2 {
-        visibility: visible;
-        z-index: 100;
-        opacity: 1;
-        margin: 0 0 20px 45px;
-        padding: 0;
-        width: auto;
-        background-color: #1e3c64;
-        position: unset;
-        box-shadow: none;
-        transition-delay: 0.4s;
-    }
-
-        .Membre .m-lvl1 > li:hover > a {
-            background-position: 10px center;
-            width: auto;
-            transition: all 0.3s ease-in;
-        }
-
-
-    .Membre .m-lvl1:hover .m-lvl2 {
-        padding-bottom: 0;
-        visibility: visible;
-        position:unset;
-        display:block;
-    }
-
-        .Membre .m-lvl2 > li {
-            border-left: 1px solid #3465a5;
-            display: block;
-            padding: 0;
-        }
-		.Membre .m-lvl2 > li:first-child {
-		    border-left: 1px solid #3465a5;
-		}
-            .Membre .m-lvl2 > li > a {
-                color: #ffffff;
-                font-family: "Open Sans",sans-serif;
-                padding: 7px 27px;
-            }
-            
-
-    .Membre .m-lvl3, .Membre .m-lvl4 {
-        padding: 0 0 0 15px;
-    }
-
-        .Membre .m-lvl3 a, .Membre .m-lvl4 a {
-            color: #ffffff;
-        }
 }
 
-
-@media handheld, only screen and (max-width:640px) {
-    .logo_style {
-        height: 60px;
-    }
-
-    .pattern_header h1 {
-        font-size: 13px;
-    }
-}
-
-@media handheld, only screen and (max-width:480px) {
-
-
-    .logo_style::after {
-        padding: 5px;
-    }
-    .logo_style > a > div + div{display:none;}
-    .personabar-visible .Membre .logo_style a {
-        margin-left: 80px;
-    }
-    a.btn-profil{right:15px;}
-}
 
 
 /*--------- Retina Styles ----------*/
@@ -747,6 +619,10 @@ footer{
     }
 }
 
+.membre + .content footer{
+    background-color: #1e3c64;
+}
+
 
 
 /*--------- CSS Reset for Tablet & Mobile ----------*/
@@ -754,7 +630,7 @@ footer{
 @media screen and (min-width: 768px){
     .header {
         .logo-style {
-            max-height: 70px;
+            max-height: 90px;
             padding: 0;
         }
 
@@ -928,6 +804,8 @@ footer{
             img{max-height:45px; padding:0 5px;}
         }
     }
+
+    
 }
 
 

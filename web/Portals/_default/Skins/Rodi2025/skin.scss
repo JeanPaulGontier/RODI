@@ -121,34 +121,6 @@
 }
 
 
-
-
-
-
-.Head {
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.SubHead {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.SubSubHead {
-    font-size: 13px;
-}
-
-.Normal {
-    font-size: 1em;
-    line-height: 1.2em;
-}
-
-.SmallLink {
-    font-size: 0.8em;
-    white-space: nowrap;
-}
-
 input[type=radio] + label, .ModAISNewsDetailC a.Normal {
     padding: 0 20px 0 5px;
 }
@@ -423,6 +395,28 @@ h1.DetailedArticle a:hover {
         vertical-align: middle;
         width: 100%;
     }
+}
+
+
+
+
+
+/* Hack ancien container et skin spring */
+.RoyalBlue_ct2_style{
+    min-width: none;
+}
+
+.LoginPanel{
+    width: 100%;
+    padding-right:0;
+
+    .dnnLabel {
+    float: none;
+
+    padding-right: 0px;
+    margin-right: 0;
+    text-align: left;
+}
 }
 
 
