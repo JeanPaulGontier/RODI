@@ -1,23 +1,218 @@
 /* Compatibilité avec les anciens modules et les BlocksContent V1 */
+.fixedbg3a {margin: 10px 0;}
+.fixedbg3b {margin: 10px 0;}
+.fixedbg3c {margin: 10px 0;}
+.fixedbg3d {margin: 10px 0;}
 
+.fixedbg12 {margin: 10px 0;}
 
+.middlepane {margin: 10px 0;}
 
+.middlegrid6a {margin: 10px 0;}
+.middlegrid6b {margin: 10px 0;}
 
+.graygrid6a {margin: 10px 0;}
+.graygrid6b {margin: 10px 0;}
+
+.graygrid12 {margin: 10px 0;}
+
+.middlecolorpane {margin: 10px 0;}
+
+.middlewhitepane {margin: 10px 0;}
+
+.darkgraypane {margin: 10px 0;}
+
+.bottomGrid6a {margin: 10px 0;}
+.bottomGrid6b {margin: 10px 0;}
+
+.bottomGrid4a {margin: 10px 0;}
+.bottomGrid4b {margin: 10px 0;}
+.bottomGrid4c {margin: 10px 0;}
+
+.bottomGrid12a {margin: 10px 0;}
+.bottomGrid12b {margin: 10px 0;}
+
+.bottomcolorpane {margin: 10px 0;}
+
+.footer_grid3a {margin: 10px 0;}
+.footer_grid3b {margin: 10px 0;}
+.footer_grid3c {margin: 10px 0;}
+.footer_grid3d {margin: 10px 0;}
+
+.footergrid12 {margin: 10px 0;}
+
+.leftsidepane {padding: 10px 0;}
+
+.skin_content{padding:10px 0;}
+.content_graybg {
+    background: #fbfbfb;
+    position: relative;
+}
+.fixed_bg {
+    background: #0067c8;
+}
+.content_colorbg {
+    background: #01b4e7;
+    position: relative;
+}
+
+.dnnpane > [class*=col-sm] {
+    display: block;
+    padding:10px;
+}
 
 
 @media handheld, only screen and (min-width: 768px){
+    .dnnpane {
+        display: flex;
 
+        > .col-sm-12{width:100%;}
+        > .col-sm-9{width:75%;}
+        > .col-sm-8{width:calc(100% / 1.5);}
+        > .col-sm-6{width:50%;}
+        > .col-sm-3{width:25%;}
+        > .col-sm-4{width:calc(100% / 3);}
+    }
 }
 
 
 
 @media screen and (min-width: 960px) {
+    .graygrid6a {
+        margin: 40px 0 40px 0;
+    }
 
+    .graygrid6b {
+        margin: 40px 0 40px 0;
+    }
+
+    .graygrid12 {
+        margin: 40px 0 40px 0;
+    }
+
+    .middlepane {
+        margin: 30px 0;
+    }
+
+    .middlegrid6a {
+        margin: 30px 0;
+    }
+
+    .middlegrid6b {
+        margin: 30px 0;
+    }
+
+    .middlecolorpane {
+        margin: 30px 0;
+    }
+
+    .fixedbg3a {
+        margin: 30px 0;
+    }
+
+    .fixedbg3b {
+        margin: 30px 0;
+    }
+
+    .fixedbg3c {
+        margin: 30px 0;
+    }
+
+    .fixedbg3d {
+        margin: 30px 0;
+    }
+
+    .fixedbg12 {
+        margin: 30px 0;
+    }
+
+    .bottomGrid6a {
+        margin: 30px 0;
+    }
+
+    .bottomGrid6b {
+        margin: 30px 0;
+    }
+
+    .bottomGrid4a {
+        margin: 30px 0;
+    }
+
+    .bottomGrid4b {
+        margin: 30px 0;
+    }
+
+    .bottomGrid4c {
+        margin: 30px 0;
+    }
+
+    .bottomGrid12a {
+        margin: 30px 0;
+    }
+
+    .bottomGrid12b {
+        margin: 30px 0;
+    }
+
+    .bottomcolorpane {
+        margin: 10px 0;
+    }
+
+    .bottomgraypane {
+        margin: 30px 0;
+    }
+
+    .darkgraya {
+        margin: 40px 0;
+    }
+
+    .blackpanea {
+        margin: 40px 0;
+    }
+
+    .darkgrayb {
+        margin: 40px 0;
+    }
+
+    .blackpaneb {
+        margin: 40px 0;
+    }
+
+    .blackpanec {
+        margin: 40px 0;
+    }
+
+    .footer_grid3a {
+        margin: 50px 0 30px;
+    }
+
+    .footer_grid3b {
+        margin: 50px 0 30px;
+    }
+
+    .footer_grid3c {
+        margin: 50px 0 30px;
+    }
+
+    .footer_grid3d {
+        margin: 50px 0 30px;
+    }
+
+    .footergrid12 {
+        margin: 30px 0 30px;
+    }
+
+    .leftsidepane {
+        padding: 20px 0;
+    }
 }
 
 @media handheld, only screen and (min-width: 1024px){
-
+        .dnnpane > [class*=col-sm] {
+        padding:0;
+    }
 }
+
 
 @media handheld, only screen and (min-width: 1280px){
 

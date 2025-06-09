@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom:30px;
+    margin:0 15px 30px 15px;
     padding-top:15px;
 
     .news-sort{
@@ -53,7 +53,7 @@
 
 /* Card view */
 .ais-news-layout{
-    margin:0 -15px;
+    /*margin:0 -15px;*/
 
     &:after{
         content: '';
@@ -172,7 +172,7 @@
         background-color: $default-bg;
         transition: $transition;
         text-align: center;
-        margin:0 0 30px 0;
+        margin:0 15px 30px 15px;
         border-radius: 5px;
         
         &:hover{
@@ -275,6 +275,7 @@
 
 /* Calendar view */
 .ais-news-layout-calendar {
+    margin:0 15px 30px 15px;
 
     > div:nth-child(2) {
         background-color: $default-bg;
@@ -440,4 +441,11 @@
         width: unset;
         flex-grow:1;
     }
+}
+
+
+@media screen and (min-width: 1024px) {
+    .ais-news-layout, .ais-news-layout-list, 
+    .ais-news-layout-calendar, .ais-news-head{ margin:0 0 30px 0;}
+
 }
