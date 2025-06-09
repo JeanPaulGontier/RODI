@@ -332,9 +332,9 @@ public class Mailing
             trans = conn.BeginTransaction();
 
             var sql = new SqlCommand(           "SELECT TOP 50 *," +
-                                                "   (SELECT subject FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as subject, " +
-                                                "   (SELECT sender_name FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_name, " +
-                                                "   (SELECT sender_email FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_email " +
+                                                "   (SELECT TOP 1 subject FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as subject, " +
+                                                "   (SELECT TOP 1 sender_name FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_name, " +
+                                                "   (SELECT TOP 1 sender_email FROM " + Const.TABLE_PREFIX + "mailings WHERE guid=M.mailing_guid) as sender_email " +
                                                 "FROM " + Const.TABLE_PREFIX + "mailing_out M " +
                                                 "WHERE status='" + Out.TEST + "' " +
                                                 "ORDER BY priority DESC, id ASC");

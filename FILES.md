@@ -66,7 +66,7 @@ Portals\_default\Skins\Rodi2025\_compat-v1.scss
 Portals\_default\Skins\Rodi2025\_layout.scss
 Portals\_default\Skins\Rodi2025\_news.scss
 Portals\_default\Skins\Rodi2025\Membres.ascx
-
+App_Code\AIS\Mailing.cs
 ```
 
 ##### 12/05/2025
