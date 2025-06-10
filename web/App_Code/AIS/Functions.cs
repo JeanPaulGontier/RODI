@@ -362,6 +362,9 @@ namespace AIS
             filename = RemoveAccents(filename).ToLower();
             filename = filename.Replace(" ", "-");
             filename = filename.Replace("'", "-");
+            filename = filename.Replace(",", "-");
+            filename = filename.Replace(";", "-");
+            filename = filename.Replace(":", "-");
             filename = filename.Replace("?", "");
             filename = filename.Replace("&", "");
             filename = filename.Replace("!", "");
