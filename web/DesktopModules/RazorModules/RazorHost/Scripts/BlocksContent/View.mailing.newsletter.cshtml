@@ -1,0 +1,256 @@
+﻿@using System.Collections;
+@using System.IO;
+@using System.Collections.Generic;
+@using System.Data.SqlClient;
+@using DotNetNuke.Entities.Tabs;
+@using System.Data;
+@using System.Linq;
+@using DotNetNuke.Common;
+@using DotNetNuke.Entities.Users;
+@using DotNetNuke.Web.Api;
+@using DotNetNuke;
+@using DotNetNuke.Services.Localization;
+@using DotNetNuke.Entities.Modules;
+@using DotNetNuke.Security.Permissions;
+@using Yemon.dnn.BlocksContent;
+@{
+    var moduleID = PageData["moduleID"];
+    var blocksSuffix = PageData["blocksSuffix"];
+    var Html = PageData["HTML"];
+    var GUID = PageData["GUID"];
+    var mediaPrefix = AIS.Const.DISTRICT_URL + "/DesktopModules/BlocksContent/API/Blocks/getMedia";
+
+    List<Block> blocks = PageData["blocks"];
+    if (blocks == null)
+    {
+        blocks = new List<Block>();
+    }
+    try
+    {
+        string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + blocksSuffix, Yemon.dnn.Functions.GetPortalId());
+        if (sblocks != "")
+        {
+            blocks = (List<Block>)Yemon.dnn.Functions.Deserialize(sblocks, typeof(List<Block>));
+        }
+
+    }
+    catch
+    {
+
+    }
+
+    var mustShowOnlineLink = false;
+    if (("" + Request["purgednnscripts"]) != "")
+    {
+
+        foreach (Block block in blocks)
+        {
+            switch (block.Type)
+            {
+                case "ImageText":
+                    Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+                    if (p.Largeur == 0)
+                    {
+                        if (p.Position == "G" || p.Position == "D")
+                        {
+                            p.Largeur = 6;
+                        }
+                        else
+                        {
+                            p.Largeur = 12;
+                        }
+                    }
+                    if (p.Image != null)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+                case "FileCollection":
+                    Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                    if (fc.Files.Count > 0)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+                case "ImageCollection":
+                    Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+                    if (ic.Images.Count > 0)
+                    {
+                        mustShowOnlineLink = true;
+                    }
+                    break;
+            }
+        }
+    }
+    if (mustShowOnlineLink)
+    {
+        <tr>
+            <td align="right" cellpadding="0" cellspacing="0" style="padding:5px 15px;text-align: right;font-size: 10px;">
+                Cet email ne s'affiche pas correctement ? <a href='@AIS.Const.DISTRICT_URL/mail/mailing/email?guid=@GUID' target="_blank">Voir la version en ligne</a>.
+            </td>
+        </tr>
+    }
+
+
+    foreach (Block block in blocks)
+    {
+        switch (block.Type)
+        {
+            case "ImageText":
+                Block.ImageText p = (Block.ImageText)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageText));
+
+                switch (p.Position)
+                {
+                    case "G":
+                        <tr>
+                            <td>
+                                <table width="650" style="width:650px;">
+                                    <tr>
+                                        <td align="right" width="50%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-right:8px;width:50%">
+                                            @if (p.Image != null)
+                                            {
+                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                            }
+                                        </td>
+                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right: 15px; padding-left: 15px; width: 50%; vertical-align: top">
+                                            @if (p.Title != null)
+                                            {
+                                                <h2>@p.Title</h2>
+                                            }
+                                            @if (p.Html != null)
+                                            {
+                                                @Html.Raw(p.Html)
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        break;
+                    case "D":
+                        <tr>
+                            <td>
+                                <table width="650" style="width:650px;">
+                                    <tr>
+                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right:15px;padding-left:15px;width:50%;vertical-align:top">
+                                            @if (p.Title != null)
+                                            {
+                                                <h2>@p.Title</h2>
+                                            }
+                                            @if (p.Html != null)
+                                            {
+                                                @Html.Raw(p.Html)
+                                            }
+                                        </td>
+                                        <td align="right" width="50%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left:8px;width:50%">
+                                            @if (p.Image != null)
+                                            {
+                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        break;
+                    case "B":
+                        <tr>
+                            <td align="left" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff"  style="padding-left: 15px; padding-right: 15px;vertical-align:top">
+                                @if (p.Title != null)
+                                {
+                                    <h2>@p.Title</h2>
+                                }
+                                @if (p.Html != null)
+                                {
+                                    @Html.Raw(p.Html)
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+                                @if (p.Image != null)
+                                {
+                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                }
+                            </td>
+                        </tr>
+
+                        break;
+                    default:
+                        <tr>
+                            <td align="left" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="vertical-align:top">
+
+                                @if (p.Image != null)
+                                {
+
+                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" title="@p.Image.Name" />
+
+                                }
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left: 15px; padding-right: 15px;">
+                                @if (p.Title != null)
+                                {
+                                    <h2>@p.Title</h2>
+                                }@if (p.Html != null)
+                                {
+                                    @Html.Raw(p.Html)
+                                }
+                            </td>
+                        </tr>
+
+                        break;
+                }
+
+                break;
+            case "FileCollection":
+                Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
+                <tr>
+                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="padding:15px;margin:0px">
+
+                        @if (fc.Title != null)
+                        {
+                            <h2>@fc.Title</h2>
+                        }
+                        @if (fc.Files.Count > 0)
+                        {
+                            <ul style="margin:0">
+                                @foreach (var f in fc.Files)
+                                {
+                                    <li style="list-style:none"><a href="@mediaPrefix?guid=@f.GUID" class="btn btn-link">@f.Name</a></li>
+                                }
+                            </ul>
+                        }
+                    </td>
+                </tr>
+                break;
+            case "ImageCollection":
+                Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
+
+                <tr>
+                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding:0px;margin:0px">
+
+                        @if (ic.Title != null)
+                        {
+                            <h2>@ic.Title</h2>
+                        }
+                        @if (ic.Images.Count > 0)
+                        {
+                            foreach (var i in ic.Images)
+                            {
+                                <span>
+                                    <img src="@mediaPrefix?guid=@i.GUID" width="100%" title="@i.Name" />
+                                </span>
+                            }
+
+                        }
+                    </td>
+                </tr>
+                break;
+
+        }
+    }
+}

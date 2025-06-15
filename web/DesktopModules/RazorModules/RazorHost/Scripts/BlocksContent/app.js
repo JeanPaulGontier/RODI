@@ -1,5 +1,14 @@
 ﻿function InitApp(appid, MODULEID, BLOCKSSUFFIX, EDITABLE, TOGGLEABLE) {
-    const app = Vue.createApp({
+    const { createApp, reactive } = Vue;
+    const myStore = new reactive({
+        changed:null
+    })
+    const app = createApp({
+        setup() {
+            return {
+                myStore
+            }
+        },
         data() {
             return {
                 blocks: [],
@@ -25,6 +34,7 @@
                     this.blocks = [];
                     if (r.data) {
                         this.blocks = JSON.parse(r.data);
+                       
                     }
                     this.$forceUpdate();
                 }
@@ -36,13 +46,10 @@
             toggle(v) {
                 this.toggling = v;
             },
-            changed(data) {
-                if (!data)
-                    return;
-
+            changed() {
                 _yemon[MODULEID].service.postData("/SetItem", {
                     name: 'blockscontent:' + BLOCKSSUFFIX,
-                    value: JSON.stringify(data),
+                    value: JSON.stringify(this.blocks),
                     keephistory:false
                 }, (r) => {
                     if (r.status != 200) {
@@ -50,19 +57,22 @@
                     }
                     this.changed = false;
                     toastr["success"]("Enregistré");
+                    this.$nextTick(() => { this.$forceUpdate() });
                     
                 }
                 , (e) => {
-                     toastr["error"]("Erreur : " + e.response.data.Message);
+                    toastr["error"]("Erreur : " + e.response.data.Message);
+                    this.$nextTick(() => { this.$forceUpdate() });
                 }
                 )
             }
         },
         mounted() {
+            this.myStore.changed = this.changed;
             this.getBlocks();
         }
     });
-
+   
     app.component('cropper', VueAdvancedCropper.Cropper);
     app.mount('#' + appid);
 

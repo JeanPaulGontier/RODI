@@ -346,7 +346,7 @@
                     this.$emit('cancel');
                 },
                 onChange() {
-                    this.$emit('changed', this.c);
+                    this.$nextTick(() => { this.$emit('changed', this.c) });
                 },
 
                 addDocument(event) {
@@ -398,6 +398,11 @@
             mounted() {
                
                 this.c = this.content;
+                if (!this.c) {
+                    debugger
+                    return;
+                }
+                    
                 if (!this.c.Type)
                     this.c.Type = 0;
                 if (!this.c.Largeur)

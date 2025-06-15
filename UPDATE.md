@@ -9,6 +9,7 @@
 - l'annuaire de l'app mobile n'est plus accessible si on n'est pas loggué (préparation de l'arrivée de la nouvelle version)
 - ajout d'un lien espace membre dans l'entete de site de club pour permettre aux membres de trouver directement l'espace membre (simplifie l'usage quand un club possède un nom de domaine)
 - on peut maintenant masquer le module de liste de nouvelles quand il n'y a pas de nouvelles afin d'éviter d'afficher un élément vide
+- correction d'un bug de sauvegarde du blockcontent, dans certains cas les changements n'étaient pas bien sauvegardés
 
 
 ###### 12/05/2025

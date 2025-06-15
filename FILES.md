@@ -72,6 +72,18 @@ Portals\_default\Skins\Rodi2025\_layout.scss
 Portals\_default\Skins\Rodi2025\_news.scss
 Portals\_default\Skins\Rodi2025\skin.css
 Portals\_default\Skins\Rodi2025\skin.css.map
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\app.min.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.mailing.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.es5.js
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newsletter.cshtml
+
 ```
 
 ##### 12/05/2025

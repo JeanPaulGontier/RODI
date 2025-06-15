@@ -55,7 +55,7 @@
             template: '#blockseditor-template',
             name: 'BlocksEditor',
             props: [
-                'blocks', 'moduleid', 'editable','toggleable'
+                'store','blocks', 'moduleid', 'editable','toggleable'
             ],
             emits: [
                 'changed','toggle'
@@ -299,12 +299,14 @@
                     this.editing = -1;
                 },
                 onChange() {
+                    
                     this.editing = -1;
-                    this.$emit('changed', this.blocks);
+                   // this.$emit('changed', Math.random());
+                   
                     let lastScroll = sessionStorage.getItem(window.location.pathname + ":scroll");
                     if (lastScroll)
                         window.scrollTo({ top: parseInt(lastScroll), left: window.scrollX, behavior: 'smooth' });
-
+                    this.store.changed();
                 }
 
             },

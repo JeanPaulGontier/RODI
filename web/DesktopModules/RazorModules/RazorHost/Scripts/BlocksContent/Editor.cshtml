@@ -64,7 +64,7 @@
     <button type="button" v-on:click="toggling=true" v-if="blocks.length==0 && !toggling && toggleable" class="open-edit" title="Modifier le contenu"><i class="fa fa-pencil"></i></button>
     <button type="button" v-on:click="toggling=false" v-if="blocks.length==0 && toggling && toggleable" class="close-edit" title="Passer en mode visualisation"><i class="fa fa-eye"></i></button>
 
-    <blocks-editor v-on:changed="changed" v-on:toggle="toggle" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()" :toggleable="toggleable"></blocks-editor>
+    <blocks-editor v-on:changed="changed" v-on:toggle="toggle" :store="myStore" :blocks="blocks" :moduleID="@moduleID" :editable="isEditable()" :toggleable="toggleable"></blocks-editor>
 </div>
 
 <script src="/DesktopModules/Yemon/API/Services/VueJS?cdv=@CDV"></script>
