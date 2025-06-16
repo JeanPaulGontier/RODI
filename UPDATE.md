@@ -1,15 +1,30 @@
 ###### en cours, sera installé lors de la prochaine MAJ
-- ajout d'un module razor de création de qr code (QRCodeGenerator)
+- nouveau : tableau de bord club
+- nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
+- nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
+- nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
+- nouveau type de bloc permettant d'épingler une nouvelle district ou club
+- nouveau : module d'affichage des messages pour les membres (club, autres clubs et district)
+- fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...)
+- fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club
+
+###### 16/06/2025
+- ajout d'un module razor de création de qr code (QRCodeGenerator) https://rodi.link reste toujours disponible
 - correction de styles divers
 - suppression de la date de naissance et de l'age dans la fiche membre (accessible uniquement aux admins du club)
 - dans le pop up contact de l'annuaire suppression des adresses postales, inutiles pour contacter le membre
 - ajout d'un bouton supprimer le fanion dans les paramètres club et gestion clubs admin district
 - suppression du module commité du club dans la page d'accueil du site de club, afin de laisser le choix au club d'afficher l'information ou pas
 - le module d'affichage mailing district et archive mailing club affiche maintenant directement le message au lieu de l'éditeur pour que les liens fonctionnent
-- l'annuaire de l'app mobile n'est plus accessible si on n'est pas loggué (préparation de l'arrivée de la nouvelle version)
+- l'annuaire de l'app mobile n'est plus accessible si on n'est pas loggué (préparation de l'arrivée de la nouvelle version pour tous les districts)
 - ajout d'un lien espace membre dans l'entete de site de club pour permettre aux membres de trouver directement l'espace membre (simplifie l'usage quand un club possède un nom de domaine)
 - on peut maintenant masquer le module de liste de nouvelles quand il n'y a pas de nouvelles afin d'éviter d'afficher un élément vide
-- correction d'un bug de sauvegarde du blockcontent, dans certains cas les changements n'étaient pas bien sauvegardés
+- correction d'un bug de sauvegarde du blockcontent (ne concerne pas les nouvelles, mailings et réunions qui utilisent aussi blockcontent mais dont la sauvegarde est dépendante de la validation), dans certains cas les changements n'étaient pas bien sauvegardés, le popup d'enregistrement vert apparait en haut a droite de l'écran en cas d'erreur il est rouge
+- correction d'un bug d'affichage sur le nouveau thème graphique en version mobile Rodi2025, notamment dans l'écran de connexion à l'espace membre
+- nouveau gabarit de thème Rodi2025/Membres, qui permet d'utiliser la version complète du blockcontent y compris dans l'espace membre
+
+- ajout d'informations complémentaires sur les statistiques clubs
+- 
 
 
 ###### 12/05/2025

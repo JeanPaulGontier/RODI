@@ -1,5 +1,9 @@
 ##### Modified files per commit
 ```txt
+```
+
+##### 16/06/2025
+```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_QRCodeGenerator.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockButtonsBg.cshtml
@@ -87,7 +91,7 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newslet
 ```
 
 ##### 12/05/2025
-
+```txt
 App_Code\AIS\Functions.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Error.cs
