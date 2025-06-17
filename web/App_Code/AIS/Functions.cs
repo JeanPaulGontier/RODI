@@ -373,7 +373,22 @@ namespace AIS
             filename = filename.Replace("<", "");
             filename = MakeValidFileName(filename);
             filename = RemoveDiacritics(filename);
+            filename = LimiterNomFichier(filename, 128);
             return filename;
+        }
+        public static string LimiterNomFichier(string nomFichier,int longueur)
+        {
+            if (string.IsNullOrEmpty(nomFichier))
+                return nomFichier;
+
+            string extension = System.IO.Path.GetExtension(nomFichier);
+            string nomSansExtension = System.IO.Path.GetFileNameWithoutExtension(nomFichier);
+
+            int longueurMax = longueur - extension.Length;
+            if (nomSansExtension.Length > longueurMax)
+                nomSansExtension = nomSansExtension.Substring(0, longueurMax);
+
+            return nomSansExtension + extension;
         }
         public static string RemoveDiacritics(string text)
         {
