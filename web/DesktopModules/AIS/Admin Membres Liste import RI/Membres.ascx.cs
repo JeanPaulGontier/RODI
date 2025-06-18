@@ -83,8 +83,7 @@ using System.Text;
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
-
-    public bool hasBirthday ;
+    
 
     public DateTime GetBirthday(DateTime birthdate)
     {
@@ -110,7 +109,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
         var dt = GetBirthday((DateTime)date);
         if(dt>DateTime.Now.AddDays(-7) && dt<DateTime.Now.AddMonths(1))
         {
-            hasBirthday=true;
+            PanelBirthday.Visible =true;
             return true;
         }
             
@@ -285,9 +284,15 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     LBL_Civilite.Text = membre.civility;
                     LBL_Adresse.Text = membre.adress_1;
                     LBL_Email.Text = membre.email;
+
                     LBL_Nom_Club.Text = membre.club_name;
+
                     LBL_Fonction_Metier.Text = membre.job;
+                    LBL_Fonction_Metier.Visible = membre.job.Length>0;
+
                     LBL_Branche_Activite.Text = membre.industry;
+                    LBL_Branche_Activite.Visible = membre.industry.Length>0;
+
                     LBL_Member_Honneur.Text = (""+membre.honorary_member == Const.YES) ? "Member d'honneur" : "";
                     string compl = (""+membre.honorary_member) == "" ? "&nbsp;|&nbsp;" : "";
                     if ((""+membre.retired) == Const.YES)
@@ -301,7 +306,8 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     }
                     catch { }
 
-                    LBL_Anniversaire.Text= "Anniversaire le "+Birthday(membre.birth_year);
+                    LBL_Anniversaire.Text= "Anniversaire : "+Birthday(membre.birth_year);
+                    LBL_Anniversaire.Visible = membre.birth_year != null;
 
                     //try { 
                     //LBL_DT_Naissance.Text = membre.birth_year != null ? "" + ((DateTime)membre.birth_year).Year + " (" + ((int)((DateTime.Now - (DateTime)membre.birth_year).TotalDays / 365.25)) + " ans)" : "inconnue";
