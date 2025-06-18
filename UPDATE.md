@@ -7,8 +7,9 @@
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district)
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...)
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club
+- choix du gabarit de mailing (message simple ou newsletter format RI)
 
-###### 17/06/2025
+###### 18/06/2025
 - ajout d'un module razor de création de qr code (QRCodeGenerator) https://rodi.link reste toujours disponible
 - correction de styles divers
 - suppression de la date de naissance et de l'age dans la fiche membre (accessible uniquement aux admins du club) mais affichage de l'anniversaire à la place

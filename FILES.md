@@ -2,7 +2,7 @@
 ```txt
 ```
 
-##### 16/06/2025
+##### 18/06/2025
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_QRCodeGenerator.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockBanner.cshtml
@@ -87,6 +87,8 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\gallery.es5.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\slider.es5.js
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newsletter.cshtml
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
 
 ```
 
