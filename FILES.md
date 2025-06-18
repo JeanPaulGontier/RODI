@@ -89,7 +89,11 @@ DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\styles.css
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newsletter.cshtml
 DesktopModules\AIS\OuKiKan\MeetingEdit.html
 DesktopModules\AIS\Admin News Liste\NewsEdit.html
-
+Portals\_default\Skins\Rodi2017\images\birthday.png
+Portals\_default\Skins\Rodi2025\images\birthday.png
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newsletter.cshtml
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 ```
 
 ##### 12/05/2025

@@ -30,13 +30,13 @@
 <asp:Label ID="Label1" runat="server" Text="Recherche :"></asp:Label>
 <asp:TextBox runat="server" ID="TXT_Critere" AutoPostBack="true" OnTextChanged="TXT_Critere_TextChanged" ></asp:TextBox>
 <asp:Label ID="LBL_Nb" runat="server"></asp:Label>
-<asp:Button runat="server" ID="BT_Import" Text="Mettre à jour les membres" CssClass="btn btn-primary" CausesValidation="false" OnClick="BT_Import_Click" />
+<asp:Button runat="server" ID="BT_Import" Text="Information sur la mise à jour des membres" CssClass="btn btn-default" CausesValidation="false" OnClick="BT_Import_Click" />
 <asp:Button runat="server" ID="BT_Ajout" Text="Ajouter un membre" CssClass="btn btn-primary" ToolTip="Ajouter un membre" CausesValidation="false" OnClick="BT_Ajout_Click"  Visible="false"/>
 <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_ParentInfo">Le club possède un club satellite : <%=clubsatellitename %></asp:Panel>
 <asp:Panel runat="server" CssClass="alert alert-info" Visible="false" ID="P_SatelliteInfo">Vous êtes dans un club satellite, l'ajout ou la mise à jour des membres doit être faite par le club parent : <%=clubparentname %></asp:Panel>
 <h3><asp:Label runat="server" ID="lbl_TousADG" Text="Choisissez un club" Visible="false" /></h3>
 
-
+<asp:Panel runat="server" Visible="<%# hasBirthday %>" CssClass="alert alert-info">Il y a des anniversaires en ce moment</asp:Panel>
 <asp:GridView ID="GridView1"  runat="server" CssClass="table table-striped"  PagerStyle-CssClass="GVPager" AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting" OnRowDataBound="GridView1_RowDataBound">
 <Columns>
     <%--<asp:BoundField DataField="nim" HeaderText="NIM" SortExpression="nim" />--%>
@@ -45,6 +45,7 @@
         <ItemTemplate>
             <%# DataBinder.Eval(Container.DataItem, "honorary_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/honor.png' Width=16 title='Honoraire' />":"" %>
             <%# DataBinder.Eval(Container.DataItem, "satellite_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/satellite.png' Width=16 title='Membre club satellite' />":"" %>
+            <%# IsBirthday(Eval("birth_year"))?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/birthday.png' Width=16 title='Anniversaire le "+Birthday(Eval("birth_year"))+"' />":"" %>
         </ItemTemplate>
     </asp:TemplateField>
     <asp:BoundField DataField="surname" HeaderText="Nom" SortExpression="surname"  />
@@ -147,6 +148,7 @@
 		            <asp:Label runat="server" ID="LBL_Retraite" />
 		            <asp:Label runat="server" ID="LBL_Member_Honneur" Visible="false" />
                      </p>
+                    <p><asp:Label runat="server" ID="LBL_Anniversaire"></asp:Label></p>
                 </div>
 
 		        <div>
@@ -404,10 +406,10 @@
 	</div>
 </asp:Panel>
 <asp:Panel runat="server" ID="PanelSynchro" Visible="false">
-<h2>Etat de la synchronisation de votre club depuis Rotary.org vers le district :</h2>
-    <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-success">
-         La modification des membres se fait sur le site du Rotary International, 
-         la synchronisation vers le district est automatique chaque nuit.
+<h2>Etat de la synchronisation de votre club depuis Mon Rotary (my.rotary.org) vers le district :</h2>
+    <asp:Panel runat="server" ID="PanelSynchroAuto" CssClass="alert alert-info">
+         <p>Les membres ayant les fonctions suivantes : <strong>président, secrétaire, trésorier, secrétaire exécutif</strong>,<br />peuvent ajouter, modifier et radier des membres sur le site<br /><a class="btn btn-default" href='https://my.rotary.org/fr/' target='_blank'>My Rotary</a></p>
+         <p>La synchronisation est automatique, toutes les 24h la liste des membres ainsi que <br />leurs fonctions sur l'année courante et la suivante sont transférés vers le district.</p>
     </asp:Panel>
      <asp:Panel runat="server" ID="PanelSynchroAnalyse" CssClass="alert alert-warning">
          La synchronisation des membres est autorisée, 

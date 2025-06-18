@@ -217,10 +217,10 @@
                         }
                         @if (fc.Files.Count > 0)
                         {
-                            <ul style="margin:0">
+                            <ul style="margin:0; list-style:none;padding:0;">
                                 @foreach (var f in fc.Files)
                                 {
-                                    <li style="list-style:none"><a href="@mediaPrefix?guid=@f.GUID" class="btn btn-link">@f.Name</a></li>
+                                    <li style="list-style:none;padding:5px;"><a href="@mediaPrefix?guid=@f.GUID">@f.Name</a></li>
                                 }
                             </ul>
                         }

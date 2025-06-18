@@ -1,4 +1,4 @@
-###### en cours, sera installé lors de la prochaine MAJ
+###### en cours, sera installé lors d'une prochaine MAJ
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
 - nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
@@ -8,11 +8,19 @@
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...)
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club
 - choix du gabarit de mailing (message simple ou newsletter format RI)
+- champ date de fin d'inscription dans mail réunion
+- compta club v1
+- gestion de règles avancées pour la facturation district (D1680)
+- rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.)
+- gestion des contrats jeunes rotariens (D1700)
+- ajout d'informations complémentaires sur les statistiques clubs
+- ajout de l'anniversaire dans le trombinoscope
 
 ###### 18/06/2025
 - ajout d'un module razor de création de qr code (QRCodeGenerator) https://rodi.link reste toujours disponible
 - correction de styles divers
 - suppression de la date de naissance et de l'age dans la fiche membre (accessible uniquement aux admins du club) mais affichage de l'anniversaire à la place
+- le texte expliquant la mise à jour des membres a été modifié pour plus de clarté
 - dans le pop up contact de l'annuaire suppression des adresses postales, inutiles pour contacter le membre
 - ajout d'un bouton supprimer le fanion dans les paramètres club et gestion clubs admin district
 - suppression du module commité du club dans la page d'accueil du site de club, afin de laisser le choix au club d'afficher l'information ou pas
@@ -24,8 +32,6 @@
 - correction d'un bug d'affichage sur le nouveau thème graphique en version mobile Rodi2025, notamment dans l'écran de connexion à l'espace membre
 - nouveau gabarit de thème Rodi2025/Membres, qui permet d'utiliser la version complète du blockcontent y compris dans l'espace membre
 
-- ajout d'informations complémentaires sur les statistiques clubs
-- ajout de l'anniversaire dans le trombinoscope
 
 
 ###### 12/05/2025
