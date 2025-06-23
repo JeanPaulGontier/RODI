@@ -16,6 +16,8 @@
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 
+###### 23/06/2025 
+- correction bug de sauvegarde du blockcontentclub apparu depuis maj du 18/06
 
 ###### 18/06/2025
 - ajout d'un module razor de création de qr code (QRCodeGenerator) https://rodi.link reste toujours disponible

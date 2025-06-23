@@ -1,6 +1,15 @@
 ##### Modified files per commit
 ```txt
 ```
+##### 23/06/2025
+```txt
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockEditor.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageCollection.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockImageText.news.meeting.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\Editor.club.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.mailing.newsletter.cshtml
+```
 
 ##### 18/06/2025
 ```txt

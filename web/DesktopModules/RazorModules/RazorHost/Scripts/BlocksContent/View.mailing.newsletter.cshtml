@@ -104,18 +104,18 @@
                     case "G":
                         <tr>
                             <td>
-                                <table width="650" style="width:650px;">
+                                <table width="650" style="width:650px;border-collapse:collapse;margin:0;padding:0;" cellpading="0" cellspacing="0">
                                     <tr>
                                         <td align="right" width="50%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-right:8px;width:50%">
                                             @if (p.Image != null)
                                             {
-                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="325" style="width:325px" title="@p.Image.Name" />
                                             }
                                         </td>
-                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right: 15px; padding-left: 15px; width: 50%; vertical-align: top">
+                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right: 15px; padding-left: 15px; width: 50%; vertical-align: top;font-family:Arial, Helvetica, sans-serif;">
                                             @if (p.Title != null)
                                             {
-                                                <h2>@p.Title</h2>
+                                                <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@p.Title</h2>
                                             }
                                             @if (p.Html != null)
                                             {
@@ -131,22 +131,22 @@
                     case "D":
                         <tr>
                             <td>
-                                <table width="650" style="width:650px;">
+                                <table width="650" style="width:650px;border-collapse:collapse;margin:0;padding:0;">
                                     <tr>
-                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right:15px;padding-left:15px;width:50%;vertical-align:top">
+                                        <td align="left" width="50%" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff" style="padding-right:15px;padding-left:15px;width:50%;vertical-align:top;font-family:Arial, Helvetica, sans-serif;">
                                             @if (p.Title != null)
                                             {
-                                                <h2>@p.Title</h2>
+                                                <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@p.Title</h2>
                                             }
                                             @if (p.Html != null)
                                             {
                                                 @Html.Raw(p.Html)
                                             }
                                         </td>
-                                        <td align="right" width="50%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left:8px;width:50%">
+                                        <td align="right" width="50%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left:8px;width:50%;font-family:Arial, Helvetica, sans-serif;">
                                             @if (p.Image != null)
                                             {
-                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                                <img src="@mediaPrefix?guid=@p.Image.GUID" width="325" style="width:325px" title="@p.Image.Name" />
                                             }
                                         </td>
                                     </tr>
@@ -156,14 +156,14 @@
                         break;
                     case "B":
                         <tr>
-                            <td align="left" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff"  style="padding-left: 15px; padding-right: 15px;vertical-align:top">
+                            <td align="left" cellpadding="0" valign="top" cellspacing="0" bgcolor="#ffffff"  style="padding-left: 15px; padding-right: 15px;vertical-align:top;font-family:Arial, Helvetica, sans-serif;">
                                 @if (p.Title != null)
                                 {
-                                    <h2>@p.Title</h2>
+                                    <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@p.Title</h2>
                                 }
                                 @if (p.Html != null)
                                 {
-                                    @Html.Raw(p.Html)
+                                    <div style="margin-bottom:15px;">@Html.Raw(p.Html)</div>
                                 }
                             </td>
                         </tr>
@@ -171,7 +171,7 @@
                             <td align="right" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
                                 @if (p.Image != null)
                                 {
-                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" style="width:100%" title="@p.Image.Name" />
+                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="650" style="width:650px" title="@p.Image.Name" />
                                 }
                             </td>
                         </tr>
@@ -184,20 +184,20 @@
                                 @if (p.Image != null)
                                 {
 
-                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="100%" title="@p.Image.Name" />
+                                    <img src="@mediaPrefix?guid=@p.Image.GUID" width="650" style="width:650px" title="@p.Image.Name" />
 
                                 }
 
                             </td>
                         </tr>
                         <tr>
-                            <td align="left" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left: 15px; padding-right: 15px;">
+                            <td align="left" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding-left: 15px; padding-right: 15px;font-family:Arial, Helvetica, sans-serif;">
                                 @if (p.Title != null)
                                 {
-                                    <h2>@p.Title</h2>
+                                    <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@p.Title</h2>
                                 }@if (p.Html != null)
                                 {
-                                    @Html.Raw(p.Html)
+                                    <div style="margin-bottom:15px;">@Html.Raw(p.Html)</div>
                                 }
                             </td>
                         </tr>
@@ -209,18 +209,18 @@
             case "FileCollection":
                 Block.FileCollection fc = (Block.FileCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.FileCollection));
                 <tr>
-                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="padding:15px;margin:0px">
+                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="padding:15px;margin:0px;font-family:Arial, Helvetica, sans-serif;">
 
                         @if (fc.Title != null)
                         {
-                            <h2>@fc.Title</h2>
+                            <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@fc.Title</h2>
                         }
                         @if (fc.Files.Count > 0)
                         {
-                            <ul style="margin:0; list-style:none;padding:0;">
+                            <ul style="margin:0;list-style-type:none;padding:0;">
                                 @foreach (var f in fc.Files)
                                 {
-                                    <li style="list-style:none;padding:5px;"><a href="@mediaPrefix?guid=@f.GUID">@f.Name</a></li>
+                                    <li style="list-style-type:none;padding:5px;"><a href="@mediaPrefix?guid=@f.GUID">@f.Name</a></li>
                                 }
                             </ul>
                         }
@@ -231,18 +231,18 @@
                 Block.ImageCollection ic = (Block.ImageCollection)Yemon.dnn.Functions.Deserialize("" + block.Content, typeof(Block.ImageCollection));
 
                 <tr>
-                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding:0px;margin:0px">
+                    <td align="center" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding:0px;margin:0px;font-family:Arial, Helvetica, sans-serif;">
 
                         @if (ic.Title != null)
                         {
-                            <h2>@ic.Title</h2>
+                            <h2 style="font-size:18px;font-weight:bold;color:#005daa;margin-top:15px;margin-bottom:15px;">@ic.Title</h2>
                         }
                         @if (ic.Images.Count > 0)
                         {
                             foreach (var i in ic.Images)
                             {
                                 <span>
-                                    <img src="@mediaPrefix?guid=@i.GUID" width="100%" title="@i.Name" />
+                                    <img src="@mediaPrefix?guid=@i.GUID" width="650" style="width:650px;" title="@i.Name" />
                                 </span>
                             }
 

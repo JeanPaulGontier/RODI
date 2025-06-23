@@ -131,7 +131,7 @@
                     this.$emit('cancel');
                 },
                 onChange() {
-                    this.$emit('changed', this.c);
+                    this.$nextTick(() => { this.$emit('changed', this.c) });
                 },
 
                 addDocument(event) {

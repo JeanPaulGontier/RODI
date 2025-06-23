@@ -238,7 +238,7 @@
                     this.$emit('cancel');
                 },
                 onChange() {
-                    this.$emit('changed', this.c);
+                    this.$nextTick(() => { this.$emit('changed', this.c) });
                 },
                 deleteImage(i) {
                     this.e.Images.splice(i, 1);
