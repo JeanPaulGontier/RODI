@@ -1,4 +1,4 @@
-@using System.Collections;
+﻿@using System.Collections;
 @using System.IO;
 @using System.Collections.Generic;
 @using System.Data.SqlClient;
@@ -92,32 +92,64 @@
     if (calendar)
     {
         Media media = new Media();
+        string guidexport = Guid.NewGuid().ToString();
 
         // Format iCalendar
-        var ical = "BEGIN:VCALENDAR\n"+
-        "VERSION:2.0\n"+
-        "PRODID:-Rotary/D"+Const.DISTRICT_ID+"\n"+
-        "BEGIN:VEVENT\n"+
-        "UID:"+meeting.guid+"\n"+
-        "DTSTAMP:"+DateTime.Now.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
-        "DTSTART:"+meeting.dtstart.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
-        "DTEND:"+meeting.dtend.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
-        "SUMMARY:"+meeting.name+"\n"+
-        "DESCRIPTION:"+meeting.name+" "+(meeting.statutory == Const.YES ? " (Reunion statutaire)" :"") +"\n"+
-        "LOCATION:"+club.name+"\n"+
-        "END:VEVENT\n"+
-        "END:VCALENDAR";
+        var ical = "BEGIN:VCALENDAR"+Environment.NewLine+
+        "PRODID:-//Rotary//D"+Const.DISTRICT_ID+"//FR"+Environment.NewLine+
+        "VERSION:2.0"+Environment.NewLine+
+
+         //"CALSCALE:GREGORIAN"+Environment.NewLine+
+         "BEGIN:VEVENT"+Environment.NewLine+
+         "CLASS:PUBLIC"+Environment.NewLine+
+         "CREATED:"+meeting.dtlastupdate.ToUniversalTime().ToString("yyyyMMddTHHmm00Z")+""+Environment.NewLine+
+         "DESCRIPTION:Pour voir le détail de la réunion : \\n"+Const.DISTRICT_URL+"/oukikan?m="+link+Environment.NewLine+
+         "LAST-MODIFIED:"+meeting.dtlastupdate.ToUniversalTime().ToString("yyyyMMddTHHmm00Z")+""+Environment.NewLine+
+         "PRIORITY:5"+Environment.NewLine+
+         "SEQUENCE:0"+Environment.NewLine+
+         "SUMMARY:"+(meeting.name).Replace(Environment.NewLine, "\\n")+""+Environment.NewLine+
+         "TRANSP:OPAQUE"+Environment.NewLine+
+         "UID:"+meeting.guid.ToString()+""+Environment.NewLine+
+         "DTSTAMP:"+meeting.dtlastupdate.ToUniversalTime().ToString("yyyyMMddTHHmm00Z")+""+Environment.NewLine+
+         //"DTSTART:TZID=Romance Standard Time:"+meeting.dtstart.ToUniversalTime().ToString("yyyyMMddTHHmm00")+""+Environment.NewLine+
+         //"DTEND:TZID=Romance Standard Time:"+meeting.dtend.ToUniversalTime().ToString("yyyyMMddTHHmm00")+""+Environment.NewLine+
+         "DTSTART:"+meeting.dtstart.ToUniversalTime().ToString("yyyyMMddTHHmm00Z")+""+Environment.NewLine+
+         "DTEND:"+meeting.dtend.ToUniversalTime().ToString("yyyyMMddTHHmm00Z")+""+Environment.NewLine+
+         
+         "BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nTRIGGER:-PT15M\r\nEND:VALARM\r\nEND:VEVENT\r\nBEGIN:VTIMEZONE\r\n"+
+
+         "CATEGORIES:Rotary"+Environment.NewLine+
+         "LOCATION:"+club.name+""+Environment.NewLine+
+         "URL:"+Const.DISTRICT_URL+"/oukikan?m="+link+Environment.NewLine+
+         "END:VEVENT"+Environment.NewLine+
+
+
+        //"BEGIN:VTIMEZONE"+Environment.NewLine+
+        //"TZID:Romance Standard Time"+Environment.NewLine+
+        //"TZNAME:Paris\\, Madrid"+Environment.NewLine+
+        //"BEGIN:STANDARD"+Environment.NewLine+
+        //"TZOFFSETTO:+0100"+Environment.NewLine+
+        //"TZOFFSETFROM:+0100"+Environment.NewLine+
+        //"END:STANDARD"+Environment.NewLine+
+        //"END:VTIMEZONE"+Environment.NewLine+
+
+
+
+       //"URL:"+Const.DISTRICT_URL+Const.MEDIA_DOWNLOAD_URL + "?id=" + guidexport+Environment.NewLine+
+        "END:VCALENDAR"+Environment.NewLine;
+
+        // ical="BEGIN:VCALENDAR\r\nPRODID:-//SmarterTools SmarterMail//NONSGML ical.net//EN\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nCLASS:PUBLIC\r\nCREATED:20250623T091155Z\r\nDESCRIPTION:\r\nDTEND;TZID=Romance Standard Time:20250624T163000\r\nDTSTAMP:20250623T091155Z\r\nDTSTART;TZID=Romance Standard Time:20250624T153000\r\nLAST-MODIFIED:20250623T091155Z\r\nPRIORITY:5\r\nSEQUENCE:0\r\nSUMMARY:rdv Matthieu FOGERAN\\n\\nIngénieur Commercial\\n\\n \\n \t04 84 47 50 0\r\n 0\\n\\n \\n \t06 46 56 90 31\\n\\n\r\nTRANSP:OPAQUE\r\nUID:d2414bd9-1a87-428a-b92d-a1ae9002181d\r\nX-MICROSOFT-CDO-ALLDAYEVENT:FALSE\r\nX-MICROSOFT-CDO-BUSYSTATUS:BUSY\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:Reminder\r\nTRIGGER:-PT15M\r\nEND:VALARM\r\nEND:VEVENT\r\nBEGIN:VTIMEZONE\r\nTZID:Romance Standard Time\r\nBEGIN:STANDARD\r\nDTSTART:19701025T030000\r\nRRULE:FREQ=YEARLY;BYDAY=-1SU;BYHOUR=3;BYMINUTE=0;BYMONTH=10\r\nTZNAME:Paris\\, Madrid\r\nTZOFFSETFROM:+0200\r\nTZOFFSETTO:+0100\r\nEND:STANDARD\r\nBEGIN:DAYLIGHT\r\nDTSTART:19700329T020000\r\nRRULE:FREQ=YEARLY;BYDAY=-1SU;BYHOUR=2;BYMINUTE=0;BYMONTH=3\r\nTZNAME:Paris\\, Madrid (heure d’été)\r\nTZOFFSETFROM:+0100\r\nTZOFFSETTO:+0200\r\nEND:DAYLIGHT\r\nEND:VTIMEZONE\r\nEND:VCALENDAR\r\n";
 
         media.content = System.Text.Encoding.UTF8.GetBytes(ical);
-        media.content_mime = "text/calendar";
-        media.content_type = media.content_mime ;
+        media.content_mime = "text/calendar; charset=utf-8";
+        media.content_type = media.content_mime;
         media.content_size=media.content.Length;
         media.filename = ""+meeting.guid+".ics";
         media.name = media.filename;
 
-        string guidexport = Guid.NewGuid().ToString();
-        Session[guidexport] = media;
-        Response.Redirect(Const.MEDIA_VIEW_URL + "?id=" + guidexport+"&filename="+media.filename);
+
+        HttpContext.Current.Application[guidexport] = media;
+        Response.Redirect(Const.DISTRICT_URL+Const.MEDIA_DOWNLOAD_URL + "?id=" + guidexport);
         return;
     }
 
@@ -171,7 +203,7 @@
             </script>
             <a target="_blank" href="/oukikan?m=@link&export=true" class="btn btn-link" title="Imprimer"><i class="fa fa-table"></i> Export Excel</a>
             <a href="#" onclick="print()" class="btn btn-link" title="Imprimer"><i class="fa fa-print"></i> Imprimer</a>
-            <a target="_blank" href="/oukikan?m=@link&calendar=true" class="btn btn-link" title="Ajouter au calendrier"><i class="fa fa-calendar"></i> Ajout Calendrier</a>
+            <a href="/oukikan?m=@link&calendar=true" class="btn btn-link" title="Ajouter au calendrier"><i class="fa fa-calendar"></i> Ajout Calendrier</a>
         }
     </div>
 

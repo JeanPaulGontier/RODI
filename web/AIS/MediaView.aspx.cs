@@ -25,8 +25,8 @@ public partial class AIS_MediaView : System.Web.UI.Page
             Response.Expires = 0;
             Response.Cache.SetCacheability(HttpCacheability.Public);
 
-
-            Response.AppendHeader("Content-Disposition", "inline; filename=" + media.name);
+            Response.AddHeader("content-length", "" + media.content.Length);
+            Response.AddHeader("content-disposition", "inline; filename=" + media.name);
             Response.ContentType = media.content_type;
             Response.BinaryWrite(media.content);
             Response.Flush();
@@ -47,8 +47,8 @@ public partial class AIS_MediaView : System.Web.UI.Page
             Response.Expires = 0;
             Response.Cache.SetCacheability(HttpCacheability.Public);
 
-
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + media.name);
+            Response.AddHeader("content-length", "" + media.content.Length);
+            Response.AddHeader("content-disposition", "attachment; filename=" + media.name);
             Response.ContentType = media.content_type;
             Response.BinaryWrite(media.content);
             Response.Flush();
