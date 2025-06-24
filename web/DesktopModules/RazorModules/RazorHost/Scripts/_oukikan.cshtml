@@ -17,10 +17,12 @@
 
 
 
-
+    var CDV = Yemon.dnn.Functions.CDV;
 
 
     bool print = !("" + Request["print"]).Equals("");
+    bool calendar = !("" + Request["calendar"]).Equals("");
+    bool export = ("" + Request["export"]) == "true";
 
     string link = "" + Request["m"];
     if (link == "")
@@ -75,7 +77,7 @@
 
 
 
-    if (("" + Request["export"]) == "true")
+    if (export)
     {
         DataTable tableexport = Yemon.dnn.DataMapping.ExecSql(new SqlCommand("SELECT firstname AS 'Prenom',lastname as 'Nom',comment as 'Commentaire',presence as 'Presence',dtlastupdate as 'Date' FROM ais_meetings_users WHERE meetingguid='" + meeting.guid + "' ORDER BY lastname,firstname"));
         List<DataTable> tables = new List<DataTable>();
@@ -85,6 +87,37 @@
         string guidexport = Guid.NewGuid().ToString();
         Session[guidexport] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guidexport);
+        return;
+    }
+    if (calendar)
+    {
+        Media media = new Media();
+
+        // Format iCalendar
+        var ical = "BEGIN:VCALENDAR\n"+
+        "VERSION:2.0\n"+
+        "PRODID:-Rotary/D"+Const.DISTRICT_ID+"\n"+
+        "BEGIN:VEVENT\n"+
+        "UID:"+meeting.guid+"\n"+
+        "DTSTAMP:"+DateTime.Now.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
+        "DTSTART:"+meeting.dtstart.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
+        "DTEND:"+meeting.dtend.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'")+"\n"+
+        "SUMMARY:"+meeting.name+"\n"+
+        "DESCRIPTION:"+meeting.name+" "+(meeting.statutory == Const.YES ? " (Reunion statutaire)" :"") +"\n"+
+        "LOCATION:"+club.name+"\n"+
+        "END:VEVENT\n"+
+        "END:VCALENDAR";
+
+        media.content = System.Text.Encoding.UTF8.GetBytes(ical);
+        media.content_mime = "text/calendar";
+        media.content_type = media.content_mime ;
+        media.content_size=media.content.Length;
+        media.filename = ""+meeting.guid+".ics";
+        media.name = media.filename;
+
+        string guidexport = Guid.NewGuid().ToString();
+        Session[guidexport] = media;
+        Response.Redirect(Const.MEDIA_VIEW_URL + "?id=" + guidexport+"&filename="+media.filename);
         return;
     }
 
@@ -138,6 +171,7 @@
             </script>
             <a target="_blank" href="/oukikan?m=@link&export=true" class="btn btn-link" title="Imprimer"><i class="fa fa-table"></i> Export Excel</a>
             <a href="#" onclick="print()" class="btn btn-link" title="Imprimer"><i class="fa fa-print"></i> Imprimer</a>
+            <a target="_blank" href="/oukikan?m=@link&calendar=true" class="btn btn-link" title="Ajouter au calendrier"><i class="fa fa-calendar"></i> Ajout Calendrier</a>
         }
     </div>
 

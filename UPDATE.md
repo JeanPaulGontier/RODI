@@ -16,6 +16,8 @@
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 
+- ajout d'un lien pour ajouter une réunion au calendrier (format ical)
+
 ###### 23/06/2025 
 - correction bug de sauvegarde du blockcontentclub apparu depuis maj du 18/06
 
