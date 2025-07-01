@@ -30,7 +30,7 @@ public class Compta
         public decimal AV { get; set; } // prixDeLAperitifVisiteur
         
         public decimal MC { get; set; } // montantCotisation
-        public decimal MD {  get; set; } // montantCotisationDipenseAssiduite
+        public decimal CR {  get; set; } // montantCotisationReduite
 
 
 
