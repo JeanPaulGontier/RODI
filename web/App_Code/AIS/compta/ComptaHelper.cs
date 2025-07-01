@@ -65,6 +65,7 @@ using System;
 using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Telerik.Web;
 using Yemon.dnn.SIPro;
 
 /// <summary>
@@ -81,6 +82,8 @@ public class ComptaHelper
         return liste;
     }
 
+    
+
     public static Compta.Parametres GetParametres(int cric)
     {
         var item = Yemon.dnn.Helpers.GetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaParametres", 0);
@@ -92,6 +95,18 @@ public class ComptaHelper
     public static void SetParametres(int cric, int userid, Compta.Parametres parametres)
     {
         Yemon.dnn.Helpers.SetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaParametres", Yemon.dnn.Functions.Serialize(parametres), "" + userid, keephistory: false);
+    }
+
+    public static Compta.Cotisations GetCotisations(int cric)
+    {
+        var item = Yemon.dnn.Helpers.GetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaCotisations", 0);
+        if (item == null) return new Compta.Cotisations();
+        return Yemon.dnn.Functions.Deserialize<Compta.Cotisations>("" + item);
+    }
+
+    public static void SetCotisations(int cric, int userid, Compta.Cotisations parametres)
+    {
+        Yemon.dnn.Helpers.SetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaCotisations", Yemon.dnn.Functions.Serialize(parametres), "" + userid, keephistory: false);
     }
 
 
@@ -107,14 +122,19 @@ public class ComptaHelper
         return l;
     }
 
-    public static int ProductionClubFacture(Guid guid, bool forceprod=false)
+    public static int ProductionClubFacture(Guid guid, bool forceprod = false, SqlConnection conn = null,SqlTransaction trans=null)
     {
+        bool localConn = conn==null;
         try {
+            if (localConn)
+            {
+                conn = Yemon.dnn.DataMapping.GetOpenedConn();
+                trans = conn.BeginTransaction();
+            }
 
-       
             var sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "c_elements where guid=@guid");
             sql.Parameters.AddWithValue("guid", guid);
-            var facture = Yemon.dnn.DataMapping.ExecSqlFirst<Compta.Element>(sql);
+            var facture = Yemon.dnn.DataMapping.ExecSqlFirst<Compta.Element>(sql,conn, trans);
             if (facture == null)
                 return 0;
 
@@ -122,13 +142,11 @@ public class ComptaHelper
 
             sql = new SqlCommand("select id as idprod from sip_prod where instance_name='clubfacture' and instance=@instance");
             sql.Parameters.AddWithValue("instance", guid);
-            int.TryParse("" + Yemon.dnn.DataMapping.ExecSqlScalar(sql), out idprod);
+            int.TryParse("" + Yemon.dnn.DataMapping.ExecSqlScalar(sql, conn, trans), out idprod);
 
             if (forceprod || idprod == 0)
             {
-                var conn = Yemon.dnn.DataMapping.GetOpenedConn();
-                var trans = conn.BeginTransaction();
-
+                
                 if (idprod != 0)
                 {
                     SIPro.DeleteProduction(Yemon.dnn.Functions.GetPortalId(), idprod,conn,trans);
@@ -158,22 +176,28 @@ public class ComptaHelper
                         throw new Exception("Erreur creation lignes club facture");
                 }
 
-                trans.Commit();
-                conn.Close();
-
+                
                 var objets = new Dictionary<string, string>();
                 objets.Add("reference", "clubfacture:" + guid);
                 objets.Add("cric", "" + facture.cric);
-                idprod = SIPro.ProductionForce(
-                    Yemon.dnn.Functions.GetPortalId(), 
-                    "document", 
-                    "ClubFacture", 
-                    "clubfacture", 
-                    "" + guid, 
-                    objets);
+                //idprod = SIPro.ProductionForce(
+                //    Yemon.dnn.Functions.GetPortalId(), 
+                //    "document", 
+                //    "ClubFacture", 
+                //    "clubfacture", 
+                //    "" + guid, 
+                //    objets);
+
+                idprod = SIPro.AddMessage(Yemon.dnn.Functions.GetPortalId(), 0, "clubfacture", "" + guid, Yemon.dnn.Functions.Serialize(objets),"json", conn, trans);
 
 
-                Yemon.dnn.DataMapping.ExecSqlNonQuery(new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "c_elements SET document_id="+idprod+" WHERE guid='"+guid+"'"));
+                if (localConn)
+                {
+                    trans.Commit();
+                    conn.Close();
+
+                }
+
             }
 
 
@@ -188,8 +212,14 @@ public class ComptaHelper
 
 
 
-
-    public static Compta.Membre.Compte GetMembreCompte(int nim, bool complet = false)
+    /// <summary>
+    /// Recupère l'historique du compte membre
+    /// </summary>
+    /// <param name="nim">nim du membre</param>
+    /// <param name="complet">les lignes détaillées sont incluses</param>
+    /// <param name="tous">les éléments provisoire sont inclus</param>
+    /// <returns></returns>
+    public static Compta.Membre.Compte GetMembreCompte(int nim, bool complet = false, bool tous=true)
     {
         var elements = Yemon.dnn.DataMapping.ExecSql<Compta.Element>(new SqlCommand("SELECT * FROM " + Const.TABLE_PREFIX + "c_elements WHERE nim=" + nim + " AND district_id=" + Const.DISTRICT_ID + " ORDER BY date"));
         var compte = new Compta.Membre.Compte();
@@ -199,33 +229,48 @@ public class ComptaHelper
         foreach (var element in elements)
         {
             var t = types.Find(tt => tt.id == element.type);
-            if (!t.recette)
-                compte.debit += element.montant;
-            else
-                compte.credit += element.montant;
-            compte.solde = compte.debit - compte.credit;
-
-            if (complet)
+            if(tous || (!(bool)element.provisoire && element.type!=2))
             {
-                var ligne = new Compta.Membre.Compte.Ligne();                
-                ligne.numero = element.numero;
-                ligne.provisoire = element.provisoire;
-                ligne.lettrage = element.lettrage;
-                ligne.guid = element.guid;
-                if (!t.recette)
-                    ligne.debit = element.montant;
-                else
-                    ligne.credit = element.montant;
-                ligne.libelle = element.libelle;
-                ligne.type = t.id;
-                ligne.typeLibelle = t.libelle;
-                ligne.date = element.date;
-                ligne.solde = solde + ligne.debit - ligne.credit;
-                ligne.document_id = element.document_id;
-                solde = ligne.solde;
-                compte.lignes.Add(ligne);
-            }
+                if (element.type!=2)
+                {
+                    if (!t.recette)
+                        compte.debit += element.montant;
+                    else
+                        compte.credit += element.montant;
 
+                    compte.solde = -compte.debit + compte.credit;
+                }
+
+                if (complet)
+                {
+                    var ligne = new Compta.Membre.Compte.Ligne();                
+                    ligne.numero = element.numero;
+                    ligne.provisoire = element.provisoire;
+                    ligne.lettrage = element.lettrage;
+                    ligne.guid = element.guid;
+                    if (!t.recette)
+                        ligne.debit = element.montant;
+                    else
+                        ligne.credit = element.montant;
+                    ligne.libelle = element.libelle;
+                    ligne.type = t.id;
+                    ligne.typeLibelle = t.libelle;
+                    ligne.date = element.date;
+                   
+                    ligne.document_id = element.document_id;
+                    if(element.type==2)
+                    { 
+                        ligne.solde = solde;                       
+                    }
+                    else
+                    { 
+                        ligne.solde = solde - ligne.debit + ligne.credit;
+                        solde = ligne.solde;
+                    }
+
+                    compte.lignes.Add(ligne);
+                }
+            }
         }
 
         //if(complet){

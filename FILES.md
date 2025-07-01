@@ -1,8 +1,26 @@
 ##### Modified files per commit
 ```txt
+```
+##### 01/07/2025
+```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
 AIS\MediaView.aspx.cs
 AIS\Download.aspx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\AppelCotisations.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\CompteMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\ComptesMembre.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureEdit.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureView.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\app.js
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Init.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Parametres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Appel-De-Cotisations.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Compta-Compte-Membre.cshtml
+App_Code\AIS\webapi\compta\ComptaController.cs
+App_Code\AIS\compta\Compta.cs
+App_Code\AIS\compta\ComptaHelper.cs
+
+
 ```
 ##### 23/06/2025
 ```txt

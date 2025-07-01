@@ -9,13 +9,13 @@
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club
 - choix du gabarit de mailing (message simple ou newsletter format RI)
 - champ date de fin d'inscription dans mail réunion
-- compta club v1
 - gestion de règles avancées pour la facturation district (D1680)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.)
 - gestion des contrats jeunes rotariens (D1700)
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 
+- compta club v1
 - ajout d'un lien pour ajouter une réunion au calendrier (format ical)
 
 ###### 23/06/2025 

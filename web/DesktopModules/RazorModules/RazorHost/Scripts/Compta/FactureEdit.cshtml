@@ -11,7 +11,8 @@
             <button type="button" class="btn btn-primary" v-on:click="valider()" :style="{visibility: isValid() ? 'visible' : 'hidden'}">Valider</button>
         </div>
         <div class="col-sm-7 text-center">
-            <span class="label label-info" v-if="facture.provisoire">Provisoire</span>
+            <span class="label label-info" style="line-height:2em" v-if="facture.provisoire">Provisoire</span><br/>
+            <span ><input id="createOnSave" type="checkbox" v-model="confirmOnSave" v-on:change="modified=true" /> <label for="createOnSave">Confirmer lors de la validation</label></span>
         </div>
         <div class="col-sm-2 text-right">
             <button type="button" v-on:click="deleteElement()" class="btn btn-sm btn-danger" title="Supprimer" v-if="guid!='new' && facture.provisoire">Supprimer</button>
@@ -127,7 +128,7 @@
                         <th class="col-sm-1 text-right">Montant</th>
                         <th class="col-sm-1 text-center">Qté</th>
                         <th class="col-sm-1 text-right">Total</th>
-                        <th style="width:20px"></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -191,7 +192,8 @@
                 },
                 modified: null,
                 membres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(membres)),
-                ligne: {}
+                ligne: {},
+                confirmOnSave: false
             }
         },
         methods: {
@@ -217,6 +219,7 @@
                     return;
                 this.facture.lignes = this.facture.lignes.filter(li => li !== this.ligne);
                 this.ligne = null;
+                this.recalc();
             },
             updateCoords() {
                 var m = this.membres.find(m => m.nim == this.facture.nim);
@@ -261,17 +264,38 @@
                 this.$router.push("/");
             },
             valider() {
+                if (this.confirmOnSave)
+                    if (!confirm("La confirmation de la facture, la rendra non modifiable, dois t'on continuer ?"))
+                        return;
                 this.facture.detail = JSON.stringify(this.facture.lignes);
                 _yemon[this.moduleid].service.postData("/SetFacture", {
                     context: this.context,
                     data: JSON.stringify(this.facture)
                 }, (r) => {
-                    this.$router.push("/");
+                    if (this.confirmOnSave) {
+
+                        _yemon[this.moduleid].service.postData("/Confirmer", {
+                            context: this.context,
+                            data: JSON.stringify([this.facture.guid]),
+                            nim: this.facture.nim
+
+                        }, (r) => {
+                            this.$router.push("/");
+                        }, (e) => {
+                            toastr["error"]("Erreur : " + e.response.data.Message);
+                        }
+                        )
+
+                    }
+                    else {
+                        this.$router.push("/");
+                    }
+
 
                 }
-                    //, (e) => {
-                    //toastr["error"]("Erreur : " + e.response.data.Message);
-                    //}
+                , (e) => {
+                toastr["error"]("Erreur : " + e.response.data.Message);
+                }
                 )
             },
             getFacture() {

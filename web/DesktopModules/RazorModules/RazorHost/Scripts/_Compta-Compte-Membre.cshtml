@@ -18,7 +18,7 @@
         <div class="alert alert-warning">Il faut être connecté en tant que membre pour avoir accès au compte</div>
         return;
     }
-    var compte = ComptaHelper.GetMembreCompte(membre.nim, complet: true);
+    var compte = ComptaHelper.GetMembreCompte(membre.nim, complet: true, tous: false);
 
     bool haslignes=false;
 
@@ -29,15 +29,7 @@
         {
             haslignes = true;
         }
-        //if(i==0)
-        //{
-        //    l.solde = -l.debit + l.credit;
-        //}
-        //else
-        //{
-        //    l.solde = compte.lignes[i - 1].solde - l.debit + l.credit;
-        //}
-
+        
     }
 
     if (!haslignes)
@@ -46,17 +38,33 @@
     }
     else
     {
-        <table class="table table-striped table-hover">
-        <tbody>
+<div class="table-responsive">
+    @if (compte.solde<0)
+    {
+        <div class="alert alert-danger">Votre compte est débiteur, vous devez au club @Nombre(Math.Abs(compte.solde), true)&nbsp;€</div>
+    }
+    else if (compte.solde==0)
+    {
+        <div class="alert alert-info">Votre compte est soldé, vous ne devez rien au club</div>
+    }
+    else if (compte.solde>0)
+    {
+        <div class="alert alert-success">Vôtre compte est créditeur de @Nombre(compte.solde, true)&nbsp;€, vous ne devez rien au club</div>
+    }
+    <h2>Historique</h2>
+    <table class="table table-striped table-hover">
+        <thead>
             <tr>
                 <th class="col-sm-1">Date</th>
                 <th class="col-sm-2">Type</th>
-                <th class="col-sm-3">Libelle</th>
+                <th class="col-sm-3">Libellé</th>
                 <th class="col-sm-2 text-right">Débit</th>
                 <th class="col-sm-2 text-right">Crédit</th>
                 <th class="col-sm-2 text-right">Solde</th>
 
             </tr>
+        </thead>
+        <tbody>
             @foreach (var l in compte.lignes)
             {
                 if (!(bool)l.provisoire)
@@ -66,7 +74,7 @@
                         {
                             Media media = new Media()
                             {
-                                filename = l.typeLibelle + "-" + l.numero + ".pdf",
+                                filename = Functions.MakeValidFileName(l.typeLibelle + "-" + membre.surname+"-"+membre.name+"-"+ l.numero + ".pdf"),
                                 content_id = l.document_id,
                                 content_mime = "application/pdf",
 
@@ -75,12 +83,13 @@
                             Request.RequestContext.HttpContext.Application[guid] = media;
 
                             <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.date.ToShortDateString()</a></td>
-                            <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">
-                                @l.typeLibelle
-                                @if (l.numero > 0)
-                                {
-                                    @l.numero
-                                }
+                            <td>
+                                <a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">
+                                    @l.typeLibelle
+                                    @if (l.numero > 0)
+                                    {
+                                        @l.numero
+                                    }
                                 </a>
                             </td>
                             <td><a href="~/AIS/ServeDocument.ashx?guid=@guid" target="_blank">@l.libelle</a></td>
@@ -103,11 +112,12 @@
                             <td class="text-right">@Nombre(l.credit)</td>
                             <td class="text-right">@Nombre(l.solde, true)</td>
                         }
-                        </tr>
-                    }
+                    </tr>
                 }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
+</div>
     }
 }
 @functions{ 

@@ -9,8 +9,9 @@ using System.Web;
 public class Compta
 {
     public class Domaine {     
+        public int id { get; set; } 
         public string libelle { get; set; }
-        public int val { get; set; }
+        public string val { get; set; }
     }
 
     public class Parametres {
@@ -19,12 +20,21 @@ public class Compta
         public int jourCotisationAnnuelle { get; set; }
         
         public bool repasInclus {  get; set; }
-        public decimal prixDuRepas { get; set; }
-        public decimal prixDeLAperitif { get; set; }
-        public decimal prixDuRepasVisiteur { get; set; }
-        public decimal prixDeLAperitifVisiteur { get; set; }
-        public decimal montantCotisation { get; set; }
-        public decimal montantCotisationDipenseAssiduite {  get; set; }
+        public decimal DM { get; set; } // prixDuDejeuner
+        public decimal DV { get; set; } // prixDuDejeunerVisiteur
+        
+        public decimal RM { get; set; } // prixDuRepas
+        public decimal RV { get; set; } // prixDuRepasVisiteur
+                
+        public decimal AM { get; set; } // prixDeLAperitif
+        public decimal AV { get; set; } // prixDeLAperitifVisiteur
+        
+        public decimal MC { get; set; } // montantCotisation
+        public decimal MD {  get; set; } // montantCotisationDipenseAssiduite
+
+
+
+        public string piedDePageFacture { get; set; }
     }
 
     public class Membre {
@@ -144,5 +154,46 @@ public class Compta
             public bool recette { get; set; }
             public bool membre { get; set; }
         }
-    }    
+    }
+
+    // paramètres de l'appel de cotisations
+    public class Cotisations 
+    {
+        public string libelle { get; set; }
+        
+        
+        public bool utiliserDonneesReunions { get; set; }
+
+        public List<Membre> membres { get; set; }
+
+
+        public Cotisations() {
+            membres = new List<Membre>();
+        }
+        public class Ligne
+        {
+            public string type { get; set; }
+            public string libelle { get; set; }
+            public decimal montant { get; set; }
+            public decimal qte { get; set; }
+        }
+
+        public class Membre {
+            public decimal total { get; set; }
+
+            public Membre() 
+            {
+                lignes = new List<Ligne>();
+            }
+
+            public bool appel { get; set; }
+            public int nim {  get; set; }
+            public string prenom { get; set; }
+            public string nom { get; set; }
+            public string libelle { get; set; }            
+            public bool confirmation { get; set; }
+            public List<Ligne> lignes { get; set; }
+        }
+    }
+
 }

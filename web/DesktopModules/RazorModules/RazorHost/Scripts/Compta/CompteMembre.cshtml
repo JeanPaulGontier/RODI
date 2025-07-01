@@ -1,7 +1,7 @@
 ﻿<script type="text/x-template" id="compta-comptemembre-template">
     <div class="row">
         <div class="form-group  col-sm-12">
-            <div class="col-sm-7">
+            <div class="col-sm-5">
                 <button type="button" class="btn btn-default" v-on:click="retour()">Retour</button>&nbsp;
                 <button type="button" class="btn btn-warning" v-on:click="ajouter(5)"><i class="fa fa-plus"></i> Paiement</button>&nbsp;
                 <button type="button" class="btn btn-warning" v-on:click="ajouter(4)"><i class="fa fa-plus"></i> Acompte</button>&nbsp;
@@ -12,8 +12,14 @@
                 <button type="button" class="btn btn-success" v-if="confirmable" v-on:click="confirmer()"><i class="fa fa-check"></i> Confirmer</button>&nbsp;
 
             </div>
-            <div class="col-sm-2 text-right">
-                Solde : {{nombre(membre.compte.solde,true)}} €
+            <div v-if="membre.compte.solde>0" class="col-sm-4 text-right text-success">
+                Compte créditeur de {{nombre(membre.compte.solde,true)}} €
+            </div>
+            <div v-if="membre.compte.solde<0" class="col-sm-4 text-right text-danger">
+                Compte débiteur de {{nombre(Math.abs(membre.compte.solde),true)}} €
+            </div>
+            <div v-if="membre.compte.solde==0" class="col-sm-4 text-right text-info">
+                Compte soldé
             </div>
         </div>
        
@@ -21,35 +27,36 @@
     <div v-if="membre.compte.lignes.length==0">
         <div class="panel-body">Aucun détail pour le moment...</div>
     </div>
-    <table class="table table-striped table-hover" v-if="membre.compte.lignes.length>0">
-        <tbody>
-            <tr>
-                <th class="col-sm-1">Date</th>
-                <th class="col-sm-2">Type</th>
-                <th class="col-sm-3">Libelle</th>
-                <th class="col-sm-2 text-right">Débit</th>
-                <th class="col-sm-2 text-right">Crédit</th>
-                <th class="col-sm-2 text-right">Solde</th>
-                <th>
-                    <input type="checkbox" v-if="provisoires && !all" v-on:change="select(true)"  />
-                    <input type="checkbox" v-if="provisoires && all" v-on:change="select(false)" checked />
-                </th>
-            </tr>
-            <tr v-for="l in membre.compte.lignes" >
-                <td v-on:click="view(l)">{{date(l.date)}}</td>
-                <td v-on:click="view(l)">
-                    <span class="label label-info" v-if="l.provisoire" title="Provisoire">P</span>
-                    {{l.typeLibelle}} {{num(l.numero)}}
-                </td>
-                <td v-on:click="view(l)">{{l.libelle}}</td>
-                <td v-on:click="view(l)" class="text-right">{{nombre(l.debit,false)}}</td>
-                <td v-on:click="view(l)" class="text-right">{{nombre(l.credit,false)}}</td>
-                <td v-on:click="view(l)" class="text-right">{{nombre(l.solde,true)}}</td>
-                <td><input type="checkbox" v-if="l.provisoire || !l.lettrage" v-on:change="checkAll(l)" :value="l.guid" v-model="selection" /></td>
-            </tr>
-        </tbody>
-    </table>
-
+    <div class="table-responsive">
+        <table class="table table-striped table-hover" v-if="membre.compte.lignes.length>0">
+            <tbody>
+                <tr>
+                    <th class="col-sm-1">Date</th>
+                    <th class="col-sm-2">Type</th>
+                    <th class="col-sm-3">Libelle</th>
+                    <th class="col-sm-2 text-right">Débit</th>
+                    <th class="col-sm-2 text-right">Crédit</th>
+                    <th class="col-sm-2 text-right">Solde</th>
+                    <th>
+                        <input type="checkbox" v-if="provisoires && !all" v-on:change="select(true)" />
+                        <input type="checkbox" v-if="provisoires && all" v-on:change="select(false)" checked />
+                    </th>
+                </tr>
+                <tr v-for="l in membre.compte.lignes">
+                    <td v-on:click="view(l)">{{date(l.date)}}</td>
+                    <td v-on:click="view(l)">
+                        <span class="label label-info" v-if="l.provisoire" title="Provisoire">P</span>
+                        {{l.typeLibelle}} {{num(l.numero)}}
+                    </td>
+                    <td v-on:click="view(l)">{{l.libelle}}</td>
+                    <td v-on:click="view(l)" class="text-right">{{nombre(l.debit,false)}}</td>
+                    <td v-on:click="view(l)" class="text-right">{{nombre(l.credit,false)}}</td>
+                    <td v-on:click="view(l)" class="text-right">{{nombre(l.solde,true)}}</td>
+                    <td><input type="checkbox" v-if="l.provisoire || !l.lettrage" v-on:change="checkAll(l)" :value="l.guid" v-model="selection" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 </script>
 <script>
@@ -89,7 +96,7 @@
                     return -1;
                 var total = 0;
                 var containFacture = false;
-                debugger
+
                 this.membre.compte.lignes.forEach(l => {
                     if (this.selection.find(s => s == l.guid)) {
                         total = total + l.credit - l.debit;

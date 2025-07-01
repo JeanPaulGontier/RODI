@@ -27,5 +27,6 @@
     });
 
     app.use(router);
+    
     app.mount('#' + appid);
 }

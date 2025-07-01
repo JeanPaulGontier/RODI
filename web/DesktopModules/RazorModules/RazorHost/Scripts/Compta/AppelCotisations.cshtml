@@ -1,0 +1,231 @@
+﻿@using AIS;
+@{
+    int cric = Functions.CurrentCric;
+    var parametres = ComptaHelper.GetParametres(cric);
+    if(parametres==null)
+    {
+        parametres=new Compta.Parametres();
+        ComptaHelper.SetParametres(cric,0, parametres);
+    }
+
+    var cotisations = ComptaHelper.GetCotisations(cric);
+    if (cotisations==null)
+    {
+        cotisations = new Compta.Cotisations();
+        cotisations.libelle = "Appel cotisation "+parametres.cotisation;
+    }
+    var factureLignes = ComptaHelper.GetDomaine("FacturesLignes");
+
+    var members = DataMapping.ListMembers(cric).Where(m=>m.honorary_member!=Const.YES);
+    // ajout des nouveaux membres
+    foreach(var m in members)
+    {
+        if (!cotisations.membres.Any(me =>  me.nim ==m.nim))
+        {
+            var cm = new Compta.Cotisations.Membre
+            {
+                nim = m.nim,
+                nom = m.surname,
+                prenom = m.name,
+                confirmation = true,
+                appel = true,
+            };
+            foreach(var fl in factureLignes)
+            {
+                cm.lignes.Add(new Compta.Cotisations.Ligne
+                {
+                    type = fl.val,
+                    libelle = fl.libelle,
+                    montant=0,
+                    qte=1
+                });
+            }
+            cotisations.membres.Add(cm);
+
+        }
+    }
+    // suppression des membres radiés
+    for(int i=cotisations.membres.Count-1; i>=0;i--)
+    {
+        var cm = cotisations.membres[i];
+        if (!members.Any(me => me.nim ==cm.nim))
+        {
+            cotisations.membres.RemoveAt(i);
+        }
+    }
+    cotisations.membres = cotisations.membres.OrderBy(m => m.nom).ToList();
+
+
+}
+<script type="text/x-template" id="compta-cotisations-template">
+    <div class="form-group">
+        <button type="button" v-on:click="setParametres()" v-if="modified" class="btn btn-primary">Enregistrer</button>
+        <button type="button" v-if="!modified" class="btn btn-default disabled">Enregistrer</button>
+        &nbsp;
+        <button type="button" class="btn btn-warning" v-on:click="initFromParams()">Initialiser à partir des paramètres</button>
+        &nbsp;
+        <span><input id="createOnSave" type="checkbox" v-model="createOnSave" v-on:change="modified=true" /> <label for="createOnSave">Créer les factures à l'enregistrement</label></span>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-2">Libellé facture :</div>
+        <div class="col-sm-10">
+            <input type="text" v-model="cotisations.libelle" class="form-control" />
+        </div>
+    </div>
+   
+    <div class="table-responsive ">
+        <table class="table table-striped small">
+            <thead>
+                <tr>
+                    <th>Nim</th>
+                    <th>Nom / Prénom</th>
+                    <th class="text-center">Appel</th>
+                    <th class="text-center">Confirmation</th>
+                    <th class="text-center" v-for="l in factureLignes" :title="l.libelle">
+                        {{l.val}}
+                    </th>
+                    <th  class="text-right">
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="m in cotisations.membres">
+                    <td>{{m.nim}}</td>
+                    <td>{{m.nom}} {{m.prenom}}</td>
+                    <td class="text-center"><input type="checkbox" class="input-sm" v-model="m.appel" /></td>
+                    <td class="text-center"><input type="checkbox" class="input-sm" v-model="m.confirmation" /></td>
+                    <td class="text-center" v-for="l in m.lignes">
+                        <input type="number" class="input-sm" step="0.01" v-model="l.montant" :title="l.libelle" style="width:50px" v-on:change="calculCotisations" /><input type="number" class="input-sm" step="0.01" v-model="l.qte" title="Quantité" style="width:50px"  v-on:change="calculCotisations" />
+                    </td>
+                    <td class="text-right">
+                        {{m.total}}&nbsp;€
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>
+<script>
+    const ComptaCotisations = {
+        template: '#compta-cotisations-template',
+        name: 'ComptaCotisations',
+        props: {
+            moduleid: Number,
+            context: String
+        },
+        data: function () {
+            return {
+                cotisationTypes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(ComptaHelper.GetDomaine("PeriodiciteCotisation"))),
+                parametres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(parametres)),
+                cotisations: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(cotisations)),
+                factureLignes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(factureLignes)),
+
+                modified: null,
+                createOnSave: false,
+
+                editorPlugins: [
+                    'autoresize advlist autolink lists link charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code directionality template textpattern'
+                ],
+
+                editorToolbar: 'undo redo | table | bold italic underline strikethrough blockquote | alignleft aligncenter alignright alignjustify | link | bullist numlist | removeformat',
+                editorOptions: {
+                    //height: 200,
+                    relative_urls: false,
+                    document_base_url: '/',
+                    remove_script_host: false,
+                    images_upload_url: this.serviceurl,
+                    automatic_uploads: false,
+                    menubar: false,
+                    statusbar: false,
+                    language: 'fr_FR',
+                    table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                    setup: (editor) => {
+                        editor.on('change keyup', () => {
+                            // Récupère le contenu à chaque changement
+                            //this.content = editor.getContent();
+                            this.modified = true;
+                        });
+                    }
+                }
+
+            }
+        },
+        methods: {
+            initFromParams() {
+                if (confirm("L'initialisation à partir des paramètres remplace toutes les valeurs, dois-t-on continuer ?")) {
+                    this.cotisations.libelle = "Appel de cotisation " + this.parametres.cotisation;
+                    this.cotisations.membres.forEach(m => {
+                        m.lignes.forEach(l => {
+                            l.montant = this.parametres[l.type];
+                            if (l.type == "MC") {
+                                l.qte = this.cotisationQte(this.parametres.cotisation);
+                            }
+                            else {
+                                l.qte = 0;
+                            }
+
+                        })
+                        
+                    });
+                   
+                    this.calculCotisations();
+                    this.modified = true;
+                }
+            },
+            calculCotisations() {
+                this.cotisations.membres.forEach(m => {
+                    m.total = 0;
+                    m.lignes.forEach(l => {
+                        m.total += l.montant * l.qte;
+
+                    })
+
+                });
+                this.modified = true;
+            },
+            cotisationQte(cotisation) {
+                var c = this.cotisationTypes.find(v => v.libelle == cotisation);
+                if (c)
+                    return c.val;
+                return 1;
+            },
+            setParametres() {
+                if (this.createOnSave) {
+                    if (!confirm("Les factures vont être créées après l'enregistrement, dois-t-on continuer ?")) {
+                        return;
+                    }
+                }
+                _yemon[this.moduleid].service.postData("/SetCotisations", {
+                    context: this.context,
+                    data: this.cotisations,
+                    createOnSave: this.createOnSave
+                }, (r) => {
+                    this.modified = false;
+                    if (this.createOnSave)
+                        window.location.href = "/espace-membre/mon-club/comptabilite/factures";
+                }, (e) => {
+                    toastr["error"](e);
+                });
+            }
+        },
+        mounted() {
+
+        },
+        watch: {
+            cotisations: {
+                handler() {
+                    if (this.modified == null) {
+                        this.modified = false;
+                        return;
+                    }
+                    this.modified = true;
+                },
+                deep: true
+            }
+        },
+    }
+</script>

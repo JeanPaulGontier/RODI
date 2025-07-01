@@ -1,8 +1,11 @@
 ﻿<script type="text/x-template" id="compta-factureview-template">
     <div class="row">
-        <div class="col-sm-3 ">
-            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;            
+        <div class="col-sm-12 ">
+            <button type="button" class="btn btn-default" v-on:click="cancel()">Retour</button>&nbsp;
+            <button v-if="facture.provisoire" type="button" class="btn btn-primary" v-on:click="modifier()">Modifier</button>
+            <button v-if="!facture.provisoire" type="button" class="btn btn-default" v-on:click="telecharger()"><i class="fa fa-download"></i> Télécharger en format PDF</button>
         </div>
+       
     </div>
     <div class="form-group  col-sm-12">
         <h3 v-if="facture.numero">Facture n°{{num(facture.numero)}}</h3>
@@ -29,7 +32,7 @@
         </div>
         <hr />
     </div>
-   
+
     <div >
         <div class="form-group col-sm-6 ">
             <div>
@@ -129,6 +132,17 @@
             },
             cancel() {
                 this.$router.push(this.returnurl);
+            },
+            modifier() {
+                window.location.href = "/espace-membre/mon-club/comptabilite/factures#/edit/" + this.facture.guid ;
+            },
+            telecharger() {
+                _yemon[this.moduleid].service.getData("/GetFactureDocument", {
+                    context: this.context,
+                    guid: this.guid
+                }, (r) => {
+                    window.location.href = r.data;
+                });
             },
             getFacture() {
                 _yemon[this.moduleid].service.getData("/GetFacture", {

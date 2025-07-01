@@ -60,19 +60,20 @@
 //If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy's public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
 
 #endregion Copyrights
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Runtime.Remoting.Contexts;
+using System.Runtime.Serialization;
 using System.Web;
 using System.Web.Http;
 using Yemon.dnn;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using System.Runtime.Remoting.Contexts;
-using System.Runtime.Serialization;
 
 namespace AIS.controller
 {
@@ -148,6 +149,93 @@ namespace AIS.controller
             }
             catch (Exception ee)
             {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public HttpResponseMessage SetCotisations(dynamic param)
+        {
+            try
+            {
+                if (!CheckRole()) return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                Compta.Cotisations cotisations = Yemon.dnn.Functions.Deserialize<Compta.Cotisations>("" + param["data"]);
+
+                int cric = 0;
+                int.TryParse("" + HttpContext.Current.Application[""+param["context"]], out cric);
+
+                if (cric == 0)
+                    return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+
+                bool createOnSave = (bool)param["createOnSave"];
+
+                ComptaHelper.SetCotisations(cric, UserInfo.UserID, cotisations);
+
+                if (createOnSave)
+                {
+                    var membres = DataMapping.ListMembers(cric);
+                    var conn = Yemon.dnn.DataMapping.GetOpenedConn();
+                    var trans = conn.BeginTransaction();
+
+                    foreach (var m in cotisations.membres)
+                    {
+                        if(m.appel)
+                        {
+                            var membre = membres.First(v => v.nim == m.nim && v.cric== cric);
+
+                            var facture = new Compta.Element();
+                            facture.guid = Guid.NewGuid();
+                            facture.type = 1;
+                            facture.libelle = cotisations.libelle;
+                            facture.date = DateTime.Now;
+                            facture.cric = cric;
+                            facture.nim = m.nim;
+                            facture.nom = membre.surname;
+                            facture.prenom = membre.name;
+                            facture.email = membre.email;
+                            facture.ad1 = membre.adress_1;
+                            facture.ad2 = membre.adress_2;
+                            facture.cp = membre.zip_code;
+                            facture.ville = membre.town;
+                            facture.pays = membre.country;                            
+                            facture.district_id = Const.DISTRICT_ID;
+                            facture.provisoire = !m.confirmation;
+                            facture.montant = m.total;
+                            var lignes = new List<Compta.Element.Ligne>();
+                            foreach(var l in m.lignes)
+                            {
+                                if (l.qte!=0)
+                                {
+                                    var ligne = new Compta.Element.Ligne();
+                                    ligne.libelle = l.libelle;
+                                    ligne.qte = l.qte;
+                                    ligne.montant = l.montant;
+                                    ligne.total = l.qte * l.montant;
+                                    lignes.Add(ligne);
+                                }
+                            }
+                            facture.lignes = lignes;
+                            if (!ComptaHelper.SetElement(facture, m.confirmation,conn,trans))
+                                throw new Exception("Erreur création facture "+m.nim+" "+m.nom+" "+m.prenom);
+                            if(m.confirmation)
+                                if(ComptaHelper.ProductionClubFacture((Guid)facture.guid,true, conn, trans)==0)
+                                    throw new Exception("Erreur production document facture "+m.nim+" "+m.nom+" "+m.prenom);
+                        }
+                    }
+
+                    trans.Commit();
+                    conn.Close();
+                
+                }
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
             }
         }
@@ -402,6 +490,52 @@ namespace AIS.controller
                     return Request.CreateResponse(HttpStatusCode.OK);
                 else
                     return Request.CreateResponse(HttpStatusCode.InternalServerError);
+
+            }
+            catch (Exception ee)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new HttpError(ee.Message));
+            }
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetFactureDocument(string context, Guid guid)
+        {
+            try
+            {
+                if (!CheckRole()) return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                int cric = 0;
+                int.TryParse("" + HttpContext.Current.Application[context], out cric);
+
+                if (cric == 0)
+                    return Request.CreateResponse(HttpStatusCode.NoContent);
+
+
+                var types = ComptaHelper.GetElementsTypes();
+                
+
+                var el = ComptaHelper.GetElement(cric, guid);
+                var l = types.FirstOrDefault(t => t.id==el.type);
+
+                string filename = Functions.MakeValidFileName(l.libelle + "-" + el.nom+"-"+el.prenom+"-"+ el.numero + ".pdf");
+
+
+                Media media = new Media()
+                {
+                    filename = filename,
+                    content_id = el.document_id,
+                    content_mime = "application/pdf",
+
+                };
+                string g = Guid.NewGuid().ToString();
+
+                HttpContext.Current.Application[g] = media;
+
+                
+                return Request.CreateResponse(HttpStatusCode.OK, "/AIS/ServeDocument.ashx?guid="+g);
 
             }
             catch (Exception ee)

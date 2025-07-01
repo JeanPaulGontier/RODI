@@ -1,19 +1,25 @@
 ﻿<script type="text/x-template" id="compta-comptemembre-template">
     <div class="row">
         <div class="form-group  col-sm-12">
-            <div class="col-sm-7">
+            <div class="col-sm-5">
                 <button type="button" class="btn btn-default" v-on:click="retour()">Retour</button>&nbsp;
                 <button type="button" class="btn btn-warning" v-on:click="ajouter(5)"><i class="fa fa-plus"></i> Paiement</button>&nbsp;
                 @*<button type="button" class="btn btn-warning" v-on:click="ajouter(4)"><i class="fa fa-plus"></i> Acompte</button>&nbsp;
-                <button type="button" class="btn btn-warning" v-on:click="ajouter(2)"><i class="fa fa-plus"></i> Note de crédit</button>&nbsp;*@
+            <button type="button" class="btn btn-warning" v-on:click="ajouter(2)"><i class="fa fa-plus"></i> Note de crédit</button>&nbsp;*@
             </div>
             <div class="col-sm-3 text-center">
                 <button type="button" class="btn btn-info" v-if="lettrageOk>=0" v-on:click="lettrage()"><i class="fa fa-link"></i> Lettrage</button>&nbsp;
                 <button type="button" class="btn btn-success" v-if="confirmable" v-on:click="confirmer()"><i class="fa fa-check"></i> Confirmer</button>&nbsp;
 
             </div>
-            <div class="col-sm-2 text-right">
-                Solde : {{nombre(membre.compte.solde,true)}} €
+            <div v-if="membre.compte.solde>0" class="col-sm-4 text-right text-success">
+                Compte créditeur de {{nombre(membre.compte.solde,true)}} €
+            </div>
+            <div v-if="membre.compte.solde<0" class="col-sm-4 text-right text-danger">
+                Compte débiteur de {{nombre(Math.abs(membre.compte.solde),true)}} €
+            </div>
+            <div v-if="membre.compte.solde==0" class="col-sm-4 text-right text-info">
+                Compte soldé
             </div>
         </div>
        
@@ -26,7 +32,7 @@
             <tr>
                 <th class="col-sm-1">Date</th>
                 <th class="col-sm-2">Type</th>
-                <th class="col-sm-4">Libelle</th>
+                <th class="col-sm-4">Libellé</th>
                 <th class="col-sm-1 text-right">Débit</th>
                 <th class="col-sm-1 text-right">Crédit</th>
                 <th class="col-sm-1 text-right">Solde</th>
@@ -91,7 +97,7 @@
                     return -1;
                 var total = 0;
                 var containFacture = false;
-                debugger
+
                 this.membre.compte.lignes.forEach(l => {
                     if (this.selection.find(s => s == l.guid)) {
                         total = total + l.credit - l.debit;
