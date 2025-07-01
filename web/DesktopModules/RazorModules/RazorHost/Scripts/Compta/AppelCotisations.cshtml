@@ -157,7 +157,7 @@
         methods: {
             initFromParams() {
                 if (confirm("L'initialisation à partir des paramètres remplace toutes les valeurs, dois-t-on continuer ?")) {
-                    this.cotisations.libelle = "Appel de cotisation " + this.parametres.cotisation;
+                    this.cotisations.libelle = "Appel de cotisation " + (this.parametres.cotisation ? this.parametres.cotisation:"");
                     this.cotisations.membres.forEach(m => {
                         m.lignes.forEach(l => {
                             l.montant = this.parametres[l.type];
