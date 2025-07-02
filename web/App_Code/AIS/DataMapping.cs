@@ -90,6 +90,7 @@ using DotNetNuke.Security;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections;
 using Dnn.PersonaBar.Users.Components;
+using Telerik.Web.UI.PivotGrid.Core.Totals;
 
 namespace AIS
 {
@@ -606,7 +607,8 @@ namespace AIS
                 }
                 else
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "orders ([id_payment],[cric],[club],[amount],[rule],[info_rule],[type_rule],[par_rule],[dt_rule],[dt],[transaction_id]) VALUES (@id_payment,@cric,@club,@amount,@rule,@info_rule,@type_rule,@par_rule,@dt_rule,@dt,@transaction_id)", conn, trans);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "orders ([id_payment],[cric],[club],[amount],[rule],[info_rule],[type_rule],[par_rule],[dt_rule],[dt],[transaction_id]) " +
+                                         "VALUES (@id_payment,@cric,@club,@amount,@rule,@info_rule,@type_rule,@par_rule,@dt_rule,@dt,@transaction_id) ", conn, trans);
                 }
                 sql.Parameters.AddWithValue("@id_payment", obj.id_payment);
                 sql.Parameters.AddWithValue("@cric", obj.cric);
@@ -620,14 +622,22 @@ namespace AIS
                 sql.Parameters.AddWithValue("@dt", obj.dt);
                 sql.Parameters.AddWithValue("@transaction_id", obj.transaction_id);
 
-                if (sql.ExecuteNonQuery() == 0)
-                    throw new Exception("Erreur mise a day commande : " + obj.id);
-
-                if (obj.id == 0)
+                if (obj.id!=0)
                 {
-                    sql = new SqlCommand("SELECT @@IDENTITY", conn, trans);
-                    obj.id = int.Parse("" + sql.ExecuteScalar());
+                    if (sql.ExecuteNonQuery() == 0)
+                        throw new Exception("Erreur mise a day commande : " + obj.id);
+
                 }
+                else
+                {
+                    obj.id = (int)sql.ExecuteScalar();
+                }
+
+                //if (obj.id == 0)
+                //{
+                //    sql = new SqlCommand("SELECT @@IDENTITY", conn, trans);
+                //    obj.id = int.Parse("" + sql.ExecuteScalar());
+                //}
 
                 sql = new SqlCommand("DELETE FROM " + Const.TABLE_PREFIX + "orders_details WHERE id_order=@id_order", conn, trans);
                 sql.Parameters.AddWithValue("id_order", obj.id);
@@ -5740,29 +5750,58 @@ namespace AIS
 
             List<string> d = new List<string>();
             int splitnb = (order.Details.Count + 1) / 2;
-            for (int i = 0; i < order.Details.Count; i++)
+            if(Const.DISTRICT_ID==1680)
             {
-                if (i < splitnb)
-                    d.Add(order.Details[i].wording);
-                else
-                    d[i - splitnb] += "\t" + order.Details[i].wording;
+              //  splitnb = (order.Details.Count ) / 2;
+            
+                for (int i = 0; i < order.Details.Count; i++)
+                {
+                    if (i < splitnb)
+                        d.Add(order.Details[i].wording);
+                    else
+                        d[i - splitnb] += "\t" + order.Details[i].wording;
+
+                }
+            }
+            else
+            {
+                for (int i = 0; i < order.Details.Count; i++)
+                {
+                    if (i < splitnb)
+                        d.Add(order.Details[i].wording);
+                    else
+                        d[i - splitnb] += "\t" + order.Details[i].wording;
+
+                }
+            }
+            string dd = "";
+
+            if(Const.DISTRICT_ID==1680)
+            {
+                dd+=order.Details[0].wording+"\t\t"+order.Details[0].amount.ToString("# ##0")+" €"+Environment.NewLine;
+
+                dd+="Cotisation semestrielle pour "+(order.Details.Count-1) + " membres :\t\t"+(order.amount-order.Details[0].amount).ToString("# ##0.00")+" €"+Environment.NewLine;
+                dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
+                dd+=Environment.NewLine;
+                for (int i = 1; i<d.Count; i++)
+                {
+                    var l = d[i];
+                    dd += l + Environment.NewLine;
+                }
 
             }
-
-            string dd = "";
-            foreach (string l in d)
-                dd += l + Environment.NewLine;
+            else
+            {
+                for (int i = 0; i<d.Count; i++)
+                {
+                    var l = d[i];
+                    dd += l + Environment.NewLine;
+                }
+            }
             if (dd.EndsWith(Environment.NewLine))
                 dd = dd.Substring(0, dd.Length - Environment.NewLine.Length);
             try { doc.Range.Bookmarks["detail"].Text = dd; }
             catch { }
-
-
-            //Aspose.Words.Tables.Table table = builder.StartTable();
-            //foreach (Aspose.Words.Tables.Row r in rows)
-            //    table.AppendChild(r);
-            //builder.EndTable();
-
 
 
             //doc.Save(@"c:\users\polo\desktop\test.docx");

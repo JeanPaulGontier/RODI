@@ -69,6 +69,7 @@ using System.Web.UI.WebControls;
 using AIS;
 using DotNetNuke.Entities.Modules;
 using System.Data;
+using System.Linq;
 
 
 public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModuleBase
@@ -447,7 +448,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 if (!String.IsNullOrEmpty(club.payment_method))
                     commande.rule_type = club.payment_method;
                 
-                foreach (Member membre in membres)
+                
+                
+                foreach (Member membre in membres.OrderBy(m=>m.surname))
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
@@ -460,6 +463,29 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 }
                 commande.amount = ToDouble(TXT_montant1.Text) * (commande.Details.Count- club.nb_free_of_charge);
 
+                if (Const.DISTRICT_ID==1680)
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = "Participation aux manifestations obligatoires";
+                    if(commande.Details.Count>40)
+                        detail.unitary = 900/2;
+                    else if (commande.Details.Count>30)
+                        detail.unitary = 720/2;
+                    else if (commande.Details.Count>20)
+                        detail.unitary = 540/2;
+                    else 
+                        detail.unitary = 360/2;
+
+                    detail.quantity = 1;
+                
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    commande.Details.Insert(0, detail);
+
+                    commande.amount+=detail.amount;
+                }
+
+                
 
                 if (DataMapping.UpdateOrder(commande))
                     TXT_Result.Text += "<br/>" + club.name + " commande pour " + membres.Count + " membres";

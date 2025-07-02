@@ -1,6 +1,12 @@
 ##### Modified files per commit
 ```txt
 ```
+##### 02/07/2025
+```txt
+App_Code\AIS\DataMapping.cs
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+
+```
 ##### 01/07/2025
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml

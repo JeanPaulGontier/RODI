@@ -15,6 +15,11 @@
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 
+###### 02/07/2025
+- changement de formalisme de n° de facture district maintenant le n° commence par 2 chiffres de l'année suivi de 4 chiffres
+- ajout spécificité de facturation district D1680
+
+###### 01/07/2025
 - compta club v1
 - ajout d'un lien pour ajouter une réunion au calendrier (format ical)
 
