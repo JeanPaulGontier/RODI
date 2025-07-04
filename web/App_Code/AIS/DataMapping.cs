@@ -5761,7 +5761,7 @@ namespace AIS
                     if (i < splitnb)
                         d.Add(l[i].wording);
                     else
-                        d[i - splitnb] += "\t" + order.Details[i].wording;
+                        d[i - splitnb] += "\t" +l[i].wording;
 
                 }
             }
