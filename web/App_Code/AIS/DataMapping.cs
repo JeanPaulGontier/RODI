@@ -5733,7 +5733,7 @@ namespace AIS
             catch { }
             try { doc.Range.Bookmarks["dt"].Text = order.dt.ToString("dd/MM/yyyy"); }
             catch { }
-            try { doc.Range.Bookmarks["amount"].Text = "" + order.amount; }
+            try { doc.Range.Bookmarks["amount"].Text = "" + order.amount.ToString("# ##0.00"); }
             catch { }
             try { doc.Range.Bookmarks["rule"].Text = Functions.YESNO2UF(order.rule) + (order.rule_type != "" ? "(" + order.rule_type + ")" : ""); }
             catch { }
@@ -5752,12 +5752,14 @@ namespace AIS
             int splitnb = (order.Details.Count + 1) / 2;
             if(Const.DISTRICT_ID==1680)
             {
-              //  splitnb = (order.Details.Count ) / 2;
-            
-                for (int i = 0; i < order.Details.Count; i++)
+                var l = order.Details.Skip(1).ToList();
+
+                splitnb = (l.Count+1)  / 2;
+
+                for (int i = 0; i < l.Count; i++)
                 {
                     if (i < splitnb)
-                        d.Add(order.Details[i].wording);
+                        d.Add(l[i].wording);
                     else
                         d[i - splitnb] += "\t" + order.Details[i].wording;
 
@@ -5783,20 +5785,13 @@ namespace AIS
                 dd+="Cotisation semestrielle pour "+(order.Details.Count-1) + " membres :\t\t"+(order.amount-order.Details[0].amount).ToString("# ##0.00")+" €"+Environment.NewLine;
                 dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
                 dd+=Environment.NewLine;
-                for (int i = 1; i<d.Count; i++)
-                {
-                    var l = d[i];
-                    dd += l + Environment.NewLine;
-                }
 
             }
-            else
+          
+            for (int i = 0; i<d.Count; i++)
             {
-                for (int i = 0; i<d.Count; i++)
-                {
-                    var l = d[i];
-                    dd += l + Environment.NewLine;
-                }
+                var l = d[i];
+                dd += l + Environment.NewLine;
             }
             if (dd.EndsWith(Environment.NewLine))
                 dd = dd.Substring(0, dd.Length - Environment.NewLine.Length);
