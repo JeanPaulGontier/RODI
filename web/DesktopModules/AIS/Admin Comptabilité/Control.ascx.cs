@@ -466,7 +466,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 if (Const.DISTRICT_ID==1680)
                 {
                     Order.Detail detail = new Order.Detail();
-                    detail.wording = "Participation aux manifestations obligatoires";
+                    detail.wording = "Participation semestrielle aux manifestations :";
                     if(commande.Details.Count>40)
                         detail.unitary = 900/2;
                     else if (commande.Details.Count>30)

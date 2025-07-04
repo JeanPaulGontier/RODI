@@ -5780,7 +5780,7 @@ namespace AIS
 
             if(Const.DISTRICT_ID==1680)
             {
-                dd+=order.Details[0].wording+"\t\t"+order.Details[0].amount.ToString("# ##0")+" €"+Environment.NewLine;
+                dd+=order.Details[0].wording+"\t\t"+order.Details[0].amount.ToString("# ##0.00")+" €"+Environment.NewLine;
 
                 dd+="Cotisation semestrielle pour "+(order.Details.Count-1) + " membres :\t\t"+(order.amount-order.Details[0].amount).ToString("# ##0.00")+" €"+Environment.NewLine;
                 dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
