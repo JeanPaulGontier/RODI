@@ -1,5 +1,7 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 ```
 ##### 02/07/2025
 ```txt

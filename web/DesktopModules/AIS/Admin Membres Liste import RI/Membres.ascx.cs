@@ -88,7 +88,9 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
     public DateTime GetBirthday(DateTime birthdate)
     {
         int month = DateTime.Now.Month;
-        if (month>birthdate.Month)
+        if (month>birthdate.Month && birthdate.Month==2 && birthdate.Day==29)
+            return new DateTime(DateTime.Now.Year+1, birthdate.Month, 28);
+        else if (month>birthdate.Month)
             return new DateTime(DateTime.Now.Year+1, birthdate.Month, birthdate.Day);
         else
             return new DateTime(DateTime.Now.Year, birthdate.Month, birthdate.Day);
@@ -100,7 +102,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             return "";
         var birthdate = (DateTime)date;
         birthdate = GetBirthday(birthdate);
-        return birthdate.ToLongDateString();
+        return birthdate.ToString("dd MMMM");
     }
     public bool IsBirthday(object date)
     {

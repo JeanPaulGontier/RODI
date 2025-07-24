@@ -9,13 +9,19 @@
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club
 - choix du gabarit de mailing (message simple ou newsletter format RI)
 - champ date de fin d'inscription dans mail réunion
-- gestion de règles avancées pour la facturation district (D1680)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.)
 - gestion des contrats jeunes rotariens (D1700)
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
+- ajout page de statistiques de connexion membres pour les administrateurs clubs
+
+
+
+- correction pb d'affichage anniversaire pour les années bissextiles, une personne née le 29 février verra son anniversaire le 28 février pour les années non bissectiles
+- pour éviter toute confusion avec l'année de naissance, la date d'anniversaire n'affiche que le jour et le mois
 
 ###### 02/07/2025
+- gestion de règles avancées pour la facturation district (D1680)
 - changement de formalisme de n° de facture district maintenant le n° commence par 2 chiffres de l'année suivi de 4 chiffres
 - ajout spécificité de facturation district D1680
 

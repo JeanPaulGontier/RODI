@@ -82,6 +82,7 @@
                     rows["cp"] = row["ADRESSE Code Postal"];
                     rows["ville"] = row["ADRESSE Ville"];
                     rows["DatePaiement"] = row["Date de la demande"];
+                    rows["TypePaiement"] = row["Type de don (virement ou chèque ou espèces)"];
 
                     Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM ais_fdd WHERE idsource=" + id);
 
