@@ -2,6 +2,8 @@
 ```txt
 DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
+App_Code\AIS\DataMapping.cs
 ```
 ##### 02/07/2025
 ```txt

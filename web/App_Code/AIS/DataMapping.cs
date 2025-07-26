@@ -8834,8 +8834,31 @@ namespace AIS
             return result;
         }
 
-        
 
+        public static string PurgeDuplicateMembers()
+        {
+            string result = "";
+            List<Member> membres = DataMapping.ListMembers(max: 10000).FindAll(m=> m.honorary_member!=Const.YES);
+            List<string> all = new List<string>();
+            foreach (Member membre in membres)
+            {
+                byte[] bytes = Functions.StringToBytes(membre.nim+":"+membre.email+":"+membre.surname+":"+membre.name+":"+membre.club_name);
+                string md5 = Functions.CalculateMD5Hash(bytes);
+                if (!all.Contains(md5))
+                {
+                    all.Add(md5);
+                }
+                else
+                {
+                    if(Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM "+Const.TABLE_PREFIX+"members WHERE id="+membre.id)>0)
+                        result+=""+membre.surname+" "+membre.name+" - "+membre.nim+" - "+membre.club_name+" ... doublon effacé"+Environment.NewLine;
+                    else
+                        result+="ERREUR : "+membre.surname+" "+membre.name+" - "+membre.nim+" - "+membre.club_name+" ... doublon non effacé"+Environment.NewLine;
+                }
+            }
+            result+=""+all.Count+" membres traités"+Environment.NewLine;
+            return result;
+        }
 
         public static string DeleteUnusedLogins(){
 
