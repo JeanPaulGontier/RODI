@@ -8842,7 +8842,7 @@ namespace AIS
             List<string> all = new List<string>();
             foreach (Member membre in membres)
             {
-                byte[] bytes = Functions.StringToBytes(membre.nim+":"+membre.email+":"+membre.surname+":"+membre.name+":"+membre.club_name);
+                byte[] bytes = Functions.StringToBytes(membre.nim+":"+membre.club_name);
                 string md5 = Functions.CalculateMD5Hash(bytes);
                 if (!all.Contains(md5))
                 {
