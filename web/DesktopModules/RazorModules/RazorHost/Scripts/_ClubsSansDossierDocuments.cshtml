@@ -20,7 +20,7 @@
         foreach (TabInfo t in tabs.AsList())
         {
 
-            if (t.FullUrl.EndsWith("/espace-membre/mon-club/gestion/documents"))
+            if (t.FullUrl.ToLower().EndsWith("/espace-membre/mon-club/gestion/documents"))
             {
                 parent = t;
                 break;

@@ -4,6 +4,8 @@ DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\DataMapping.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_Usage_Stats.cshtml
 ```
 ##### 02/07/2025
 ```txt

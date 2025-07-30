@@ -1,4 +1,4 @@
-@using AIS
+﻿@using AIS
 @using System.Text
 @using System.Threading.Tasks
 @using DotNetNuke.Services.FileSystem
@@ -65,11 +65,18 @@
 @functions{ 
     public string DirSize(string folderPath)
     {
-        DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
-        long dirSize = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length)/1024/1024;
-        return dirSize>0?""+dirSize:"";
+        try
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
+            long dirSize = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Sum(fi => fi.Length)/1024/1024;
+            return dirSize>0 ? ""+dirSize : "";
+        }
+        catch(Exception e)
+        {
+            return "Dossier documents introuvable";
+        }
+
     }
 
 }
-
 
