@@ -14,9 +14,10 @@
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 - ajout page de statistiques de connexion membres pour les administrateurs clubs
+- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards)
 
-
-
+- correction d'un pb de création de dossier documents des clubs
+- le module de stats des clubs affiche une information si un dossier club n'existe pas
 - correction pb d'affichage anniversaire pour les années bissextiles, une personne née le 29 février verra son anniversaire le 28 février pour les années non bissectiles
 - pour éviter toute confusion avec l'année de naissance, la date d'anniversaire n'affiche que le jour et le mois
 
