@@ -2,6 +2,7 @@
 ```txt
 DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml

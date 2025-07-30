@@ -102,7 +102,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
             return "";
         var birthdate = (DateTime)date;
         birthdate = GetBirthday(birthdate);
-        return birthdate.ToString("dd MMMM");
+        return birthdate.ToString("d MMMM");
     }
     public bool IsBirthday(object date)
     {
