@@ -3640,6 +3640,16 @@ namespace AIS
         /// <returns>News</returns>
         public static News GetNews(string newsid)
         {
+
+            try
+            {
+                Guid g = new Guid(newsid);
+                newsid = g.ToString();
+            }
+            catch
+            {
+                return null;
+            }
             List<Club> clubs = ListClubs(sort: "cric asc");
             SqlConnection conn = new SqlConnection(Config.GetConnectionString());
             try
