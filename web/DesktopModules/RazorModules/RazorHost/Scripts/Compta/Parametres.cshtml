@@ -102,7 +102,39 @@
         <button type="button" v-on:click="setParametres()" v-if="modified" class="btn btn-primary">Enregistrer</button>
         <button type="button" v-if="!modified" class="btn btn-default disabled">Enregistrer</button>
     </div>
+    @if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+    {
 
+        <div class="form-group row">
+            @if (IsPost && (""+Request["bt_delete_compta"]).Equals("delete"))
+            {
+                <div class="pe-spacer size20" />
+
+                    var msg = ComptaHelper.DeleteAllComptaDataFromClub(cric);
+
+                    if (msg.Equals("success"))
+                    {
+                        <div class="alert alert-success">
+                            Données correctement effacées
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Erreur lors de l'effacement des données : @msg
+                        </div>
+                     }
+
+            }
+            <div class="pe-spacer size20" />
+            <div class="alert alert-warning">
+                <p>En tant que SuperUser vous pouvez effacer toutes les données comptables du club : </p>
+                <p><button type="submit" name="bt_delete_compta" class="btn btn-warning btn-xs" value="delete" onclick="return(confirm('Effacer toutes les données comptables du club ?'))">Effacer toutes les données comptables du club</button></p>
+            </div>
+            <div class="pe-spacer size20" />            
+        </div>
+     
+    }
 </script>
 <script>
     const ComptaParametres = {
@@ -208,36 +240,3 @@
         },
     }
 </script>
-@{
-    if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-    {
-        
-
-        if (IsPost && (""+Request["bt_delete_compta"]).Equals("delete"))
-        {
-            <div class="pe-spacer size20"  />
-
-            var msg = ComptaHelper.DeleteAllComptaDataFromClub(cric);
-
-            if (msg.Equals("success"))
-            {
-                <div class="alert alert-success">
-                    Données correctement effacées
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-danger">
-                    Erreur lors de l'effacement des données : @msg
-                </div>
-            }
-
-        }
-        <div class="pe-spacer size20" />
-        <div class="alert alert-warning">
-            <p>En tant que SuperUser vous pouvez effacer toutes les données comptables du club : </p>
-            <p><button type="submit" name="bt_delete_compta" class="btn btn-warning btn-xs" value="delete" onclick="return(confirm('Effacer toutes les données comptables du club ?'))">Effacer toutes les données comptables du club</button></p>
-        </div>
-    }
-
-}
