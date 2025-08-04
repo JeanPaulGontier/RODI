@@ -105,7 +105,7 @@
     @if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
     {
 
-        <div class="form-group row">
+        <div class="form-group">
             @if (IsPost && (""+Request["bt_delete_compta"]).Equals("delete"))
             {
                 <div class="pe-spacer size20" />
