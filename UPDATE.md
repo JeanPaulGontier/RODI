@@ -18,14 +18,14 @@
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 - ajout page de statistiques de connexion membres pour les administrateurs clubs
-
+- nouvelle version de l'app mobile (gestion des notifications)
 
 ###### 04/08/2025
 - dans les paramètres de la compta club on peut maintenant personnaliser les lignes de facturation de cotisation
 - suppression de la fonctionnalité d'export détaillé des membres clubs (conformité RGPD et Rotary International)
 - correction d'un pb de création de dossier documents des clubs
 - le module de stats des clubs affiche une information si un dossier club n'existe pas
-- correction pb d'affichage anniversaire pour les années bissextiles, une personne née le 29 février verra son anniversaire le 28 février pour les années non bissectiles
+- correction pb d'affichage anniversaire pour les années bissextiles, une personne née le 29 février verra son anniversaire le 28 février pour les années non bissextiles
 - pour éviter toute confusion avec l'année de naissance, la date d'anniversaire n'affiche que le jour et le mois
 
 ###### 02/07/2025
