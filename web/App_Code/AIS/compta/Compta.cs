@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetNuke.Services.Log.EventLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,8 @@ public class Compta
         public int id { get; set; } 
         public string libelle { get; set; }
         public string val { get; set; }
+
+        public decimal montant { get; set; }
     }
 
     public class Parametres {
@@ -19,22 +22,10 @@ public class Compta
         public int moisCotisationAnnuelle { get; set; }
         public int jourCotisationAnnuelle { get; set; }
         
-        public bool repasInclus {  get; set; }
-        public decimal DM { get; set; } // prixDuDejeuner
-        public decimal DV { get; set; } // prixDuDejeunerVisiteur
-        
-        public decimal RM { get; set; } // prixDuRepas
-        public decimal RV { get; set; } // prixDuRepasVisiteur
-                
-        public decimal AM { get; set; } // prixDeLAperitif
-        public decimal AV { get; set; } // prixDeLAperitifVisiteur
-        
-        public decimal MC { get; set; } // montantCotisation
-        public decimal CR {  get; set; } // montantCotisationReduite
-
-
-
+        public bool repasInclus {  get; set; }        
         public string piedDePageFacture { get; set; }
+
+        public List<Domaine> valeurs {  get; set; }
     }
 
     public class Membre {

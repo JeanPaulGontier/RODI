@@ -61,9 +61,11 @@
 
 #endregion Copyrights
 using AIS;
+using DotNetNuke.Entities.Users;
 using System;
 using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Telerik.Web;
 using Yemon.dnn.SIPro;
@@ -86,15 +88,68 @@ public class ComptaHelper
 
     public static Compta.Parametres GetParametres(int cric)
     {
+        var parametres = new Compta.Parametres();
         var item = Yemon.dnn.Helpers.GetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaParametres", 0);
-        if (item == null) return new Compta.Parametres();
-        return Yemon.dnn.Functions.Deserialize<Compta.Parametres>("" + item);
+        if (item == null)
+        {
+            
+            parametres.valeurs = GetDomaine("FacturesLignes");
+            SetParametres(cric, 0, parametres);
+            
+        }
+        else
+        {
+            parametres = Yemon.dnn.Functions.Deserialize<Compta.Parametres>("" + item);
+            if(parametres.valeurs == null)
+            {
+                parametres.valeurs = GetDomaine("FacturesLignes");
+                SetParametres(cric, 0, parametres);
+            }
+        }
+            
+        return parametres;
     }
 
 
     public static void SetParametres(int cric, int userid, Compta.Parametres parametres)
     {
         Yemon.dnn.Helpers.SetItem(Const.DISTRICT_ID + ":" + cric + ":ComptaParametres", Yemon.dnn.Functions.Serialize(parametres), "" + userid, keephistory: false);
+    }
+
+    public static string DeleteAllComptaDataFromClub(int cric)
+    {
+        if (!UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            return "vous n'êtes pas autorisé a mener cette action";
+        try
+        {
+            int portalid = Yemon.dnn.Functions.GetPortalId();
+            Yemon.dnn.Helpers.DeleteItem(Const.DISTRICT_ID + ":" + cric + ":ComptaParametres", true, portalid);
+            Yemon.dnn.Helpers.DeleteItem(Const.DISTRICT_ID + ":" + cric + ":ComptaCotisations", true, portalid);
+
+            DataTable table = Yemon.dnn.DataMapping.ExecSql("SELECT * FROM "+Const.TABLE_PREFIX+"c_elements WHERE cric="+cric+" AND district_id="+Const.DISTRICT_ID);
+            if (table != null)
+            {
+                foreach (DataRow row in table.Rows)
+                {
+                    int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM "+Const.TABLE_PREFIX+"c_lignes WHERE reference='clubfacture:"+row["guid"]+"'");
+                    int docid = 0;
+                    int.TryParse(""+row["document_id"], out docid);
+                    if (docid!=0)
+                    {
+                        Yemon.dnn.SIPro.SIPro.DeleteProduction(Yemon.dnn.Functions.GetPortalId(), docid);
+                    }
+
+                }
+                Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM "+Const.TABLE_PREFIX+"c_elements WHERE cric="+cric+" AND district_id="+Const.DISTRICT_ID);
+            }
+            return "success";
+        }
+        catch (Exception ex)
+        {
+            Functions.Error(ex);
+            return ex.Message;
+        } 
+        
     }
 
     public static Compta.Cotisations GetCotisations(int cric)

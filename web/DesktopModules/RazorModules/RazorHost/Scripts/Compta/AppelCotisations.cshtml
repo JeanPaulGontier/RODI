@@ -2,11 +2,7 @@
 @{
     int cric = Functions.CurrentCric;
     var parametres = ComptaHelper.GetParametres(cric);
-    if(parametres==null)
-    {
-        parametres=new Compta.Parametres();
-        ComptaHelper.SetParametres(cric,0, parametres);
-    }
+
 
     var cotisations = ComptaHelper.GetCotisations(cric);
     if (cotisations==null)
@@ -14,7 +10,6 @@
         cotisations = new Compta.Cotisations();
         cotisations.libelle = "Appel cotisation "+parametres.cotisation;
     }
-    var factureLignes = ComptaHelper.GetDomaine("FacturesLignes");
 
     var members = DataMapping.ListMembers(cric).Where(m=>m.honorary_member!=Const.YES);
     // ajout des nouveaux membres
@@ -30,7 +25,7 @@
                 confirmation = true,
                 appel = true,
             };
-            foreach(var fl in factureLignes)
+            foreach(var fl in parametres.valeurs)
             {
                 cm.lignes.Add(new Compta.Cotisations.Ligne
                 {
@@ -53,6 +48,7 @@
             cotisations.membres.RemoveAt(i);
         }
     }
+    
     cotisations.membres = cotisations.membres.OrderBy(m => m.nom).ToList();
 
 
@@ -74,7 +70,7 @@
         </div>
     </div>
    
-    <div class="table-responsive ">
+    <div class="table-responsive">
         <table class="table table-striped small">
             <thead>
                 <tr>
@@ -82,7 +78,7 @@
                     <th>Nom / Prénom</th>
                     <th class="text-center">Appel</th>
                     <th class="text-center">Confirmation</th>
-                    <th class="text-center" v-for="l in factureLignes" :title="l.libelle">
+                    <th class="text-center" v-for="l in parametres.valeurs" :title="l.libelle">
                         {{l.val}}
                     </th>
                     <th  class="text-right">
@@ -120,8 +116,7 @@
                 cotisationTypes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(ComptaHelper.GetDomaine("PeriodiciteCotisation"))),
                 parametres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(parametres)),
                 cotisations: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(cotisations)),
-                factureLignes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(factureLignes)),
-
+                
                 modified: null,
                 createOnSave: false,
 
@@ -159,15 +154,20 @@
                 if (confirm("L'initialisation à partir des paramètres remplace toutes les valeurs, dois-t-on continuer ?")) {
                     this.cotisations.libelle = "Appel de cotisation " + (this.parametres.cotisation ? this.parametres.cotisation:"");
                     this.cotisations.membres.forEach(m => {
-                        m.lignes.forEach(l => {
-                            l.montant = this.parametres[l.type];
+                        m.lignes = [];
+                        this.parametres.valeurs.forEach(v => {
+                            var l = {
+                                montant : v.montant,
+                                type : v.val,
+                                libelle : v.libelle
+                            }
                             if (l.type == "MC") {
                                 l.qte = this.cotisationQte(this.parametres.cotisation);
                             }
                             else {
                                 l.qte = 0;
                             }
-
+                            m.lignes.push(l);
                         })
                         
                     });

@@ -11,13 +11,18 @@
 - champ date de fin d'inscription dans mail réunion
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.)
 - gestion des contrats jeunes rotariens (D1700)
+- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards)
+- déplacement du sélecteur de club en en-tete de l'espace membre
+- fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions
+
 - ajout d'informations complémentaires sur les statistiques clubs
 - ajout de l'anniversaire dans le trombinoscope
 - ajout page de statistiques de connexion membres pour les administrateurs clubs
-- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards)
 
 
-- suppression de la fonctionnalité d'export détaillé des membres clubs (conformité RGPD)
+###### 04/08/2025
+- dans les paramètres de la compta club on peut maintenant personnaliser les lignes de facturation de cotisation
+- suppression de la fonctionnalité d'export détaillé des membres clubs (conformité RGPD et Rotary International)
 - correction d'un pb de création de dossier documents des clubs
 - le module de stats des clubs affiche une information si un dossier club n'existe pas
 - correction pb d'affichage anniversaire pour les années bissextiles, une personne née le 29 février verra son anniversaire le 28 février pour les années non bissectiles

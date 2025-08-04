@@ -1,16 +1,14 @@
 ﻿@using AIS;
+@using DotNetNuke.Entities.Users;
 @{
     int cric = Functions.CurrentCric;
     var parametres = ComptaHelper.GetParametres(cric);
-    if(parametres==null)
-    {
-        parametres = new Compta.Parametres();
-    }
+    var valeurs = ComptaHelper.GetDomaine("FacturesLignes");
 }
 <script type="text/x-template" id="compta-parametres-template">
 
 
-    <div class="form-group row">
+    <div class="form-group">
         <div class="col-sm-3">Périodicité cotisation :</div>
         <div class="col-sm-4">
             <select v-model="parametres.cotisation" class="form-control">
@@ -18,7 +16,7 @@
             </select>
         </div>
     </div>
-    <div class="form-group row" v-if="parametres.cotisation=='Annuelle'">
+    <div class="form-group" v-if="parametres.cotisation=='Annuelle'">
         <div class="col-sm-3">Cotisation jour / mois :</div>
         <div class="col-sm-2">
             <select v-model="parametres.jourCotisationAnnuelle" class="form-control">
@@ -32,58 +30,60 @@
         </div>
     </div>
     <hr />
-    <div class="form-group row">
+    <div class="form-group ">
         <div class="col-sm-3">Repas inclus :</div>
         <div class="col-sm-6">
             <label class="radio-inline"><input type="radio" name="repasinclus" v-model="parametres.repasInclus" :value="true"> Oui</label>
             <label class="radio-inline"><input type="radio" name="repasinclus" v-model="parametres.repasInclus" :value="false"> Non</label>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3">Prix du déjeuner :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.DM" class="form-control text-right" />
+    <hr />
+    <div class="form-group ">
+        <div class="col-sm-6">
+            <strong>Lignes factures de cotisations</strong>
         </div>
-
-        <div class="col-sm-4">Prix du déjeuner visiteur :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.DV" class="form-control text-right" />
-        </div>
-    </div>    
-    <div class="form-group row">
-        <div class="col-sm-3">Prix du repas :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.RM" class="form-control text-right" />
-        </div>
-
-        <div class="col-sm-4">Prix du repas visiteur :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.RV" class="form-control text-right" />
-        </div>
-
-        
-    </div>
-    <div class="form-group row">
-
-        <div class="col-sm-3">Prix de l'apéritif :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.AM" class="form-control text-right" />
-        </div>
-        <div class="col-sm-4">Prix de l'apéritif visiteur :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.AV" class="form-control text-right" />
+        <div class="col-sm-6 text-right">
+            <button type="button" class="btn btn-default btn-sm" v-on:click="initFromParams">Restaurer les lignes par défaut</button>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3">Montant cotisation :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.MC" class="form-control text-right" />
-        </div>
-        <div class="col-sm-4">Montant cotisation réduite :</div>
-        <div class="col-sm-1">
-            <input type="number" step="0.01" v-model="parametres.CR" class="form-control text-right" />
+    <div class="form-group ">
+        <div class="col-sm-12">
+            <div class="alert alert-info">
+                Les lignes ci-dessous servent de gabarit à l'établissement des factures d'appels de cotisations pour les membres du club, il y a une abréviation spécifique pour le montant de la cotisation (MC). La ligne MC adapte automatiquement la quantité à la périodicité de cotisation (exemple : trimestre donne 3 dans la quantité, le montant est toujours indiqué au mois). Les abréviations sont affichées en en-tête du tableau d'appel de cotisation.
+            </div>
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-sm-2">
+            Abréviation
+        </div>
+        <div class="col-sm-2">
+            Montant
+        </div>
+        <div class="col-sm-7">
+            Libellé
+        </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+    <div class="form-group" v-for="(v,i) in parametres.valeurs">
+        <div class="col-sm-2">
+            <input type="text" maxlength="3" v-model="v.val" class="form-control text-center" style="max-width:50px" />
+        </div>
+        <div class="col-sm-2">
+            <input type="number" step="0.01" v-model="v.montant" class="form-control text-right" style="max-width:100px" />
+        </div>
+        <div class="col-sm-7">
+            <input type="text" v-model="v.libelle" class="form-control" />
+        </div>
+        <div class="col-sm-1">
+            <button type="button" class="btn btn-warning btn-xs" v-on:click="deleteLigne(i)"><i class="fa fa-trash-o"></i></button>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <button type="button" class="btn btn-primary" v-on:click="addLigne()"><i class="fa fa-plus"></i> Nouvelle ligne</button>
+    </div>
+
     <div class="form-group row">
         <div class="col-sm-12">Pied de page facture :</div>
         <div class="col-sm-12">
@@ -94,7 +94,7 @@
                      :plugins="editorPlugins"
                      :toolbar1="editorToolbar"
                      :other="editorOptions" />
-            
+
         </div>
     </div>
     <hr />
@@ -116,6 +116,7 @@
             return {
                 cotisationTypes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(ComptaHelper.GetDomaine("PeriodiciteCotisation"))),
                 parametres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(parametres)),
+                valeurs: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(valeurs)),
                 modified: null,
 
                 editorPlugins: [
@@ -140,20 +141,41 @@
                         editor.on('change keyup', () => {
                             // Récupère le contenu à chaque changement
                             //this.content = editor.getContent();
-                            
+
                             this.modified = true;
                         });
                     }
                 },
-               
+
 
             }
         },
         components: {
             'tinymce': VueEasyTinyMCE,
-           
+
         },
         methods: {
+            addLigne() {
+                this.parametres.valeurs.push({
+                    libelle: 'Nouvelle ligne',
+                    val: 'L' + (this.parametres.valeurs.length+1),
+                    montant: 0
+                });
+                this.modified = true;
+            },
+            deleteLigne(i) {
+                if (confirm('Supprimer la ligne ?'))
+                {
+                    this.parametres.valeurs.splice(i, 1);
+                    this.modified = true;
+                }
+            },
+            initFromParams() {
+                if (confirm("Remettre les paramètres par défaut ?")) {
+                    this.parametres.valeurs = this.valeurs;
+                    this.modified = true;
+                }
+            },
             onEditorChange(c) {
                 alert(c);
             },
@@ -170,7 +192,7 @@
             }
         },
         mounted() {
-          
+
         },
         watch: {
             parametres: {
@@ -186,3 +208,36 @@
         },
     }
 </script>
+@{
+    if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+    {
+        
+
+        if (IsPost && (""+Request["bt_delete_compta"]).Equals("delete"))
+        {
+            <hr />
+
+            var msg = ComptaHelper.DeleteAllComptaDataFromClub(cric);
+
+            if (msg.Equals("success"))
+            {
+                <div class="alert alert-success">
+                    Données correctement effacées
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    Erreur lors de l'effacement des données : @msg
+                </div>
+            }
+
+        }
+        <hr />
+        <div class="alert alert-warning">
+            <p>En tant que SuperUser vous pouvez effacer toutes les données comptables du club : </p>
+            <p><button type="submit" name="bt_delete_compta" class="btn btn-warning btn-xs" value="delete" onclick="return(confirm('Effacer toutes les données comptables du club ?'))">Effacer toutes les données comptables du club</button></p>
+        </div>
+    }
+
+}

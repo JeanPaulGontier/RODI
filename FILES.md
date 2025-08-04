@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+##### 04/08/2025
+```txt
 DesktopModules\RazorModules\FDDSuiviCERFA\_FDDSuviCERFA.cshtml
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
@@ -7,6 +10,14 @@ App_Code\AIS\schedulers\RotaryScheduler.cs
 App_Code\AIS\DataMapping.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_ClubsSansDossierDocuments.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_Usage_Stats.cshtml
+App_Code\AIS\compta\Compta.cs
+App_Code\AIS\compta\ComptaHelper.cs
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\AppelCotisations.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureView.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Parametres.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\AppelCotisations.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\FactureView.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\Parametres.cshtml
 ```
 ##### 02/07/2025
 ```txt
