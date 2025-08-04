@@ -29,7 +29,7 @@
             </select>
         </div>
     </div>
-    <hr />
+    <div class="pe-spacer size20" />
     <div class="form-group ">
         <div class="col-sm-3">Repas inclus :</div>
         <div class="col-sm-6">
@@ -37,7 +37,7 @@
             <label class="radio-inline"><input type="radio" name="repasinclus" v-model="parametres.repasInclus" :value="false"> Non</label>
         </div>
     </div>
-    <hr />
+    <div class="pe-spacer size20" />
     <div class="form-group ">
         <div class="col-sm-6">
             <strong>Lignes factures de cotisations</strong>
@@ -97,7 +97,7 @@
 
         </div>
     </div>
-    <hr />
+    <div class="pe-spacer size20" />
     <div class="text-center">
         <button type="button" v-on:click="setParametres()" v-if="modified" class="btn btn-primary">Enregistrer</button>
         <button type="button" v-if="!modified" class="btn btn-default disabled">Enregistrer</button>
@@ -215,7 +215,7 @@
 
         if (IsPost && (""+Request["bt_delete_compta"]).Equals("delete"))
         {
-            <hr />
+            <div class="pe-spacer size20"  />
 
             var msg = ComptaHelper.DeleteAllComptaDataFromClub(cric);
 
@@ -233,7 +233,7 @@
             }
 
         }
-        <hr />
+        <div class="pe-spacer size20" />
         <div class="alert alert-warning">
             <p>En tant que SuperUser vous pouvez effacer toutes les données comptables du club : </p>
             <p><button type="submit" name="bt_delete_compta" class="btn btn-warning btn-xs" value="delete" onclick="return(confirm('Effacer toutes les données comptables du club ?'))">Effacer toutes les données comptables du club</button></p>
