@@ -155,7 +155,7 @@ public partial class DesktopModules_AIS_Admin_Mailing_Control : PortalModuleBase
             if (ui.IsAdmin ||
                 ui.IsSuperUser ||
                 (ui.IsInRole(Const.ROLE_ADMIN_DISTRICT) == true ||
-                ui.IsInRole(Const.ROLE_ADMIN_ROTARACT) == true) && 
+                ui.IsInRole(Const.ROLE_ADMIN_ROTARACT) == true) || 
                 mode=="district")
             {
                 Panel_District.Visible = true;
