@@ -9072,6 +9072,35 @@ namespace AIS
                 sheet.Cells["C51"].Value=nbhomme;
                 sheet.Cells["C52"].Value=(float)nbfemme/(float)nbhomme;
 
+                float nbmoins40 = 0;
+                float nb40a49 = 0;
+                float nb50a59 = 0;
+                float nb60a69 = 0;
+                float nbplus70 = 0;
+                float nbageinconnu = 0;
+
+                foreach(var m in members)
+                {
+                    int age = m.GetAge();
+                    if(age==0)
+                        nbageinconnu++;
+                    else if (age<40)
+                        nbmoins40++;
+                    else if (age<50)
+                        nb40a49++;
+                    else if (age<60)
+                        nb50a59++;
+                    else if (age<70)
+                        nb60a69++;
+                    else if (age>69)
+                        nbplus70++;
+                }
+                sheet.Cells["C53"].Value=nbmoins40/(float)members.Count;
+                sheet.Cells["C54"].Value=nb40a49/(float)members.Count;
+                sheet.Cells["C55"].Value=nb50a59/(float)members.Count;
+                sheet.Cells["C56"].Value=nb60a69/(float)members.Count;
+                sheet.Cells["C57"].Value=nbplus70/(float)members.Count;
+                sheet.Cells["C58"].Value=nbageinconnu/(float)members.Count;
 
                 Media media = new Media();
                 

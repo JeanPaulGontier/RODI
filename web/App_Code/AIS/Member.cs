@@ -185,7 +185,7 @@ namespace AIS
         public string fonction_rotarienne { get; set; }
         public string satellite_member { get; set; }
 
-#region nouvelles données 2024 pour synchro RotaryMag
+        #region nouvelles données 2024 pour synchro RotaryMag
 
         public int annee_entree_club { get; set; }
         public string phf { get; set; }
@@ -193,7 +193,7 @@ namespace AIS
         public string ordre_merite { get; set; }
         public string palmes_academiques { get; set; }
         public int medaille_militaire { get; set; }
-        public int croix_guerre {  get; set; }
+        public int croix_guerre { get; set; }
         public int autre_decorations { get; set; }
         public int pro_secteur_activite { get; set; }
         public string fonction { get; set; }
@@ -216,7 +216,7 @@ namespace AIS
         public DateTime? dt_update_import_ri_district { get; set; }
         public DateTime? dt_update_import_rm { get; set; }
 
-#endregion
+        #endregion
 
         public string GetPhoto()
         {
@@ -232,8 +232,8 @@ namespace AIS
             else
             {
                 chemin += photo;
-                if(base_dtupdate is DateTime)
-                { 
+                if (base_dtupdate is DateTime)
+                {
                     chemin += "?" + ((DateTime)base_dtupdate).ToString("yyyyMMddHHmmss");
                 }
             }
@@ -244,6 +244,21 @@ namespace AIS
             if (civility == null)
                 return false;
             return civility.Equals("Mme") || civility.Equals("Mlle");
+        }
+
+        public int GetAge()
+        {
+            if (birth_year == null)
+                return 0;
+            DateTime now = DateTime.Now;
+            DateTime birth = (DateTime)birth_year;
+
+            int age = now.Year - birth.Year;
+
+            if (now.Month < birth.Month || (now.Month == birth.Month && now.Day < birth.Day))
+                age--;
+
+            return age;
         }
     }
 }
