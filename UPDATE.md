@@ -11,7 +11,7 @@
 - champ date de fin d'inscription dans mail réunion
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.)
 - gestion des contrats jeunes rotariens (D1700)
-- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards)
+- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - déplacement du sélecteur de club en en-tete de l'espace membre
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions
 
@@ -19,6 +19,8 @@
 - ajout de l'anniversaire dans le trombinoscope
 - ajout page de statistiques de connexion membres pour les administrateurs clubs
 - nouvelle version de l'app mobile (gestion des notifications)
+
+- nouveau module pour exporter la fiche de renseignement du club pour la préparation de la visite du gouverneur (D1640)
 
 ###### 04/08/2025
 - dans les paramètres de la compta club on peut maintenant personnaliser les lignes de facturation de cotisation

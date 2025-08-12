@@ -22,8 +22,8 @@ public partial class AIS_Download : System.Web.UI.Page
             {
                 AIS.Functions.Error(new Exception("Download media est null"));
             }
-            //Response.Clear();
-           // Response.Buffer = true;
+            Response.Clear();
+            Response.Buffer = true;
             Response.Expires = 0;
             Response.Cache.SetCacheability(HttpCacheability.Public);
 
@@ -31,7 +31,7 @@ public partial class AIS_Download : System.Web.UI.Page
             Response.AddHeader("content-disposition", "attachment; filename=\"" + Functions.ClearFileName(media.name)+"\"");
             Response.ContentType = media.content_type;
             Response.BinaryWrite(media.content);
-            //Response.Flush();
+            Response.Flush();
             Response.End();
         }
         else if (Application[id] != null)

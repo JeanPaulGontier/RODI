@@ -1,5 +1,4 @@
-﻿
-#region Copyrights
+﻿#region Copyrights
 
 //
 // RODI - https://rodi-platform.org
@@ -62,35 +61,29 @@
 
 #endregion Copyrights
 
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Aspose.BarCode;
+using Aspose.Cells;
+using Aspose.Pdf;
+using Aspose.Words;
+using Dnn.PersonaBar.Users.Components;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using System.Data;
-using Aspose.Words;
-using Aspose.Pdf;
-using Aspose.Cells;
-using Aspose.BarCode;
-using System.Web.UI.WebControls;
-using System.IO;
-using System.Resources;
 using DotNetNuke.Entities.Portals;
-using System.Drawing;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
-using Newtonsoft.Json;
-using System.Web.Security;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Web;
-using DotNetNuke.Security;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Collections;
-using Dnn.PersonaBar.Users.Components;
-using Telerik.Web.UI.PivotGrid.Core.Totals;
+using System.Web.Security;
+using System.Web.UI.WebControls;
+
 
 namespace AIS
 {
@@ -9002,6 +8995,104 @@ namespace AIS
             }
         }
 
+
+        public static Media ExportFicheRenseignementClub()
+        {
+            string filename = HttpContextSource.Current.Server.MapPath("/portals/0/modeles/Fiche de renseignement club generique gabarit.xlsx");
+            string logo = HttpContextSource.Current.Server.MapPath("/portals/0/logo.png");
+            if (File.Exists(filename))
+            {
+                InitLicenceAsposeCells();
+                var xls = new Workbook(filename);
+
+                var annee = Functions.GetRotaryYear();
+
+                var sheet = xls.Worksheets[0];
+                sheet.Cells["C2"].Value=annee+"-"+(annee+1);
+                sheet.Cells["C5"].Value=Functions.CurrentClub.name;
+
+                int roleid = 0;
+                int.TryParse(Functions.CurrentClub.roles, out roleid);
+                if(roleid>0)
+                {
+                    string rolename = RoleController.Instance.GetRoleById(0, roleid).RoleName;
+                    sheet.Cells["C6"].Value=rolename;
+                    var adgs = RoleController.Instance.GetUsersByRole(0, rolename);
+                    string ad = "";
+                    foreach(var ui in adgs)
+                    {
+                        ad+=""+ui.DisplayName+", ";
+                    }
+                    if(ad.EndsWith(", "))
+                    {
+                        ad= ad.Substring(0, ad.Length-2);
+                    }
+                    sheet.Cells["C7"].Value=ad;
+
+                }
+                else
+                {
+                    sheet.Cells["C6"].Value="inconnu";
+                    sheet.Cells["C7"].Value="inconnu";
+                }
+                if(Functions.CurrentClub.charter_year==0)
+                    sheet.Cells["C8"].Value="";
+                else
+                    sheet.Cells["C8"].Value=Functions.CurrentClub.charter_year;
+                sheet.Cells["C9"].Value=Functions.CurrentClub.cric;
+                sheet.Cells["C10"].HtmlString=Functions.CurrentClub.meetings;
+
+                var affectations = ListAffectationRY(Functions.CurrentCric, annee);
+
+                sheet.Cells["C11"].Value=GetAffectation(affectations, "Président");
+                sheet.Cells["C12"].Value=GetAffectation(affectations, "Vice Président");
+                sheet.Cells["C13"].Value=GetAffectation(affectations, "Président élu");
+                sheet.Cells["C14"].Value=GetAffectation(affectations, "Secrétaire");
+                sheet.Cells["C15"].Value=GetAffectation(affectations, "Trésorier");
+                sheet.Cells["C16"].Value=GetAffectation(affectations, "Protocole");
+                sheet.Cells["C17"].Value=GetAffectation(affectations, "Secrétaire Exécutif");
+                sheet.Cells["C18"].Value=GetAffectation(affectations, "Fondation Rotary");
+                sheet.Cells["C19"].Value=GetAffectation(affectations, "Effectif");
+                sheet.Cells["C20"].Value=GetAffectation(affectations, "Délégué Communication");
+
+                sheet.Cells["D73"].Value=GetAnneeFormatted(annee-1);
+                sheet.Cells["E73"].Value=GetAnneeFormatted(annee-2);
+                sheet.Cells["F73"].Value=GetAnneeFormatted(annee-3);
+
+                int idx = sheet.Pictures.Add(0, 1, logo, 40,40);
+                sheet.Pictures[idx].Left=4;
+                sheet.Pictures[idx].Top=4;
+
+
+                List<Member> members = ListMembers(Functions.CurrentCric).FindAll(m => m.honorary_member!=Const.YES);
+                sheet.Cells["C45"].Value=members.Count;
+                int nbhomme = members.FindAll(m => !m.IsWoman()).Count;
+                int nbfemme = members.FindAll(m => m.IsWoman()).Count;
+                sheet.Cells["C50"].Value=nbfemme;
+                sheet.Cells["C51"].Value=nbhomme;
+                sheet.Cells["C52"].Value=(float)nbfemme/(float)nbhomme;
+
+
+                Media media = new Media();
+                
+                var ms = new MemoryStream();
+                xls.Save(ms, Aspose.Cells.SaveFormat.Xlsx);
+                media.content = ms.ToArray(); 
+                media.content_size = media.content.Length;
+                media.content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                media.name  = "Fiche information.xlsx";
+                return media;
+            }
+            return null;
+        }
+        public static string GetAffectation(List<Affectation> affectations,string affectation)
+        {
+            return affectations.FirstOrDefault(x => x.function==affectation)!=null ? affectations.FirstOrDefault(x => x.function==affectation).name : "";
+        }
+        public static string GetAnneeFormatted(int annee)
+        {
+            return (""+annee).Substring(2, 2)+"-"+(""+(annee+1)).Substring(2, 2);
+        }
     }
 
 }

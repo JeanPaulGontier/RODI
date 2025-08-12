@@ -1,6 +1,10 @@
 ##### Modified files per commit
 ```txt
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
+App_Code\AIS\DataMapping.cs
+AIS\Download.aspx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_visite_gouverneur.cshtml
+Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 ```
 ##### 04/08/2025
 ```txt
