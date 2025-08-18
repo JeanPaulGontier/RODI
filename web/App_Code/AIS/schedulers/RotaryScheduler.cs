@@ -62,6 +62,7 @@
 #endregion Copyrights
 using AIS;
 using DotNetNuke.Services.Scheduling;
+using ExifLib;
 using System;
 using System.Text;
 
@@ -95,20 +96,17 @@ public class RotaryScheduler : SchedulerClient
         try
         {
             #region sécurité pour empecher plusieurs execution simultanées du scheduler
-            var items = SchedulingController.GetScheduleProcessing();
-            int nb = 0;
-            foreach(ScheduleHistoryItem item in items)
+            var lastExec = Yemon.dnn.Helpers.GetItem("scheduler:"+taskname);
+            if (lastExec != null)
             {
-                if (item.FriendlyName.ToLower().Contains("rotaryscheduler"))
-                    nb++;
+                DateTime lastTime = DateTime.Parse(""+lastExec);
+                if(lastTime.AddHours(1)>DateTime.Now.ToUniversalTime())
+                {
+                    throw new Exception("La tâche : "+taskname+" a déjà été lancée le "+lastTime.ToLongTimeString());
+                }
             }
-            if(nb>1)
-            {
-                this.ScheduleHistoryItem.AddLogNote("Execution annulée car un autre RotaryScheduler est en cours d'exécution...");
-                this.Completed();
-                return;
-            }
-            //var status = SchedulingController.GetScheduleStatus();
+            Yemon.dnn.Helpers.SetItem("scheduler:"+taskname, ""+DateTime.Now.ToUniversalTime(), "-1", keephistory: false, portalid: Yemon.dnn.Functions.GetPortalId());
+
             #endregion
 
             StringBuilder sb = new StringBuilder();
@@ -270,7 +268,8 @@ public class RotaryScheduler : SchedulerClient
                     Functions.SendMail(Const.ROTARY_SYNCHRO_LOG_EMAIL, "[" + Const.DISTRICT_ID + "] Synchro RI Logs", log);
                 }
             }
-            
+
+            Yemon.dnn.Helpers.DeleteItem("scheduler:"+taskname);
 
         }
         catch (Exception exc)
