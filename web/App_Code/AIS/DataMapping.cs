@@ -8959,6 +8959,70 @@ namespace AIS
             }
 
         }
+        public static string ReaffectPhotoMembers()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var membres = AIS.DataMapping.ListMembers(max: int.MaxValue);
+            PortalSettings ps = PortalSettings.Current;
+
+            if (!Directory.Exists(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup")))
+            {
+                Directory.CreateDirectory(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup"));
+            }
+            FileInfo[] files = new DirectoryInfo(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX)).GetFiles("*.*");
+            foreach (var f in files)
+            {
+                f.CopyTo(
+                    HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup\\"+f.Name),
+                    true
+                );
+
+            }
+
+
+            foreach (var m in membres)
+            {
+                string oldFilename = Functions.ClearFileName(m.name + "-" + m.surname + ".jpg").ToLower();
+
+                var MD5Name = Functions.CalculateMD5Hash(UTF8Encoding.UTF8.GetBytes(m.nim + ":" + m.name + ":" + m.surname));
+
+                string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower();
+
+                string _oldFilename = HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + oldFilename);
+                string _filename = HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename);
+
+                if (string.IsNullOrEmpty(m.photo))
+                {
+                    if (File.Exists(_filename))
+                    {
+                        m.photo = filename;
+                        DataMapping.UpdateMember(m);
+                        sb.AppendLine("<p>Réaffectation photo: "+m.name+" "+m.surname+"</p>");
+                    }
+                    else if (File.Exists(_oldFilename))
+                    {
+                        if (!File.Exists(_filename))
+                        {
+                            File.Move(_oldFilename, _filename);
+                            sb.AppendLine("<p>Rename: "+oldFilename+" "+@filename+"</p>");
+                            m.photo = filename;
+
+                            DataMapping.UpdateMember(m);
+                            sb.AppendLine("<p>Maj ancien fichier vers nouveau : "+m.name+" "+m.surname+"</p>");
+                        }
+                        else
+                        {
+                            sb.AppendLine("<p>Delete ancien fichier : "+oldFilename+"</p>");
+                        }
+
+                    }
+                }
+
+            }
+            sb.AppendLine("<p>Traitement terminé...</p>");
+            return sb.ToString();
+        }
 
         public static void Log(string type, string oldvalue, string newvalue, int userid)
         {

@@ -74,7 +74,20 @@ public class RotaryScheduler : SchedulerClient
     {
         this.ScheduleHistoryItem = oItem;
     }
-
+    
+    /// <summary>
+    /// clubs : récupère les clubs de my rotary
+    /// members : récupère les membres de my rotary
+    /// officers : récupère les affectation de my rotary
+    /// ucm : Update Clubs Members, met à jour les membres des clubs a partir des members récupérés de my rotary
+    /// uco : Update Clubs Officers, met à jour les affectations des clubs des années n et n+1 
+    /// ump : Update Members Profiles, récupère les données complémentaires des membres
+    /// couu : Create Or Update Users, crée ou met à jour les logins des membres
+    /// mac : Mise à jour Affectations Clubs, mets à jour les rôles des membres pour les clubs en fonctions de leurs affectations rotariennes
+    /// puu : Purge Unused Users, supprime les logins devenus inutiles suites aux changements de mails des membres
+    /// pdm : Purge Dupplicate Members, supprime les membres en double
+    /// rpm : Reaffect Photos Members, réaffecte les photos des membres
+    /// </summary>
     public override void DoWork()
     {
         string taskname = "" + this.ScheduleHistoryItem.FriendlyName.ToLower();
@@ -117,7 +130,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("members") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Rotary Members Synchro</div>");
@@ -130,7 +142,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("officers") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Rotary Officers Synchro</div>");
@@ -143,7 +154,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("ucm") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Update Club Members</div>");
@@ -156,7 +166,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("uco") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Update Club Officers</div>");
@@ -168,10 +177,7 @@ public class RotaryScheduler : SchedulerClient
 
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
-            }
-
-            
-
+            }          
             if (taskname.Contains("ump") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Update Members Profiles</div>");
@@ -184,7 +190,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("couu") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Création ou MAJ Users</div>");
@@ -197,7 +202,6 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
-
             if (taskname.Contains("mac") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Mise à jour affectations clubs</div>");
@@ -231,6 +235,22 @@ public class RotaryScheduler : SchedulerClient
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Suppression duplicate members</div>");
                 string result = DataMapping.PurgeDuplicateMembers();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                {
+                    if (Const.ROTARY_SYNCHRO_FULL_LOG || result.Contains("erreur"))
+                        sb.Append(result);
+
+                }
+
+                error = error || sb.ToString().ToLower().Contains("erreur");
+
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
+            if (taskname.Contains("rpm") && !error)
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Réaffectation des photos membres</div>");
+                string result = DataMapping.ReaffectPhotoMembers();
                 if (Const.ROTARY_SYNCHRO_LOG)
                 {
                     if (Const.ROTARY_SYNCHRO_FULL_LOG || result.Contains("erreur"))

@@ -5,6 +5,10 @@ App_Code\AIS\DataMapping.cs
 AIS\Download.aspx.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_visite_gouverneur.cshtml
 Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
+App_Code\AIS\DataMapping.cs
+App_Code\AIS\schedulers\RotaryScheduler.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_CorrectionPhotoMembres.cshtml
+
 ```
 ##### 04/08/2025
 ```txt

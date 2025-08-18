@@ -22,6 +22,7 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 
 - nouveau module pour exporter la fiche de renseignement du club pour la préparation de la visite du gouverneur (D1640)
+- nouveau process (rpm) qui permet de réaffecter les photos de tous les membres après transfert depuis my rotary
 
 ###### 04/08/2025
 - dans les paramètres de la compta club on peut maintenant personnaliser les lignes de facturation de cotisation
