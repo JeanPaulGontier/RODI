@@ -63,7 +63,6 @@
 
 using Aspose.BarCode;
 using Aspose.Cells;
-using Aspose.Pdf;
 using Aspose.Words;
 using Dnn.PersonaBar.Users.Components;
 using DotNetNuke.Common;
@@ -8964,17 +8963,18 @@ namespace AIS
             StringBuilder sb = new StringBuilder();
 
             var membres = AIS.DataMapping.ListMembers(max: int.MaxValue);
-            PortalSettings ps = PortalSettings.Current;
+            PortalSettings ps = Globals.GetPortalSettings();
 
-            if (!Directory.Exists(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup")))
+
+            if (!Directory.Exists(System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup")))
             {
-                Directory.CreateDirectory(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup"));
+                Directory.CreateDirectory(System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup"));
             }
-            FileInfo[] files = new DirectoryInfo(HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX)).GetFiles("*.*");
+            FileInfo[] files = new DirectoryInfo(System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX)).GetFiles("*.*");
             foreach (var f in files)
             {
                 f.CopyTo(
-                    HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup\\"+f.Name),
+                    System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + "backup\\"+f.Name),
                     true
                 );
 
@@ -8989,8 +8989,8 @@ namespace AIS
 
                 string filename = Functions.ClearFileName(MD5Name + ".jpg").ToLower();
 
-                string _oldFilename = HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + oldFilename);
-                string _filename = HttpContext.Current.Server.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename);
+                string _oldFilename = System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + oldFilename);
+                string _filename = System.Web.Hosting.HostingEnvironment.MapPath(ps.HomeDirectory + Const.MEMBERS_PHOTOS_PREFIX + filename);
 
                 if (string.IsNullOrEmpty(m.photo))
                 {
