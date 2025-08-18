@@ -99,13 +99,13 @@ public class RotaryScheduler : SchedulerClient
             var lastExec = Yemon.dnn.Helpers.GetItem("scheduler:"+taskname);
             if (lastExec != null)
             {
-                DateTime lastTime = DateTime.Parse(""+lastExec);
-                if(lastTime.AddHours(1)>DateTime.Now.ToUniversalTime())
+                DateTime lastTime =(DateTime)Functions.Deserialize(""+lastExec,typeof(DateTime));
+                if(lastTime.AddHours(1)>DateTime.Now)
                 {
                     throw new Exception("La tâche : "+taskname+" a déjà été lancée le "+lastTime.ToLongTimeString());
                 }
             }
-            Yemon.dnn.Helpers.SetItem("scheduler:"+taskname, ""+DateTime.Now.ToUniversalTime(), "-1", keephistory: false, portalid: Yemon.dnn.Functions.GetPortalId());
+            Yemon.dnn.Helpers.SetItem("scheduler:"+taskname, Functions.Serialize(DateTime.Now), "-1", keephistory: false, portalid: Yemon.dnn.Functions.GetPortalId());
 
             #endregion
 
@@ -269,7 +269,7 @@ public class RotaryScheduler : SchedulerClient
                 }
             }
 
-            Yemon.dnn.Helpers.DeleteItem("scheduler:"+taskname);
+            Yemon.dnn.Helpers.DeleteItem("scheduler:"+taskname,purgeHistory:true);
 
         }
         catch (Exception exc)
