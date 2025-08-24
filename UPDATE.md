@@ -9,6 +9,7 @@
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
 - champ date de fin d'inscription dans mail réunion
+- ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
 - rendre visible les réunions passées pour les membres (D1680)
 - gestion des contrats jeunes rotariens (D1700)
