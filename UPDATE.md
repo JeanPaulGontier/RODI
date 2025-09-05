@@ -17,7 +17,7 @@
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
-
+- ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - ajout de l'anniversaire dans le trombinoscope (D1730)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680)
