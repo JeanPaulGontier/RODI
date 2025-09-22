@@ -23,9 +23,11 @@
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680)
 - nouvelle version de l'app mobile (gestion des notifications)
 
-- correction d'un pb de lien autre que youtube dans le bloc de type vidéo 
-- correction du pb de sauvegarde des blocs dans la page de présentation professionnelle d'un membre
-- ajout d'un bouton valider lors de la modification des informations professionnelles dans mon profil pour éviter les changements non sollicités 
+- dans le module form inscription MSPLA Nancy, le comité MSPLA peut maintenant exporter la liste des participants
+  on peut aussi quand on est administrateur effacer tous les participants (D1790)
+- correction d'un pb de lien autre que youtube dans le bloc de type vidéo (D1790)
+- correction du pb de sauvegarde des blocs dans la page de présentation professionnelle d'un membre (D1700)
+- ajout d'un bouton valider lors de la modification des informations professionnelles dans mon profil pour éviter les changements non sollicités (D1700)
 - nouveau module pour exporter la fiche de renseignement du club pour la préparation de la visite du gouverneur (D1640)
 - nouveau process (rpm) qui permet de réaffecter les photos de tous les membres après transfert depuis my rotary
 

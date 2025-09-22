@@ -151,7 +151,12 @@
 
         HttpContext.Current.Response.Redirect("/AIS/MediaView.aspx?id=" + guid);
     }
-    if((""+Request["__EVENTTARGET"])=="delete"){
+    if ((""+Request["__EVENTTARGET"])=="deleteall")
+    {
+        Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_form_inscription where moduleid=" +  Dnn.Module.ModuleID + " and portalid=" + Dnn.Portal.PortalId);
+    }
+    if ((""+Request["__EVENTTARGET"])=="delete")
+    {
         int id = int.Parse("" + Request["__EVENTARGUMENT"]);
         Yemon.dnn.DataMapping.ExecSqlNonQuery("delete from ais_form_inscription where id=" + id);
     }
@@ -239,10 +244,20 @@
 
 }
 
-@if (userInfo.IsAdmin)
+@if (userInfo.IsAdmin || userInfo.IsInRole("Comité MSPLA"))
 {
     System.Data.DataTable inscrits = Yemon.dnn.DataMapping.ExecSql("select * from ais_form_inscription where moduleid=" + Dnn.Module.ModuleID + " and portalid=" + Dnn.Portal.PortalId + " order by dtlastupdate");
+    <script>
+        function confirmation() {
+            if (confirm("Effacer tous les participants ?")) {
+                if (confirm("Vraiment sur ?")) {
+                    document.forms[0]['__EVENTTARGET'].value = 'deleteall';
+                    document.forms[0].submit();
+                }
+            }
 
+        }
+    </script>
 
     <div class="pe-spacer size40"></div>
     <button class="btn btn-warning" type="submit" name="bt_export" value="export">Exporter la liste des participants</button>
@@ -262,7 +277,7 @@
                 <th>Club</th>
                 <th></th>
             </tr>
-            @foreach(DataRow inscrit in inscrits.Rows)
+            @foreach (DataRow inscrit in inscrits.Rows)
             {
                 <tr>
                     <td>@(""+inscrit["creneaux"])</td>
@@ -274,9 +289,14 @@
                 </tr>
             }
         </table>
+        if (userInfo.IsAdmin)
+        {
+            <button class="btn btn-alert" type="button" onclick="confirmation()" name="bt_delete_inscrits" value="delete">Effacer la liste des participants</button>
+        }
+
     }
     else
-    { 
+    {
         <div class="alert alert-info">Aucun inscrit pour le momment...</div>
     }
 
@@ -303,7 +323,7 @@
             HatchStyle.BackwardDiagonal, HatchStyle.Cross, HatchStyle.DashedDownwardDiagonal, HatchStyle.DashedHorizontal, HatchStyle.DashedUpwardDiagonal, HatchStyle.DashedVertical,
                 HatchStyle.DiagonalBrick, HatchStyle.DiagonalCross, HatchStyle.Divot, HatchStyle.DottedDiamond, HatchStyle.DottedGrid, HatchStyle.ForwardDiagonal, HatchStyle.Horizontal,
                 HatchStyle.HorizontalBrick, HatchStyle.LargeCheckerBoard, HatchStyle.LargeConfetti, HatchStyle.LargeGrid, HatchStyle.LightDownwardDiagonal, HatchStyle.LightHorizontal
-                    };
+                                };
             ////create rectangular area
             RectangleF oRectangleF = new RectangleF(0, 0, 300, 300);
             objBrush = new HatchBrush(aHatchStyles[objRandom.Next(aHatchStyles.Length - 3)], Color.FromArgb((objRandom.Next(100, 255)), (objRandom.Next(100, 255)), (objRandom.Next(100, 255))), Color.White);
