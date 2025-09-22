@@ -41,7 +41,18 @@
         }
     }
     <script>
+       
+
+        
+        $(document).ready(function () {
+            $("#bt_valid_presentation").hide();
+        });
+        
         function soumettre() {
+            $("#bt_valid_presentation").show();
+        }
+        function save() {
+
             var presentationvisible = $("input[name='presentationvisible']:checked").val();
             var job = $("#job").val();
             var industry = $("#industry").val();
@@ -55,6 +66,9 @@
                 function (data, status) {
                     if (status != "success") {
                         alert('Une erreur est survenue...');
+                    }
+                    else {
+                        $("#bt_valid_presentation").hide();
                     }
                 });
 
@@ -79,9 +93,12 @@
         <label class="radio-inline"><input type="radio" value="@Const.YES" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(member.presentation ? "checked" : "")>Oui</label>
         <label class="radio-inline"><input type="radio" value="@Const.NO" name="presentationvisible" onclick="soumettre()" id="presentationvisible" @(!member.presentation ? "checked" : "")>Non</label>
     </div>
+    <div>
+        <button type="button" class="btn btn-primary" id="bt_valid_presentation" onclick="save()">Valider</button>
+    </div>
     <div>&nbsp;</div>
 
-    
+
 
     ModuleController moduleController = new ModuleController();
     var moduleInfo = moduleController.GetModule(Dnn.Module.ModuleID);
@@ -90,10 +107,10 @@
 
     if (editable)
     {
-        @RenderPage("../RazorHost/Scripts/BlocksContent/Editor.news.meeting.cshtml")
+        @RenderPage("../RazorHost/Scripts/BlocksContent/Editor.cshtml")
     }
     else
     {
-        @RenderPage("../RazorHost/Scripts/BlocksContent/View.news.meeting.cshtml")
+        @RenderPage("../RazorHost/Scripts/BlocksContent/View.cshtml")
     }
 }

@@ -102,17 +102,21 @@ namespace AIS
 
         public String getLink()
         {
-            //String res = "<div "+/*class=\"videoContainer\"*/">";
-            String res = "";
-            if (Type == "youtube")
-                return res+"<iframe width=\"90%\" class=\"video\" src =\"" + getCorrectUrlYT() + "\" allowfullscreen></iframe>";
-            else if (Type == "daily")
-                return res+ "<iframe  class=\"video\" src=\"" + getCorrectUrlDaily() + "\" allowfullscreen></iframe><br />";
-            else if (Type == "vimeo")
-                return res+"<iframe src=\"" + getCorrectUrlVimeo() + "\"  class=\"video\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-            else
-                return res + "<iframe src=\"" + url + "\"  class=\"video\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            try
+            {
+                //String res = "<div "+/*class=\"videoContainer\"*/">";
+                String res = "";
+                if (Type == "youtube")
+                    return res+"<iframe width=\"90%\" class=\"video\" src =\"" + getCorrectUrlYT() + "\" allowfullscreen></iframe>";
+                else if (Type == "daily")
+                    return res+ "<iframe  class=\"video\" src=\"" + getCorrectUrlDaily() + "\" allowfullscreen></iframe><br />";
+                else if (Type == "vimeo")
+                    return res+"<iframe src=\"" + getCorrectUrlVimeo() + "\"  class=\"video\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+                else
+                    return res + "<iframe src=\"" + url + "\"  class=\"video\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
+            }
+            catch (Exception e) { }
             return "";
         }
         

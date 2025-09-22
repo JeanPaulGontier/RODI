@@ -9,6 +9,8 @@ App_Code\AIS\DataMapping.cs
 App_Code\AIS\schedulers\RotaryScheduler.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_CorrectionPhotoMembres.cshtml
 App_Code\AIS\Member.cs
+App_Code\AIS\Video.cs
+DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 
 ```
 ##### 04/08/2025
