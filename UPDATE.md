@@ -22,6 +22,7 @@
 - ajout de l'anniversaire dans le trombinoscope (D1730)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680)
 - nouvelle version de l'app mobile (gestion des notifications)
+- gestion des notifications dans l'espace membre
 
 - dans le module form inscription MSPLA Nancy, le comité MSPLA peut maintenant exporter la liste des participants
   on peut aussi quand on est administrateur effacer tous les participants (D1790)
