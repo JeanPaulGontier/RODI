@@ -1,27 +1,27 @@
 ###### en cours, sera installé lors d'une prochaine MAJ
-- nouveau : tableau de bord club
-- nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
-- nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
 - nouveau : possibilité de créer des listes de contacts externes (optin & optout) pour les mailings et notifications de réunions (exemple : abonnés newsletter du clubs, prospects du clubs, etc.) avec utilisation de plateforme de mass mailing du club (brevo, mailjet, mail personnel du club)
-- nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
-- fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680)
-- fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
-- choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
-- champ date de fin d'inscription dans mail réunion
-- ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
+- fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
-- rendre visible les réunions passées pour les membres (D1680)
 - gestion des contrats jeunes rotariens (D1700)
-- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
-- ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680)
+- ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - ajout de l'anniversaire dans le trombinoscope (D1730)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680)
 - nouvelle version de l'app mobile (gestion des notifications)
+- choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
+- fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
+- ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
+- nouveau : tableau de bord club
+- nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
+- nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
+- nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
+- champ date de fin d'inscription dans mail réunion
+- ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
+- rendre visible les réunions passées pour les membres (D1680)
 - gestion des notifications dans l'espace membre
 
 - dans le module form inscription MSPLA Nancy, le comité MSPLA peut maintenant exporter la liste des participants
