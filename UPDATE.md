@@ -18,6 +18,7 @@
 - nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - ajout de l'anniversaire dans le trombinoscope (D1730)
+- mettre a disposition de l'administration district la liste des membres terminés avec la raison maj tous les mois (D1770)
 - champ date de fin d'inscription dans mail réunion
 - ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
 - rendre visible les réunions passées pour les membres (D1680)
