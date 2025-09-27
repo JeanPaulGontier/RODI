@@ -1,4 +1,5 @@
 ###### en cours, sera installé lors d'une prochaine MAJ
+- ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - nouveau : possibilité de créer des listes de contacts externes (optin & optout) pour les mailings et notifications de réunions (exemple : abonnés newsletter du clubs, prospects du clubs, etc.) avec utilisation de plateforme de mass mailing du club (brevo, mailjet, mail personnel du club)
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
@@ -9,6 +10,7 @@
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
 - ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
+- mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
 - nouvelle version de l'app mobile (gestion des notifications)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
