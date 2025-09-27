@@ -25,6 +25,7 @@
 - ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
 - rendre visible les réunions passées pour les membres (D1680)
 - autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
+- ajout d'une fonctionnalité pour copier une réunion existante (D1680)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 - gestion des notifications dans l'espace membre
 
