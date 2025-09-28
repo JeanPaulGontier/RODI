@@ -475,7 +475,7 @@
                     {
                         sort = "dt desc";
                     }
-                    List<News> newslistsrc = DataMapping.ListNews(club.cric, onlyvisible: true, category: "Clubs", sort: sort);
+                    List<News> newslistsrc = DataMapping.ListNews(club.cric, onlyvisible: true, category: "Clubs", sort: sort,max:int.MaxValue);
 
                     List<News> newslist = new List<News>();
                     var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);

@@ -29,6 +29,7 @@
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 - gestion des notifications dans l'espace membre
 
+- correction blockcontent club pour l'affichage des nouvelles du club qui affiche maintenant toutes les nouvelles, l'affichage ne fesait la recherche que sur les 100 premières nouvelles, les suivantes étaient invisibles
 - dans le module form inscription MSPLA Nancy, le comité MSPLA peut maintenant exporter la liste des participants
   on peut aussi quand on est administrateur effacer tous les participants (D1790)
 - correction d'un pb de lien autre que youtube dans le bloc de type vidéo (D1790)
