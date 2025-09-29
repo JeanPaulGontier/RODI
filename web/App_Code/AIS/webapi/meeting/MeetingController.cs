@@ -5,6 +5,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Mail;
 using DotNetNuke.Web.Api;
 using GemBox.Pdf;
 using QRCoder;
@@ -332,88 +333,24 @@ namespace AIS.controller
                 Meeting meeting = (Meeting)Yemon.dnn.Functions.Deserialize("" + param["meeting"], typeof(Meeting));
                 string blocks = "" + param["blocks"];
                 meeting.cric = cric;
-
-
-
                 Dictionary<string, object> row = new Dictionary<string, object>();
                 SqlCommand sql = new SqlCommand("SELECT * FROM ais_meetings WHERE cric=@cric AND guid=@guid");
                 sql.Parameters.AddWithValue("cric", cric);
                 sql.Parameters.AddWithValue("guid", meeting.guid);
 
                 Meeting m = Yemon.dnn.DataMapping.ExecSqlFirst<Meeting>(sql);
-                if (m == null)
-                    row["id"] = null;
-                else
-                    row["id"] = m.id;
-                
-
-                row["guid"] = meeting.guid;
-                row["name"] = meeting.name;
-                row["active"] = meeting.active;
-                row["statutory"] = meeting.statutory;
-                row["type"] = meeting.type;
-                row["cric"] = meeting.cric;
-                row["active"] = meeting.active;
-                row["doperiodics"] = meeting.doperiodics;
-                row["mustnotify"] = meeting.mustnotify;
-                row["periods"] = meeting.periods;
-                if (meeting.dtstart == DateTime.MinValue)
-                    meeting.dtstart = DateTime.Now;
-                if (meeting.dtend == DateTime.MinValue)
-                    meeting.dtend = meeting.dtstart.AddHours(1);
-
-                row["dtstart"] = meeting.dtstart;
-                row["dtend"] = meeting.dtend;
-                if (meeting.dtendactive == DateTime.MinValue)
-                    meeting.dtendactive = meeting.dtstart;
-                row["dtendactive"] = meeting.dtendactive;
-
-                if (meeting.dtrevision<DateTime.Now)
-                    row["dtrevision"]=DateTime.Now;
-                else
-                    row["dtrevision"] = meeting.dtrevision;
-
-                if (meeting.dtnotif1 == DateTime.MinValue)
-                    row["dtnotif1"] = null;
-                else
-                    row["dtnotif1"] = meeting.dtnotif1;
-                if (meeting.dtnotif2 == DateTime.MinValue)
-                    row["dtnotif2"] = null;
-                else
-                    row["dtnotif2"] = meeting.dtnotif2;
-
-                row["notif1done"] = meeting.notif1done;
-                row["notif2done"] = meeting.notif2done;
-
-                if (meeting.mustnotify=="O" && meeting.type=="unitary")
+                if (m!=null)
                 {
-                    row["dtnotif1"] =null;
-                    row["dtnotif2"] = null;
-                    row["notif1done"] = null;
-                    row["notif2done"] = null;
+                    meeting.id=m.id;
                 }
-              
-                
-                row["dtlastupdate"] = DateTime.Now;
-                row["portalid"] = 0;
-                row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
-                row["notificationtype"] = meeting.notificationtype;
-                row["notificationlist"] = meeting.notificationlist;
+               
 
-                if (meeting.notificationtype !=null && meeting.notificationtype.Length > 1)
+                if (MeetingHelper.SetMeeting(meeting, null, null) == 0)
                 {
-                    row["notificationtype"] = "L";
-                    row["notificationlist"] = ""+ meeting.notificationtype;
-                }
-
-
-                row["notificationmsg"] = meeting.notificationmsg;
-
-                var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_meetings", "id", row);
-
-                if(result.Key=="error")
                     throw new Exception("Erreur de mise a jour");
+                }
 
+                
                 Yemon.dnn.Helpers.SetItem("blockscontent:" + meeting.guid, ""+param["blocks"], "" + userInfo.UserID, keephistory: false, portalid: ps.PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, meeting.guid);
 
@@ -544,6 +481,29 @@ namespace AIS.controller
             
 
             return Request.CreateResponse(HttpStatusCode.OK, news.id);
+        }
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage DuplicateMeeting(string guid)
+        {
+            try
+            {
+                if (!MeetingHelper.Editable(UserInfo))
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                Guid? newguid = MeetingHelper.DuplicateMeeting(new Guid(guid), UserInfo);
+                if (newguid == null)
+                    throw new Exception("Erreur de duplication");
+
+                return Request.CreateResponse(HttpStatusCode.OK, (Guid)newguid);
+            }
+            catch (Exception ee)
+            {
+                Functions.Error(ee);
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]

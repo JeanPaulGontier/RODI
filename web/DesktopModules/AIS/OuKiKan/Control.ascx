@@ -69,7 +69,7 @@
 %>
     <h1>Liste des réunions en cours</h1>
 <%
-        List<Meeting> meetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(new SqlCommand("SELECT * FROM ais_meetings WHERE cric="+cric+" AND active='O' AND type='unitary' AND dtstart>=getdate() ORDER BY dtstart ASC"));
+        List<Meeting> meetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(new SqlCommand("SELECT TOP 100 * FROM ais_meetings WHERE cric="+cric+" AND (visible !='N' OR visible IS null)  AND type='unitary' ORDER BY dtstart DESC"));
         if (meetings.Count == 0)
         {
 %>

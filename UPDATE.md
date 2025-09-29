@@ -21,14 +21,16 @@
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - ajout de l'anniversaire dans le trombinoscope (D1730)
 - mettre a disposition de l'administration district la liste des membres terminés avec la raison maj tous les mois (D1770)
+- autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
+- ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
+
+###### 29/09/2025
+- rendre visible les réunions passées pour les membres (D1680)
+- ajout d'une fonctionnalité pour copier une réunion existante (D1680)
 - champ date de fin d'inscription dans mail réunion
 - ajouter un texte d'explication pour rappeler que les notifications ne sont pas envoyées aux membres déjà inscrits
-- rendre visible les réunions passées pour les membres (D1680)
-- autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
-- ajout d'une fonctionnalité pour copier une réunion existante (D1680)
-- ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 - gestion des notifications dans l'espace membre
-
+- activaiton des notifications pour les réunions
 - correction blockcontent club pour l'affichage des nouvelles du club qui affiche maintenant toutes les nouvelles, l'affichage ne fesait la recherche que sur les 100 premières nouvelles, les suivantes étaient invisibles
 - dans le module form inscription MSPLA Nancy, le comité MSPLA peut maintenant exporter la liste des participants
   on peut aussi quand on est administrateur effacer tous les participants (D1790)
@@ -37,6 +39,38 @@
 - ajout d'un bouton valider lors de la modification des informations professionnelles dans mon profil pour éviter les changements non sollicités (D1700)
 - nouveau module pour exporter la fiche de renseignement du club pour la préparation de la visite du gouverneur (D1640)
 - nouveau process (rpm) qui permet de réaffecter les photos de tous les membres après transfert depuis my rotary
+
+
+ALTER TABLE [dbo].[ais_meetings]
+ADD visible [char](1) NULL;
+
+CREATE TABLE [dbo].[ais_notifications](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[guid] [uniqueidentifier] NULL,
+	[title] [nvarchar](255) NULL,
+	[source] [nvarchar](255) NULL,
+	[type] [int] NULL,
+	[date] [datetime] NULL,
+	[detail] [ntext] NULL,
+ CONSTRAINT [PK_ais_notifications] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ais_notifications_users](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[notif_id] [int] NULL,
+	[user_id] [int] NULL,
+	[opened] [bit] NULL,
+ CONSTRAINT [PK_ais_notifications_users] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 
 ###### 04/08/2025
 - dans les paramètres de la compta club on peut maintenant personnaliser les lignes de facturation de cotisation

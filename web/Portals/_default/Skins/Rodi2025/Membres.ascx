@@ -11,7 +11,8 @@
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="LOGIN" Src="~/Admin/Skins/Login.ascx" %>
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/Portals/_default/Skins/Rodi2025/Controls/Menu.ascx" %>
-
+<%@ Register TagPrefix="ais" TagName="NOTIFICATIONPANEL" Src="~/Portals/_default/Skins/Rodi2025/Controls/NotificationPanel.ascx" %>
+<%@ Register TagPrefix="ais" TagName="NOTIFICATIONICON" Src="~/Portals/_default/Skins/Rodi2025/Controls/NotificationIcon.ascx" %>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
@@ -62,13 +63,16 @@
             <img alt="Rotary District 1730" src="<%=SkinPath %>images/rotary-district<%= AIS.Const.DISTRICT_ID %>-blanc.png" />
         </a>
         <div class="text-center" style="flex-grow:1;">
-            <div class="titres-membre">
-                <p>Espace Membre</p>
+            <div class="titres-membre row-fluid">
+                <p class="flex-grow">Espace Membre</p>
+                <ais:NOTIFICATIONICON runat="server" ID="NotificationIconMobile" PanelClientID="NotificationPanelMobile" IsMobile="true" />
             </div>
-            <%if (AIS.Functions.CurrentCric > 0) { %>
-            <p><%= AIS.Functions.CurrentClub.name %></p>
-            <% } %>
+        
         </div>
+
+       <ais:NOTIFICATIONPANEL runat="server" ID="NotificationPanelMobile" />
+    
+
   </header>
 
     <div class="menu-mob"></div>
@@ -129,24 +133,29 @@
             <% } %>
 
             <%if (Request.IsAuthenticated) {%>
+
                     <div id="Login">
                         <div class="titres-membre">
                             <p>Espace Membre</p>
                             <%if (AIS.Functions.CurrentCric > 0) { %>
                             <p><%= AIS.Functions.CurrentClub.name %></p>
                             <% } %>
+                            
                         </div>
                         <a href="https://www.rotary.org/">Rotary International</a> | 
                         <a href="https://www.rotary.org/fr/search/club-finder">Localiser un Rotary Club</a>
                     </div>
                     <div class="user-head">
                         <span><%= "Bienvenue " + PortalSettings.UserInfo.DisplayName %></span> | 
-                        <a href="/Espace-Membre/Mon-profil" title="Mon profil"><i class="fa-regular fa-circle-user"></i> Mon profil</a> | 
-                        <a href="/logoff" title="Déconnexion">Déconnexion <i class="fa-solid fa-power-off"></i></a>
+                        <ais:NOTIFICATIONICON runat="server" ID="NotificationIconDesktop" PanelClientID="NotificationPanelDesktop" />
+                        <a href="/Espace-Membre/Mon-profil" title="Mon profil"><i class="fa-regular fa-circle-user"></i></a>
+                        <a href="/logoff" title="Déconnexion"><i class="fa-solid fa-power-off"></i></a>
                     </div>            
             <% } %>
-            </div>
         </div>
+
+    <ais:NOTIFICATIONPANEL runat="server" ID="NotificationPanelDesktop"  />
+  
     </header>
 
     <section>
@@ -286,18 +295,6 @@
           </div>
       </div>
     </section>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -2,14 +2,16 @@
     <div>
         <div class="row">
 
-            <div class="col-sm-3 ">
+            <div class="col-sm-3">
                 <button type="button" @click="cancel()" class="btn btn-default">Retour</button>&nbsp;
                 <button type="button" v-if="isValid()" @click="saveMeeting()" class="btn btn-primary">Valider</button>
             </div>
-            <div class="col-sm-7 ">
+            <div class="col-sm-5">
                 <button type="button" v-if="this.id!='new' &&  meeting.type=='unitary'" @click="createBulletin()" class="btn btn-info">Créer Compte Rendu</button>
             </div>
-
+            <div class="col-sm-2">
+                <button type="button" v-on:click="duplicateMeeting()" class="btn btn-sm btn-default" title="Dupliquer" v-if="this.meeting.id>0">Dupliquer</button>
+            </div>
             <div class="col-sm-2">
                 <button v-if="this.id!='new'" type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
             </div>
@@ -191,7 +193,7 @@
 
             <div class="row" v-if="meeting.type=='unitary' && meeting.active=='O'">
                 <div class="col-sm-3">
-                    <label for="mustnotify">Notification aux destinataires</label>
+                    <label for="mustnotify">Notification aux destinataires</label>                    
                 </div>
                 <div class="col-sm-4">
                     <label class="radio"><input type="radio" name="mustnotify" value="O" v-model="meeting.mustnotify" v-on:click="setQuand()">Oui</label>
@@ -202,71 +204,83 @@
                 </div>
 
             </div>
-            <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O' && quand  && meeting.active=='O'">
+            <div class="row"  v-if="meeting.type=='unitary' && meeting.mustnotify=='O'">
                 <div class="col-sm-3">
-                    <label for="notifywhen">Quand ?</label>
                 </div>
                 <div class="col-sm-9">
-                    <label class="radio"><input type="radio" name="notifywhen" value="now" v-model="quand" v-on:click="setQuand()">Maintenant</label>
-                    <label class="radio"><input type="radio" name="notifywhen" value="later" v-model="quand">Plus tard</label>
-                </div>
-                <div class="col-sm-3" v-if="quand=='later'">
-
-                </div>
-                <div class="col-sm-3" v-if="quand=='later'">
-                    <input id="dtrevision" class="form-control" type="datetime-local" v-model="meeting.dtrevision">
+                    <div class="alert alert-info">
+                        <em>Les notifications ne sont envoyées qu'aux membres qui ne sont pas encore inscrits, vous pouvez les utiliser plusieurs fois pour envoyer des rappels.</em>
+                    </div>
                 </div>
             </div>
-            <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O'  && meeting.active=='O'">
-                <div class="col-sm-3">
-                    <label for="notificationtype">Destinataires</label>
-                </div>
-                <div class="col-sm-9">
-                    <label class="radio"><input type="radio" name="notificationtype" value="A" v-model="meeting.notificationtype">Tous les membres</label>
-                    <label class="radio"><input type="radio" name="notificationtype" value="M" v-model="meeting.notificationtype">Membres hors club satellite</label>
-                    <label class="radio"><input type="radio" name="notificationtype" value="S" v-model="meeting.notificationtype">Membres club satellite seulement</label>
-                    <label class="radio" v-for="r in recipients"><input type="radio" name="notificationtype" :value="r.guid" v-model="meeting.notificationtype">{{r.title}}</label>
+                <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O' && quand  && meeting.active=='O'">
+                    <div class="col-sm-3">
+                        <label for="notifywhen">Quand ?</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="radio"><input type="radio" name="notifywhen" value="now" v-model="quand" v-on:click="setQuand()">Maintenant</label>
+                        <label class="radio"><input type="radio" name="notifywhen" value="later" v-model="quand">Plus tard</label>
+                    </div>
+                    <div class="col-sm-3" v-if="quand=='later'">
 
-                    <!--<label class="radio"><input type="radio" name="notificationtype" value="C" v-model="meeting.notificationtype">Membres du bureau</label>-->
+                    </div>
+                    <div class="col-sm-3" v-if="quand=='later'">
+                        <input id="dtrevision" class="form-control" type="datetime-local" v-model="meeting.dtrevision">
+                    </div>
+                </div>
+                <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O'  && meeting.active=='O'">
+                    <div class="col-sm-3">
+                        <label for="notificationtype">Destinataires</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="radio"><input type="radio" name="notificationtype" value="A" v-model="meeting.notificationtype">Tous les membres</label>
+                        <label class="radio"><input type="radio" name="notificationtype" value="M" v-model="meeting.notificationtype">Membres hors club satellite</label>
+                        <label class="radio"><input type="radio" name="notificationtype" value="S" v-model="meeting.notificationtype">Membres club satellite seulement</label>
+                        <label class="radio" v-for="r in recipients"><input type="radio" name="notificationtype" :value="r.guid" v-model="meeting.notificationtype">{{r.title}}</label>
+
+                        <!--<label class="radio"><input type="radio" name="notificationtype" value="C" v-model="meeting.notificationtype">Membres du bureau</label>-->
+                    </div>
+
+                </div>
+                <div class="pe-spacer size10" v-if="meeting.type=='unitary' && meeting.active=='O'"></div>
+                <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O'  && meeting.active=='O'">
+                    <div class="col-sm-3">
+                        <label for="notificationtype">Message de notification</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <tinymce :value="meeting.notificationmsg"
+                                 ref="meetingeditor"
+                                 class="form-control"
+                                 :plugins="editorPlugins"
+                                 :toolbar1="editorToolbar"
+                                 :other="editorOptions" />
+                        <div class="alert alert-info">
+                            Si vous effacez le message, alors le message standard est envoyé.<br />Vous pouvez utiliser les champs suivants :<br />
+                            <ul>
+                                <li>#meeting.name# : nom de la réunion</li>
+                                <li>#meeting.dtstart# : date de début</li>
+                                <li>#meeting.dtend# : date de fin</li>
+                                <li>#meeting.dtendactive# : date de fin d'inscription</li>
+                                <li>#meeting.link# : pour le lien personnalisé pour le membre notifié</li>
+                                <li>#meeting.sharelink# : pour le lien partageable à un tiers</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="pe-spacer size10" v-if="meeting.type=='unitary' && meeting.active=='O'"></div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Contenu détaillé</h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
+                    </div>
                 </div>
 
             </div>
-            <div class="pe-spacer size10" v-if="meeting.type=='unitary' && meeting.active=='O'"></div>
-            <div class="row" v-if="meeting.type=='unitary' && meeting.mustnotify=='O'  && meeting.active=='O'">
-                <div class="col-sm-3">
-                    <label for="notificationtype">Message de notification</label>
-                </div>
-                <div class="col-sm-9">
-                    <tinymce :value="meeting.notificationmsg"
-                             ref="meetingeditor"
-                             class="form-control"
-                             :plugins="editorPlugins"
-                             :toolbar1="editorToolbar"
-                             :other="editorOptions" />
-                    <div class="alert alert-info">Si vous effacez le message, alors le message standard est envoyé.<br/>Vous pouvez utiliser les champs suivants :<br />
-                    <ul>
-                        <li>#meeting.name# : nom de la réunion</li>
-                        <li>#meeting.dtstart# : date de début</li>
-                        <li>#meeting.dtend# : date de fin</li>
-                        <li>#meeting.link# : pour le lien personnalisé pour le membre notifié</li>
-                        <li>#meeting.sharelink# : pour le lien partageable à un tiers</li>
-                    </ul></div>
-                 
-                </div>
-
-            </div>
-            <div class="pe-spacer size10" v-if="meeting.type=='unitary' && meeting.active=='O'"></div>
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4>Contenu détaillé</h4>
-                </div>
-                <div class="col-sm-12">
-                    <blocks-editor :blocks="blocks" :moduleid="moduleid" :editable="editable"></blocks-editor>
-                </div>
-            </div>
-
-        </div>
     </div>
 </script>
 <script>
@@ -333,6 +347,22 @@
             'tinymce': VueEasyTinyMCE
         },
         methods: {
+            duplicateMeeting() {
+                if (confirm("Dupliquer la réunion ?")) {
+                    
+                    this.saveMeeting(() => {
+                        _yemon[this.moduleid].service.getData("/DuplicateMeeting", {
+                            guid: this.meeting.guid
+                        }, (r) => {
+                            window.location.assign("/Espace-Membre/Mon-club/Communication/Reunions#/edit/" + r.data);
+                            
+                        }, (e) => {
+                            toastr["error"]("Erreur : " + e.response.data.Message);
+                        })
+                    })
+
+                }
+            },
             messageNotified() {
                 if (this.meeting.dtnotif1 == '0001-01-01T00:00:00')
                     return "";
@@ -528,7 +558,8 @@
                 this.nouveau = true;
                 this.meeting = {
                     guid: _yemon[this.moduleid].service.guid(),
-                    doperiodics:'O',
+                    doperiodics: 'O',
+                    visible:'O',
                     active: 'O',
                     type: 'unitary',
                     statutory: 'O',

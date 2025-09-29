@@ -105,6 +105,51 @@
 
 }
 
+.card-membre{
+    color: $default-text;
+}
+
+.card-notif{
+    position:fixed;
+    top:66px;
+    left:80px;
+    right:0;
+    bottom:10px;
+    background: $default-bg;
+    border-radius: 5px;
+    border: 1px solid $secondary-bg;
+    padding:10px;
+    box-shadow: $shadow-box;
+
+    > span{
+        display: block;
+        padding-top:10px;
+    }
+
+    .notif{
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap:10px;
+        margin-top:$spacer;
+        text-align: left;
+        color: $default-text;
+
+        i{
+            font-size:2em;
+            color:$info;
+            margin: 0 auto;
+        }
+
+        &.mute{
+            color: $secondary-text;
+            font-style: italic;
+
+            i{color:$secondary-text;}
+        }
+    }
+
+}
+
 /* TRANSPARENT CARDS */
 
 .transparent-card{
@@ -282,6 +327,12 @@
         width:250px;
         height:250px;
     }
+
+    .card-notif{
+        left:40%;
+        right:5px;
+        padding:15px;
+    }
 }
 
 
@@ -307,6 +358,12 @@
             font-size:125%;
             padding:$spacer;
         }
+    }
+
+    .card-notif{
+        top:158px;
+        left:65%;
+        padding:20px;
     }
 }
 

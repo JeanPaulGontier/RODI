@@ -10,6 +10,7 @@
 <ul>
     <li>#meeting.dtstart#</li>
     <li>#meeting.dtend#</li>
+    <li>#meeting.dtendactive#</li>
     <li>#meeting.name#</li>
     <li>#meeting.link#</li>
 </ul>

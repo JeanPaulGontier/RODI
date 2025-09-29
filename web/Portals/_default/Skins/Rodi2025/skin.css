@@ -234,16 +234,20 @@
   gap: 10px;
   margin-right: 10px;
   line-height: 2em;
+  color: #e7e7e8;
 }
 .header-membre .icons-menu .user-head > a {
-  color: #ffffff;
+  color: #e7e7e8;
+  display: inline-block;
+  padding: 0 0.2em;
+  font-size: 1.5em;
 }
 .header-membre .titres-membre {
   text-align: center;
   flex-grow: 1;
 }
 .header-membre .titres-membre > a {
-  color: #898A8D;
+  color: #e7e7e8;
 }
 .header-membre .titres-membre p {
   color: #ffffff;
@@ -281,7 +285,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 .menubar-membre .menu {
-  z-index: 9999;
+  z-index: 999;
   padding: 0;
 }
 .menubar-membre .m-lvl1 {
@@ -837,6 +841,9 @@ img.img-r {
 }
 .row-fluid.centered {
   justify-content: center;
+}
+.row-fluid .flex-grow {
+  flex-grow: 1;
 }
 
 /* Alignements */
@@ -1422,6 +1429,47 @@ img.img-r {
   transform: translateX(4px);
 }
 
+.card-membre {
+  color: #3b3b3b;
+}
+
+.card-notif {
+  position: fixed;
+  top: 66px;
+  left: 80px;
+  right: 0;
+  bottom: 10px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #e7e7e8;
+  padding: 10px;
+  box-shadow: 4px 4px 18px 2px rgba(0, 0, 0, 0.3);
+}
+.card-notif > span {
+  display: block;
+  padding-top: 10px;
+}
+.card-notif .notif {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  margin-top: 2rem;
+  text-align: left;
+  color: #3b3b3b;
+}
+.card-notif .notif i {
+  font-size: 2em;
+  color: #01b4e7;
+  margin: 0 auto;
+}
+.card-notif .notif.mute {
+  color: #898A8D;
+  font-style: italic;
+}
+.card-notif .notif.mute i {
+  color: #898A8D;
+}
+
 /* TRANSPARENT CARDS */
 .transparent-card {
   text-align: center;
@@ -1500,8 +1548,7 @@ img.img-r {
 .persona-p {
   width: 140px;
   height: 140px;
-  -webkit-clip-path: circle(50%);
-          clip-path: circle(50%);
+  clip-path: circle(50%);
   shape-outside: circle(55%);
   margin-top: -70px;
   margin-left: -60px;
@@ -1568,6 +1615,11 @@ img.img-r {
     width: 250px;
     height: 250px;
   }
+  .card-notif {
+    left: 40%;
+    right: 5px;
+    padding: 15px;
+  }
 }
 @media handheld, only screen and (min-width: 1024px) {
   .block-news-cards, .cards-col-3, .cards-col-2 {
@@ -1585,6 +1637,11 @@ img.img-r {
   .transparent-card .news-title {
     font-size: 125%;
     padding: 2rem;
+  }
+  .card-notif {
+    top: 158px;
+    left: 65%;
+    padding: 20px;
   }
 }
 @media handheld, only screen and (min-width: 1280px) {
@@ -3079,6 +3136,33 @@ h6 {
   color: #898A8D;
 }
 
+.close-link {
+  padding: 0 0 15px 15px;
+  color: #898A8D;
+}
+.close-link:hover {
+  cursor: pointer;
+  color: #3b3b3b;
+}
+
+/* Pastilles notifications */
+.badge {
+  position: absolute;
+  top: 0;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e02927;
+  display: block;
+  border: 1px solid #e7e7e8;
+}
+
+.fa-bell.fa-xl + .badge {
+  top: 10px;
+  right: 12px;
+}
+
 @media handheld, only screen and (min-width: 768px) {
   h3 {
     font-size: 2.5em;
@@ -3113,6 +3197,59 @@ input[type=number] {
   display: flex;
   align-items: center;
   gap: 1em;
+}
+
+/* Toggles */
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 17px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 11px;
+  width: 11px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
 }
 
 table {

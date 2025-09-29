@@ -9,6 +9,7 @@ using System.Web;
 using System.Globalization;
 using System.Diagnostics;
 using System.Activities.Statements;
+using DotNetNuke.Entities.Users;
 
 /// <summary>
 /// Description résumée de MeetingHelper
@@ -22,6 +23,146 @@ public class MeetingHelper
         //
     }
 
+    public static bool Editable(UserInfo userInfo)
+    {
+        return userInfo.IsSuperUser ||
+                userInfo.IsInRole(Const.ADMIN_ROLE) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                AIS.DataMapping.isADG(AIS.Functions.GetCurrentMember().id);
+    }
+
+    public static Guid? DuplicateMeeting(Guid guid, UserInfo userInfo)
+    {
+        SqlConnection conn = null;
+        SqlTransaction trans = null;
+        Guid? newguid = null;
+        try
+        {
+            conn = Yemon.dnn.DataMapping.GetOpenedConn();
+            trans = conn.BeginTransaction();
+
+            SqlCommand sql = new SqlCommand("select * from " + Const.TABLE_PREFIX + "meetings where guid=@guid");
+            sql.Parameters.AddWithValue("guid", guid);
+
+            Meeting meeting = Yemon.dnn.DataMapping.ExecSqlFirst<Meeting>(sql, conn, trans);
+            if (meeting == null)
+            {
+                throw new Exception("Meeting not found");
+            }
+
+            newguid = Guid.NewGuid();
+            meeting.id = 0;
+            meeting.guid = (Guid)newguid;
+            meeting.name += " (copie)";
+            
+            if (SetMeeting(meeting, conn, trans) == 0)
+            {
+                throw new Exception("Erreur de duplication");
+            }
+
+
+
+            trans.Commit();
+
+            string sblocks = "" + Yemon.dnn.Helpers.GetItem("blockscontent:" + guid);
+            if (sblocks != "")
+            {
+                Yemon.dnn.Helpers.SetItem("blockscontent:" + newguid, sblocks, "" + userInfo.UserID);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Functions.Error(ex);
+            if (trans != null)
+                trans.Rollback();
+        }
+        finally
+        {
+            conn.Close();
+            conn.Dispose();
+        }
+        return newguid;
+    }
+
+    public static int SetMeeting(Meeting meeting, SqlConnection conn, SqlTransaction trans)
+    {
+        Dictionary<string, object> row = new Dictionary<string, object>();
+       
+        if (meeting.id==0)
+            row["id"] = null;
+        else
+            row["id"] = meeting.id;
+        row["guid"] = meeting.guid;
+        row["name"] = meeting.name;
+        row["visible"] = meeting.visible;
+        row["active"] = meeting.active;
+        row["statutory"] = meeting.statutory;
+        row["type"] = meeting.type;
+        row["cric"] = meeting.cric;
+        row["doperiodics"] = meeting.doperiodics;
+        row["mustnotify"] = meeting.mustnotify;
+        row["periods"] = meeting.periods;
+        if (meeting.dtstart == DateTime.MinValue)
+            meeting.dtstart = DateTime.Now;
+        if (meeting.dtend == DateTime.MinValue)
+            meeting.dtend = meeting.dtstart.AddHours(1);
+
+        row["dtstart"] = meeting.dtstart;
+        row["dtend"] = meeting.dtend;
+        if (meeting.dtendactive == DateTime.MinValue)
+            meeting.dtendactive = meeting.dtstart;
+        row["dtendactive"] = meeting.dtendactive;
+
+        if (meeting.dtrevision<DateTime.Now)
+            row["dtrevision"]=DateTime.Now;
+        else
+            row["dtrevision"] = meeting.dtrevision;
+
+        if (meeting.dtnotif1 == DateTime.MinValue)
+            row["dtnotif1"] = null;
+        else
+            row["dtnotif1"] = meeting.dtnotif1;
+        if (meeting.dtnotif2 == DateTime.MinValue)
+            row["dtnotif2"] = null;
+        else
+            row["dtnotif2"] = meeting.dtnotif2;
+
+        row["notif1done"] = meeting.notif1done;
+        row["notif2done"] = meeting.notif2done;
+
+        if (meeting.mustnotify=="O" && meeting.type=="unitary")
+        {
+            row["dtnotif1"] =null;
+            row["dtnotif2"] = null;
+            row["notif1done"] = null;
+            row["notif2done"] = null;
+        }
+
+
+        row["dtlastupdate"] = DateTime.Now;
+        row["portalid"] = 0;
+        row["link"] = (""+meeting.guid).ToLower().Substring(9, 9);
+        row["notificationtype"] = meeting.notificationtype;
+        row["notificationlist"] = meeting.notificationlist;
+
+        if (meeting.notificationtype !=null && meeting.notificationtype.Length > 1)
+        {
+            row["notificationtype"] = "L";
+            row["notificationlist"] = ""+ meeting.notificationtype;
+        }
+
+
+        row["notificationmsg"] = meeting.notificationmsg;
+
+
+        var result = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX + "meetings", "id", row, conn, trans);
+        if (result.Key == "error")
+            throw new Exception("Erreur de mise a jour");
+
+        return int.Parse(result.Value);
+    }
     public static int GetWeekOfMonth(DateTime date)
     {
         DateTime beginningOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -142,11 +283,12 @@ public class MeetingHelper
                                     nextMeeting.link = ("" + nextMeeting.guid).ToLower().Substring(9, 9);
 
                                     sql = new SqlCommand("INSERT INTO ais_meetings " +
-                                    "(cric,name,guid,active,type,periods,statutory,dtstart,dtend,dtrevision,templateguid,periodguid,mustnotify,dtlastupdate,portalid,link,nbusers,dtendactive,notificationmsg) VALUES " +
-                                    "(@cric,@name,@guid,@active,@type,@periods,@statutory,@dtstart,@dtend,@dtrevision,@templateguid,@periodguid,@mustnotify,@dtlastupdate,@portalid,@link,@nbusers,@dtendactive,@notificationmsg)");
+                                    "(cric,name,guid,visible,active,type,periods,statutory,dtstart,dtend,dtrevision,templateguid,periodguid,mustnotify,dtlastupdate,portalid,link,nbusers,dtendactive,notificationmsg) VALUES " +
+                                    "(@cric,@name,@guid,@visible,@active,@type,@periods,@statutory,@dtstart,@dtend,@dtrevision,@templateguid,@periodguid,@mustnotify,@dtlastupdate,@portalid,@link,@nbusers,@dtendactive,@notificationmsg)");
                                     sql.Parameters.AddWithValue("cric", nextMeeting.cric);
                                     sql.Parameters.AddWithValue("name", nextMeeting.name);
                                     sql.Parameters.AddWithValue("guid", nextMeeting.guid);
+                                    sql.Parameters.AddWithValue("visible", nextMeeting.visible);
                                     sql.Parameters.AddWithValue("active", nextMeeting.active);
                                     sql.Parameters.AddWithValue("type", nextMeeting.type);
                                     sql.Parameters.AddWithValue("periods", "[]");
@@ -359,6 +501,8 @@ public class MeetingHelper
                         list= contactsHelper.GetContactsFromList(new Guid(meeting.notificationlist));
                     }
 
+                    List<int> NotifUsersID = new List<int>();
+
                     foreach (Member m in members)
                     {
                         bool ok = false;
@@ -411,8 +555,9 @@ public class MeetingHelper
                                     else if (club_type == "rotaract")
                                         club_name = "RAC " + club.name;
 
-                                        string body = txtNotif1.Replace("#meeting.dtstart#", meeting.dtstart.ToString("dd/MM/yyyy - HH:mm"));
+                                    string body = txtNotif1.Replace("#meeting.dtstart#", meeting.dtstart.ToString("dd/MM/yyyy - HH:mm"));
                                     body = body.Replace("#meeting.dtend#", meeting.dtend.ToString("dd/MM/yyyy - HH:mm"));
+                                    body = body.Replace("#meeting.dtendactive#", meeting.dtendactive.ToString("dd/MM/yyyy - HH:mm"));
                                     body = body.Replace("#meeting.name#", meeting.name);
                                     body = body.Replace("#meeting.link#", Const.DISTRICT_URL + "/m-" + meeting.link + "?useridguid=" + useridguid);
                                     body = body.Replace("#meeting.sharelink#", Const.DISTRICT_URL + "/m-" + meeting.link);
@@ -422,9 +567,26 @@ public class MeetingHelper
                                     //else
                                     //    Functions.SendMail(club.email, m.email, "[" + club.name + "] Notification de réunion", body, club_name);
                                     if (notifications_debug_dest != "")
+                                    {
                                         Functions.SendMail(club.email, notifications_debug_dest, meeting.name, body, club_name);
+                                        var uinotif = UserController.GetUserByEmail(Yemon.dnn.Functions.GetPortalId(), notifications_debug_dest);
+                                        if (uinotif != null)
+                                        {
+                                            NotifUsersID.Add(uinotif.UserID);
+                                        }
+                                    }
+                                       
                                     else
+                                    { 
+                                      
                                         Functions.SendMail(club.email, m.email, meeting.name, body, club_name);
+                                        // utilisateur pour notification
+                                        var uinotif = UserController.GetUserByEmail(Yemon.dnn.Functions.GetPortalId(), m.email);
+                                        if(uinotif != null )
+                                        {
+                                            NotifUsersID.Add(uinotif.UserID);
+                                        }
+                                    }
 
                                 }
                                 catch (Exception ee)
@@ -434,6 +596,25 @@ public class MeetingHelper
                             }
                         }
                     }
+
+                    if (NotifUsersID.Count > 0)
+                    {
+                        Notification notification = new Notification();
+                        notification.title = "Réunion "+(meeting.statutory=="O" ? "statutaire " :"") +"le "+meeting.dtstart.ToString("dd MMM yy") + " à "+meeting.dtstart.ToString("HH:mm");
+                        notification.date = DateTime.Now;
+                        notification.type= 10;
+                        notification.source="meeting:"+meeting.guid;
+                        Notification.Detail detail = new Notification.Detail();
+                        detail.message=meeting.name;
+                        detail.value=meeting.link;
+                        notification.SetDetail(detail);
+                        int idnotif= NotificationHelper.SendNotification(notification, NotifUsersID);
+                        if (idnotif==0)
+                        {
+                            Functions.Error(new Exception("Erreur notification "+notification.source));
+                        }
+                    }
+                
                 }
                 meeting.dtnotif1 = DateTime.Now;
                 meeting.notif1done = Const.YES;

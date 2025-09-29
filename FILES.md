@@ -13,6 +13,29 @@ App_Code\AIS\Video.cs
 DesktopModules\RazorModules\Admin Membre Page Pro\_AdminMembrePagePro.cshtml
 DesktopModules\RazorModules\Form Inscription\_FormInscription.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.club.cshtml
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+App_Code\AIS\webapi\notification\NotificationController.cs
+App_Code\AIS\notification\Notification.cs
+App_Code\AIS\notification\NotificationHelper.cs
+App_Code\AIS\Meeting.cs
+DesktopModules\AIS\OuKiKan\Control.ascx
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\OuKiKan\Settings.ascx
+Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
+Portals\_default\Skins\Rodi2025\Membres.ascx
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.css.map
+Portals\_default\Skins\Rodi2025\_typos.scss
+Portals\_default\Skins\Rodi2025\_layout.scss
+Portals\_default\Skins\Rodi2025\_header.scss
+Portals\_default\Skins\Rodi2025\_forms.scss
+Portals\_default\Skins\Rodi2025\_cards.scss
+Portals\_default\Skins\Rodi2025\Dynamic.ascx.cs
+Portals\_default\Skins\Rodi2025\Controls\NotificationIcon.ascx
+Portals\_default\Skins\Rodi2025\Controls\NotificationIcon.ascx.cs
+Portals\_default\Skins\Rodi2025\Controls\NotificationPanel.ascx
+Portals\_default\Skins\Rodi2025\Controls\NotificationPanel.ascx.cs
 ```
 ##### 04/08/2025
 ```txt

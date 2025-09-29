@@ -21,6 +21,11 @@ public class Meeting
     public int cric { get; set; }
     public string name { get; set; }
     public Guid guid { get; set; }
+
+    public string visible { get; set; }     // N : non visible (uniquement admin club)
+                                            // O : public
+                                            // M : membres du club
+                                            // D : tous les membres de tous les clubs
     public string active { get; set; }      // O : inscriptions actives
                                             // N : inscriptions fermées (auto N quand date est dépassée)
     public string doperiodics { get; set; } // O / N active ou pas la programmation automatique des réunions périodiques

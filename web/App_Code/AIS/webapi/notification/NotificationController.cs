@@ -1,10 +1,9 @@
-﻿
-#region Copyrights
+﻿#region Copyrights
 
 //
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2023
-// by SAS AIS : http://www.aisdev.net
+// Copyright (c) 2012-2025
+// by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -61,23 +60,39 @@
 //If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy's public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
 
 #endregion Copyrights
-
-
+using AIS;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Web.Api;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Web;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Yemon.dnn;
 
-/// <summary>
-/// Description résumée de Notification
-/// </summary>
-public class Notification
+namespace AIS.controller
 {
-    
-
-    public Notification()
+    public class NotificationController : DnnApiController
     {
-        
+        [HttpGet]
+        public HttpResponseMessage Hello()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "is it me you looking for ?");
+        }
+
+
+        [HttpGet]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage SetOpened(Guid guid, bool opened)
+        {
+            Notification notification = NotificationHelper.GetNotification(guid);
+            if (notification == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            if(NotificationHelper.SetOpened(notification.id,UserInfo.UserID, opened))
+                return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+        }
     }
 }
