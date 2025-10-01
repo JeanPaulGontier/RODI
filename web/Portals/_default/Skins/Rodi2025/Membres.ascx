@@ -13,6 +13,7 @@
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/Portals/_default/Skins/Rodi2025/Controls/Menu.ascx" %>
 <%@ Register TagPrefix="ais" TagName="NOTIFICATIONPANEL" Src="~/Portals/_default/Skins/Rodi2025/Controls/NotificationPanel.ascx" %>
 <%@ Register TagPrefix="ais" TagName="NOTIFICATIONICON" Src="~/Portals/_default/Skins/Rodi2025/Controls/NotificationIcon.ascx" %>
+<%@ Register TagPrefix="ais" TagName="RODIVERSION" Src="~/Portals/_default/Skins/Rodi2025/Controls/RodiVersion.ascx" %>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet">
 
 <dnn:jQuery runat="server" jQueryUI="true" DnnjQueryPlugins="true" jQueryHoverIntent="true"></dnn:jQuery>
@@ -301,10 +302,11 @@
   <footer>
     <section class="content-wrapper">
       <div>
-        <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT"/>
-        <img src="Portals/_default/Skins/Rodi2025/images/rotary-official-licencee-ft.png" />
+          <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT"/> | <a class="Footer" title="Voir la liste des mises à jour RODI, Le développement de RODI est continu, la fréquence des mises à jour est de 1 à 2 par mois, le n° de version affichée correspond à celle installée ici, vous pouvez participer aux améliorations, rubrique contact sur le site RODI Platform" href="https://raw.githubusercontent.com/JeanPaulGontier/RODI/main/UPDATE.md" target="_blank">Mises à jour</a> | <span class="Footer"><ais:RODIVERSION runat="server" /></span>
       </div>
-      
+      <div>
+          <img src="/Portals/_default/Skins/Rodi2025/images/rotary-official-licencee-ft.png" />
+      </div>
       <div>
         <p><dnn:PRIVACY runat="server" id="dnnPRIVACY"/> | <dnn:TERMS runat="server" id="dnnTERMS"/></p>
         <p>La plateforme RODI est conforme au RGPD depuis sa mise en place le 25 mai 2018.</p>

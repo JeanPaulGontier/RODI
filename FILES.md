@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+##### 30/09/2025
+```txt
 DesktopModules\AIS\Admin Mailing\Control.ascx.cs
 App_Code\AIS\DataMapping.cs
 AIS\Download.aspx.cs
@@ -36,6 +39,9 @@ Portals\_default\Skins\Rodi2025\Controls\NotificationIcon.ascx
 Portals\_default\Skins\Rodi2025\Controls\NotificationIcon.ascx.cs
 Portals\_default\Skins\Rodi2025\Controls\NotificationPanel.ascx
 Portals\_default\Skins\Rodi2025\Controls\NotificationPanel.ascx.cs
+Portals\_default\Skins\Rodi2025\Controls\RodiVersion.ascx
+Portals\_default\Skins\Rodi2025\Controls\RodiVersion.ascx.cs
+Portals\_default\Skins\Rodi2025\Membres.ascx
 ```
 ##### 04/08/2025
 ```txt
