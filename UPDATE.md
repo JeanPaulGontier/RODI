@@ -12,8 +12,11 @@
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
 - nouvelle version de l'app mobile (gestion des notifications)
+- créer un module de carte du district pour autopositionner les clubs sur une carte (D1770)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
+- ajouter la gestion des réseaux sociaux du club et du district (D1760)
+- ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
 - nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
