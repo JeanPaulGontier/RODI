@@ -151,7 +151,7 @@
     <section class="content-wrapper">
       <div>
         <dnn:COPYRIGHT runat="server" id="dnnCOPYRIGHT"/>
-        <img src="Portals/_default/Skins/Rodi2025/images/rotary-official-licencee-ft.png" />
+        <img src="/Portals/_default/Skins/Rodi2025/images/rotary-official-licencee-ft.png" />
       </div>
       
       <div>
