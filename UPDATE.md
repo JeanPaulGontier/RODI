@@ -27,6 +27,51 @@
 - autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 
+
+- ajout de fonctionnalités sur la fiche renseignements clubs pour visite du gouverneur
+- 2 nouveaux modules dans import RI pour disposer des données issues de my Rotary 
+		MonthlyContributionReportCurrent
+		ClubRecognitionSummary
+
+CREATE TABLE [dbo].[ais_ri_monthlycontributionreportcurrent](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[districtid] [int] NULL,
+	[annee] [int] NULL,
+	[cric] [int] NULL,
+	[rotariens] [int] NULL,
+	[objectif_fonds_annuel] [decimal](18, 2) NULL,
+	[pct_atteint] [decimal](18, 2) NULL,
+	[moyenne_par_donateur] [decimal](18, 2) NULL,
+	[fonds_annuel_cumul_annuel] [decimal](18, 2) NULL,
+	[fonds_polioplus_cumul_annuel] [decimal](18, 2) NULL,
+	[autres_fonds_cumul_annuel] [decimal](18, 2) NULL,
+	[fonds_de_dotation_cumul_annuel] [decimal](18, 2) NULL,
+	[total] [decimal](18, 2) NULL,
+ CONSTRAINT [PK_ais_ri_monthlycontributionreportcurrent] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[ais_ri_clubrecognitionsummary](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[districtid] [int] NULL,
+	[annee] [int] NULL,
+	[cric] [int] NULL,
+	[phf] [int] NULL,
+	[bienfaiteurs] [int] NULL,
+	[rotariens_donateurs] [int] NULL,
+	[rotariens_non_donateurs] [int] NULL,
+	[total_des_dons] [int] NULL,
+	[points_fondations_disponibles] [int] NULL,
+ CONSTRAINT [PK_ais_ri_clubrecognitionsummary] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 ###### 29/09/2025
 - rendre visible les réunions passées pour les membres (D1680)
 - ajout d'une fonctionnalité pour copier une réunion existante (D1680)

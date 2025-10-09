@@ -1,5 +1,12 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\rotary\ClubRecognitionSummary.cs
+App_Code\AIS\rotary\MonthlyContributionReportCurrent.cs
+DesktopModules\AIS\Admin Import RI\Import RI ClubRecognitionSummary.ascx
+DesktopModules\AIS\Admin Import RI\Import RI ClubRecognitionSummary.ascx.cs
+DesktopModules\AIS\Admin Import RI\Import RI MonthlyContributionReportCurrent.ascx
+DesktopModules\AIS\Admin Import RI\Import RI MonthlyContributionReportCurrent.ascx.cs
+
 ```
 ##### 30/09/2025
 ```txt
