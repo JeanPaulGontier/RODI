@@ -20,14 +20,45 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 {
     public string filename;
     public string tablename;
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+
+
+        filename=Server.MapPath(PortalSettings.HomeDirectory + "ParticipationDesClubs.xlsx.resources");
+        tablename = Const.TABLE_PREFIX+"clubs_participation";
+
+
+        InitAnnee();
+
+
+    }
     protected void Page_Load(object sender, EventArgs e)
     {
         panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
 
-        filename=Server.MapPath(PortalSettings.HomeDirectory + "ClubRecognitionSummary.xlsx.resources");
-        tablename =Const.TABLE_PREFIX+"ri_clubrecognitionsummary";
+        RefreshListe();
+        
     }
 
+    void RefreshListe()
+    {
+        var liste = Yemon.dnn.DataMapping.ExecSql("Select cric,afd,sfpe,conference from "+tablename+" where annee='"+annee.SelectedValue+"' and districtid="+Const.DISTRICT_ID+" order by cric");
+        members.DataSource=liste;
+        members.DataBind();
+
+    }
+    void InitAnnee()
+    {
+        int currentyear = Functions.GetRotaryYear();
+        var annees = Yemon.dnn.DataMapping.ExecSql("Select distinct annee from "+tablename+" where annee<"+currentyear+" order by annee desc");
+        annee.Items.Clear();
+        annee.Items.Add(new ListItem(currentyear+" - "+(currentyear+1), ""+currentyear));
+        if (annees!=null)
+            foreach (DataRow row in annees.Rows)
+                annee.Items.Add(new ListItem(row["annee"]+ " - "+((int)row["annee"]+1), ""+row["annee"]));
+    }
     protected void BT_Upload_Click(object sender, EventArgs e)
     {
         panel_result.Visible=false;
@@ -35,7 +66,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
         if (FU_RI.HasFile)
         {
-            if(FU_RI.FileName.ToLower().StartsWith("clubrecognitionsummary"))
+            if(FU_RI.FileName.ToLower().StartsWith("participationdesclubs"))
             {
                 File.WriteAllBytes(filename, FU_RI.FileBytes);
 
@@ -73,41 +104,35 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
             Worksheet sheet = xls.Worksheets[0];
             int col = 0;
-            int row = 0;
+            int row = 1;
+            int a = 0;
+            int.TryParse(""+annee.SelectedValue, out a);
 
-            List<ClubRecognitionSummary> crs = new List<ClubRecognitionSummary>();
-            ClubRecognitionSummary c = null;
+            List<ClubPartitipation> liste = new List<ClubPartitipation>();
+            ClubPartitipation c = null;
             while (row < 65535)
             {
                 Cell cell = sheet.Cells[row, col];
-                if((""+cell.Value)=="District :")
-                {
-                    if (c!=null)
-                        crs.Add(c);
+                if ((""+cell.Value)=="")
+                    break;
+               
+                c = new ClubPartitipation();
+                c.districtid= (int)(double)sheet.Cells[row, col].Value;
+                c.annee= (int)(double)sheet.Cells[row, col+1].Value;
+                //if (a!=c.annee)
+                //    throw new Exception("L'année trouvée dans le fichier ne correspond pas à l'année sélectionnée");
+                if (Const.DISTRICT_ID!= c.districtid)
+                    throw new Exception("Le district trouvé dans le fichier ne correspond pas au district attendu");
 
-                    c = new ClubRecognitionSummary();
-                    c.districtid= (int)(double)sheet.Cells[row, col+1].Value;
-                    c.phf = (int)(double)sheet.Cells[row, col+5].Value;
-                    c.rotariens_donateurs = (int)(double)sheet.Cells[row, col+15].Value;
-                    c.total_des_dons = (int)Math.Round((double)sheet.Cells[row, col+25].Value);
-
-
-                    c.cric= (int)(double)sheet.Cells[row+1, col+1].Value;
-                    c.bienfaiteurs = (int)(double)sheet.Cells[row+1, col+5].Value;
-                    c.rotariens_non_donateurs = (int)(double)sheet.Cells[row+1, col+15].Value;
-
-                    c.points_fondations_disponibles = (int)Math.Round((double)sheet.Cells[row+7, col+17].Value);
-                    var a = DateTime.Parse(""+sheet.Cells[row+7, col+20].Value);
-                    if (a.Month<7)
-                        c.annee=a.Year-1;
-                    else
-                        c.annee=a.Year;
-                }
-                
+                c.cric= (int)(double)sheet.Cells[row, col+2].Value;
+                c.afd= (int)(double)sheet.Cells[row, col+3].Value;
+                c.sfpe= (int)(double)sheet.Cells[row, col+4].Value;
+                c.conference= (int)(double)sheet.Cells[row, col+5].Value;
+                liste.Add(c);
                 row++;
             }
 
-            foreach(var cr in crs)
+            foreach(var cr in liste)
             {
                 if(clubs.Find(club => club.cric== cr.cric)!=null)
                 {
@@ -117,22 +142,17 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                     r["districtid"]=cr.districtid;
                     r["cric"]=cr.cric;
                     r["annee"]=cr.annee;
-                    r["phf"]=cr.phf;
-                    r["rotariens_donateurs"]=cr.rotariens_donateurs;
-                    r["total_des_dons"]=cr.total_des_dons;
-                    r["bienfaiteurs"]=cr.bienfaiteurs;
-                    r["rotariens_non_donateurs"]=cr.rotariens_non_donateurs;
-                    r["points_fondations_disponibles"]=cr.points_fondations_disponibles;
-
+                    r["afd"]=cr.afd;
+                    r["sfpe"]=cr.sfpe;
+                    r["conference"]=cr.conference;
                     Yemon.dnn.DataMapping.UpdateOrInsertRecord(tablename, "id", r, conn, trans);
 
                 }
             }
             trans.Commit();
 
-            members.DataSource=crs;
-            members.DataBind();
-
+            RefreshListe();
+            InitAnnee();
             panel_result.Visible=true;
             
             lbl_result.Text="Import terminé...";
@@ -167,4 +187,16 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
         return new string(a);
     }
 
+
+    protected void BT_Export_Click(object sender, EventArgs e)
+    {
+        int a = 0;
+        int.TryParse(annee.SelectedValue, out a);
+        Media media = DataMapping.ExportParticipationDesClubs("ParticipationDesClubs "+a+"-"+(a+1)+".xlsx",a);
+        
+        string guidexport = Guid.NewGuid().ToString();
+        Session[guidexport] = media;
+        Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guidexport);
+        return;
+    }
 }

@@ -28,10 +28,11 @@
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 
 
-- ajout de fonctionnalités sur la fiche renseignements clubs pour visite du gouverneur
-- 2 nouveaux modules dans import RI pour disposer des données issues de my Rotary 
+- ajout de fonctionnalités sur la fiche renseignements clubs pour visite du gouverneur (D1640)
+- 2 nouveaux modules dans import RI pour disposer des données issues de my Rotary  (D1640)
 		MonthlyContributionReportCurrent
 		ClubRecognitionSummary
+- nouveau module permettant de gérer la participation des clubs aux évènements du district AFD, SFPE, Conférence (D1640)
 
 CREATE TABLE [dbo].[ais_ri_monthlycontributionreportcurrent](
 	[id] [int] IDENTITY(1,1) NOT NULL,
@@ -71,6 +72,22 @@ CREATE TABLE [dbo].[ais_ri_clubrecognitionsummary](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+CREATE TABLE [dbo].[ais_clubs_participation](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[districtid] [int] NULL,
+	[annee] [int] NULL,
+	[cric] [int] NULL,
+	[afd] [int] NULL,
+	[sfpe] [int] NULL,
+	[conference] [int] NULL,
+ CONSTRAINT [PK_ais_clubs_participation] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 
 ###### 29/09/2025
 - rendre visible les réunions passées pour les membres (D1680)

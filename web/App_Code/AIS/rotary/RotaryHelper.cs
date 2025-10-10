@@ -130,6 +130,10 @@ public class RotaryHelper
         }
     }
 
+    public static Rotary.Club Get_Club(int cric)
+    {
+        return Yemon.dnn.DataMapping.ExecSqlFirst<Rotary.Club>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_club where clubid="+cric));
+    }
     public static List<Rotary.Club> Get_Clubs(out string result)
     {
         result = null;
@@ -524,7 +528,7 @@ public class RotaryHelper
             row["districtid"] = club.DistrictId;
             row["membercount"] = club.MemberCount;
             row["honorarymembercount"] = club.HonoraryMemberCount;
-            row["dtlastupdate"] = DateTime.Now;
+            row["dtlastupdate"] = DateTime.Now;           
 
             var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club", "id", row);
             if (r.Key != "error")

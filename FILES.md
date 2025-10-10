@@ -6,7 +6,13 @@ DesktopModules\AIS\Admin Import RI\Import RI ClubRecognitionSummary.ascx
 DesktopModules\AIS\Admin Import RI\Import RI ClubRecognitionSummary.ascx.cs
 DesktopModules\AIS\Admin Import RI\Import RI MonthlyContributionReportCurrent.ascx
 DesktopModules\AIS\Admin Import RI\Import RI MonthlyContributionReportCurrent.ascx.cs
-
+App_Code\AIS\DataMapping.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_visite_gouverneur.cshtml
+DesktopModules\AIS\Admin Participation des clubs\Control.ascx
+DesktopModules\AIS\Admin Participation des clubs\Control.ascx.cs
+App_Code\AIS\ClubPartitipation.cs
+App_Code\AIS\rotary\RotaryHelper.cs
+Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 ```
 ##### 30/09/2025
 ```txt

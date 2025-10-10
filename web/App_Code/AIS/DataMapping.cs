@@ -9060,7 +9060,7 @@ namespace AIS
         }
 
 
-        public static Media ExportFicheRenseignementClub()
+        public static Media ExportFicheRenseignementClub(string name)
         {
             string filename = HttpContextSource.Current.Server.MapPath("/portals/0/modeles/Fiche de renseignement club generique gabarit.xlsx");
             string logo = HttpContextSource.Current.Server.MapPath("/portals/0/logo.png");
@@ -9099,10 +9099,12 @@ namespace AIS
                     sheet.Cells["C6"].Value="inconnu";
                     sheet.Cells["C7"].Value="inconnu";
                 }
-                if(Functions.CurrentClub.charter_year==0)
-                    sheet.Cells["C8"].Value="";
-                else
-                    sheet.Cells["C8"].Value=Functions.CurrentClub.charter_year;
+                sheet.Cells["C8"].Value="";
+                //sheet.Cells["C8"].Value=Functions.CurrentClub.charter_year;
+                var ri_club = RotaryHelper.Get_Club(Functions.CurrentClub.cric);
+                if(ri_club!=null) 
+                    sheet.Cells["C8"].Value=ri_club.CharterDate;
+                    
                 sheet.Cells["C9"].Value=Functions.CurrentClub.cric;
                 sheet.Cells["C10"].HtmlString=Functions.CurrentClub.meetings;
 
@@ -9134,7 +9136,7 @@ namespace AIS
                 int nbfemme = members.FindAll(m => m.IsWoman()).Count;
                 sheet.Cells["C50"].Value=nbfemme;
                 sheet.Cells["C51"].Value=nbhomme;
-                sheet.Cells["C52"].Value=(float)nbfemme/(float)nbhomme;
+                sheet.Cells["C52"].Value=(float)nbfemme/members.Count;
 
                 float nbmoins40 = 0;
                 float nb40a49 = 0;
@@ -9166,6 +9168,48 @@ namespace AIS
                 sheet.Cells["C57"].Value=nbplus70/(float)members.Count;
                 sheet.Cells["C58"].Value=nbageinconnu/(float)members.Count;
 
+                #region club recognition
+                var cr = Yemon.dnn.DataMapping.ExecSqlFirst<ClubRecognitionSummary>(new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"ri_clubrecognitionsummary WHERE districtid="+Const.DISTRICT_ID+" AND annee="+Functions.GetRotaryYear()+" AND cric="+Functions.CurrentClub.cric));
+                if (cr!=null)
+                {
+                    sheet.Cells["C74"].Value=(int)cr.points_fondations_disponibles/1000;
+                }
+                #endregion
+
+
+
+                #region club recognition
+                for (int i = 0; i<4; i++)
+                {
+                    var par = Yemon.dnn.DataMapping.ExecSqlFirst<MonthlyContributionReportCurrent>(new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"ri_monthlycontributionreportcurrent WHERE districtid="+Const.DISTRICT_ID+" AND annee="+(Functions.GetRotaryYear()-i)+" AND cric="+Functions.CurrentClub.cric));
+                    if (par !=null)
+                    {
+                       
+                        sheet.Cells[74, 2+i].Value =par.fonds_annuel_cumul_annuel;
+                        sheet.Cells[76, 2+i].Value =par.rotariens;
+                        sheet.Cells[77, 2+i].Value =par.fonds_polioplus_cumul_annuel;
+                    }
+                }
+
+                #endregion
+
+                #region participation
+                for (int i=0;i<3;i++)
+                {
+                    sheet.Cells[118, 2+i].Value=(Functions.GetRotaryYear()-2000)+"-"+(Functions.GetRotaryYear()+1-2000);
+                
+                    var par = Yemon.dnn.DataMapping.ExecSqlFirst<ClubPartitipation>(new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"clubs_participation WHERE districtid="+Const.DISTRICT_ID+" AND annee="+(Functions.GetRotaryYear()-i)+" AND cric="+Functions.CurrentClub.cric));
+                    if(par !=null) {
+                        sheet.Cells[119,2+i].Value =par.afd;
+                        sheet.Cells[120,2+i].Value =par.sfpe;
+                        sheet.Cells[121,2+i].Value =par.conference;
+                    }
+                }
+
+                #endregion
+
+
+
                 Media media = new Media();
                 
                 var ms = new MemoryStream();
@@ -9173,10 +9217,64 @@ namespace AIS
                 media.content = ms.ToArray(); 
                 media.content_size = media.content.Length;
                 media.content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                media.name  = "Fiche information.xlsx";
+                media.name  = name;
                 return media;
             }
             return null;
+        }
+
+
+        public static Media ExportParticipationDesClubs(string name,int annee)
+        {
+            InitLicenceAsposeCells();
+            var xls = new Workbook();
+
+            var liste = Yemon.dnn.DataMapping.ExecSql<ClubPartitipation>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"clubs_participation where annee="+annee));
+            var clubs = DataMapping.ListClubs();
+
+            var sheet = xls.Worksheets[0];
+
+
+            sheet.Cells["A1"].Value="District";
+            sheet.Cells["B1"].Value="Annee";
+            sheet.Cells["C1"].Value="Cric";
+            sheet.Cells["D1"].Value="AFD";
+            sheet.Cells["E1"].Value="SFPE";
+            sheet.Cells["F1"].Value="Conference";
+            sheet.Cells["G1"].Value="Nom du club";
+            for (int i = 0; i<clubs.Count; i++)
+            {
+                var club = clubs[i];
+                sheet.Cells["A"+(i+2)].Value=Const.DISTRICT_ID;
+                sheet.Cells["B"+(i+2)].Value=annee;
+                sheet.Cells["C"+(i+2)].Value=club.cric;
+                var c = liste.Find(cc => cc.cric==club.cric);
+                if (c!=null)
+                {
+                    sheet.Cells["D"+(i+2)].Value=c.afd;
+                    sheet.Cells["E"+(i+2)].Value=c.sfpe;
+                    sheet.Cells["F"+(i+2)].Value=c.conference;
+                }
+                else
+                {
+                    sheet.Cells["D"+(i+2)].Value=0;
+                    sheet.Cells["E"+(i+2)].Value=0;
+                    sheet.Cells["F"+(i+2)].Value=0;
+                }
+
+                sheet.Cells["G"+(i+2)].Value=club.name;
+            }
+
+            Media media = new Media();
+
+            var ms = new MemoryStream();
+            xls.Save(ms, Aspose.Cells.SaveFormat.Xlsx);
+            media.content = ms.ToArray();
+            media.content_size = media.content.Length;
+            media.content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            media.name  = name;
+            return media;
+            
         }
         public static string GetAffectation(List<Affectation> affectations,string affectation)
         {
