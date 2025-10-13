@@ -62,18 +62,20 @@
 #endregion Copyrights
 using AIS;
 using AIS.SIPro.Core;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Data.SqlClient;
-using DotNetNuke.Entities.Portals;
-using System.IO;
-using System.Globalization;
-using DotNetNuke.Entities.Users;
+using System.Web.Http.Results;
+using Telerik.Web.UI.com.hisoftware.api2;
 
 
 /// <summary>
@@ -571,6 +573,53 @@ public class RotaryHelper
         return result;
     }
 
+    public static string SynchroMembersTerminated()
+    {
+        string result = "";
+        var clubs = Yemon.dnn.DataMapping.ExecSql<Rotary.Club>(new SqlCommand("select * from ais_ri_club"));
+        if (clubs.Count==0)
+        {
+            return "<div style='color:red'>Aucun club issu du RI annulation synchro Members Terminated</div>" + Environment.NewLine;
+        }
+        foreach (var club in clubs)
+        {
+            string res = "";
+            var members = RotaryHelper.Get_Club_Members(club.ClubType, club.ClubId, "terminated", out res);
+
+            Yemon.dnn.DataMapping.ExecSqlNonQuery("DELETE FROM "+Const.TABLE_PREFIX+"ri_member_terminated WHERE districtid="+Const.DISTRICT_ID+" AND clubid="+club.ClubId);
+            foreach(var member in members)
+            {
+                var row = new Dictionary<string, object>();
+                row["id"]=null;
+                row["districtid"]=Const.DISTRICT_ID;
+                row["clubid"]=club.ClubId;
+                row["lastupdated"]=member.LastUpdated;
+                DateTime TerminationDate = GetDateFromRI(member.TerminationDate);
+                row["terminationdate"]= TerminationDate;
+                row["terminationreason"] = member.TerminationReason;
+                row["memberid"] = member.MemberId;
+                row["membertype"]=member.MemberType;
+                row["firstname"]=member.FirstName;
+                row["middlename"]=member.MiddleName;
+                row["lastname"]=member.LastName;
+                row["suffix"]=member.Suffix;
+                DateTime AdmissionDate = GetDateFromRI(member.AdmissionDate);
+                row["admissiondate"]=AdmissionDate;
+                var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord(Const.TABLE_PREFIX+"ri_member_terminated", "id", row);
+                if (r.Key != "error")
+                {
+                    if (Const.ROTARY_SYNCHRO_FULL_LOG)
+                        result+="<p>"+club.ClubName+" ("+club.ClubId+") : "+member.FirstName+" "+member.LastName+" ("+member.MemberId+")</p>";
+
+                }
+                else
+                    result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + " : " + member.FirstName + " " + member.LastName + "</p>";
+            }
+            result+="<p>"+club.ClubName+" ("+club.ClubId+") : " + members.Count + " membre(s) terminé(s) traité(s)</p>";
+        }
+        result+="<p>"+clubs.Count + " club(s) traité(s)</p>";
+        return result;
+    }
     public static string SynchroMembers()
     {
         Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table ais_ri_member");
@@ -1133,10 +1182,7 @@ public class RotaryHelper
                         {
                             m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
                         }
-                        DateTime birthdate = DateTime.MinValue;
-                        var culture = CultureInfo.CreateSpecificCulture("en-US");
-                        var styles = DateTimeStyles.None;
-                        DateTime.TryParse("" + profile.DateOfBirth, culture, styles, out birthdate);
+                        DateTime birthdate = GetDateFromRI(""+profile.DateOfBirth);                      
                         if(birthdate != DateTime.MinValue)
                             m.birth_year = birthdate;
                         foreach (var role in profile.Role)
@@ -1306,10 +1352,7 @@ public class RotaryHelper
                             m.ri_country = ad.Country;
                         }                  
                     }
-                    DateTime birthdate= DateTime.MinValue;
-                    var culture = CultureInfo.CreateSpecificCulture("en-US");
-                    var styles = DateTimeStyles.None;
-                    DateTime.TryParse("" + profile.DateOfBirth,culture,styles, out birthdate);
+                    DateTime birthdate= GetDateFromRI("" + profile.DateOfBirth);
                     if(birthdate!=DateTime.MinValue && m.birth_year != birthdate)
                     {
                         changements += "birthdate(" + m.birth_year + ">" + birthdate.ToShortDateString() + "),";
@@ -1485,8 +1528,7 @@ public class RotaryHelper
                     {
                         m.fax = Functions.NormalizeNumber("+" + fax.CountryCode + " " + fax.Number);
                     }
-                    DateTime birthdate = DateTime.MinValue;
-                    DateTime.TryParse("" + profile.DateOfBirth, out birthdate);
+                    DateTime birthdate = GetDateFromRI("" + profile.DateOfBirth);
                     if (birthdate != DateTime.MinValue)
                         m.birth_year = birthdate;
                     foreach (var role in profile.Role)
@@ -1672,8 +1714,7 @@ public class RotaryHelper
 
                     }
                 }
-                DateTime birthdate = DateTime.MinValue;
-                DateTime.TryParse("" + profile.individual.DateOfBirth, out birthdate);
+                DateTime birthdate = GetDateFromRI("" + profile.individual.DateOfBirth);
                 if (birthdate != DateTime.MinValue && m.birth_year != birthdate)
                 {
                     changements += "birthdate(" + m.birth_year + ">" + birthdate.ToShortDateString() + "),";
@@ -1777,5 +1818,14 @@ public class RotaryHelper
         Yemon.dnn.DataMapping.ExecSqlNonQuery("Update ais_members set dt_update_import_ri_club = null");
         Yemon.dnn.Helpers.DeleteItem("RotaryUpdateStartDate");
         return "Tous les profils membres vont être mis à jour en tâche de fond";
+    }
+
+    public static DateTime GetDateFromRI(string date)
+    {
+        DateTime dateTime = DateTime.MinValue;
+        var culture = CultureInfo.CreateSpecificCulture("en-US");
+        var styles = DateTimeStyles.None;
+        DateTime.TryParse(date, culture, styles, out dateTime);
+        return dateTime;
     }
 }

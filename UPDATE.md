@@ -33,6 +33,8 @@
 		MonthlyContributionReportCurrent
 		ClubRecognitionSummary
 - nouveau module permettant de gérer la participation des clubs aux évènements du district AFD, SFPE, Conférence (D1640)
+- ajout d'un nouveau process RotaryScheduler (terminated) pour récupérer les membres terminés des clubs
+- la synchro RI pour les clubs récupère maintenant le profil détaillé du club notamment la date de remise de charte
 
 CREATE TABLE [dbo].[ais_ri_monthlycontributionreportcurrent](
 	[id] [int] IDENTITY(1,1) NOT NULL,
@@ -87,6 +89,29 @@ CREATE TABLE [dbo].[ais_clubs_participation](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+CREATE TABLE [dbo].[ais_ri_member_terminated](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[DistrictId] [int] NULL,
+	[ClubId] [int] NULL,
+	[LastUpdated] [datetime] NULL,
+	[TerminationDate] [datetime] NULL,
+	[TerminationReason] [nvarchar](50) NULL,
+	[MemberId] [int] NULL,
+	[MemberType] [nvarchar](50) NULL,
+	[FirstName] [nvarchar](100) NULL,
+	[MiddleName] [nvarchar](100) NULL,
+	[LastName] [nvarchar](100) NULL,
+	[Suffix] [nvarchar](100) NULL,
+	[AdmissionDate] [datetime] NULL,
+ CONSTRAINT [PK_ais_ri_member_terminated] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
 
 
 ALTER TABLE [dbo].[ais_ri_club]

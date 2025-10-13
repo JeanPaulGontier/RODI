@@ -298,7 +298,33 @@ public class Rotary
         public bool IsHonoraryMember { get; set; }
         public bool IsSatelliteMember { get; set; }
         public DateTime DtLastUpdate { get; set; }
+
+        #region specifique aux membres terminés
+        public DateTime LastUpdated { get; set; }
+        public string TerminationDate { get; set; }
+        public string TerminationReason { get; set; }
+        #endregion
+
         public string Profile { get; set; }
+    }
+
+    public class Member_Terminated
+    {
+        public int? id { get; set; }
+        public int DistrictId { get; set; }
+        public int ClubId { get; set; }
+        public DateTime LastUpdated { get; set; }
+        public DateTime TerminationDate { get; set; }
+        public string TerminationReason { get; set; }
+        public int MemberId { get; set; }        
+        public string MemberType { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string Suffix { get; set; }
+        public DateTime AdmissionDate { get; set; }
+
+       
     }
 
     public class Profile 

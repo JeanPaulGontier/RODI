@@ -128,6 +128,18 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
+            if (taskname.Contains("terminated") && !error)
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Rotary Members Terminated Synchro</div>");
+                string result = RotaryHelper.SynchroMembersTerminated();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                    sb.Append(result);
+
+                error = error || sb.ToString().ToLower().Contains("erreur");
+
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
             if (taskname.Contains("members") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Rotary Members Synchro</div>");
@@ -140,6 +152,7 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
+            
             if (taskname.Contains("officers") && !error)
             {
                 this.ScheduleHistoryItem.AddLogNote("<div>Rotary Officers Synchro</div>");
