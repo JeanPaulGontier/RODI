@@ -9073,6 +9073,8 @@ namespace AIS
 
                 var sheet = xls.Worksheets[0];
                 sheet.Cells["C2"].Value=annee+"-"+(annee+1);
+                sheet.Cells["C42"].Value=annee+"-"+(annee+1);
+                sheet.Cells["C66"].Value=annee+"-"+(annee+1);
                 sheet.Cells["C5"].Value=Functions.CurrentClub.name;
 
                 int roleid = 0;
@@ -9102,9 +9104,10 @@ namespace AIS
                 sheet.Cells["C8"].Value="";
                 //sheet.Cells["C8"].Value=Functions.CurrentClub.charter_year;
                 var ri_club = RotaryHelper.Get_Club(Functions.CurrentClub.cric);
-                if(ri_club!=null) 
-                    sheet.Cells["C8"].Value=ri_club.CharterDate;
-                    
+                if(ri_club!=null && ri_club.CharterDate!=null)
+                    sheet.Cells["C8"].Value=((DateTime)ri_club.CharterDate).ToString("dd MMMM yyyy");
+
+
                 sheet.Cells["C9"].Value=Functions.CurrentClub.cric;
                 sheet.Cells["C10"].HtmlString=Functions.CurrentClub.meetings;
 
@@ -9196,7 +9199,7 @@ namespace AIS
                 #region participation
                 for (int i=0;i<3;i++)
                 {
-                    sheet.Cells[118, 2+i].Value=(Functions.GetRotaryYear()-2000)+"-"+(Functions.GetRotaryYear()+1-2000);
+                    sheet.Cells[118, 2+i].Value=(Functions.GetRotaryYear()-2000-i)+"-"+(Functions.GetRotaryYear()+1-2000-i);
                 
                     var par = Yemon.dnn.DataMapping.ExecSqlFirst<ClubPartitipation>(new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"clubs_participation WHERE districtid="+Const.DISTRICT_ID+" AND annee="+(Functions.GetRotaryYear()-i)+" AND cric="+Functions.CurrentClub.cric));
                     if(par !=null) {

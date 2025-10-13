@@ -132,7 +132,7 @@ public class RotaryHelper
 
     public static Rotary.Club Get_Club(int cric)
     {
-        return Yemon.dnn.DataMapping.ExecSqlFirst<Rotary.Club>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_club where clubid="+cric));
+        return Yemon.dnn.Functions.Deserialize<Rotary.Club>(""+Yemon.dnn.DataMapping.ExecSqlScalar(new SqlCommand("select profile from "+Const.TABLE_PREFIX+"ri_club where clubid="+cric)));
     }
     public static List<Rotary.Club> Get_Clubs(out string result)
     {
@@ -149,8 +149,19 @@ public class RotaryHelper
             }
             result = task.Result;
             List<Rotary.Club> clubs = Yemon.dnn.Functions.Deserialize<List<Rotary.Club>>(task.Result);
-            clubs = clubs.Where(c => c.DistrictId == Const.DISTRICT_ID).ToList();
-
+            var liste = clubs.Where(c => c.DistrictId == Const.DISTRICT_ID).ToList();
+            
+            clubs = new List<Rotary.Club>();
+            foreach(var club in liste)
+            {
+                var c = Get_Club_Profile(club.ClubType, club.ClubId, out result);
+                
+                if (String.IsNullOrEmpty(task.Result))
+                {
+                    throw new Exception("Erreur récupération club : "+club.ClubName+" ("+club.ClubId+")");
+                }
+                clubs.Add(c);
+            }
             return clubs;
         }
         catch (Exception ee)
@@ -528,7 +539,8 @@ public class RotaryHelper
             row["districtid"] = club.DistrictId;
             row["membercount"] = club.MemberCount;
             row["honorarymembercount"] = club.HonoraryMemberCount;
-            row["dtlastupdate"] = DateTime.Now;           
+            row["dtlastupdate"] = DateTime.Now;
+            row["profile"]= Yemon.dnn.Functions.Serialize(club);
 
             var r = Yemon.dnn.DataMapping.UpdateOrInsertRecord("ais_ri_club", "id", row);
             if (r.Key != "error")

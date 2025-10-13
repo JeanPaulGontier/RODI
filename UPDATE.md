@@ -89,6 +89,9 @@ CREATE TABLE [dbo].[ais_clubs_participation](
 GO
 
 
+ALTER TABLE [dbo].[ais_ri_club]
+ADD profile [ntext] NULL;
+
 ###### 29/09/2025
 - rendre visible les réunions passées pour les membres (D1680)
 - ajout d'une fonctionnalité pour copier une réunion existante (D1680)

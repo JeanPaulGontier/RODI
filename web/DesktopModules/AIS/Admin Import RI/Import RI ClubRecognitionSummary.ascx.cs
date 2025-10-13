@@ -22,7 +22,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
     public string tablename;
     protected void Page_Load(object sender, EventArgs e)
     {
-        panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
+        //panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
 
         filename=Server.MapPath(PortalSettings.HomeDirectory + "ClubRecognitionSummary.xlsx.resources");
         tablename =Const.TABLE_PREFIX+"ri_clubrecognitionsummary";

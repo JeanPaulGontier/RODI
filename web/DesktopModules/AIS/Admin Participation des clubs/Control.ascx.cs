@@ -36,7 +36,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
     }
     protected void Page_Load(object sender, EventArgs e)
     {
-        panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
+        //panel.Visible = UserInfo.IsSuperUser || UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT);
 
         RefreshListe();
         
