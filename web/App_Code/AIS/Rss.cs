@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
-namespace AIS.Rotary
+namespace AIS.RotaryInternational
 { 
     [XmlRoot(ElementName = "image")]
     public class Image

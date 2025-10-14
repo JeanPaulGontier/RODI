@@ -15,6 +15,9 @@ App_Code\AIS\rotary\RotaryHelper.cs
 App_Code\AIS\rotary\Rotary.cs
 App_Code\AIS\schedulers\RotaryScheduler.cs
 Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
+App_Code\AIS\Rss.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
+App_Code\AIS\webapi\contacts\ContactsHelper.cs
 ```
 ##### 30/09/2025
 ```txt

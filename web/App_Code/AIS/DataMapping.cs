@@ -65,6 +65,7 @@ using Aspose.BarCode;
 using Aspose.Cells;
 using Aspose.Words;
 using Dnn.PersonaBar.Users.Components;
+using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -78,10 +79,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+
 
 
 namespace AIS
@@ -9132,9 +9135,69 @@ namespace AIS
                 sheet.Pictures[idx].Left=4;
                 sheet.Pictures[idx].Top=4;
 
+                List<Rotary.Member> ri_member = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member where clubid="+ri_club.ClubId));
+                int nbriaccount = 0;
+                foreach(var m in ri_member)
+                {
+                    if(""+m.Profile!="")
+                    {
+                        var profile = Yemon.dnn.Functions.Deserialize<Rotary.Profile>(""+m.Profile);
+                        if (profile!=null)
+                        {
+                            foreach(var e in profile.email)
+                            {
+                                if (e.IsOnlineId)
+                                {
+                                    nbriaccount++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                sheet.Cells["C43"].Value=(float)nbriaccount/(float)ri_member.Count;
 
-                List<Member> members = ListMembers(Functions.CurrentCric).FindAll(m => m.honorary_member!=Const.YES);
+                List<Member> members = ListMembers(Functions.CurrentCric);//.FindAll(m => m.honorary_member!=Const.YES);
                 sheet.Cells["C45"].Value=members.Count;
+
+                var terminated = Yemon.dnn.DataMapping.ExecSql<Rotary.Member_Terminated>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member_terminated where districtid="+Const.DISTRICT_ID+" and clubid="+ri_club.ClubId));
+                var terms = new Dictionary<int, int>();
+                int entreeannee = 0;
+                int sortieannee = 0;
+                for (int i = 0; i<100; i++)
+                    terms[Functions.GetRotaryYear()-i]=0;
+                foreach (var t in terminated)
+                {
+                    int terminationannee = t.TerminationDate.Year;
+                    if (t.TerminationDate.Month<7)
+                        terminationannee--;
+
+                    terms[terminationannee]-=1;
+
+
+                    if (DateTime.Compare(t.TerminationDate,new DateTime(Functions.GetRotaryYear(), 6, 30))>0)
+                        sortieannee++;
+
+                    int admissionannee = t.AdmissionDate.Year;
+                    if (t.AdmissionDate.Month<7)
+                        admissionannee--;
+
+                   
+                    terms[admissionannee]+=1;
+
+                    if (DateTime.Compare(t.AdmissionDate,new DateTime(Functions.GetRotaryYear(),6,30))>0)
+                        entreeannee++;
+                }
+                for(int i = 0; i<3; i++)
+                {
+                    if (terms.ContainsKey(Functions.GetRotaryYear()-i))
+                    {
+                        sheet.Cells[44, 3+i].Value=members.Count+ terms[Functions.GetRotaryYear()-i];
+                    }
+                }
+
+                sheet.Cells["C46"].Value=entreeannee;
+                sheet.Cells["C48"].Value=sortieannee;
                 int nbhomme = members.FindAll(m => !m.IsWoman()).Count;
                 int nbfemme = members.FindAll(m => m.IsWoman()).Count;
                 sheet.Cells["C50"].Value=nbfemme;

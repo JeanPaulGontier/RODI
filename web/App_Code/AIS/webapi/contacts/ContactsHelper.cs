@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using AIS;
-using AIS.Rotary;
+
 
 /// <summary>
 /// Description résumée de ContactsHelper
@@ -30,7 +30,7 @@ public class ContactsHelper
 
     public Contact.List GetContactList(Guid guid)
     {
-        var sql = new SqlCommand("select * from ais_contacts where guid=@guid");
+        var sql = new SqlCommand("select * from "+Const.TABLE_PREFIX+"contacts where guid=@guid");
         sql.Parameters.AddWithValue("guid", guid);
 
         Contact.List list = Yemon.dnn.DataMapping.ExecSqlFirst<Contact.List>(sql);
@@ -39,7 +39,7 @@ public class ContactsHelper
 
     public List<Contact.List> GetContactsLists(int cric)
     {
-        List<Contact.List> contacts = Yemon.dnn.DataMapping.ExecSql<Contact.List>(new SqlCommand("select * from ais_contacts where cric=" + cric + " order by title"));
+        List<Contact.List> contacts = Yemon.dnn.DataMapping.ExecSql<Contact.List>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"contacts where cric=" + cric + " order by title"));
 
         return contacts;
     }

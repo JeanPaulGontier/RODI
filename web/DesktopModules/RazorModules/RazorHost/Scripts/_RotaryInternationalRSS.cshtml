@@ -1,7 +1,7 @@
 ﻿@using System.Xml;
 @using System.Xml.Serialization;
 @{ 
-    AIS.Rotary.Rss feed = (AIS.Rotary.Rss)HttpContext.Current.Application["rotaryrss"];
+    AIS.RotaryInternational.Rss feed = (AIS.RotaryInternational.Rss)HttpContext.Current.Application["rotaryrss"];
 
     if (feed != null)
     {
@@ -18,8 +18,8 @@
     {
         var url = "https://www.rotary.org/fr/rss.xml";
         var reader = XmlReader.Create(url);
-        var serializer = new XmlSerializer(typeof(AIS.Rotary.Rss));
-        feed = (AIS.Rotary.Rss)serializer.Deserialize(reader);
+        var serializer = new XmlSerializer(typeof(AIS.RotaryInternational.Rss));
+        feed = (AIS.RotaryInternational.Rss)serializer.Deserialize(reader);
 
         HttpContext.Current.Application["rotaryrss"] = feed;
         HttpContext.Current.Application["rotaryrssdate"] = DateTime.Now;
@@ -29,7 +29,7 @@
     {
         return;
     }
-    var feed5 = new AIS.Rotary.Rss();
+    var feed5 = new AIS.RotaryInternational.Rss();
     int nb = 5;
     while(nb>0)
     {
