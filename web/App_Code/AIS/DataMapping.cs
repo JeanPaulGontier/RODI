@@ -84,6 +84,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
+using Telerik.Windows.Data;
 
 
 
@@ -9137,14 +9138,16 @@ namespace AIS
 
                 List<Rotary.Member> ri_member = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member where clubid="+ri_club.ClubId));
                 int nbriaccount = 0;
-                foreach(var m in ri_member)
+               
+                foreach (var m in ri_member)
                 {
                     if(""+m.Profile!="")
                     {
                         var profile = Yemon.dnn.Functions.Deserialize<Rotary.Profile>(""+m.Profile);
                         if (profile!=null)
                         {
-                            foreach(var e in profile.email)
+                            
+                            foreach (var e in profile.email)
                             {
                                 if (e.IsOnlineId)
                                 {
@@ -9162,8 +9165,15 @@ namespace AIS
 
                 var terminated = Yemon.dnn.DataMapping.ExecSql<Rotary.Member_Terminated>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member_terminated where districtid="+Const.DISTRICT_ID+" and clubid="+ri_club.ClubId));
                 var terms = new Dictionary<int, int>();
+
                 int entreeannee = 0;
                 int sortieannee = 0;
+
+                foreach (var m in members)
+                    if (m.year_membership_rotary!=null)
+                        if (DateTime.Compare((DateTime)m.year_membership_rotary, new DateTime(Functions.GetRotaryYear(), 6, 30))>0)
+                            entreeannee++;
+
                 for (int i = 0; i<100; i++)
                     terms[Functions.GetRotaryYear()-i]=0;
                 foreach (var t in terminated)
