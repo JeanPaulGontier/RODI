@@ -9233,7 +9233,7 @@ namespace AIS
             var xls = new Workbook();
 
             var liste = Yemon.dnn.DataMapping.ExecSql<ClubPartitipation>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"clubs_participation where annee="+annee));
-            var clubs = DataMapping.ListClubs();
+            var clubs = DataMapping.ListClubs(sort:"name");
 
             var sheet = xls.Worksheets[0];
 

@@ -44,7 +44,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
 
     void RefreshListe()
     {
-        var liste = Yemon.dnn.DataMapping.ExecSql("Select cric,afd,sfpe,conference from "+tablename+" where annee='"+annee.SelectedValue+"' and districtid="+Const.DISTRICT_ID+" order by cric");
+        var liste = Yemon.dnn.DataMapping.ExecSql("Select c.cric,c.name,p.afd,p.sfpe,p.conference from "+tablename+" p,"+Const.TABLE_PREFIX+"clubs c  where c.cric=p.cric and p.annee='"+annee.SelectedValue+"' and p.districtid="+Const.DISTRICT_ID+" order by c.name");
         members.DataSource=liste;
         members.DataBind();
 
