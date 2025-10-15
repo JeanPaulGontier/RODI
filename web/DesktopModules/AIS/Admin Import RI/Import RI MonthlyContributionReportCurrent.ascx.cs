@@ -81,7 +81,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
             while (row < 65535)
             {
                 Cell cell = sheet.Cells[row, col];
-                if((""+cell.Value)=="Récapitulatif du district")
+                if((""+cell.Value)=="Récapitulatif du district" || (""+cell.Value)=="District Summary")
                 {
                     annee=int.Parse((""+sheet.Cells[row+1, col+1].Value).Substring(0, 4));
                    

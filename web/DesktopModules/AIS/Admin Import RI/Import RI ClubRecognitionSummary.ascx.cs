@@ -82,8 +82,7 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                 Cell cell = sheet.Cells[row, col];
                 if((""+cell.Value)=="District :")
                 {
-                    if (c!=null)
-                        crs.Add(c);
+                  
 
                     c = new ClubRecognitionSummary();
                     c.districtid= (int)(double)sheet.Cells[row, col+1].Value;
@@ -91,17 +90,31 @@ public partial class DesktopModules_AIS_Admin_Import_RI : PortalModuleBase
                     c.rotariens_donateurs = (int)(double)sheet.Cells[row, col+15].Value;
                     c.total_des_dons = (int)Math.Round((double)sheet.Cells[row, col+25].Value);
 
+                    if(sheet.Cells[row+1, col+1].Value!=null)
+                        c.cric= (int)(double)sheet.Cells[row+1, col+1].Value;
+                    if(sheet.Cells[row+1, col+5].Value!=null)
+                        c.bienfaiteurs = (int)(double)sheet.Cells[row+1, col+5].Value;
+                    if(sheet.Cells[row+1, col+15].Value!=null)
+                        c.rotariens_non_donateurs = (int)(double)sheet.Cells[row+1, col+15].Value;
+                    if(sheet.Cells[row+7, col+17].Value!=null)
+                        c.points_fondations_disponibles = (int)Math.Round((double)sheet.Cells[row+7, col+17].Value);
 
-                    c.cric= (int)(double)sheet.Cells[row+1, col+1].Value;
-                    c.bienfaiteurs = (int)(double)sheet.Cells[row+1, col+5].Value;
-                    c.rotariens_non_donateurs = (int)(double)sheet.Cells[row+1, col+15].Value;
+                    try
+                    {
+                        var a = DateTime.Parse(""+sheet.Cells[row+7, col+20].Value);
+                        if (a.Month<7)
+                            c.annee=a.Year-1;
+                        else
+                            c.annee=a.Year;
 
-                    c.points_fondations_disponibles = (int)Math.Round((double)sheet.Cells[row+7, col+17].Value);
-                    var a = DateTime.Parse(""+sheet.Cells[row+7, col+20].Value);
-                    if (a.Month<7)
-                        c.annee=a.Year-1;
-                    else
-                        c.annee=a.Year;
+                        if (c!=null)
+                            crs.Add(c);
+
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
                 }
                 
                 row++;
