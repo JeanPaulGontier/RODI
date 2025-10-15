@@ -2606,7 +2606,7 @@ namespace AIS
                 int NIM = 0;
 
 
-                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member],[presentation],ri_ad1,ri_ad2,ri_ad3,ri_zip_code,ri_town,ri_country) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member,@presentation,@ri_ad1,@ri_ad2,@ri_ad3,@ri_zip_code,@ri_town,@ri_country)", conn, trans);
+                sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "members ([nim],[honorary_member],[surname],[name],[cric],[active_member],[civility],[maiden_name],[spouse_name],[title],[birth_year],[year_membership_rotary],[email],[adress_1],[adress_2],[adress_3],[zip_code],[town],[telephone],[fax],[gsm],[country],[job],[industry],[biography],[base_dtupdate],[professionnal_adress],[professionnal_zip_code],[professionnal_town],[professionnal_tel],[professionnal_fax],[professionnal_mobile],[professionnal_email],[retired],[removed],[district_id],[club_name],[photo],[visible],[satellite_member],[presentation],ri_ad1,ri_ad2,ri_ad3,ri_zip_code,ri_town,ri_country,userid) VALUES (@nim,@honorary_member, @surname, @name, @cric, @active_member, @civility, @maiden_name, @spouse_name, @title, @birth_year, @year_membership_rotary, @email, @adress_1, @adress_2, @adress_3, @zip_code, @town, @telephone, @fax, @gsm, @country, @job, @industry, @biography, @base_dtupdate, @professionnal_adress, @professionnal_zip_code, @professionnal_town, @professionnal_tel, @professionnal_fax, @professionnal_mobile, @professionnal_email, @retired, @removed, @district_id, @club_name, @photo, @visible,@satellite_member,@presentation,@ri_ad1,@ri_ad2,@ri_ad3,@ri_zip_code,@ri_town,@ri_country,@userid)", conn, trans);
                 sql.Parameters.AddWithValue("@nim", m.nim);
                 sql.Parameters.AddWithValue("@honorary_member", m.honorary_member);
                 sql.Parameters.AddWithValue("@surname", m.surname);
@@ -2670,6 +2670,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@ri_zip_code", "" + m.ri_zip_code);
                 sql.Parameters.AddWithValue("@ri_town", "" + m.ri_town);
                 sql.Parameters.AddWithValue("@ri_country", "" + m.ri_country);
+                sql.Parameters.AddWithValue("@userid", "" + m.userid);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur Insert membre : ");
