@@ -18,6 +18,7 @@ Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 App_Code\AIS\Rss.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
 App_Code\AIS\webapi\contacts\ContactsHelper.cs
+App_Code\ClubRewriter.cs
 ```
 ##### 30/09/2025
 ```txt

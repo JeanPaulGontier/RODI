@@ -161,6 +161,8 @@ public class ClubRewriter : IHttpModule
             }
             if (url.StartsWith("/ais"))
                 return;
+            if (url.StartsWith("/keepalive.aspx"))
+                return;
             if (url.StartsWith("/admin"))
                 return;
             if (url.StartsWith("/espace-membre"))
