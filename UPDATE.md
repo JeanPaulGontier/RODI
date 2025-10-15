@@ -27,7 +27,7 @@
 - autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
 - ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 
-
+- correction bug de reaffectation membre d'honneur qui ne pouvait plus accéder à l'espace membre du club dans certains cas (D1640)
 - ajout de fonctionnalités sur la fiche renseignements clubs pour visite du gouverneur (D1640)
 - 2 nouveaux modules dans import RI pour disposer des données issues de my Rotary  (D1640)
 		MonthlyContributionReportCurrent
