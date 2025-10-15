@@ -9137,7 +9137,7 @@ namespace AIS
                 sheet.Pictures[idx].Left=4;
                 sheet.Pictures[idx].Top=4;
 
-                List<Rotary.Member> ri_member = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member where clubid="+ri_club.ClubId));
+                List<Rotary.Member> ri_member = Yemon.dnn.DataMapping.ExecSql<Rotary.Member>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member where membertype!='Honorary Member' and clubid="+ri_club.ClubId));
                 int nbriaccount = 0;
                
                 foreach (var m in ri_member)
@@ -9161,7 +9161,7 @@ namespace AIS
                 }
                 sheet.Cells["C43"].Value=(float)nbriaccount/(float)ri_member.Count;
 
-                List<Member> members = ListMembers(Functions.CurrentCric);//.FindAll(m => m.honorary_member!=Const.YES);
+                List<Member> members = ListMembers(Functions.CurrentCric).FindAll(m => m.honorary_member!=Const.YES);
                 sheet.Cells["C45"].Value=members.Count;
 
                 var terminated = Yemon.dnn.DataMapping.ExecSql<Rotary.Member_Terminated>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member_terminated where districtid="+Const.DISTRICT_ID+" and clubid="+ri_club.ClubId));
