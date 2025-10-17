@@ -19,6 +19,7 @@ App_Code\AIS\Rss.cs
 DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
 App_Code\AIS\webapi\contacts\ContactsHelper.cs
 App_Code\ClubRewriter.cs
+App_Code\AIS\notification\NotificationHelper.cs
 ```
 ##### 30/09/2025
 ```txt

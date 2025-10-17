@@ -133,7 +133,7 @@ public static class NotificationHelper
         if (onlyunopened)
             query= " and opened=0";
         List<Notification> notifications = Yemon.dnn.DataMapping.ExecSql<Notification>(
-                new SqlCommand("select *,(select opened from "+AIS.Const.TABLE_PREFIX+"notifications_users where notif_id=N.id) as opened from "+AIS.Const.TABLE_PREFIX+"notifications N where id in (select notif_id from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+query+") order by date desc")
+                new SqlCommand("select *,(select top 1 opened from "+AIS.Const.TABLE_PREFIX+"notifications_users where notif_id=N.id and user_id="+userid+") as opened from "+AIS.Const.TABLE_PREFIX+"notifications N where id in (select notif_id from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+query+") order by date desc")
             );
         return notifications;
     }
