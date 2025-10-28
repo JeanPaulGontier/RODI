@@ -17,16 +17,17 @@
 - fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
 - ajouter la gestion des réseaux sociaux du club et du district (D1760)
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
+- ajout de l'anniversaire dans le trombinoscope (D1730)
+- mettre a disposition de l'administration district la liste des membres terminés avec la raison maj tous les mois (D1770)
+- autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
+- ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
 - nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
 - nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
-- ajout de l'anniversaire dans le trombinoscope (D1730)
-- mettre a disposition de l'administration district la liste des membres terminés avec la raison maj tous les mois (D1770)
-- autoriser l'ajout des membres d'honneur dans les listes de contacts (D1680)
-- ajout page de statistiques de connexion membres pour les administrateurs clubs (D1680 D1640)
 
+- ajout d'une fonctionnalité de liste d'images pour le module PDF Flipbook
 - correction bug d'affichage des notifications qui n'apparaissaient pas dans certains cas
 - correction bug de reaffectation membre d'honneur qui ne pouvait plus accéder à l'espace membre du club dans certains cas (D1640)
 - ajout de fonctionnalités sur la fiche renseignements clubs pour visite du gouverneur (D1640)

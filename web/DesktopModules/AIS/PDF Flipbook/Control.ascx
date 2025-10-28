@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Control.ascx.cs" Inherits="DesktopModules_AIS_PDF_Slideshow_Control" %>
+<asp:Panel runat="server" ID="P_flipbook">
 <script type="text/javascript" src="/DesktopModules/AIS/PDF Flipbook/turnjs4/extras/modernizr.2.5.3.min.js"></script>
 <asp:Panel runat="server" CssClass="alert alert-danger" ID="P_Error" Visible="false"><asp:Literal runat="server" ID="L_Error"></asp:Literal></asp:Panel>
 <div class="flipbook-viewport">
@@ -10,7 +11,7 @@
         for(int i=0;i<Images.Count;i++)
         {
 %>
-            <div style="background-image:url(<%= Request.RawUrl+"?image=" +i %>)"></div>
+            <div style="background-image:url(<%= ImagesPublic+i+".jpg" %>)"></div>
 <%
         }
     }
@@ -54,8 +55,24 @@
         test: Modernizr.csstransforms,
         yep: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/lib/turn.js'],
         nope: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/lib/turn.html4.min.js'],
-        both: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/smaples/basic/css/basic.css'],
+        //both: ['/DesktopModules/AIS/PDF Flipbook/turnjs4/samples/basic/css/basic.css'],
         complete: loadApp
     });
 
 </script>
+</asp:Panel>
+<asp:Panel runat="server" ID="P_images">
+<div style="background-color:gray">	
+<%
+    if(Images!=null)
+    {
+        for(int i=0;i<Images.Count;i++)
+        {
+%>
+            <div><img src="<%= ImagesPublic+i+".jpg" %>" width="100%"  /></div>
+<%
+        }
+    }
+%>
+</div>
+</asp:Panel>

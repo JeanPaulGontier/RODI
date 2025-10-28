@@ -64,19 +64,74 @@
 
 using AIS;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.ActiveForums;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
 {
+    public const string O2SPDFVIEWERSERIALNUMBER = "PDFVW4WIN-JI2QB-2JRGK-MFJ68-3DWN8-AKSVB";
+    public string ImagesPublic
+    {
+        get
+        {
+            return "/portals/"+PortalId+"/images/pdf-flipbook/"+ModuleId+"/";
+        }
+    }
+    public string ImagesPath
+    {
+        get
+        {
+            string p = Server.MapPath(ImagesPublic);
+            if (!Directory.Exists(p))
+                Directory.CreateDirectory(p);
+
+            return p;
+        }
+    }
+    public int Width
+    {
+        get
+        {
+            int w = 0;
+            int.TryParse("" + Settings["width"], out w);
+            return w;
+        }
+    }
+
+    public int Height
+    {
+        get
+        {
+            int h = 0;
+            int.TryParse("" + Settings["height"], out h);
+            return h;
+        }
+    }
+
+    public string document
+    {
+        get
+        {
+            return "" + Settings["document"];
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.IsPostBack)
             return;
+        RB_type.SelectedValue="flipbook";
+        if ((""+Settings["type"])=="images")
+            RB_type.SelectedValue="images";
 
         TXT_Document.Text = "" + Settings["document"];
         TXT_Width.Text = "" + Settings["width"];
@@ -88,10 +143,10 @@ public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
     {
         base.UpdateSettings();
 
-        DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-
+        var objModules = new ModuleController();
+        objModules.UpdateModuleSetting(ModuleId, "type", ""+RB_type.SelectedValue);
         objModules.UpdateModuleSetting(ModuleId, "document", TXT_Document.Text.Trim());
-        Application["AIS_PDF_Slideshow_Images_" + ModuleId] = null;
+        
         int v = 0;
         int.TryParse(""+TXT_Width.Text, out v);
 
@@ -102,7 +157,52 @@ public partial class DesktopModules_AIS_News_Visu_Settings : ModuleSettingsBase
 
         objModules.UpdateModuleSetting(ModuleId, "height", "" + v);
 
-      
 
+
+
+
+      
+    }
+
+
+
+    protected void BT_generate_Click(object sender, EventArgs e)
+    {
+        UpdateSettings();
+
+        var im = Directory.GetFiles(ImagesPath);
+        foreach (var f in im)
+        {
+            File.Delete(f);
+        }
+
+         try { 
+            var doc = O2S.Components.PDFRender4NET.PDFFile.Open(Server.MapPath(document));
+            doc.SerialNumber = O2SPDFVIEWERSERIALNUMBER;
+            for (int page = 0; page < doc.PageCount; page++)
+            {
+                Bitmap bit = doc.GetPageImage(page, 150);
+                float ratio = (float)bit.Height/(float)bit.Width;
+                int h = Height;
+                if (h==0)
+                    h=(int)((float)Width*ratio);
+                Bitmap bitmap = new Bitmap(Width, h);
+                using (var graphics = Graphics.FromImage(bitmap))
+                {
+                    graphics.Clear(Color.White);
+                    graphics.DrawImage(bit, 0, 0, Width, h);
+                }
+
+
+                bitmap.Save(Path.Combine(ImagesPath, page+".jpg"), ImageFormat.Jpeg);           
+            }
+            P_result.Visible=true;
+
+        }
+        catch(Exception ee)
+        {
+            P_error.Visible=true;
+            L_error.Text=ee.Message;
+        }
     }
 }

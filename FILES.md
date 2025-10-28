@@ -20,6 +20,10 @@ DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
 App_Code\AIS\webapi\contacts\ContactsHelper.cs
 App_Code\ClubRewriter.cs
 App_Code\AIS\notification\NotificationHelper.cs
+DesktopModules\AIS\PDF Flipbook\Control.ascx
+DesktopModules\AIS\PDF Flipbook\Control.ascx.cs
+DesktopModules\AIS\PDF Flipbook\Settings.ascx
+DesktopModules\AIS\PDF Flipbook\Settings.ascx.cs
 ```
 ##### 30/09/2025
 ```txt

@@ -20,8 +20,41 @@ public partial class DesktopModules_AIS_PDF_Slideshow_Control : PortalModuleBase
 
     public List<Media> Images
     {
-        get { return (List<Media>)Application["AIS_PDF_Slideshow_Images_" + ModuleId]; }
-        set { Application["AIS_PDF_Slideshow_Images_" + ModuleId] = value; }
+        get {
+
+
+            List<Media> images = new List<Media>();
+            var imgs = Directory.GetFiles(ImagesPath, "*.jpg");
+            for (int i=0;i<imgs.Length;i++)
+            {
+                Media media = new Media();
+                media.content_mime = "image/jpeg";
+                media.filename = i+ ".jpg";
+                media.dt = DateTime.Now;
+                images.Add(media);
+            }
+            return images;
+
+        }
+    }
+
+    public string ImagesPublic
+    {
+        get
+        {
+            return "/portals/"+PortalId+"/images/pdf-flipbook/"+ModuleId+"/";
+        }
+    }
+    public string ImagesPath
+    {
+        get
+        {
+            string p = Server.MapPath(ImagesPublic);
+            if(!Directory.Exists(p))
+                Directory.CreateDirectory(p);
+
+            return p;
+        }
     }
 
     public int Width
@@ -53,74 +86,24 @@ public partial class DesktopModules_AIS_PDF_Slideshow_Control : PortalModuleBase
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        P_images.Visible=false;
+        P_flipbook.Visible=true;
+
+        if ((""+Settings["type"])=="images")
+        {
+            P_images.Visible=true;
+            P_flipbook.Visible=false;
+        }
+
         if (!String.IsNullOrEmpty(Request["image"]))
         {
             int idx = 0;
             if (int.TryParse("" + Request["image"],out idx))
-            {
-                if(Images!=null)
-                {
-                    try
-                    {
-                        ServeMedia(Images[idx]);
-                    }
-                    catch(Exception ee)
-                    {
-                        Functions.Error(ee);
-                    }
-                }
+            {                
+                Response.Redirect(ImagesPublic+idx+".jpg");
             }
             return;
         }
-
-
-
-        if (Images == null && !string.IsNullOrEmpty(document))
-        {
-            try
-            {
-               
-                List<Media> images = new List<Media>();
-                var doc = O2S.Components.PDFRender4NET.PDFFile.Open(Server.MapPath(document));
-                doc.SerialNumber = O2SPDFVIEWERSERIALNUMBER;
-                for (int page = 0; page < doc.PageCount; page++)
-                {
-                    Bitmap bit = doc.GetPageImage(page, 76);
-                    Bitmap bitmap = new Bitmap(Width, Height);
-                    //Bitmap bitmap = new Bitmap((int)doc.GetPageSize(page).Width,(int)doc.GetPageSize(page).Height);
-                    using (var graphics = Graphics.FromImage(bitmap))
-                    {
-                          graphics.Clear(Color.White);
-                          graphics.DrawImage(bit,0,0,Width,Height);
-                    }
-
-
-
-                    Media media = new Media();
-                    MemoryStream ms = new MemoryStream();
-                    bitmap.Save(ms, ImageFormat.Jpeg);
-                    media.content = ms.GetBuffer();
-                    media.content_size = media.content.Length;
-                    media.content_mime = "image/jpeg";
-                    media.filename = "image" + page + ".jpg";
-                    media.w = Width;
-                    media.h = Height;
-                    media.dt = DateTime.Now;
-                    images.Add(media);
-                }
-
-                Images = images;
-            }
-            catch(Exception ee)
-            {
-                L_Error.Text=ee.Message;
-                P_Error.Visible = true;
-                Functions.Error(ee);
-            }
-
-
-        }
-
 
     }
 
