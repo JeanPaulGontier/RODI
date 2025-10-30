@@ -24,6 +24,11 @@ DesktopModules\AIS\PDF Flipbook\Control.ascx
 DesktopModules\AIS\PDF Flipbook\Control.ascx.cs
 DesktopModules\AIS\PDF Flipbook\Settings.ascx
 DesktopModules\AIS\PDF Flipbook\Settings.ascx.cs
+DesktopModules\AIS\Admin Club Contacts\ContactsEdit.html
+DesktopModules\AIS\Club Trombinoscope\Control.ascx
+DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubStatsConnexionsUsers.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_membres_termines.cshtml
 ```
 ##### 30/09/2025
 ```txt

@@ -1,0 +1,64 @@
+@using AIS
+@using System.Data.SqlClient 
+@using System.Data
+@{ 
+    string d = "" + Request["debut"];
+    string f = "" + Request["fin"];
+
+    DateTime debut = DateTime.Now.AddMonths(-2);
+    DateTime fin = DateTime.Now;
+
+    if(d!="")
+    {
+        DateTime.TryParse(d, out debut);
+    }
+    if(f!="")
+    {
+        DateTime.TryParse(f, out fin);
+    }
+
+
+    var sql = new SqlCommand("select *,(select top 1 name from ais_clubs where cric=M.ClubId) as club_name from ais_ri_member_terminated M where TerminationDate >@debut and TerminationDate<=@fin order by TerminationDate");
+    sql.Parameters.AddWithValue("debut", debut);
+    sql.Parameters.AddWithValue("fin", fin);
+
+    var table = Yemon.dnn.DataMapping.ExecSql(sql);
+
+    <div class="form-inline">       
+        <label for="debut">Période entre</label>&nbsp;<input type="date" id="debut" name="debut" class="form-control" value="@debut.ToString("yyyy-MM-dd")" />&nbsp;
+        <label for="fin">et</label>&nbsp;<input type="date" id="fin" name="fin" class="form-control" value="@fin.ToString("yyyy-MM-dd")" />&nbsp;
+        <button class="btn btn-primary">Mettre à jour</button>               
+    </div>
+
+    if(table==null || table.Rows.Count==0){
+        <div class="alert alert-warning">Aucun membre terminé sur la période...</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <tr>
+                <th>Club</th>
+                <th>Nim</th>
+                <th>Prénom / Nom</th>
+                <th>Type membre</th>
+                <th>Date fin</th>
+                <th>Raison</th>
+            </tr>
+            @foreach(DataRow row in table.Rows)
+            {
+                <tr>
+                    <td>@row["club_name"]</td>
+                    <td>@row["memberid"]</td>
+                    <td>@row["LastName"] @row["FirstName"]</td>
+                    <td>@row["MemberType"]</td>
+                    <td>@(((DateTime)row["TerminationDate"]).ToShortDateString())</td>
+                    <td>@row["TerminationReason"]</td>
+                </tr>
+            }
+        </table>
+    }
+}
+
+
+
+

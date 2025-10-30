@@ -120,6 +120,7 @@ public partial class DesktopModules_Control_View : PortalModuleBase
         public string LienLabel { get; set; }
         public string Telephones { get; set; }
         public string Profession { get; set; }
+        public string Anniversaire { get; set; }
 
     }
 
@@ -162,13 +163,31 @@ public partial class DesktopModules_Control_View : PortalModuleBase
             {
                 m.Lien = "javascript:dnnModal.show('/AIS/contact.aspx?id=" + member.id + "&popUp=true',false,350,500,false);";
             }
-
+            m.Anniversaire=""+Birthday(member.birth_year);
 
             liste.Add(m);
         }
         return liste;
     }
-    
+    public DateTime GetBirthday(DateTime birthdate)
+    {
+        int month = DateTime.Now.Month;
+        if (month>birthdate.Month && birthdate.Month==2 && birthdate.Day==29)
+            return new DateTime(DateTime.Now.Year+1, birthdate.Month, 28);
+        else if (month>birthdate.Month)
+            return new DateTime(DateTime.Now.Year+1, birthdate.Month, birthdate.Day);
+        else
+            return new DateTime(DateTime.Now.Year, birthdate.Month, birthdate.Day);
+    }
+
+    public string Birthday(object date)
+    {
+        if (date==null)
+            return "";
+        var birthdate = (DateTime)date;
+        birthdate = GetBirthday(birthdate);
+        return birthdate.ToString("d MMMM");
+    }
 
     protected void dataList_Members_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {

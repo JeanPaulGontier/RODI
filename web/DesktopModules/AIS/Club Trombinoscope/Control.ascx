@@ -49,9 +49,11 @@
                 <div style='padding: 2px 0'><%=m.Affectation %></div>
                 <%} %>
                  <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.8rem;'><strong><em><%=m.Profession %></em></strong></div>
-               
                 <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.7rem'><em><%=m.Email %> <%=m.Telephones %></em></div>
-                <%if ((Request["popup"] + "") != "") { }
+                <%if (!String.IsNullOrEmpty(m.Anniversaire)) { %>
+                <div style='padding: 2px 0; text-overflow: ellipsis; overflow-wrap: break-word; font-size: 0.7rem;'><img src='<%= PortalSettings.ActiveTab.SkinPath +"images/birthday.png"%>' style="filter: grayscale(1)" width="16" title="Anniversaise le <%=m.Anniversaire %>" /><em> <%=m.Anniversaire %></em></div>               
+                <% } %>
+                  <%if ((Request["popup"] + "") != "") { }
                     else
                     { %>
                 <div style='padding: 2px 0'><a href="<%=m.Lien %>"><%=m.LienLabel %></a></div>

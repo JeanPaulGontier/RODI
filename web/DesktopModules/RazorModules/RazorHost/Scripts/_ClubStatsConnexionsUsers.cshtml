@@ -1,0 +1,29 @@
+﻿@using AIS
+@using System.Data
+@{ 
+    var table = Yemon.dnn.DataMapping.ExecSql("select  surname++' '++name as [Nom prénom],isnull(convert(varchar, (select top 1[LastLoginDate] from[aspnet_Membership] where CreateDate!=LastLoginDate and M.email =Email order by[LastLoginDate] desc), 3),'Jamais') as [Date Dernière Connexion],  isnull(convert(varchar, (select top 1[LastPasswordChangedDate] from[aspnet_Membership] where CreateDate!=LastPasswordChangedDate and M.email =Email order by[LastPasswordChangedDate] desc), 3),'Jamais') as [Date Dernier Changement Mot de Passe] from ais_members M where cric='"+Functions.CurrentCric+"' order by surname");
+    if(table==null || table.Rows.Count==0)
+    {
+        <div>Aucune information...</div>
+    }
+    else
+    { 
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Nom / Prénom</th>
+                    <th>Dernière connexion</th>
+                    <th>Dernier changement mot de passe</th>
+                </tr>
+                @foreach (DataRow row in table.Rows)
+                {
+                    <tr>
+                        <td>@(""+row[0])</td>
+                        <td>@(""+row[1])</td>
+                        <td>@(""+row[2])</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
