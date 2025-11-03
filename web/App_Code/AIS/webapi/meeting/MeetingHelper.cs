@@ -281,6 +281,9 @@ public class MeetingHelper
                                     nextMeeting.dtendactive = nextMeeting.dtstart;
                                     nextMeeting.dtend = DateTime.Parse(startdate.ToString("yyyy-MM-dd ") + period.end + ":00"); ;
                                     nextMeeting.link = ("" + nextMeeting.guid).ToLower().Substring(9, 9);
+                                    if(nextMeeting.visible==null)
+                                        nextMeeting.visible = Const.YES;
+
 
                                     sql = new SqlCommand("INSERT INTO ais_meetings " +
                                     "(cric,name,guid,visible,active,type,periods,statutory,dtstart,dtend,dtrevision,templateguid,periodguid,mustnotify,dtlastupdate,portalid,link,nbusers,dtendactive,notificationmsg) VALUES " +
@@ -318,7 +321,7 @@ public class MeetingHelper
                                     }
                                     else
                                     {
-                                        Functions.Error(new Exception("Erreur insertion meeting" + Environment.NewLine + Functions.Serialize(nextMeeting)));
+                                        Functions.Error(new Exception("Erreur insertion meeting"+Environment.NewLine+Yemon.dnn.DataMapping.lastException.Message + Environment.NewLine + Functions.Serialize(nextMeeting)));
                                     }
 
                                 }

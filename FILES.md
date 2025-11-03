@@ -1,5 +1,9 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+```
+##### 30/10/2025
+```txt
 App_Code\AIS\rotary\ClubRecognitionSummary.cs
 App_Code\AIS\rotary\MonthlyContributionReportCurrent.cs
 DesktopModules\AIS\Admin Import RI\Import RI ClubRecognitionSummary.ascx
