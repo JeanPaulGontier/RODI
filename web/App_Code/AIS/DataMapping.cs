@@ -9177,6 +9177,7 @@ namespace AIS
 
                 for (int i = 0; i<100; i++)
                     terms[Functions.GetRotaryYear()-i]=0;
+
                 foreach (var t in terminated)
                 {
                     int terminationannee = t.TerminationDate.Year;
@@ -9201,9 +9202,9 @@ namespace AIS
                 }
                 for(int i = 0; i<3; i++)
                 {
-                    if (terms.ContainsKey(Functions.GetRotaryYear()-i))
+                    if (terms.ContainsKey(Functions.GetRotaryYear()-i-1))
                     {
-                        sheet.Cells[44, 3+i].Value=members.Count+ terms[Functions.GetRotaryYear()-i];
+                        sheet.Cells[44, 3+i].Value=members.Count+ terms[Functions.GetRotaryYear()-i-1];
                     }
                 }
 

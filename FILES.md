@@ -1,6 +1,8 @@
 ##### Modified files per commit
 ```txt
 App_Code\AIS\webapi\meeting\MeetingHelper.cs
+App_Code\AIS\DataMapping.cs
+Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 ```
 ##### 30/10/2025
 ```txt
