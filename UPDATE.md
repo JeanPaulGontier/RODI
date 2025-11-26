@@ -24,6 +24,7 @@
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 
 - correction bug de création des réunions périodiques apparu lors de la maj de septembre
+- modification fonction de duplication de réunion la nouvelle date est fixée à maintenant et la fin à +1h 
 ###### 30/10/2025
 - mettre a disposition de l'administration district la liste des membres terminés avec la raison maj tous les mois (D1770)
 - ajout de l'anniversaire dans le trombinoscope (D1730)

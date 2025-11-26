@@ -9214,7 +9214,7 @@ namespace AIS
                 int nbfemme = members.FindAll(m => m.IsWoman()).Count;
                 sheet.Cells["C50"].Value=nbfemme;
                 sheet.Cells["C51"].Value=nbhomme;
-                sheet.Cells["C52"].Value=(float)nbfemme/members.Count;
+                sheet.Cells["C52"].Value=(float)nbfemme/(float)members.Count;
 
                 float nbmoins40 = 0;
                 float nb40a49 = 0;
@@ -9239,12 +9239,12 @@ namespace AIS
                     else if (age>69)
                         nbplus70++;
                 }
-                sheet.Cells["C53"].Value=nbmoins40/(float)members.Count;
-                sheet.Cells["C54"].Value=nb40a49/(float)members.Count;
-                sheet.Cells["C55"].Value=nb50a59/(float)members.Count;
-                sheet.Cells["C56"].Value=nb60a69/(float)members.Count;
-                sheet.Cells["C57"].Value=nbplus70/(float)members.Count;
-                sheet.Cells["C58"].Value=nbageinconnu/(float)members.Count;
+                sheet.Cells["C53"].Value=Math.Round(nbmoins40/(float)members.Count,2);
+                sheet.Cells["C54"].Value=Math.Round(nb40a49/(float)members.Count, 2);
+                sheet.Cells["C55"].Value=Math.Round(nb50a59/(float)members.Count, 2);
+                sheet.Cells["C56"].Value=Math.Round(nb60a69/(float)members.Count, 2);
+                sheet.Cells["C57"].Value=Math.Round(nbplus70/(float)members.Count, 2);
+                sheet.Cells["C58"].Value=nbageinconnu;
 
                 #region club recognition
                 var cr = Yemon.dnn.DataMapping.ExecSqlFirst<ClubRecognitionSummary>(new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"ri_clubrecognitionsummary WHERE districtid="+Const.DISTRICT_ID+" AND annee="+Functions.GetRotaryYear()+" AND cric="+Functions.CurrentClub.cric));
@@ -9264,7 +9264,7 @@ namespace AIS
                     {
                        
                         sheet.Cells[74, 2+i].Value =par.fonds_annuel_cumul_annuel;
-                        sheet.Cells[76, 2+i].Value =par.rotariens;
+                       //sheet.Cells[76, 2+i].Value =par.rotariens;
                         sheet.Cells[77, 2+i].Value =par.fonds_polioplus_cumul_annuel;
                     }
                 }

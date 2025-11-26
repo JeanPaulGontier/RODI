@@ -55,7 +55,10 @@ public class MeetingHelper
             meeting.id = 0;
             meeting.guid = (Guid)newguid;
             meeting.name += " (copie)";
-            
+            meeting.dtstart = DateTime.Now;
+            meeting.dtend = DateTime.Now.AddHours(1);
+            meeting.dtendactive = DateTime.Now;
+
             if (SetMeeting(meeting, conn, trans) == 0)
             {
                 throw new Exception("Erreur de duplication");
