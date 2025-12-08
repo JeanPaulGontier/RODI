@@ -23,6 +23,7 @@
 - nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
+- séparation des fonctions rotariennes issues de myRotary et spécifiques au club afin d'améliorer la compréhension
 - correction bug de lien sur contact dans la liste des clubs qui ont un nom de domaine (D1680)
 ###### 30/11/2025
 - correction bug de création des réunions périodiques apparu lors de la maj de septembre
