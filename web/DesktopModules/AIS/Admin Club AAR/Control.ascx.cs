@@ -76,11 +76,17 @@ using DotNetNuke.Common;
 using System.Collections;
 using DotNetNuke.Entities.Users;
 using System.Data;
+using DotNetNuke.Modules.UserDefinedTable.Components;
+using DotNetNuke.Web.UI.WebControls.Extensions;
+using ClientDependency.Core;
+using K4os.Hash.xxHash;
+using DotNetNuke.Modules.DigitalAssets.Services;
 
 public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 {
     int nbError = 0;
     List<Member> members = new List<Member>();
+
 
     /// <summary>
     /// Crée dynamiquement un panel
@@ -90,9 +96,44 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
     {
         CreatePanel();
         base.OnLoad(e);
+
+    }
+
+    
+    public ClubCustomACL ClubEditAcl
+    {
+        get
+        {
+            if (ViewState["clubeditacl"]==null)
+                return null;
+            return Yemon.dnn.Functions.Deserialize<ClubCustomACL>(""+ViewState["clubeditacl"]);
+        }
+        set
+        {
+            ViewState["clubeditacl"]=Yemon.dnn.Functions.Serialize(value);
+        }
+    }
+
+    public void DeleteClubEditAcl()
+    {
+        ViewState["clubeditacl"]=null;
+        bool r = Yemon.dnn.Helpers.DeleteItem("clubcustomacl:"+Functions.CurrentCric);
         
     }
-   
+
+    public string Mode
+    {
+        get
+        {
+            if (ViewState["mode"]==null)
+                Mode = "principal";
+            return ""+ViewState["mode"];
+        }
+        set
+        {
+            ViewState["mode"]= value;
+        }
+    }
     /// <summary>
     /// Supprime le contenu des controles et les synchronise à nouveau
     /// </summary>
@@ -100,6 +141,11 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
     /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
+
+        UpdatePanels();
+
         lbl_choisirClub.Visible = (Functions.CurrentCric == 0);
         RB_AR.Visible = (Functions.CurrentCric != 0);
         LBL_AR.Visible = (Functions.CurrentCric != 0);
@@ -111,7 +157,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             RB_AR.Items.Add(new ListItem() { Text = "" + rotary_year + "-" + (rotary_year + 1), Value = "" + rotary_year, Selected = true });
             RB_AR.Items.Add(new ListItem() { Text = "" + (rotary_year + 1) + "-" + (rotary_year + 2), Value = "" + (rotary_year + 1) });
             RB_AR.Items.Add(new ListItem() { Text = "" + (rotary_year + 2) + "-" + (rotary_year + 3), Value = "" + (rotary_year + 2) });
-            
+
         }
 
         // si le controle de sélecteur de club est sur la meme page (exemple admin district)
@@ -124,7 +170,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         }
 
     }
-    
+
     /// <summary>
     /// Crée dynamiquement un panel contenant les DropDownList permettant la modification des AAR
     /// </summary>
@@ -132,7 +178,8 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
     {
         BT_Valider.Style.Add("visibility", "hidden");
 
-
+        var ClubCustomACL=  DataMapping.ClubCustomACL;
+        
         int cric = Functions.CurrentCric;
         Panel1.Controls.Clear();
         if (cric == 0)
@@ -144,13 +191,27 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         // avant on utlisait la liste des affectations déjà données dans un club pour générer la droplist
         // maintenant on utilise un domaine de valeurs
         //List<string> fonctions = DataMapping.ListFunctionsRY(cric);
-        List<Domain> lst = DataMapping.GetListDomain("RYA","");
+        List<Domain> lst = DataMapping.GetListDomain("RYA", "");
         List<string> fonctions = new List<string>();
         foreach (Domain d in lst)
-            fonctions.Add(d.value);
+            if(d.subdomain=="")
+                fonctions.Add(d.value);
 
-            
-        foreach (string fonction in fonctions)
+        List<string> fonctionsRI = new List<string>();
+        foreach (Domain d in lst)
+            if(d.subdomain=="RI")
+            fonctionsRI.Add(d.value);
+
+
+        Literal ltitle = new Literal();
+        if(fonctionsRI.Count>0)
+        {
+
+        
+            ltitle.Text="<h3>Fonctions rotariennes issues de myRotary</h3><div class='alert alert-info'>Attention : ces fonctions doivent êtres définies dans myRotary par un responsable du club, tout changement ici sera remplacé par les informations reçues de myRotary lors de la prochaine synchronisation</div>";
+            Panel1.Controls.Add(ltitle);
+        }
+        foreach (string fonction in fonctionsRI)
         {
 
             Literal lit = new Literal();
@@ -159,13 +220,13 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
             Label lb = new Label() { Text = fonction + " : " };
             lb.CssClass = "dnnLabel";
-            if(Const.AFFECTATIONS_ADMIN_CLUB.IndexOf(fonction)>-1)
+            if (ClubCustomACL==null && Const.AFFECTATIONS_ADMIN_CLUB.IndexOf(fonction)>-1)
             {
                 lb.Style.Add(HtmlTextWriterStyle.FontWeight, "bold");
                 lb.Text = lb.Text.Replace(" : ", "* : ");
             }
             Panel1.Controls.Add(lb);
-            
+
             DropDownList dl = new DropDownList();
             dl.CssClass = "dnnFormItem";
             dl.ID = cric + "_DL_" + fonction;
@@ -174,7 +235,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             {
                 if (membre.nim > 0)
                 {
-                    dl.Items.Add(new ListItem(membre.surname +" " + membre.name , "" + membre.nim));
+                    dl.Items.Add(new ListItem(membre.surname +" " + membre.name, "" + membre.nim));
                 }
                 else
                 {
@@ -183,11 +244,54 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             }
 
             dl.SelectedIndex = 0;
-            if(UserInfo.IsSuperUser ||
-                UserInfo.IsInRole(Const.ADMIN_ROLE) || 
-                UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
-                UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
-                DataMapping.isADG(Functions.GetCurrentMember().id))
+            if (DataMapping.CurrentUserIsAdminClub)
+                dl.Attributes.Add("onchange", "javascript: AfficheValider();");
+            Panel1.Controls.Add(dl);
+            lit = new Literal();
+            lit.Text = "</div>";
+            Panel1.Controls.Add(lit);
+
+        }
+        if (fonctionsRI.Count>0)
+        {
+
+            ltitle = new Literal();
+            ltitle.Text="<h3>Fonctions rotariennes spécifiques au club</h3>";
+            Panel1.Controls.Add(ltitle);
+        }
+        foreach (string fonction in fonctions)
+        {
+            Literal lit = new Literal();
+            lit.Text = "<div class='row'>";
+            Panel1.Controls.Add(lit);
+
+            Label lb = new Label() { Text = fonction + " : " };
+            lb.CssClass = "dnnLabel";
+            if (ClubCustomACL==null && Const.AFFECTATIONS_ADMIN_CLUB.IndexOf(fonction)>-1)
+            {
+                lb.Style.Add(HtmlTextWriterStyle.FontWeight, "bold");
+                lb.Text = lb.Text.Replace(" : ", "* : ");
+            }
+            Panel1.Controls.Add(lb);
+
+            DropDownList dl = new DropDownList();
+            dl.CssClass = "dnnFormItem";
+            dl.ID = cric + "_DL_" + fonction;
+            dl.Items.Add(new ListItem("--- Personne ---", ""));
+            foreach (Member membre in members)
+            {
+                if (membre.nim > 0)
+                {
+                    dl.Items.Add(new ListItem(membre.surname +" " + membre.name, "" + membre.nim));
+                }
+                else
+                {
+                    nbError += 1;
+                }
+            }
+
+            dl.SelectedIndex = 0;
+            if (DataMapping.CurrentUserIsAdminClub)
                 dl.Attributes.Add("onchange", "javascript: AfficheValider();");
             Panel1.Controls.Add(dl);
             lit = new Literal();
@@ -196,26 +300,37 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
         }
 
-        //if(nbError > 0)
-        //{
-        //    nbError = nbError / fonctions.Count();
-
-        //    if (nbError == 1)
-        //    {
-        //        lbl_erreur.Text = "ATTENTION : il y a 1 membre dont le nim est 0. Tant que cette erreur n'est pas corrigée, vous ne pourrez pas affecter ce membre à un poste.";
-        //    }
-        //    else
-        //    {
-        //        lbl_erreur.Text = "ATTENTION : il y a " + nbError + " membres dont le nim est 0. Tant que ces erreurs ne sont pas corrigées, vous ne pourrez pas affecter ces membres à un poste.";
-        //    }
-        //    PanelErreur.Visible = true;
-        //}
-        //else
-        //{
-           PanelErreur.Visible = false;
-        //}
-
+        PanelErreur.Visible = false;
         
+
+        UpdatePanels();
+    }
+
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        if (Functions.CurrentCric==0)
+            return;
+        var members = DataMapping.ListMembers(Functions.CurrentCric, sort: "surname asc");
+
+
+        DDL_Membres.Items.Clear();
+        foreach (var m in members)
+            if (m.honorary_member==Const.NO)
+                DDL_Membres.AddItem(m.surname+" "+m.name, ""+m.nim);
+
+    }
+
+    void BindMembresAffectes()
+    {
+        L_Affectes.DataSource=null;
+        L_Affectes.DataBind();
+
+        if (ClubEditAcl!=null)
+        {
+            L_Affectes.DataSource = ClubEditAcl.Administrators;
+            L_Affectes.DataBind();
+        }
     }
 
     /// <summary>
@@ -223,7 +338,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
     /// </summary>
     protected void SetPanel()
     {
-        
+
         int cric = Functions.CurrentCric;
 
         List<Affectation> affectations = DataMapping.ListAffectationRY(cric, int.Parse(RB_AR.SelectedValue));
@@ -254,18 +369,14 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         }
     }
 
-   /// <summary>
-   /// Permet de valider les modifications des AAR
-   /// </summary>
-   /// <param name="sender"></param>
-   /// <param name="e"></param>
+    /// <summary>
+    /// Permet de valider les modifications des AAR
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void BT_Valider_Click(object sender, EventArgs e)
     {
-        if (!(UserInfo.IsSuperUser || 
-            UserInfo.IsInRole(Const.ADMIN_ROLE) || 
-            UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) || 
-            UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) || 
-            DataMapping.isADG(Functions.GetCurrentMember().id)))
+        if (!DataMapping.CurrentUserIsAdminClub)
             return;
 
         int cric = Functions.CurrentCric;
@@ -275,9 +386,9 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         {
             if (row is DropDownList)
             {
-                DropDownList dl = row as DropDownList; 
+                DropDownList dl = row as DropDownList;
                 string[] ids = dl.ID.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
-                
+
                 Affectation affectation = new Affectation();
                 affectation.cric = cric;
                 affectation.function = ids[ids.Length - 1];
@@ -292,16 +403,10 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
                 }
             }
         }
-        if(DataMapping.UpdateAffectationRY(cric, int.Parse(RB_AR.SelectedValue), affectations))
+        if (DataMapping.UpdateAffectationRY(cric, int.Parse(RB_AR.SelectedValue), affectations))
         {
             Club c = AIS.DataMapping.GetClub(cric);
-
-            string subject = "[Rotary District] Information";
-            string body = "Le bureau du club " + c.name + " vient d'être modifié pour l'année " + RB_AR.SelectedValue + ".";
-
-            
-            //AIS.Functions.SendMail("secretaire@rotary1730.org", subject, body);
-            //AIS.Functions.SendMail("webmaster@rotary1730.org", subject, body);
+           
             MajAAR();
         }
 
@@ -312,10 +417,10 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         int n = 0;
         if (!int.TryParse(nim, out n))
             return "";
-        
-        foreach(Member member in members)
+
+        foreach (Member member in members)
         {
-            if(member.nim==n)
+            if (member.nim==n)
             {
                 return member.name + " " + member.surname;
             }
@@ -334,105 +439,222 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         SetPanel();
     }
 
-    private void MajAAR ()
+    private void MajAAR()
     {
-        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+
         try
         {
-            conn.Open();
-
-            int annee = Functions.GetRotaryYear();
-
-            RoleController rc = new RoleController();
-
-            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
-            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
-            IList<UserInfo> users = RoleController.Instance.GetUsersByRole(PortalId, Const.ROLE_ADMIN_CLUB);
-            //ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
-            
-            List<UserInfo> club = new List<UserInfo>();
-            foreach (UserInfo user in users)
-            {
-                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric, sort:"Surname asc"))
-                {
-                    if (m.userid == user.UserID)
-                        club.Add(user);
-                }
-            }
-
-            foreach (UserInfo user in club)
-            {
-                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
-                {
-                }
-                if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
-                {
-                }
-            }
-
-            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
-
-            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
-                query += annee + "," + (annee + 1);
-            else // if (DateTime.Now.Month >= 7)
-                //query += (annee - 1) + "," + annee;
-                query += annee;
-
-            query += ")";
-
-
-            SqlCommand sql = new SqlCommand(query, conn);
-            SqlDataAdapter da = new SqlDataAdapter(sql);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            foreach (DataRow row in ds.Tables[0].Rows)
-            {
-                string function = "" + row["function"];
-                cestbon:
-
-                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
-                if (membre != null)
-                {
-                    if (membre.userid == 0)
-                    {
-                        //TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
-                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
-                        {
-                            //TXT_Result.Text += "<br/>et a été créé";
-                            goto cestbon;
-                        }
-                        else
-                        {
-                           // TXT_Result.Text += "<br/>et n'a pas été créé";
-                        }
-
-                    }
-                    else
-                    {
-                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
-                        if (ui != null)
-                        {
-
-                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-                            if(function=="Président")
-                            {
-                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
-                            }
-                            //TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
-                        }
-                    }
-                }
-            }
+            DataMapping.UpdateClubAffectations(Functions.CurrentCric);
 
         }
-        catch (Exception ee)
+        catch (Exception ex)
         {
-            Functions.Error(ee);
-           
+            Functions.Error(ex);
         }
-        finally
+
+//        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
+//        try
+//        {
+//            conn.Open();
+
+//            int annee = Functions.GetRotaryYear();
+
+//            RoleController rc = new RoleController();
+
+//            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
+//            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
+//            IList<UserInfo> users = RoleController.Instance.GetUsersByRole(PortalId, Const.ROLE_ADMIN_CLUB);
+//            //ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
+
+//            List<UserInfo> club = new List<UserInfo>();
+//            foreach (UserInfo user in users)
+//            {
+//                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "Surname asc"))
+//                {
+//                    if (m.userid == user.UserID)
+//                        club.Add(user);
+//                }
+//            }
+
+//            foreach (UserInfo user in club)
+//            {
+//                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+//                {
+//                }
+//                if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
+//                {
+//                }
+//            }
+
+//            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
+
+//            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
+//                query += annee + "," + (annee + 1);
+//            else // if (DateTime.Now.Month >= 7)
+//                //query += (annee - 1) + "," + annee;
+//                query += annee;
+
+//            query += ")";
+
+
+//            SqlCommand sql = new SqlCommand(query, conn);
+//            SqlDataAdapter da = new SqlDataAdapter(sql);
+//            DataSet ds = new DataSet();
+//            da.Fill(ds);
+
+//            var clubCustomACL = DataMapping.ClubCustomACL;
+
+//            foreach (DataRow row in ds.Tables[0].Rows)
+//            {
+//                string function = "" + row["function"];
+//cestbon:
+
+//                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
+//                if (membre != null)
+//                {
+//                    if (membre.userid == 0)
+//                    {
+//                        //TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
+//                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
+//                        {
+//                            //TXT_Result.Text += "<br/>et a été créé";
+//                            goto cestbon;
+//                        }
+//                        else
+//                        {
+//                            // TXT_Result.Text += "<br/>et n'a pas été créé";
+//                        }
+
+//                    }
+//                    else
+//                    {
+//                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+//                        if (ui != null)
+//                        {
+
+//                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+//                            if (function=="Président")
+//                            {
+//                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+//                            }
+//                            //TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
+//                        }
+//                    }
+//                }
+//            }
+
+//        }
+//        catch (Exception ee)
+//        {
+//            Functions.Error(ee);
+
+//        }
+//        finally
+//        {
+//            conn.Close();
+//        }
+    }
+
+    protected void DDL_Membres_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void BT_Add_Click(object sender, EventArgs e)
+    {
+        int nim = 0;
+        int.TryParse(DDL_Membres.Items[DDL_Membres.SelectedIndex].Value,out nim);
+        if (nim==0)
+            return;
+        var kvp = new KeyValuePair<string, int>(DDL_Membres.Items[DDL_Membres.SelectedIndex]+"", nim);
+        var cea = ClubEditAcl;
+        if(!cea.Administrators.Contains(kvp))
+            cea.Administrators.Add(kvp);
+        ClubEditAcl=cea;
+       
+        UpdatePanels();
+    }
+
+    protected void BT_Personnalisation_Click(object sender, EventArgs e)
+    {
+        ClubEditAcl = DataMapping.ClubCustomACL;
+        if (ClubEditAcl == null)
+            ClubEditAcl=new ClubCustomACL();
+        Mode="personnalise";
+        UpdatePanels();
+    }
+
+    protected void BT_Annuler_Affectes_Click(object sender, EventArgs e)
+    {
+        Mode="principal";
+        UpdatePanels();
+    }
+
+    protected void BT_Valider_Affectes_Click(object sender, EventArgs e)
+    {
+        Mode="principal";
+        DataMapping.ClubCustomACL  =ClubEditAcl;
+        DataMapping.UpdateClubAffectations(Functions.CurrentCric);
+        Response.Redirect(Request.RawUrl);
+    }
+
+    void UpdatePanels()
+    {
+        BindMembresAffectes();
+        var ClubCustomACL = DataMapping.ClubCustomACL;
+        P_Principal.Visible=Functions.CurrentCric>0  &&  Mode=="principal";
+        BT_Personnalisation.Visible = DataMapping.CurrentUserIsAdminClub;
+        P_PersonnalisationInfos.Visible= ClubCustomACL!=null;
+        P_Legende.Visible= ClubCustomACL==null;
+        if (ClubCustomACL!=null)
         {
-            conn.Close();
+            string admins = "";
+            foreach (var admin in ClubCustomACL.Administrators)
+                admins+=admin.Key+", ";
+            if (admins.EndsWith(", "))
+                admins=admins.Substring(0, admins.Length-2);
+            L_Administrators.Text=admins;
         }
+        P_Personnalisation.Visible=Functions.CurrentCric>0  &&  Mode=="personnalise";
+        BT_Valider_Affectes.Visible= (ClubEditAcl!= null && ClubEditAcl.Administrators.Count>0);
+        BT_Supprimer_Personnalisation.Visible= ClubCustomACL!=null;
+        L_empty.Visible=(ClubEditAcl!= null && ClubEditAcl.Administrators.Count==0); 
+    }
+
+
+    protected void bt_delete_Click(object sender, EventArgs e)
+    {
+        var item = e as DataListCommandEventArgs;
+        int nim = int.Parse(""+item.CommandArgument);
+        var cea = ClubEditAcl;
+        for(int i=cea.Administrators.Count-1;i>=0;i--)
+        {
+            if (cea.Administrators[i].Value==nim)
+            {
+                cea.Administrators.RemoveAt(i);
+            }
+        }
+        ClubEditAcl=cea;
+    
+        UpdatePanels();
+    }
+
+
+    protected void L_Affectes_ItemDataBound(object sender, DataListItemEventArgs e)
+    {
+        var item =(KeyValuePair<string, int>)e.Item.DataItem;
+        var lbl = e.Item.FindControl("lbl") as Label;
+        lbl.Text=item.Key;
+
+        var bt = e.Item.FindControl("bt_delete") as LinkButton;
+        bt.CommandArgument = ""+item.Value;
+    }
+
+    protected void BT_Supprimer_Personnalisation_Click(object sender, EventArgs e)
+    {
+        DeleteClubEditAcl();
+        DataMapping.UpdateClubAffectations(Functions.CurrentCric);
+        Mode="principal";
+        Response.Redirect(Request.RawUrl);
     }
 }

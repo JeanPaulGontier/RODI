@@ -2,6 +2,12 @@
 ```txt
 DesktopModules\AIS\Clubs Liste\Clubs.ascx
 DesktopModules\AIS\Clubs Liste\Clubs.ascx.cs
+App_Code\AIS\DataMapping.cs
+App_Code\AIS\ClubCustomACL.cs
+DesktopModules\AIS\Admin Club AAR\Control.ascx
+DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
+DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+
 ```
 ##### 30/11/2025
 ```txt

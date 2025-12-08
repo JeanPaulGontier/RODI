@@ -94,88 +94,9 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
     protected void BT_Refresh_AAR_Click(object sender, EventArgs e)
     {
         TXT_Result.Text = "";
-        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
         try
-        {
-            conn.Open();
-
-            int annee = Functions.GetRotaryYear();
-
-            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
-            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
-            ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_PRESIDENTS_CLUBS);
-            foreach (UserInfo user in users)
-            {
-                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
-                {
-                }               
-            }
-            users = rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
-            foreach (UserInfo user in users)
-            {
-                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
-                {
-                }
-            }
-
-
-            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND  rotary_year IN (";
-
-            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
-                query += annee + "," + (annee + 1);
-            else// if (DateTime.Now.Month >= 7)
-                //query += (annee - 1) + "," + annee;
-                query += annee;
-
-            query += ")";
-
-            
-            SqlCommand sql = new SqlCommand(query, conn);
-            SqlDataAdapter da = new SqlDataAdapter(sql);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            foreach (DataRow row in ds.Tables[0].Rows)
-            {
-                string function = "" + row["function"];
-            cestbon:
-                 
-                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
-                if (membre != null)
-                {
-                    if (membre.userid == 0 )
-                    {
-                        TXT_Result.Text += "<br/><span class='alert-warning'>Le membre : " + row["name"] + " n'a pas de user DNN</span>";
-                        if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
-                        {                            
-                            TXT_Result.Text += "<br/><span class='alert-success'>et a été créé</span>";
-                            goto cestbon;
-                        }
-                        else
-                        {
-                            TXT_Result.Text += "<br/><span class='alert-danger'>et n'a pas été créé</span>";
-                        }
-
-                    }
-                    else
-                    {
-                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
-                        if (ui != null)
-                        {
-
-                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-                            TXT_Result.Text += "<br/>Ajout rôle admin club : " + row["name"];
-                            if(function=="Président")
-                            {
-                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
-                                TXT_Result.Text += "<br/>Ajout rôle président club : " + row["name"];
-                            }
-                            
-                        }
-                    }
-                }
-            }
-            TXT_Result.Text += DataMapping.UpdateMembersLoginToRole();
+        {            
+            TXT_Result.Text += DataMapping.UpdateClubAffectations();
         }         
         catch (Exception ee)
         {
@@ -183,7 +104,7 @@ public partial class DesktopModules_AIS_Admin_Maj_AAR_Control : PortalModuleBase
         }
         finally
         {
-            conn.Close();
+            
         }
     }
 

@@ -63,9 +63,9 @@
 
 using Aspose.BarCode;
 using Aspose.Cells;
+using Aspose.Pdf.Generator;
 using Aspose.Words;
 using Dnn.PersonaBar.Users.Components;
-using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -79,7 +79,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web;
 using System.Web.Security;
@@ -1295,7 +1294,7 @@ namespace AIS
                     password = "" + DateTime.Now.Ticks;
                     password = "rodi" + password.Substring(password.Length - 4, 4);
                 }
-                //password = "rodi1730test";
+               
                 mb.Password = password;
 
                 ui.Membership = mb;
@@ -5659,7 +5658,7 @@ namespace AIS
                 }
                 catch (Exception ee) { Functions.Error(ee); }
 
-                Node node = InsertDocument(cell.AppendChild(new Paragraph(doc)), template);
+                Node node = InsertDocument(cell.AppendChild(new Aspose.Words.Paragraph(doc)), template);
 
 
                 row.AppendChild(cell);
@@ -8663,7 +8662,7 @@ namespace AIS
             return (List<Pays>)AppCtx["countries"];
         }
 
-        public static string UpdateClubAffectations(){
+        public static string UpdateClubAffectations(int cric=0){
             string result = "";
             SqlConnection conn = new SqlConnection(Config.GetConnectionString());
             try
@@ -8672,76 +8671,192 @@ namespace AIS
 
                 int annee = Functions.GetRotaryYear();
 
-                DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+                var rc = new RoleController();
                 RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
                 RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
                 var users =RoleController.Instance.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
-                foreach (UserInfo user in users)
+               
+                List<Club> clubs = new List<Club>();
+
+                // on traite tous les clubs
+                if (cric==0)
                 {
-                    if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+
+                    foreach (UserInfo user in users)
                     {
-                    }
-                }
-                users = RoleController.Instance.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
-                foreach (UserInfo user in users)
-                {
-                    if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
-                    {
-                    }
-                }
-
-
-                String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN (" + Const.AFFECTATIONS_ADMIN_CLUB + ") AND  rotary_year IN (";
-
-                if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
-                    query += annee + "," + (annee + 1);
-                else// if (DateTime.Now.Month >= 7)
-                    //query += (annee - 1) + "," + annee;
-                    query += annee;
-
-                query += ")";
-
-
-                SqlCommand sql = new SqlCommand(query, conn);
-                SqlDataAdapter da = new SqlDataAdapter(sql);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                foreach (DataRow row in ds.Tables[0].Rows)
-                {
-                    string function = "" + row["function"];
-                cestbon:
-
-                    Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
-                    if (membre != null)
-                    {
-                        if (membre.userid == 0)
+                        if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
                         {
-                            result += "<p style='color:red'>Le membre : " + row["name"] + " n'a pas de user DNN</p>";
-                            if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
-                            {
-                                result += "<p>et a été créé</p>";
-                                goto cestbon;
-                            }
-                            else
-                            {
-                                result += "<p style='color:red'>et n'a pas été créé</p>";
-                            }
-
                         }
-                        else
+                    }
+                    users = RoleController.Instance.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
+                    foreach (UserInfo user in users)
+                    {
+                        if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
                         {
-                            UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
-                            if (ui != null)
+                        }
+                    }
+
+                    clubs = ListClubs();
+                }
+                else
+                {
+                    
+
+                    List<UserInfo> club = new List<UserInfo>();
+                    foreach (UserInfo user in users)
+                    {
+                        foreach (Member m in DataMapping.ListMembers(cric: cric, sort: "Surname asc"))
+                        {
+                            if (m.userid == user.UserID)
+                                club.Add(user);
+                        }
+                    }
+                    foreach (UserInfo user in club)
+                    {
+                        if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+                        {
+                        }
+                        if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
+                        {
+                        }
+                    }
+
+
+                    clubs = ListClubs().Where(cl => cl.cric==cric).ToList();
+                }
+
+                
+                
+
+                foreach (var club in clubs)
+                {
+                    var customClubACL = ClubCustomACLbyCric(club.cric);
+
+                    if (customClubACL!=null)
+                    {
+                        foreach (var admin in customClubACL.Administrators)
+                        {
+cestbon1:
+                            Member membre = DataMapping.GetMemberByNim(admin.Value);
+                            if (membre != null)
                             {
-
-                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-                                result += "<p>Ajout rôle admin club : " + row["name"]+ "</p>";
-                                if (function == "Président")
+                                if (membre.userid == 0)
                                 {
-                                    rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
-                                    result += "<p>Ajout rôle président club : " + row["name"]+ "</p>";
-                                }
+                                    result += "<p style='color:red'>Le membre : " +membre.name+" "+membre.surname + " n'a pas de user DNN</p>";
+                                    if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
+                                    {
+                                        result += "<p>et a été créé</p>";
+                                        goto cestbon1;
+                                    }
+                                    else
+                                    {
+                                        result += "<p style='color:red'>et n'a pas été créé</p>";
+                                    }
 
+                                }
+                                else
+                                {
+                                    UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                                    if (ui != null)
+                                    {
+                                        rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+                                        result += "<p>Ajout rôle admin club : " + membre.name+ " "+membre.surname + "</p>";
+
+                                    }
+                                }
+                            }
+                        }
+                        String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN (" + Const.AFFECTATIONS_ADMIN_CLUB + ") AND cric="+club.cric+" AND  rotary_year IN (";
+
+                        if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
+                            query += annee + "," + (annee + 1);
+                        else// if (DateTime.Now.Month >= 7)
+                            //query += (annee - 1) + "," + annee;
+                            query += annee;
+
+                        query += ")";
+                        SqlCommand sql = new SqlCommand(query, conn);
+                        SqlDataAdapter da = new SqlDataAdapter(sql);
+                        DataSet ds = new DataSet();
+                        da.Fill(ds);
+                        foreach (DataRow row in ds.Tables[0].Rows)
+                        {
+                            string function = "" + row["function"];
+                            if (function == "Président" || function =="Co-Président")
+                            {
+                                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
+                                if (membre != null)
+                                {
+                                    if (membre.userid != 0)
+                                    {
+                                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                                        if (ui != null)
+                                        {
+                                        
+                                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+                                            result += "<p>Ajout rôle président club : " + row["name"]+ "</p>";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+
+
+
+                        String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN (" + Const.AFFECTATIONS_ADMIN_CLUB + ") AND cric="+club.cric+" AND  rotary_year IN (";
+
+                        if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
+                            query += annee + "," + (annee + 1);
+                        else// if (DateTime.Now.Month >= 7)
+                            //query += (annee - 1) + "," + annee;
+                            query += annee;
+
+                        query += ")";
+
+
+                        SqlCommand sql = new SqlCommand(query, conn);
+                        SqlDataAdapter da = new SqlDataAdapter(sql);
+                        DataSet ds = new DataSet();
+                        da.Fill(ds);
+                        foreach (DataRow row in ds.Tables[0].Rows)
+                        {
+                            string function = "" + row["function"];
+cestbon:
+
+                            Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
+                            if (membre != null)
+                            {
+                                if (membre.userid == 0)
+                                {
+                                    result += "<p style='color:red'>Le membre : " + row["name"] + " n'a pas de user DNN</p>";
+                                    if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
+                                    {
+                                        result += "<p>et a été créé</p>";
+                                        goto cestbon;
+                                    }
+                                    else
+                                    {
+                                        result += "<p style='color:red'>et n'a pas été créé</p>";
+                                    }
+
+                                }
+                                else
+                                {
+                                    UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
+                                    if (ui != null)
+                                    {
+                                        rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
+                                        result += "<p>Ajout rôle admin club : " + row["name"]+ "</p>";
+                                        if (function == "Président" || function =="Co-Président")
+                                        {
+                                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
+                                            result += "<p>Ajout rôle président club : " + row["name"]+ "</p>";
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -9361,6 +9476,47 @@ namespace AIS
         public static string GetAnneeFormatted(int annee)
         {
             return (""+annee).Substring(2, 2)+"-"+(""+(annee+1)).Substring(2, 2);
+        }
+
+
+        public static ClubCustomACL ClubCustomACLbyCric(int cric)
+        {
+            
+            var item = Yemon.dnn.Helpers.GetItem("clubcustomacl:"+cric);
+            if (item != null)
+                return Yemon.dnn.Functions.Deserialize<ClubCustomACL>(""+item);
+            
+            return null;
+        }
+
+        public static ClubCustomACL ClubCustomACL
+        {
+            get
+            {
+                if (Functions.CurrentClub!=null)
+                {
+                    return ClubCustomACLbyCric(Functions.CurrentCric);
+                }
+                return null;
+            }
+            set
+            {
+                Yemon.dnn.Helpers.SetItem("clubcustomacl:"+Functions.CurrentCric, ""+Yemon.dnn.Functions.Serialize(value), ""+ Globals.GetPortalSettings().UserId);
+            }
+        }
+
+        public static bool CurrentUserIsAdminClub
+        {
+            get
+            {
+                var userInfo = Globals.GetPortalSettings().UserInfo;
+
+                return userInfo.IsSuperUser ||
+                userInfo.IsInRole(Const.ADMIN_ROLE) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) ||
+                userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
+                DataMapping.isADG(Functions.GetCurrentMember().id);
+            }
         }
     }
 
