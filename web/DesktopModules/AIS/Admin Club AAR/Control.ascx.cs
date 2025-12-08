@@ -195,7 +195,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         {
 
         
-            ltitle.Text="<h3>Fonctions rotariennes issues de myRotary</h3><div class='alert alert-info'>Attention : ces fonctions doivent êtres définies dans myRotary par un responsable du club, tout changement ici sera remplacé par les informations reçues de myRotary lors de la prochaine synchronisation</div>";
+            ltitle.Text="<h3>Fonctions rotariennes issues de myRotary</h3><div class='alert alert-info'>ATTENTION : ces fonctions doivent être définies dans myRotary par un responsable du club, tout changement ici sera remplacé par les informations reçues de myRotary lors de la prochaine synchronisation</div>";
             Panel1.Controls.Add(ltitle);
         }
         foreach (string fonction in fonctionsRI)
