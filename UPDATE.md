@@ -25,6 +25,22 @@
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - séparation des fonctions rotariennes issues de myRotary et spécifiques au club afin d'améliorer la compréhension
 - correction bug de lien sur contact dans la liste des clubs qui ont un nom de domaine (D1680)
+
+
+  update ais_domain set subdomain='RI' where value ='Administration';
+  update ais_domain set subdomain='RI' where value ='Délégué Communication';
+  update ais_domain set subdomain='RI' where value ='Effectif';
+  update ais_domain set subdomain='RI' where value ='Fondation Rotary';
+  update ais_domain set subdomain='RI' where value ='Président';
+  update ais_domain set subdomain='RI' where value ='Secrétaire';
+  update ais_domain set subdomain='RI' where value ='Trésorier';
+  update ais_domain set subdomain='RI' where value ='Responsable Actions';
+  update ais_domain set subdomain='RI' where value ='Responsable Formation';
+  update ais_domain set subdomain='RI' where value ='Vice Président';
+  update ais_domain set subdomain='RI' where value ='Secrétaire Exécutif';
+  update ais_domain set subdomain='RI' where value ='Délégué Jeunesse';
+ 
+
 ###### 30/11/2025
 - correction bug de création des réunions périodiques apparu lors de la maj de septembre
 - modification fonction de duplication de réunion la nouvelle date est fixée à maintenant et la fin à +1h 

@@ -8684,7 +8684,7 @@ namespace AIS
 
                     foreach (UserInfo user in users)
                     {
-                        if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
+                        if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
                         {
                         }
                     }
@@ -8703,10 +8703,11 @@ namespace AIS
                     
 
                     List<UserInfo> club = new List<UserInfo>();
-                    foreach (UserInfo user in users)
+
+                    foreach (Member m in DataMapping.ListMembers(cric: cric, sort: "Surname asc"))
                     {
-                        foreach (Member m in DataMapping.ListMembers(cric: cric, sort: "Surname asc"))
-                        {
+                        foreach (UserInfo user in users)
+                        {                        
                             if (m.userid == user.UserID)
                                 club.Add(user);
                         }
@@ -8736,6 +8737,7 @@ namespace AIS
                     {
                         foreach (var admin in customClubACL.Administrators)
                         {
+                            bool firsttime = true;
 cestbon1:
                             Member membre = DataMapping.GetMemberByNim(admin.Value);
                             if (membre != null)
@@ -8746,7 +8748,12 @@ cestbon1:
                                     if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
                                     {
                                         result += "<p>et a été créé</p>";
-                                        goto cestbon1;
+                                        if(firsttime)
+                                        {
+                                            firsttime=false;
+                                            goto cestbon1;
+                                        }
+                                        
                                     }
                                     else
                                     {
@@ -8824,6 +8831,7 @@ cestbon1:
                         foreach (DataRow row in ds.Tables[0].Rows)
                         {
                             string function = "" + row["function"];
+                            bool firsttime = true;
 cestbon:
 
                             Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
@@ -8835,7 +8843,12 @@ cestbon:
                                     if (!String.IsNullOrEmpty(membre.email) && DataMapping.UpdateOrCreateUser(membre))
                                     {
                                         result += "<p>et a été créé</p>";
-                                        goto cestbon;
+                                        if (firsttime)
+                                        {
+                                            firsttime=false;
+                                            goto cestbon;
+                                        }
+
                                     }
                                     else
                                     {
@@ -8861,7 +8874,7 @@ cestbon:
                         }
                     }
                 }
-                result+=UpdateMembersLoginToRole();
+                result+=UpdateMembersLoginToRole(cric);
             }
             catch (Exception ee)
             {
@@ -9029,7 +9042,7 @@ cestbon:
             }
 
         }
-        public static string UpdateMembersLoginToRole()
+        public static string UpdateMembersLoginToRole(int cric=0)
         {
 
             try
@@ -9039,7 +9052,10 @@ cestbon:
                 RoleController roleController = new RoleController();
                 RoleInfo role = roleController.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
                 var users = roleController.GetUsersByRole(Globals.GetPortalSettings().PortalId, Const.ROLE_MEMBERS);
-                var table = Yemon.dnn.DataMapping.ExecSql("select email from ais_members");
+                string queryclub = "";
+                if (cric!=0)
+                    queryclub=" where cric="+cric;
+                var table = Yemon.dnn.DataMapping.ExecSql("select email from ais_members"+queryclub);
                 var emails = new List<string>();
                 foreach (DataRow row in table.Rows)
                 {
