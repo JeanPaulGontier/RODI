@@ -63,24 +63,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using AIS;
 using DotNetNuke.Entities.Modules;
-using System.Data.SqlClient;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Common;
-using System.Collections;
-using DotNetNuke.Entities.Users;
-using System.Data;
-using DotNetNuke.Modules.UserDefinedTable.Components;
 using DotNetNuke.Web.UI.WebControls.Extensions;
-using ClientDependency.Core;
-using K4os.Hash.xxHash;
-using DotNetNuke.Modules.DigitalAssets.Services;
 
 public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 {
