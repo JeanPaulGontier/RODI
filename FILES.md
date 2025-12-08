@@ -1,5 +1,7 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\AIS\Clubs Liste\Clubs.ascx
+DesktopModules\AIS\Clubs Liste\Clubs.ascx.cs
 ```
 ##### 30/11/2025
 ```txt

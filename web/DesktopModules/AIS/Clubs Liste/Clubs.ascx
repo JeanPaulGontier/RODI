@@ -1,11 +1,4 @@
-﻿<!--**********************************************************************************-->
-<!-- RODI - http://rodi.aisdev.net                                                    -->
-<!-- Copyright (c) 2012-2016                                                          -->
-<!-- by SAS AIS : http://www.aisdev.net                                               -->
-<!-- supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730) -->
-<!--**********************************************************************************-->
-
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Clubs.ascx.cs" Inherits="DesktopModules_AIS_Clubs_Liste" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Clubs.ascx.cs" Inherits="DesktopModules_AIS_Clubs_Liste" %>
 
 <asp:Panel runat="server" Visible="false"><asp:Label runat="server" Text="Filtrer par département : "></asp:Label><asp:RadioButtonList ID="RB_Dept" runat="server" RepeatDirection="Horizontal" OnSelectedIndexChanged="RB_Dept_SelectedIndexChanged" AutoPostBack="true"></asp:RadioButtonList></asp:Panel>
 
