@@ -118,7 +118,8 @@
                                 <span>{{n.tag1}}</span>
                             </span>
 
-                            <span class="news-date">{{date(n.dt)}}</span>
+                            <span class="news-date" v-if="n.tag1!='Rotary International'">{{date(n.dt)}}</span>
+                            <span class="news-date" v-else></span>
                             <span class="news-title">{{n.title}}</span>
 
                             <span class="news-location" v-if="n.cric!=0"><i class="fa-solid fa-location-dot"></i> {{n.club_name}}</span>
