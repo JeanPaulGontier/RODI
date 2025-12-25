@@ -139,18 +139,25 @@ namespace AIS
             public string Description { get; set; }
             public Uri Uri_District { get; set; }
             public Uri Uri_Clubs { get; set; }
+            public Uri Uri_All { get; set; }
+            public bool Button_More {  get; set; }
+            public int Nb_Max { get; set; }
+            public bool RI {  get; set; }
             public bool District { get; set; }
             public bool Clubs { get; set; }
             public bool Next { get; set; }
             public string Tags_Included { get; set; }
             public string Tags_Excluded { get; set; }
-            private const int NBMax = 3;
+            
+            private const int DefaultNBMax = 3;
             public string Color { get; set; }
 
             public NewsCards() 
             {
                 Tags_Excluded = "";
                 Tags_Included = "";
+                if(Nb_Max==0)
+                    Nb_Max = DefaultNBMax;
             }
 
             public static String[] TagsList()
@@ -190,13 +197,13 @@ namespace AIS
 
                         _news = new List<News>();
 
-                        if (Clubs || District)
-                        {
+                       
 
                         
 
-                            if(Next)
-                            {
+                        if(Next)
+                        {
+                            if(Clubs || District) { 
                                 liste = DataMapping.ListNews_EN(category: category,
                                                                 tags_included: Tags_Included,
                                                                 tags_excluded: Tags_Excluded,
@@ -205,39 +212,94 @@ namespace AIS
                                                                 where: " dt>='" + today + "'",
                                                                 onlyvisible: true);
 
+                                foreach (var n in liste)
+                                    if (!n.photo.StartsWith("/"))
+                                        n.photo=Const.MEDIA_URL+n.photo;
                             }
-                            else
+
+                            if (RI)
+                            {
+                                var rss = RotaryHelper.GetRotaryRSSNews(Nb_Max);
+                                if(rss!=null)
+                                { 
+                                    foreach (var item in rss.Channel.Items)
+                                    {
+                                        News news = new News();
+                                        news.title = item.Title;
+                                        news.text = item.Description;
+                                        news.photo = item.Photo;
+                                        news.dt = item.Dt.AddYears(1); // on force les nouvelles RI après celles du district
+                                        news.url = item.Link;
+                                        news.tag1= "Rotary International";
+                                        liste.Add(news);
+                                    }
+                                    liste = liste.OrderBy(n => n.dt).ToList();
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (Clubs || District)
                             {
                                 liste = DataMapping.ListNews_EN(category: category,
                                                                     tags_included: Tags_Included,
                                                                     tags_excluded: Tags_Excluded,
-                                                                    tri:"dt DESC",
-                                                                    max:100,
-                                                                    where:" dt<'"+today+"'",
+                                                                    tri: "dt DESC",
+                                                                    max: 100,
+                                                                    where: " dt<'"+today+"'",
                                                                     onlyvisible: true);
-
+                                foreach (var n in liste)
+                                    if (!n.photo.StartsWith("/"))
+                                        n.photo=Const.MEDIA_URL+n.photo;
                             }
+
+
+
+                            if (RI)
+                            {
+                                var rss = RotaryHelper.GetRotaryRSSNews(Nb_Max);
+                                if (rss!=null)
+                                {
+                                    foreach (var item in rss.Channel.Items)
+                                    {
+                                        News news = new News();
+                                        news.title = item.Title;
+                                        news.text = item.Description;
+                                        news.photo = item.Photo;
+                                        news.dt = item.Dt.AddYears(-1); // on force les nouvelles RI après celles du district
+                                        news.url = item.Link;
+                                        news.tag1= "Rotary International";
+                                        liste.Add(news);
+                                    }
+                                    liste = liste.OrderByDescending(n => n.dt).ToList();
+                                }
+                            }
+                        }
                         
                             
 
-                            int i = 0;
-                            foreach(News n in liste)
+                        int i = 0;
+                        foreach(News n in liste)
+                        {
+                            if(n.GetPhoto()!= Const.no_image)
                             {
-                                if(n.GetPhoto()!= Const.no_image)
+                                if( (RI && n.tag1=="Rotary International") ||  
+                                    String.IsNullOrEmpty(Tags_Included) || 
+                                    (tags_included.Length>0 && tags_included.Contains(n.tag1)))
                                 {
-                                    if(String.IsNullOrEmpty(Tags_Included) || (tags_included.Length>0 && tags_included.Contains(n.tag1)))
+                                    if( (RI && n.tag1=="Rotary International") || 
+                                        String.IsNullOrEmpty(Tags_Excluded) ||
+                                        (tags_excluded.Length>0 && !tags_excluded.Contains(n.tag1)))
                                     {
-                                        if(String.IsNullOrEmpty(Tags_Excluded) ||(tags_excluded.Length>0 && !tags_excluded.Contains(n.tag1)))
-                                        {
-                                            _news.Add(n);
-                                            i++;                                        
-                                        }                                    
-                                    }                                
-                                }
-                                if (i == NBMax)
-                                    break;
+                                        _news.Add(n);
+                                        i++;                                        
+                                    }                                    
+                                }                                
                             }
-                        }
+                            if (i == Nb_Max)
+                                break;
+                        }                        
 
                     }
                     return _news;

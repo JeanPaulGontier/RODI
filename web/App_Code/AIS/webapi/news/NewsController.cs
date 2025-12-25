@@ -493,10 +493,12 @@ namespace AIS.controller
         [HttpGet]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
-        public HttpResponseMessage GetBlockContentNews(bool district, bool clubs, bool next,string tags_included,string tags_excluded) {
+        public HttpResponseMessage GetBlockContentNews(bool district, bool clubs, bool next,string tags_included,string tags_excluded, bool ri=false, int nb_max=3) {
             var block = new Block.NewsCards();
             block.Clubs = clubs;
             block.Next = next;
+            block.RI = ri;
+            block.Nb_Max = nb_max;
             block.District = district;
             block.Tags_Included = tags_included;
             block.Tags_Excluded = tags_excluded;

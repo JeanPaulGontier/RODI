@@ -6,17 +6,65 @@
             <input type="text" v-model="e.Title" class="form-control" />
             <span class="bc-label">Description :</span>
             <input type="text" v-model="e.Description" class="form-control" />
-            
+
             <span class="bc-label">Nouvelles district :</span>
             <div class="form-control">
                 <label for="rod0" class="radio-inline"><input type="radio" v-model="e.District" :value="false" name="rod" id="rod0" />Non</label>
                 <label for="rod1" class="radio-inline"><input type="radio" v-model="e.District" :value="true" name="rod" id="rod1" />Oui</label>
             </div>
+
+            <div v-if="e.District==true">
+                <span class="bc-label">Url de détail des nouvelles district :</span>
+                <input type="text" class="form-control" v-model="e.Uri_District.Href" />
+                <div class="form-inline">
+                    <label for="targetd0" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="" name="targetd" id="targetd0" />Même fenêtre</label>
+                    <label for="targetd1" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="_blank" name="targetd" id="targetd1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
             <span class="bc-label">Nouvelles clubs :</span>
             <div class="form-control">
                 <label for="roc0" class="radio-inline"><input type="radio" v-model="e.Clubs" :value="false" name="roc" id="roc0" />Non</label>
                 <label for="roc1" class="radio-inline"><input type="radio" v-model="e.Clubs" :value="true" name="roc" id="roc1" />Oui</label>
             </div>
+
+            <div v-if="e.Clubs==true">
+                <span class="bc-label">Url de détail des nouvelles clubs :</span>
+                <input type="text" v-model="e.Uri_Clubs.Href" class="form-control" />
+                <span class="bc-label"></span>
+                <div class="form-control">
+                    <label for="targetc0" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="" name="targetc" id="targetc0" />Même fenêtre</label>
+                    <label for="targetc1" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="_blank" name="targetc" id="targetc1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
+
+
+
+            <span class="bc-label">Afficher bouton en voir plus :</span>
+            <div class="form-control">
+                <label for="rotevp0" class="radio-inline"><input type="radio" v-model="e.Button_More" :value="false" name="rotevp" id="rotevp0" />Non</label>
+                <label for="rotevp1" class="radio-inline"><input type="radio" v-model="e.Button_More" :value="true" name="rotevp" id="rotevp1" />Oui</label>
+            </div>
+
+            <div v-if="e.Button_More==true">
+                <span class="bc-label">Url du bouton en voir plus :</span>
+                <input type="text" v-model="e.Uri_All.Href" class="form-control" />
+                <span class="bc-label"></span>
+                <div class="form-control">
+                    <label for="targete0" class="radio-inline"><input type="radio" v-model="e.Uri_All.Target" value="" name="targete" id="targete0" />Même fenêtre</label>
+                    <label for="targete1" class="radio-inline"><input type="radio" v-model="e.Uri_All.Target" value="_blank" name="targete" id="targete1" />Nouvelle fenêtre</label>
+                </div>
+            </div>
+
+
+
+
+            <span class="bc-label">Catégories incluses :</span>
+            <textarea class="form-control" v-model="e.Tags_Included"></textarea>
+
+            <span class="bc-label">Catégories exclues :</span>
+            <textarea class="form-control" v-model="e.Tags_Excluded"></textarea>
 
             <span class="bc-label">Temporalité :</span>
             <div class="form-control">
@@ -24,11 +72,13 @@
                 <label for="rot1" class="radio-inline"><input type="radio" v-model="e.Next" :value="true" name="rot" id="rot1" />Futures</label>
             </div>
 
-            <span class="bc-label">Catégories incluses :</span>
-            <textarea class="form-control" v-model="e.Tags_Included"></textarea>
+            <span class="bc-label">Nb maxi de nouvelles affichées :</span>
+            <div class="form-control">
+                <label for="rotnb3" class="radio-inline"><input type="radio" v-model="e.Nb_Max" :value="3" name="rotnb" id="rotnb3" />3</label>
+                <label for="rotnb6" class="radio-inline"><input type="radio" v-model="e.Nb_Max" :value="6" name="rotnb" id="rotnb6" />6</label>
+                <label for="rotnb9" class="radio-inline"><input type="radio" v-model="e.Nb_Max" :value="9" name="rotnb" id="rotnb9" />9</label>                
+            </div>
 
-            <span class="bc-label">Catégories exclues :</span>
-            <textarea class="form-control" v-model="e.Tags_Excluded"></textarea>
 
             <span class="bc-label">Couleur :</span>
             <div class="form-control color-picker">
@@ -38,24 +88,12 @@
                 </span>
             </div>
 
-            <div v-if="e.District">
-                <span class="bc-label">Url de détail des nouvelles district :</span>
-                <input type="text" class="form-control" v-model="e.Uri_District.Href" />
-                <div class="form-inline">
-                    <label for="targetd0" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="" name="targetd" id="targetd0" />Même fenêtre</label>
-                    <label for="targetd1" class="radio-inline"><input type="radio" v-model="e.Uri_District.Target" value="_blank" name="targetd" id="targetd1" />Nouvelle fenêtre</label>
-                </div>
+            <span class="bc-label">Nouvelles Rotary International :</span>
+            <div class="form-control">
+                <label for="rori0" class="radio-inline"><input type="radio" v-model="e.RI" :value="false" name="rori" id="rori0" />Non</label>
+                <label for="rori1" class="radio-inline"><input type="radio" v-model="e.RI" :value="true" name="rori" id="rori1" />Oui</label>
             </div>
-
-            <div v-if="e.Clubs">
-                <span class="bc-label">Url de détail des nouvelles clubs :</span>
-                <input type="text" v-model="e.Uri_Clubs.Href" class="form-control" />
-                <span class="bc-label"></span>
-                <div class="form-control">
-                    <label for="targetc0" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="" name="targetc" id="targetc0" />Même fenêtre</label>
-                    <label for="targetc1" class="radio-inline"><input type="radio" v-model="e.Uri_Clubs.Target" value="_blank" name="targetc" id="targetc1" />Nouvelle fenêtre</label>
-                </div>
-            </div>
+            <em>La temporalité n'est pas appliquée sur les nouvelles du RI</em>
 
             <div style="text-align:center;margin-top:1em;">
                 <button type="button" v-on:click="validate()" class="btn btn-primary">Valider</button>
@@ -75,7 +113,7 @@
 
                     <div class="card" v-for="n in news">
                         <a :href="uri(n)" :target="target(n)">
-                            <img :src="'/DesktopModules/BlocksContent/API/Blocks/getMedia?guid='+n.photo" :alt="n.title">
+                            <img :src="n.photo" :alt="n.title">
                             <span class="news-type" style="color:turquoise;">
                                 <span>{{n.tag1}}</span>
                             </span>
@@ -87,6 +125,11 @@
                             <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: turquoise;"></i></span>
                         </a>
                     </div>
+
+
+                </div>
+                <div class="text-center" v-if="c.Uri_All">
+                    <a :href="c.Uri_All.Href" :target="c.Uri_All.Target" class="btn btn-outline">en voir plus...</a>
                 </div>
             </div>
         </div>
@@ -135,6 +178,8 @@
             },
             methods: {
                 uri(n) {
+                    if (n.tag1 == "Rotary International")
+                        return n.url;
                     if (n.cric == 0) {
                         return this.c.Uri_District.Href + n.id;
                     } 
@@ -158,10 +203,12 @@
                     _yemonNews[this.moduleid].service.getData('/GetBlockContentNews',
                         {
                             district: this.c.District,
-                            clubs: this.c.Clubs,
+                            clubs: this.c.Clubs,                            
                             next: this.c.Next,
                             tags_included: this.c.Tags_Included,
                             tags_excluded: this.c.Tags_Excluded,
+                            ri: this.c.RI,
+                            nb_max: this.c.Nb_Max
                         },
                         (r) => {
                             this.news = JSON.parse(r.data);
@@ -184,6 +231,8 @@
                         this.e.Uri_District = { Href: '', Target: '' };
                     if (!this.e.Uri_Clubs)
                         this.e.Uri_Clubs = { Href: '', Target: '' };
+                    if (!this.e.Uri_All)
+                        this.e.Uri_All = { Href: '', Target: '' };
                 },
                 validate() {
                     this.c = JSON.parse(JSON.stringify(this.e));

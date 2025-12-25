@@ -110,6 +110,8 @@ namespace AIS
         /// <returns></returns>
         public string GetPhoto()
         {
+            if (tag1=="Rotary International")
+                return photo;
             if (photo == null || photo == "")
                 return Const.no_image;
             if(photo.ToLower().StartsWith("/"))
@@ -137,6 +139,16 @@ namespace AIS
             //    chemin += Const.DISTRICT_PREFIX;
             //return chemin + Const.IMG_PREFIX + photo;
         }
+        
+        public string GetColor()
+        {
+            if (category=="clubs")
+                return "turquoise";
+            if (category=="district")
+                return "#01b4e7";
+            return "darkgrey";
+        }
+        
         /// <summary>
         /// retour l'url du document a télécharger avec le nom du club en préfixe
         /// ou district

@@ -45,6 +45,8 @@ namespace AIS.RotaryInternational
             this.Link = "";
             this.PubDateString = "";
             this.Description = "";
+            this.Photo="";
+            this.Dt=DateTime.Now;
            // this.PubDate = DateTimeOffset.Parse(this.PubDateString);
             this.Media = new List<Content>();
             this.Category = new List<string>();
@@ -55,6 +57,11 @@ namespace AIS.RotaryInternational
         [XmlElement(ElementName = "guid")] public guid Guid { get; set; }
 
         [XmlElement(ElementName = "title")] public string Title { get; set; }
+
+        [XmlElement(ElementName = "photo")] public string Photo { get; set; }
+
+        [XmlElement(ElementName = "dt")] public DateTime Dt { get; set; }
+
 
         [XmlElement(ElementName = "link")] public string Link { get; set; }
 

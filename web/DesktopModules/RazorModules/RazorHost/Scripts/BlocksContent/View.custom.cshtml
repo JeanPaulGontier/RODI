@@ -119,30 +119,41 @@
                                 uri = ca.Uri_District.Href + n.id;
                                 target = ca.Uri_District.Target;
                             }
+                            if (n.tag1=="Rotary International")
+                            {
+                                uri = n.url;
+                                target = "_target";
+                            }
                             <div class="card">
                                 <a href="@uri" target="@target">
                                     <img src="@n.GetPhoto()" alt="@n.title">
-                                    <span class="news-type" style="color:turquoise;">
+                                    <span class="news-type" style="color: @n.GetColor();">
                                         <span>@n.tag1</span>
                                     </span>
-
-                                    <span class="news-date">@n.dt.ToString("dd MMM")</span>
+                                    <span class="news-date">
+                                        @if (n.tag1!="Rotary International")
+                                        {
+                                            @n.dt.ToString("dd MMM")
+                                        }
+                                    </span>
                                     <span class="news-title">@n.title</span>
 
                                     @if (n.cric != 0)
                                     {
                                         <span class="news-location"><i class="fa-solid fa-location-dot"></i> @n.club_name</span>
                                     }
-                                    <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: turquoise;"></i></span>
+                                    <span class="news-link">pour en savoir plus <i class="fa-solid fa-square-full" style="color: @n.GetColor();"></i></span>
                                 </a>
                             </div>
 
                         }
                     </div>
-
-                    @*<div class ="text-center">
-                        <a href="#" style="" class="btn btn-outline animated bounce">voir toutes les nouvelles</a>
-                    </div>*@
+                    @if(ca.Button_More && ca.Uri_All!=null)
+                    {
+                        <div class ="text-center">
+                            <a href="@ca.Uri_All.Href" target="@ca.Uri_All.Target"  class="btn btn-outline animated bounce">en voir plus...</a>
+                        </div>
+                    }
                 </div>
             </div>
             break;

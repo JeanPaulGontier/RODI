@@ -62,6 +62,7 @@
 #endregion Copyrights
 using AIS;
 using DotNetNuke.Entities.Users;
+using MimeKit.Encodings;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -71,6 +72,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 
@@ -83,14 +87,12 @@ namespace AIS
     public class RotaryHelper
     {
         private static Rotary.Parametres _param;
-
         public static Rotary.Parametres GetParametres()
         {
             var item = Yemon.dnn.Helpers.GetItem("RotaryParametres", 0);
             if (item == null) return null;
             return Yemon.dnn.Functions.Deserialize<Rotary.Parametres>("" + item); ;
         }
-
         public static Auth_Token API_AUTH_TOKEN
         {
             get
@@ -433,7 +435,6 @@ namespace AIS
                 return null;
             }
         }
-
         public static async Task<bool> CallAsyncLogin()
         {
             HttpClient httpClient = new HttpClient();
@@ -457,7 +458,6 @@ namespace AIS
             API_AUTH_TOKEN = null;
             return false;
         }
-
         public static async Task<string> CallAsyncGet(string url)
         {
             bool firstime = true;
@@ -508,7 +508,6 @@ retry:
         {
             public string auth_token { get; set; }
         }
-
 
         public static string SynchroClubs()
         {
@@ -571,7 +570,6 @@ retry:
 
             return result;
         }
-
         public static string SynchroMembersTerminated()
         {
             string result = "";
@@ -676,7 +674,6 @@ retry:
             }
             return result;
         }
-
         public static string SynchroOfficers()
         {
             Yemon.dnn.DataMapping.ExecSqlNonQuery("truncate table "+Const.TABLE_PREFIX+"ri_officer");
@@ -735,7 +732,6 @@ retry:
             }
             return result;
         }
-
         public static string UpdateClubsOfficers()
         {
             var existingRiofficers = Yemon.dnn.DataMapping.ExecSql<Rotary.Club.Officer>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_officer"));
@@ -841,7 +837,6 @@ retry:
             }
             return result;
         }
-
         public static string UpdateClubsMembers()
         {
             string result = "";
@@ -1607,7 +1602,6 @@ retry:
             }
             return result;
         }
-
         public static string UpdateMemberProfile(Rotary.Profile profile, AIS.Club club, out string changements)
         {
 
@@ -1775,7 +1769,6 @@ retry:
             return result;
 
         }
-
         public static string UpdateMembersProfiles()
         {
             string result = "";
@@ -1832,14 +1825,12 @@ retry:
 
             return result;
         }
-
         public static string ForceUmpAllProfiles()
         {
             Yemon.dnn.DataMapping.ExecSqlNonQuery("Update "+Const.TABLE_PREFIX+"members set dt_update_import_ri_club = null");
             Yemon.dnn.Helpers.DeleteItem("RotaryUpdateStartDate");
             return "Tous les profils membres vont être mis à jour en tâche de fond";
         }
-
         public static DateTime GetDateFromRI(string date)
         {
             DateTime dateTime = DateTime.MinValue;
@@ -1848,5 +1839,79 @@ retry:
             DateTime.TryParse(date, culture, styles, out dateTime);
             return dateTime;
         }
+   
+
+        public static RotaryInternational.Rss GetRotaryRSSNews(int nb=0)
+        {
+            RotaryInternational.Rss feed = null;
+            var item = Yemon.dnn.Helpers.GetItem("rotaryrss", Yemon.dnn.Functions.GetPortalId());
+            if (item != null)
+            {
+                feed = Yemon.dnn.Functions.Deserialize<AIS.RotaryInternational.Rss>(""+item);
+            }
+            if (feed != null && nb>0)
+            {
+                var feedsel = new RotaryInternational.Rss();
+                while (nb>0)
+                {
+                    var rand = new Random();
+                    var num = rand.Next(0, feed.Channel.Items.Count - 1);
+                    if (!feedsel.Channel.Items.Contains(feed.Channel.Items[num]))
+                    {
+                        feedsel.Channel.Items.Add(feed.Channel.Items[num]);
+                        nb--;
+                    }
+                }
+                feed= feedsel;
+            }
+            return feed;
+        }
+
+        public static string UpdateRotaryRSSNews()
+        {
+            RotaryInternational.Rss feed = GetRotaryRSSNews();
+            
+
+            var url = "https://www.rotary.org/fr/rss.xml";
+            var reader = XmlReader.Create(url);
+            var serializer = new XmlSerializer(typeof(RotaryInternational.Rss));
+            feed = (RotaryInternational.Rss)serializer.Deserialize(reader);
+            foreach(var f in feed.Channel.Items)
+            {
+                int index = f.Description.IndexOf("<img src"); 
+                if (index>-1)
+                {
+                    index = f.Description.IndexOf("\"", index)+1;
+                    int index1 = f.Description.IndexOf("\"", index);
+                    if(index1>0 && index1>index)
+                    {
+                        f.Photo = f.Description.Substring(index, index1-index);
+                        index1=f.Description.IndexOf(">", index1+1)+1;
+                        if(index1>0)
+                        {
+                            f.Description=f.Description.Substring(index1);
+                        }
+                        
+                    }
+
+                    
+                }
+
+
+                var datetime = DateTime.Now;
+                DateTime.TryParse(f.PubDateString, out datetime);
+                f.Dt = datetime;
+            }
+            Yemon.dnn.Helpers.SetItem("rotaryrss", Yemon.dnn.Functions.Serialize(feed), "", keephistory: false, portalid: Yemon.dnn.Functions.GetPortalId());                
+
+
+            if (feed==null)
+            {
+                return "Aucune nouvelle RI récupérée";
+            }
+
+            return feed.Channel.Items.Count+" nouvelle(s) RI récupérée(s)";
+        }
+    
     }
 }

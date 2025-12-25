@@ -5,23 +5,27 @@
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
-- gestion des contrats jeunes rotariens (D1700)
 - déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
+- possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
 - ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
 - nouvelle version de l'app mobile (gestion des notifications)
 - créer un module de carte du district pour autopositionner les clubs sur une carte (D1770)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
-- fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
 - ajouter la gestion des réseaux sociaux du club et du district (D1760)
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
+- annuaire inter district rodi
+- verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
 - nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
-- nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 
+- nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
+- correction styles module _RotaryInternationalRSS pour être compatible avec le design 2025 
+- nouveau process (news) de récupération des nouvelles RI 
+- fonctionnalité de récupération instantanée de l'historique des membres du club venant de my rotary pour les administrateurs du club (D1680)
 - ajout d'une fonctionnalité permettant aux clubs de définir qui a le droit d'administrer le club (bypass des règles standards) (D1680)
 - séparation des fonctions rotariennes issues de myRotary et spécifiques au club afin d'améliorer la compréhension
 - correction bug de lien sur contact dans la liste des clubs qui ont un nom de domaine (D1680)

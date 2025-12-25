@@ -1,53 +1,22 @@
-﻿@using System.Xml;
+@using System.Xml;
 @using System.Xml.Serialization;
 @{ 
-    AIS.RotaryInternational.Rss feed = (AIS.RotaryInternational.Rss)HttpContext.Current.Application["rotaryrss"];
-
-    if (feed != null)
-    {
-        if(HttpContext.Current.Application["rotaryrssdate"]!=null)
-        {
-            DateTime date = (DateTime)HttpContext.Current.Application["rotaryrssdate"];
-            if(date.Ticks<DateTime.Now.AddHours(-12).Ticks)
-            {
-                feed = null;
-            }
-        }
-    }
-    if (feed==null)
-    {
-        var url = "https://www.rotary.org/fr/rss.xml";
-        var reader = XmlReader.Create(url);
-        var serializer = new XmlSerializer(typeof(AIS.RotaryInternational.Rss));
-        feed = (AIS.RotaryInternational.Rss)serializer.Deserialize(reader);
-
-        HttpContext.Current.Application["rotaryrss"] = feed;
-        HttpContext.Current.Application["rotaryrssdate"] = DateTime.Now;
-    }
-
+    AIS.RotaryInternational.Rss feed = AIS.RotaryHelper.GetRotaryRSSNews(5);
     if(feed==null)
     {
         return;
     }
-    var feed5 = new AIS.RotaryInternational.Rss();
-    int nb = 5;
-    while(nb>0)
-    {
-        var rand = new Random();
-        var num = rand.Next(0, feed.Channel.Items.Count - 1);
-        if(!feed5.Channel.Items.Contains(feed.Channel.Items[num]))
-        {
-            feed5.Channel.Items.Add(feed.Channel.Items[num]);
-            nb--;
-        }
-    }
+    
 }
     <div class="rirss">
-        @foreach(var f in feed5.Channel.Items)
+        @foreach(var f in feed.Channel.Items)
         {
         <a href="@f.Link">
-            <h3>@Html.Raw(f.Title)</h3>
-            <div>@Html.Raw(f.Description.Replace("</p>","<br/><span class=\"btn btn-link\">Voir plus...</span></p>"))</div>
+            <h2>@Html.Raw(f.Title)</h2>
+            <div>
+            <img src="@f.Photo" alt="@f.Title" />
+            @Html.Raw(f.Description.Replace("</p>","<br/><span class=\"btn btn-link\">Voir plus...</span></p>"))
+            </div>
         </a>
         }
     </div>

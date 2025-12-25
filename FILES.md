@@ -7,6 +7,17 @@ App_Code\AIS\ClubCustomACL.cs
 DesktopModules\AIS\Admin Club AAR\Control.ascx
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 DesktopModules\AIS\Admin Maj AAR\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
+App_Code\AIS\schedulers\RotaryScheduler.cs
+App_Code\AIS\rotary\RotaryHelper.cs
+App_Code\AIS\webapi\news\NewsController.cs
+App_Code\AIS\Block.cs
+App_Code\AIS\News.cs
+App_Code\AIS\Rss.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
+
 
 ```
 ##### 30/11/2025

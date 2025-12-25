@@ -274,6 +274,22 @@ public class RotaryScheduler : SchedulerClient
                 this.ScheduleHistoryItem.AddLogNote(result);
                 this.ScheduleHistoryItem.Succeeded = true;
             }
+            if (taskname.Contains("news") && !error)
+            {
+                this.ScheduleHistoryItem.AddLogNote("<div>Récupération des nouvelles RI</div>");
+                string result = RotaryHelper.UpdateRotaryRSSNews();
+                if (Const.ROTARY_SYNCHRO_LOG)
+                {
+                    if (Const.ROTARY_SYNCHRO_FULL_LOG || result.Contains("erreur"))
+                        sb.Append(result);
+
+                }
+
+                error = error || sb.ToString().ToLower().Contains("erreur");
+
+                this.ScheduleHistoryItem.AddLogNote(result);
+                this.ScheduleHistoryItem.Succeeded = true;
+            }
             if (Const.ROTARY_SYNCHRO_LOG)
             {
                 string log = sb.ToString();
