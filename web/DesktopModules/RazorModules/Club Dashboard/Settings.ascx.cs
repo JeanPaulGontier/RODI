@@ -79,7 +79,11 @@ public partial class ClubDashboard_Settings : ModuleSettingsBase
             return;
 
 
-        url.Text = ""+Settings["url"];
+        var u = ""+Settings["url"];
+        if (u=="")
+            u="/espace-membre/nouvelle?newsid=";
+
+        url.Text = u;
 
     }
     public override void UpdateSettings()

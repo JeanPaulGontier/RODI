@@ -78,8 +78,11 @@ public partial class AgendaMembres_Settings : ModuleSettingsBase
         if (Page.IsPostBack)
             return;
 
-
-        url.Text = ""+Settings["url"];
+        var u = ""+Settings["url"];
+        if (u=="")
+            u="/espace-membre/nouvelle?newsid=";
+        
+        url.Text = u;
         
     }
     public override void UpdateSettings()

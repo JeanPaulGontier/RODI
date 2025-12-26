@@ -77,17 +77,17 @@ public partial class NewsView_Settings : ModuleSettingsBase
     {
         if (Page.IsPostBack)
             return;
-
-
-        //url.Text = ""+Settings["url"];
-
+        var rsv = ""+Settings["rsvisible"];
+        if (rsv=="")
+            rsv="non";
+        rsvisible.SelectedValue=rsv;
     }
     public override void UpdateSettings()
     {
         base.UpdateSettings();
 
         var objModules = new ModuleController();
-        //objModules.UpdateModuleSetting(ModuleId, "url", ""+url.Text);
+        objModules.UpdateModuleSetting(ModuleId, "rsvisible", ""+rsvisible.SelectedValue);
 
     }
 }
