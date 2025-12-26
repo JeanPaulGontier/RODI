@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+###### 26/12/2025
+```txt
 DesktopModules\AIS\Clubs Liste\Clubs.ascx
 DesktopModules\AIS\Clubs Liste\Clubs.ascx.cs
 App_Code\AIS\DataMapping.cs
@@ -17,7 +20,23 @@ App_Code\AIS\Rss.cs
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\View.custom.cshtml
 DesktopModules\RazorModules\RazorHost\Scripts\_RotaryInternationalRSS.cshtml
-
+DesktopModules\RazorModules\Block Content\Settings.ascx.cs
+DesktopModules\RazorModules\Agenda Membres\_AgendaMembres.cshtml
+DesktopModules\RazorModules\Agenda Membres\AgendaMembres.ascx
+DesktopModules\RazorModules\Agenda Membres\Settings.ascx
+DesktopModules\RazorModules\Agenda Membres\Settings.ascx.cs
+DesktopModules\RazorModules\Club Dashboard\_ClubDasboard.cshtml
+DesktopModules\RazorModules\Club Dashboard\ClubDasboard.ascx
+DesktopModules\RazorModules\Club Dashboard\Settings.ascx
+DesktopModules\RazorModules\Club Dashboard\Settings.ascx.cs
+DesktopModules\RazorModules\Agenda Public\_AgendaPublic.cshtml
+DesktopModules\RazorModules\Agenda Public\AgendaPublic.ascx
+DesktopModules\RazorModules\Agenda Public\Settings.ascx
+DesktopModules\RazorModules\Agenda Public\Settings.ascx.cs
+DesktopModules\RazorModules\News View\_NewsView.cshtml
+DesktopModules\RazorModules\News View\NewsView.ascx
+DesktopModules\RazorModules\News View\Settings.ascx
+DesktopModules\RazorModules\News View\Settings.ascx.cs
 
 ```
 ##### 30/11/2025

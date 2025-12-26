@@ -71,38 +71,23 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class BlockContent_Settings : ModuleSettingsBase
+public partial class NewsView_Settings : ModuleSettingsBase
 {
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.IsPostBack)
             return;
 
-        //DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-        //int tabid = 0;
-        //int.TryParse("" + objModules.GetModuleSettings(ModuleId)["SliderShowtabid"], out tabid);
-        //Tab.DataTextField = "Text";
-        //Tab.DataValueField = "Value";
-        //Tab.DataSource = Functions.GetListItemsFromTabs(tabid);
-        //Tab.DataBind();
-        //Tab.SelectedValue = tabid.ToString();
 
-       
+        //url.Text = ""+Settings["url"];
 
-       
-       
     }
     public override void UpdateSettings()
     {
         base.UpdateSettings();
 
-        //DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-        //objModules.UpdateModuleSetting(ModuleId, "SliderShowtabid", Tab.SelectedValue);
+        var objModules = new ModuleController();
+        //objModules.UpdateModuleSetting(ModuleId, "url", ""+url.Text);
 
-       
-
-
-       
-        
     }
 }

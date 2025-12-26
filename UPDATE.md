@@ -18,10 +18,16 @@
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
+
+###### 26/12/2025
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda
 - nouveau : module d'affichage de détail nouvelle avec fonction suivant / précédent
-
+- ajout de 4 nouveaux modules :
+	- Club Dashbord
+	- Agenda Public
+	- Agenda Membres
+	- News View
 - nouvelle version du block nouvelles incorporant les nouvelles RI et la possibilité d'en voir plus que 3 (bouton en voir plus qui redirige vers la liste complète format agenda)
 - correction styles module _RotaryInternationalRSS pour être compatible avec le design 2025 
 - nouveau process (news) de récupération des nouvelles RI 
