@@ -8,7 +8,6 @@
 - déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
 - possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
-- ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
 - nouvelle version de l'app mobile (gestion des notifications)
@@ -19,6 +18,8 @@
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 
+- ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
+- suppression de la pagination dans la liste des membres du club afin d'afficher la liste sur une seule page (D1730)
 ###### 26/12/2025
 - nouveau : tableau de bord club
 - nouveau : module d'affichage des nouvelles (public / membres) sous forme d'agenda

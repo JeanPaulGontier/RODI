@@ -161,7 +161,11 @@
    <PagerSettings Mode="NumericFirstLast" Position="Bottom" /> 
 </asp:GridView>
     <asp:HiddenField ID="tri2" Value="club" runat="server"/><asp:HiddenField ID="sens2" Value="ASC" runat="server"/>
-    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les factures" OnClick="BT_Export_Orders_Click"  />&nbsp;<asp:Button runat="server" Text="Exporter seulement les prélèvements" OnClick="BT_Export_Only_Transfers_Click" ID="BT_Export_Only_Transfers" CssClass="btn btn-primary"  />&nbsp;<asp:Button runat="server" Text="Valider tous les virements" ID="BT_Validate_Transfers" CssClass="btn btn-primary" OnClientClick="confirm('voulez vous validez tous les paiements par virement d'un coup ?')" Visible="false" OnClick="BT_Validate_Transfers_Click" />&nbsp;<asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Visible="false" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
+    <br /><asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Orders" Text="Exporter les factures (excel)" OnClick="BT_Export_Orders_Click"  />&nbsp;
+    <asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Export_Invoices_ZIP" Text="Exporter les factures (zip)" OnClientClick="return confirm('Attention le traitement prend du temps il faut attendre jusqu'au bout sans fermer la fenêtre du navigateur ...')" OnClick="BT_Export_Invoices_ZIP_Click" />&nbsp;
+    <asp:Button runat="server" Text="Exporter seulement les prélèvements" OnClick="BT_Export_Only_Transfers_Click" ID="BT_Export_Only_Transfers" CssClass="btn btn-primary"  />&nbsp;
+    <asp:Button runat="server" Text="Valider tous les virements" ID="BT_Validate_Transfers" CssClass="btn btn-primary" OnClientClick="return confirm('voulez vous validez tous les paiements par virement d'un coup ?')" Visible="false" OnClick="BT_Validate_Transfers_Click" />&nbsp;
+    <asp:Button runat="server" CssClass="btn btn-primary" ID="BT_Exporter_Inscrits" Visible="false" Text="Exporter les inscrits" OnClick="BT_Exporter_Inscrits_Click"  />
 </div>
 
 </asp:Panel>
@@ -232,5 +236,6 @@
 </asp:Panel>
 <asp:Panel runat="server" ID="P_Admin_Commands" visible="false">
     <div class="pe-spacer size10"></div>
-    <asp:Button runat="server" CssClass="btn btn-danger" ID="BT_Delete_Invoices" Text="Supprimer les factures" OnClientClick="confirm('supprimer les factures ?')" OnClick="BT_Delete_Invoices_Click" />
+    <asp:Button runat="server" CssClass="btn btn-danger" ID="BT_Delete_Invoices" Text="Supprimer les factures" OnClientClick="return confirm('supprimer les factures ?')" OnClick="BT_Delete_Invoices_Click" />
+    
 </asp:Panel>

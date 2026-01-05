@@ -37,7 +37,7 @@
 <h3><asp:Label runat="server" ID="lbl_TousADG" Text="Choisissez un club" Visible="false" /></h3>
 
 <asp:Panel runat="server"  ID="PanelBirthday" Visible="false" CssClass="alert alert-info"><img src='<%=PortalSettings.ActiveTab.SkinPath %>images/birthday.png' style="vertical-align:baseline;margin-right:20px" Width="24" />Il y a des anniversaires en ce moment</asp:Panel>
-<asp:GridView ID="GridView1"  runat="server" CssClass="table table-striped"  PagerStyle-CssClass="GVPager" AllowSorting="True"  GridLines="None" AllowPaging="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting" OnRowDataBound="GridView1_RowDataBound">
+<asp:GridView ID="GridView1"  runat="server" CssClass="table table-striped"  PagerStyle-CssClass="GVPager" AllowSorting="True"  GridLines="None"  OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand" AutoGenerateColumns="False" OnSorting="GridView1_Sorting" OnRowDataBound="GridView1_RowDataBound">
 <Columns>
     <%--<asp:BoundField DataField="nim" HeaderText="NIM" SortExpression="nim" />--%>
     <asp:BoundField DataField="civility" SortExpression="civility"  />

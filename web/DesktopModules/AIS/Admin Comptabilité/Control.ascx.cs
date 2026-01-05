@@ -61,15 +61,18 @@
 
 #endregion Copyrights
 
+using AIS;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using System;
 using System.Collections.Generic;
-
-using System.Web.UI.WebControls;
-using AIS;
-using DotNetNuke.Entities.Modules;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Web.UI.WebControls;
+
+
 
 
 public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModuleBase
@@ -719,5 +722,34 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         string guid = Guid.NewGuid().ToString();
         Session[guid] = media;
         Response.Redirect(Const.MEDIA_DOWNLOAD_URL + "?id=" + guid);
+    }
+
+    protected void BT_Export_Invoices_ZIP_Click(object sender, EventArgs e)
+    {
+        string dir = "/Portals/"+PortalId+"/Export/"+HF_id.Value;
+        Directory.Delete(Server.MapPath(dir), true);
+        Directory.CreateDirectory(Server.MapPath(dir));
+
+        DataSet ds = DataMapping.ExecSql("SELECT guid FROM [ais_orders] O  where id_payment='" + HF_id.Value + "'  order by club");
+
+        if(ds.Tables.Count>0)
+        { 
+            foreach(DataRow row in ds.Tables[0].Rows)
+            {
+                string id = ""+row["guid"];
+                Order order = DataMapping.GetOrderByGuid(id);
+                AIS.Payment payment = DataMapping.GetPayment(order.id_payment);
+                AIS.Club club = DataMapping.GetClub(order.cric);
+
+                string model = Const.ORDER_MODELE;
+                Media media = DataMapping.ProductionDocumentOrderPdf(model, order, payment, club, Functions.ClearFileName("Facture."+order.id+".pdf"));
+                File.WriteAllBytes(Server.MapPath(dir+"/"+media.name), media.content);
+                break;
+            }
+
+            string fichier = DateTime.Now.ToString("yyyyMMdd")+"-export-factures-district.zip";
+            Functions.CreateZipFile(Server.MapPath(dir)+"\\*.pdf", Server.MapPath(dir+"/"+fichier));
+            Response.Redirect(dir+"/"+fichier);
+        }
     }
 }

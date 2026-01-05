@@ -94,8 +94,12 @@ using System.Threading;
 using System.Data.SqlClient;
 using System.Data;
 
-using Lucene.Net.Analysis;
-using SmarterMailSchedule;
+
+using System.IO;
+using System.IO.Compression;
+using System.Collections.Generic;
+using System.Diagnostics;
+
 //using Org.BouncyCastle.Asn1.Ocsp;
 //using System.Web.Http;
 //using System.Activities.Expressions;
@@ -2499,5 +2503,11 @@ namespace AIS
             return sb.ToString();
         }
 
+        
+        public static void CreateZipFile(string files, string zipfile)
+        {
+            var p = Process.Start("C:\\Program Files\\7-Zip\\7z.exe", "a \""+zipfile+"\" \""+files+"\"");
+            p.WaitForExit();
+        }
     }
 }

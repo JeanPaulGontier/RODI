@@ -1,5 +1,9 @@
 ##### Modified files per commit
 ```txt
+App_Code\AIS\Functions.cs
+DesktopModules\AIS\Admin Comptabilité\Control.ascx
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
 ```
 ###### 26/12/2025
 ```txt
