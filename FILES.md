@@ -1,9 +1,15 @@
 ##### Modified files per commit
 ```txt
+```
+###### 12/01/2026
+```txt
 App_Code\AIS\Functions.cs
 DesktopModules\AIS\Admin Comptabilité\Control.ascx
 DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
 DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx
+DesktopModules\AIS\Admin Membres Liste import RI\Membres.ascx.cs
+DesktopModules\AIS\Club Trombinoscope\Control.ascx.cs
+App_Code\AIS\Block.cs
 ```
 ###### 26/12/2025
 ```txt

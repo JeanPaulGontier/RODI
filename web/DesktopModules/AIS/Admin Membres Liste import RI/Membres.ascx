@@ -45,7 +45,7 @@
         <ItemTemplate>
             <%# DataBinder.Eval(Container.DataItem, "honorary_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/honor.png' Width=16 title='Honoraire' />":"" %>
             <%# DataBinder.Eval(Container.DataItem, "satellite_member").Equals("O")?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/satellite.png' Width=16 title='Membre club satellite' />":"" %>
-            <%# IsBirthday(Eval("birth_year"))?"<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/birthday.png' Width=16 title='Anniversaire le "+Birthday(Eval("birth_year"))+"' />":"" %>
+            <%# IsBirthday(Eval("birth_year")) ? "<img src='"+ PortalSettings.ActiveTab.SkinPath +"images/birthday.png' Width=16 title='Anniversaire le "+AIS.Functions.Birthday(Eval("birth_year"))+"' />":"" %>
         </ItemTemplate>
     </asp:TemplateField>
     <asp:BoundField DataField="surname" HeaderText="Nom" SortExpression="surname"  />

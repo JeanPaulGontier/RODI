@@ -18,6 +18,8 @@
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 
+###### 12/01/2026
+- correction d'un pb de date d'anniversaire pour les années bissextiles dans la liste des membres et le trombinoscope (D1770)
 - ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)
 - suppression de la pagination dans la liste des membres du club afin d'afficher la liste sur une seule page (D1730)
 ###### 26/12/2025

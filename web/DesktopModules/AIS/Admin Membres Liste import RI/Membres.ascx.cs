@@ -79,36 +79,20 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using Aspose.Cells;
 using System.Text;
+using System.Activities.Expressions;
 
 public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
 {
     DotNetNuke.Entities.Modules.ModuleController objModules2 = new DotNetNuke.Entities.Modules.ModuleController();
     
 
-    public DateTime GetBirthday(DateTime birthdate)
-    {
-        int month = DateTime.Now.Month;
-        if (month>birthdate.Month && birthdate.Month==2 && birthdate.Day==29)
-            return new DateTime(DateTime.Now.Year+1, birthdate.Month, 28);
-        else if (month>birthdate.Month)
-            return new DateTime(DateTime.Now.Year+1, birthdate.Month, birthdate.Day);
-        else
-            return new DateTime(DateTime.Now.Year, birthdate.Month, birthdate.Day);
-    }
 
-    public string Birthday(object date)
-    {
-        if (date==null)
-            return "";
-        var birthdate = (DateTime)date;
-        birthdate = GetBirthday(birthdate);
-        return birthdate.ToString("d MMMM");
-    }
+    
     public bool IsBirthday(object date)
     {
        if(date==null)
             return false;
-        var dt = GetBirthday((DateTime)date);
+        var dt = Functions.GetBirthday((DateTime)date);
         if(dt>DateTime.Now.AddDays(-7) && dt<DateTime.Now.AddMonths(1))
         {
             PanelBirthday.Visible =true;
@@ -308,7 +292,7 @@ public partial class DesktopModules_AIS_Admin_Members_Liste : PortalModuleBase
                     }
                     catch { }
 
-                    LBL_Anniversaire.Text= "Anniversaire : "+Birthday(membre.birth_year);
+                    LBL_Anniversaire.Text= "Anniversaire : "+Functions.Birthday(membre.birth_year);
                     LBL_Anniversaire.Visible = membre.birth_year != null;
 
                     //try { 

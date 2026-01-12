@@ -2509,5 +2509,27 @@ namespace AIS
             var p = Process.Start("C:\\Program Files\\7-Zip\\7z.exe", "a \""+zipfile+"\" \""+files+"\"");
             p.WaitForExit();
         }
+
+        public static DateTime GetBirthday(DateTime birthdate)
+        {
+            int month = DateTime.Now.Month;
+            if (month>birthdate.Month && birthdate.Month==2 && birthdate.Day==29)
+                return new DateTime(DateTime.Now.Year+1, birthdate.Month, 28);
+            else if (month>birthdate.Month)
+                return new DateTime(DateTime.Now.Year+1, birthdate.Month, birthdate.Day);
+            else
+                if(!DateTime.IsLeapYear(DateTime.Now.Year) && birthdate.Month==2 && birthdate.Day==29)
+                    return new DateTime(DateTime.Now.Year, birthdate.Month, 28);
+                else
+                    return new DateTime(DateTime.Now.Year, birthdate.Month, birthdate.Day);
+        }
+        public static string Birthday(object date)
+        {
+            if (date==null)
+                return "";
+            var birthdate = (DateTime)date;
+            birthdate = GetBirthday(birthdate);
+            return birthdate.ToString("d MMMM");
+        }
     }
 }

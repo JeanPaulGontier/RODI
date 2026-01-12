@@ -329,8 +329,11 @@ namespace AIS
 
             public static List<string> ImageList()
             {
-                return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/infos-img");
-            }
+                try { 
+                    return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/infos-img");
+                }catch{
+                    return new List<string>();
+                }
         }
 
         public class Bulles 
