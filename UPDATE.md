@@ -17,6 +17,7 @@
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
+- dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche
 
 ###### 12/01/2026
 - correction d'un pb de date d'anniversaire pour les années bissextiles dans la liste des membres et le trombinoscope (D1770)
