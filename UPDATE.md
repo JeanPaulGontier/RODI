@@ -18,7 +18,11 @@
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 - dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche
-
+###### 15/01/2026
+- dans la comptabilité district
+	- ajout de la possibilité de facturer les clubs rotaracts
+	- on peut maintenant ajouter 2 lignes supplémentaires par factures avec chacunes un montant (différence entre rotary et rotaract)
+	- on peut activer une option qui permet de facturer au prorata temporis les membres entrés en cours de semestre précédent
 ###### 12/01/2026
 - correction d'un pb de date d'anniversaire pour les années bissextiles dans la liste des membres et le trombinoscope (D1770)
 - ajouter une fonctionnalité pour exporter toutes factures du district dans un seul fichier ZIP par appel de cotisation (D1680 D1730)

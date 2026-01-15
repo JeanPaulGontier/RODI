@@ -85,6 +85,28 @@ namespace AIS
         public double amount2 { get; set; }
         public bool closing { get; set; }
         public string model { get; set; }
+        public string options { get; set; }
 
+
+        [Serializable]
+        public class Cotisation
+        {
+            public List<Ligne> Rotariens { get; set; }           
+            public List<Ligne> Rotaractiens { get; set; }
+
+            public bool DistrictFacturesGenererProrataTemporis { get; set; }
+            public Cotisation()
+            {
+                Rotariens = new List<Ligne>();
+                Rotaractiens = new List<Ligne>();
+            }
+        }
+
+        [Serializable]
+        public class Ligne
+        {
+            public string wording { get; set; }
+            public double amount { get; set; }
+        }
     }
 }

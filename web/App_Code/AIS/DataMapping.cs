@@ -63,7 +63,6 @@
 
 using Aspose.BarCode;
 using Aspose.Cells;
-using Aspose.Pdf.Generator;
 using Aspose.Words;
 using Dnn.PersonaBar.Users.Components;
 using DotNetNuke.Common;
@@ -265,7 +264,7 @@ namespace AIS
                 obj.amount2 = (double)rd["amount2"];
             }
             catch { }
-
+            obj.options = "" + rd["options"];
             return obj;
         }
 
@@ -283,12 +282,12 @@ namespace AIS
                 SqlCommand sql;
                 if (obj.id != null)
                 {
-                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "payment SET [id]=@id,[dt]=@dt,[title]=@title,[text]=@text,[type]=@type,[wording1]=@wording1,[wording2]=@wording2,[amount1]=@amount1,[amount2]=@amount2 WHERE [id]=@id", conn);
+                    sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "payment SET [id]=@id,[dt]=@dt,[title]=@title,[text]=@text,[type]=@type,[wording1]=@wording1,[wording2]=@wording2,[amount1]=@amount1,[amount2]=@amount2,[options]=@options WHERE [id]=@id", conn);
                     sql.Parameters.AddWithValue("id", obj.id);
                 }
                 else
                 {
-                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "payment ([dt],[title],[text],[type],[wording1],[amount1],[wording2],[amount2]) VALUES (@dt,@title,@text,@type,@wording1,@amount1,@wording2,@amount2)", conn);
+                    sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "payment ([dt],[title],[text],[type],[wording1],[amount1],[wording2],[amount2],[options]) VALUES (@dt,@title,@text,@type,@wording1,@amount1,@wording2,@amount2,@options)", conn);
                 }
                 sql.Parameters.AddWithValue("@dt", obj.dt);
                 sql.Parameters.AddWithValue("@title", obj.title);
@@ -298,6 +297,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@amount1", obj.amount1);
                 sql.Parameters.AddWithValue("@wording2", obj.wording2);
                 sql.Parameters.AddWithValue("@amount2", obj.amount2);
+                sql.Parameters.AddWithValue("@options", obj.options);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur mise a jour reglement : " + obj.id);
@@ -1449,7 +1449,7 @@ namespace AIS
             MemoryStream ms = new MemoryStream();
             if (sf == Aspose.Cells.SaveFormat.CSV)
             {
-                Aspose.Cells.TxtSaveOptions o = new TxtSaveOptions(sf);
+                TxtSaveOptions o = new TxtSaveOptions(sf);
                 o.Separator = Convert.ToChar(";");
                 xls.Save(ms, o);
 
@@ -1532,7 +1532,7 @@ namespace AIS
             MemoryStream ms = new MemoryStream();
             if (sf == Aspose.Cells.SaveFormat.CSV)
             {
-                Aspose.Cells.TxtSaveOptions o = new TxtSaveOptions(sf);
+                TxtSaveOptions o = new TxtSaveOptions(sf);
                 o.Separator = Convert.ToChar(";");
                 xls.Save(ms, o);
 
@@ -5541,10 +5541,10 @@ namespace AIS
             InitLicenceAsposeWords();
 
 
-            Aspose.Words.Document doc = new Aspose.Words.Document();
-            Aspose.Words.Document template = new Aspose.Words.Document(chemin);
+            Document doc = new Document();
+            Document template = new Document(chemin);
 
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
+            DocumentBuilder builder = new DocumentBuilder(doc);
             builder.PageSetup.LeftMargin = ConvertUtil.MillimeterToPoint(20);
             builder.PageSetup.RightMargin = ConvertUtil.MillimeterToPoint(20);
             builder.PageSetup.PaperSize = PaperSize.A4;
@@ -5631,8 +5631,8 @@ namespace AIS
 
 
 
-                Aspose.BarCode.BarCodeBuilder bcb = new BarCodeBuilder();
-                bcb.SymbologyType = Aspose.BarCode.Symbology.QR;
+                BarCodeBuilder bcb = new BarCodeBuilder();
+                bcb.SymbologyType = Symbology.QR;
                 //bcb.CodeText = "http://rodi1730.aisdev.net";
                 bcb.CodeText = "BEGIN:VCARD" + Environment.NewLine + "VERSION:4.0" + Environment.NewLine + "KIND:individual" + Environment.NewLine + "FN:" + membre.name + " " + membre.surname + Environment.NewLine + "TEL:" + membre.telephone + Environment.NewLine + Environment.NewLine + "EMAIL;PREF=1:" + membre.email + Environment.NewLine + "ORG:" + membre.club_name + Environment.NewLine + "END:VCARD";
                 bcb.QREncodeMode = QREncodeMode.Auto;
@@ -5658,7 +5658,7 @@ namespace AIS
                 }
                 catch (Exception ee) { Functions.Error(ee); }
 
-                Node node = InsertDocument(cell.AppendChild(new Aspose.Words.Paragraph(doc)), template);
+                Node node = InsertDocument(cell.AppendChild(new Paragraph(doc)), template);
 
 
                 row.AppendChild(cell);
@@ -5721,78 +5721,59 @@ namespace AIS
             InitLicenceAsposeWords();
 
 
-            Aspose.Words.Document doc = new Aspose.Words.Document(chemin);
+            Document doc = new Document(chemin);
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.DocumentBuilder builder = new Aspose.Words.DocumentBuilder(doc);
 
-
-            //List<Aspose.Words.Tables.Row> rows = new List<Aspose.Words.Tables.Row>();
-            //Aspose.Words.Tables.Row row = new Aspose.Words.Tables.Row(doc);
-            //row.RowFormat.Height = ConvertUtil.MillimeterToPoint(54);
             int col = 0;
 
-            try { doc.Range.Bookmarks["adress_club"].Text = club.GetPostalAdress(); }
-            catch { }
-            try { doc.Range.Bookmarks["id"].Text = "" + order.id; }
-            catch { }
-            try { doc.Range.Bookmarks["id1"].Text = "" + order.id; }
-            catch { }
-            try { doc.Range.Bookmarks["dt"].Text = order.dt.ToString("dd/MM/yyyy"); }
-            catch { }
-            try { doc.Range.Bookmarks["amount"].Text = "" + order.amount.ToString("# ##0.00"); }
-            catch { }
-            try { doc.Range.Bookmarks["rule"].Text = Functions.YESNO2UF(order.rule) + (order.rule_type != "" ? "(" + order.rule_type + ")" : ""); }
-            catch { }
-            try { doc.Range.Bookmarks["dt_rule"].Text = order.rule_dt == Const.NO_DATE ? "..." : order.rule_dt.ToShortDateString(); }
-            catch { }
-            try { doc.Range.Bookmarks["par_rule"].Text = "" + order.rule_par; }
-            catch { }
-            try { doc.Range.Bookmarks["title"].Text = payment.title; }
-            catch { }
-            try { doc.Range.Bookmarks["nb"].Text = "" + order.Details.Count; }
-            catch { }
-            try { doc.Range.Bookmarks["cric"].Text = "" + club.cric; }
-            catch { }
+            SetBookmarkValue(doc, "adress_club", club.GetPostalAdress());
+            SetBookmarkValue(doc, "id", "" + order.id);
+            SetBookmarkValue(doc, "id1", "" + order.id);
+            SetBookmarkValue(doc, "dt", order.dt.ToString("dd/MM/yyyy"));
+            SetBookmarkValue(doc, "amount", "" + order.amount.ToString("# ##0.00"));
+            SetBookmarkValue(doc, "rule", Functions.YESNO2UF(order.rule) + (order.rule_type != "" ? "(" + order.rule_type + ")" : ""));
+            SetBookmarkValue(doc, "dt_rule", order.rule_dt == Const.NO_DATE ? "..." : order.rule_dt.ToShortDateString());
+            SetBookmarkValue(doc, "par_rule", "" + order.rule_par);
+            SetBookmarkValue(doc, "title", payment.title);
+            int nbdetail = order.Details.Where(x => x.id_parent>0).ToList().Count;
+            SetBookmarkValue(doc, "nb", "" +nbdetail);
+            SetBookmarkValue(doc, "cric", "" + club.cric);
+
 
             List<string> d = new List<string>();
-            int splitnb = (order.Details.Count + 1) / 2;
-            if(Const.DISTRICT_ID==1680)
+            
+            var details = order.Details.Where(x => x.id_parent>0).ToList();
+
+            int splitnb = (details.Count+1)  / 2;
+
+            for (int i = 0; i < details.Count; i++)
             {
-                var l = order.Details.Skip(1).ToList();
+                if (i < splitnb)
+                    d.Add(details[i].wording);
+                else
+                    d[i - splitnb] += "\t" +details[i].wording;
 
-                splitnb = (l.Count+1)  / 2;
-
-                for (int i = 0; i < l.Count; i++)
-                {
-                    if (i < splitnb)
-                        d.Add(l[i].wording);
-                    else
-                        d[i - splitnb] += "\t" +l[i].wording;
-
-                }
             }
-            else
-            {
-                for (int i = 0; i < order.Details.Count; i++)
-                {
-                    if (i < splitnb)
-                        d.Add(order.Details[i].wording);
-                    else
-                        d[i - splitnb] += "\t" + order.Details[i].wording;
-
-                }
-            }
+            
             string dd = "";
-
-            if(Const.DISTRICT_ID==1680)
+            double totalmembres = 0;
+            foreach (var detail in order.Details)
             {
-                dd+=order.Details[0].wording+"\t\t"+order.Details[0].amount.ToString("# ##0.00")+" €"+Environment.NewLine;
-
-                dd+="Cotisation semestrielle pour "+(order.Details.Count-1) + " membres :\t\t"+(order.amount-order.Details[0].amount).ToString("# ##0.00")+" €"+Environment.NewLine;
-                dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
-                dd+=Environment.NewLine;
-
+                if(detail.id_parent==0)
+                {
+                    dd+=detail.wording+"\t\t"+detail.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
+                }
+                else
+                {
+                    totalmembres+=detail.amount;
+                }
             }
+            
+            dd+="Cotisation semestrielle pour "+ nbdetail + " membres :\t\t"+(totalmembres).ToString("# ##0.00")+" €"+Environment.NewLine;
+            dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
+            dd+=Environment.NewLine;
+
           
             for (int i = 0; i<d.Count; i++)
             {
@@ -5801,12 +5782,8 @@ namespace AIS
             }
             if (dd.EndsWith(Environment.NewLine))
                 dd = dd.Substring(0, dd.Length - Environment.NewLine.Length);
-            try { doc.Range.Bookmarks["detail"].Text = dd; }
-            catch { }
-
-
-            //doc.Save(@"c:\users\polo\desktop\test.docx");
-
+            SetBookmarkValue(doc, "detail", dd);
+            
 
             MemoryStream ms = new MemoryStream();
             doc.Save(ms, Aspose.Words.SaveFormat.Pdf);
@@ -5819,13 +5796,18 @@ namespace AIS
             media.content_type = "application/pdf";
             return media;
         }
+        public static void SetBookmarkValue(Document doc ,string name, string value)
+        {
+            if (doc.Range.Bookmarks[name]!=null)
+                doc.Range.Bookmarks[name].Text=value;
+        }
 
         /// <summary>
         /// </summary>
         /// <param name="insertAfterNode"></param>
         /// <param name="srcDoc"></param>
         /// <returns></returns>
-        public static Node InsertDocument(Node insertAfterNode, Aspose.Words.Document srcDoc)
+        public static Node InsertDocument(Node insertAfterNode, Document srcDoc)
         {
 
 
@@ -5854,7 +5836,7 @@ namespace AIS
                 // Loop through all sections in the source document.
 
 
-                foreach (Aspose.Words.Section srcSection in srcDoc.Sections)
+                foreach (Section srcSection in srcDoc.Sections)
                 {
                     // Loop through all block level nodes (paragraphs and tables) in the body of the section.
                     foreach (Node srcNode in srcSection.Body)
@@ -5863,7 +5845,7 @@ namespace AIS
 
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
-                            Aspose.Words.Paragraph para = (Aspose.Words.Paragraph)srcNode;
+                            Paragraph para = (Paragraph)srcNode;
                             if (para.IsEndOfSection && !para.HasChildNodes)
                                 continue;
                         }
@@ -5883,8 +5865,8 @@ namespace AIS
                                     foreach (Node noc in ((Aspose.Words.Tables.Cell)no).ChildNodes)
                                         if (noc.NodeType.Equals(NodeType.Paragraph))
                                         {
-                                            ((Aspose.Words.Paragraph)noc).ParagraphFormat.SpaceAfter = 0 + ((Aspose.Words.Paragraph)noc).ParagraphFormat.SpaceAfter;
-                                            ((Aspose.Words.Paragraph)noc).ParagraphFormat.SpaceBefore = 0 + ((Aspose.Words.Paragraph)noc).ParagraphFormat.SpaceBefore;
+                                            ((Paragraph)noc).ParagraphFormat.SpaceAfter = 0 + ((Paragraph)noc).ParagraphFormat.SpaceAfter;
+                                            ((Paragraph)noc).ParagraphFormat.SpaceBefore = 0 + ((Paragraph)noc).ParagraphFormat.SpaceBefore;
                                         }
 
                                 }
@@ -5892,8 +5874,8 @@ namespace AIS
                         }
                         if (newNode.NodeType.Equals(NodeType.Paragraph))
                         {
-                            ((Aspose.Words.Paragraph)newNode).ParagraphFormat.SpaceAfter = 0 + ((Aspose.Words.Paragraph)newNode).ParagraphFormat.SpaceAfter;
-                            ((Aspose.Words.Paragraph)newNode).ParagraphFormat.SpaceBefore = 0 + ((Aspose.Words.Paragraph)newNode).ParagraphFormat.SpaceBefore;
+                            ((Paragraph)newNode).ParagraphFormat.SpaceAfter = 0 + ((Paragraph)newNode).ParagraphFormat.SpaceAfter;
+                            ((Paragraph)newNode).ParagraphFormat.SpaceBefore = 0 + ((Paragraph)newNode).ParagraphFormat.SpaceBefore;
 
                         }
 

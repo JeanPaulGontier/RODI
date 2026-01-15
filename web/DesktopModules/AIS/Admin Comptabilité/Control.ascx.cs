@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2024
+// Copyright (c) 2012-2026
 // by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -260,6 +260,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         GridView2.DataBind();
         P_GenerateOrders.Visible = liste.Count == 0;
         Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
+        P_BT_Generer_Orders.Visible = BT_Generer_Orders.Visible;
         P_SendMail.Visible = liste.Count > 0;
     }
 
@@ -295,11 +296,20 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
             obj.title = TXT_Titre.Text;
             obj.type = "T";
             obj.wording1 = LBL_libelle1.Text;
-            obj.amount1 = TXT_montant1.Text == "" ? 0 : ToDouble(TXT_montant1.Text);
-            if (obj.amount1 <= 0.01)
-                throw new Exception("Veuillez saisir un montant");
+            obj.amount1 = TXT_montant1.Text == "" ? 0 : ToDouble(TXT_montant1.Text);           
             obj.wording2 = LBL_libelle2.Text;
             obj.amount2 = TXT_montant2.Text == "" ? 0 : ToDouble(TXT_montant2.Text);
+            
+            Payment.Cotisation cotis = new Payment.Cotisation();
+            cotis.DistrictFacturesGenererProrataTemporis = CB_Generer_ProrataTemporis.Checked;
+            cotis.Rotariens = new List<Payment.Ligne>();
+            cotis.Rotariens.Add(new Payment.Ligne() { wording = TXT_ligneSup11.Text, amount = ToDouble(TXT_montantsup11.Text) });
+            cotis.Rotariens.Add(new Payment.Ligne() { wording = TXT_ligneSup12.Text, amount = ToDouble(TXT_montantsup12.Text) });
+            cotis.Rotaractiens = new List<Payment.Ligne>();
+            cotis.Rotaractiens.Add(new Payment.Ligne() { wording = TXT_ligneSup21.Text, amount = ToDouble(TXT_montantsup21.Text) });
+            cotis.Rotaractiens.Add(new Payment.Ligne() { wording = TXT_ligneSup22.Text, amount = ToDouble(TXT_montantsup22.Text) });
+            obj.options=Functions.Serialize(cotis);
+            
             if (!DataMapping.UpdatePayment(obj))
                 return;
 
@@ -350,7 +360,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         TXT_Titre.Text = "";
         TXT_Dt.Text = DateTime.Now.ToString("yyyy-MM-dd");
         TXT_Editor.Text = "";
-       
+        CB_Generer_ProrataTemporis.Checked = Const.DISTRICT_FACTURES_GENERER_PRORATA_TEMPORIS;
+
         Check_Buttons();
         RefreshGridOrders();
         Panel2.Visible = true;
@@ -397,16 +408,26 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         BT_Valider.Visible = true;// nbcommandes == 0;
         BT_Supprimer.Visible = nbcommandes == 0;
         BT_Export_Orders.Visible = nbcommandes > 0;
+        BT_Export_Invoices_ZIP.Visible = nbcommandes > 0;
         BT_Export_Only_Transfers.Visible = nbcommandes > 0;
         Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
+        P_BT_Generer_Orders.Visible= BT_Generer_Orders.Visible;
 
-       
-        LBL_libelle1.Text = "Montant par membre :";
-        //TXT_montant1.Value = 50;
+
+        LBL_libelle1.Text = "Montant par membre rotarien :";
+        LBL_libelle2.Text = "Montant par membre rotaractien :";
         P_Montant1.Visible = true;
-        P_Montant2.Visible = false;
-        BT_Generer_Orders.Visible = HF_id.Value!="" && !DataMapping.OrdersComplete(HF_id.Value) && ToDouble(TXT_montant1.Text)>0;
-        Lit_Info_Generation_Commandes.Visible = !BT_Generer_Orders.Visible;
+        P_Montant2.Visible = true;
+        P_LigneSup11.Visible = true;
+        P_LigneSup12.Visible = true;
+        P_LigneSup21.Visible = true;
+        P_LigneSup22.Visible = true;
+        bool gvisible = HF_id.Value!=""
+                && !DataMapping.OrdersComplete(HF_id.Value)
+                && (ToDouble(TXT_montant1.Text)>0 || ToDouble(TXT_montant2.Text)>0);
+        BT_Generer_Orders.Visible = gvisible;
+        Lit_Info_Generation_Commandes.Visible = !gvisible;
+        P_BT_Generer_Orders.Visible= gvisible;
 
         P_Admin_Commands.Visible = (UserInfo.IsAdmin || UserInfo.IsSuperUser) && Panel2.Visible  && pnl_modif.Visible==false && nbcommandes>0;
 
@@ -420,7 +441,15 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     protected void BT_Generer_Orders_Click(object sender, EventArgs e)
     {
         
-        List<Club> clubs = DataMapping.ListClubs(club_type:"rotary");
+        List<Club> clubsrotary = DataMapping.ListClubs(club_type:"rotary");
+        List<Club> clubsrotaract = DataMapping.ListClubs(club_type: "rotaract");
+        List<Club> clubs = new List<Club>();
+        if (ToDouble(TXT_montant1.Text)>0)
+            clubs.AddRange(clubsrotary);
+        if (ToDouble(TXT_montant2.Text)>0)
+            clubs.AddRange( clubsrotaract);
+
+
         List<Order> commandes = DataMapping.ListOrderByPayment(HF_id.Value);
         foreach (Club club in clubs)
         {
@@ -433,10 +462,14 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 }
             if (!dejacommande)
             {
-             
+
+                double montant = ToDouble(TXT_montant1.Text);
+                if(club.club_type=="rotaract")
+                    montant = ToDouble(TXT_montant2.Text);
 
                 List<Member> membres = DataMapping.ListMembers(cric: club.cric, sort: "name ASC");
 
+                bool tenir_compte_membres_prorata_temporis = CB_Generer_ProrataTemporis.Checked;
 
                 Order commande = new Order();
                 commande.cric = club.cric;
@@ -450,22 +483,125 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 commande.rule_type = "";
                 if (!String.IsNullOrEmpty(club.payment_method))
                     commande.rule_type = club.payment_method;
-                
-                
-                
+
+
+                double cumul_prorata_temporis = 0;
+
                 foreach (Member membre in membres.OrderBy(m=>m.surname))
                 {
-                    Order.Detail detail = new Order.Detail();
-                    detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
-                    detail.amount = ToDouble(TXT_montant1.Text);
-                    detail.quantity = 1;
-                    detail.unitary = ToDouble(TXT_montant1.Text);
-                    detail.id_parent = 0;
-                    if(membre.honorary_member=="N")
-                        commande.Details.Add(detail);
-                }
-                commande.amount = ToDouble(TXT_montant1.Text) * (commande.Details.Count- club.nb_free_of_charge);
+                    if (membre.honorary_member=="N")
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
+                        detail.amount = montant;
+                        detail.quantity = 1;
+                        detail.unitary = montant;
+                        detail.id_parent = membre.nim ;
 
+                        commande.Details.Add(detail);
+
+                        if (tenir_compte_membres_prorata_temporis)
+                        {
+                            DateTime start_date = new DateTime(commande.dt.Year, 1, 1);
+                            DateTime end_date = new DateTime(commande.dt.Year, 7, 1);
+                            if (commande.dt.Month<7)
+                            {
+                                start_date = new DateTime(commande.dt.Year-1, 7, 1);
+                                end_date = new DateTime(commande.dt.Year, 1, 1);
+                            }
+
+                            if(membre.year_membership_rotary>=start_date && membre.year_membership_rotary<end_date)
+                            {
+
+                                TimeSpan span = new TimeSpan(end_date.Ticks - start_date.Ticks);
+                                int nbdays = span.Days;
+                                span = new TimeSpan(end_date.Ticks - ((DateTime)membre.year_membership_rotary).Ticks);
+
+                                double prorata = (double)span.Days/(double)nbdays;
+                               
+                                double montant_prorata = Math.Round(prorata * montant, 2);
+                                
+                                cumul_prorata_temporis+=montant_prorata;
+                            }
+
+                            
+                        }
+                    }
+                }
+                commande.amount = montant * (commande.Details.Count- club.nb_free_of_charge);
+
+                if(tenir_compte_membres_prorata_temporis && cumul_prorata_temporis>0)
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = "Cumul cotisation(s) membre(s) entré(s) pendant le semestre précédent\nau prorata temporis :";
+
+                    detail.id_parent=0;
+                    detail.unitary=cumul_prorata_temporis;
+                    detail.quantity = 1;
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    if(detail.amount>0)
+                    {
+                        commande.Details.Insert(0, detail);
+                        commande.amount+=detail.amount;
+                    }
+
+                }
+                if (TXT_ligneSup22.Text.Trim()!="")
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = TXT_ligneSup22.Text;
+
+                    detail.id_parent=0;
+                    detail.unitary=ToDouble(TXT_montantsup22.Text);
+                    detail.quantity = 1;
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    commande.Details.Insert(0, detail);
+                    commande.amount+=detail.amount;
+                }
+                if (TXT_ligneSup21.Text.Trim()!="")
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = TXT_ligneSup21.Text;
+
+                    detail.id_parent=0;
+                    detail.unitary=ToDouble(TXT_montantsup21.Text);
+                    detail.quantity = 1;
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    commande.Details.Insert(0, detail);
+                    commande.amount+=detail.amount;
+                }
+                if (TXT_ligneSup12.Text.Trim()!="")
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = TXT_ligneSup12.Text;
+
+                    detail.id_parent=0;
+                    detail.unitary=ToDouble(TXT_montantsup12.Text);
+                    detail.quantity = 1;
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    commande.Details.Insert(0, detail);
+                    commande.amount+=detail.amount;
+                }
+                if (TXT_ligneSup11.Text.Trim()!="")
+                {
+                    Order.Detail detail = new Order.Detail();
+                    detail.wording = TXT_ligneSup11.Text;
+
+                    detail.id_parent=0;
+                    detail.unitary=ToDouble(TXT_montantsup11.Text);
+                    detail.quantity = 1;
+                    detail.amount = detail.quantity * detail.unitary;
+                    detail.id_parent = 0;
+                    commande.Details.Insert(0, detail);
+                    commande.amount+=detail.amount;
+                }
+             
+               
+               
                 if (Const.DISTRICT_ID==1680)
                 {
                     Order.Detail detail = new Order.Detail();

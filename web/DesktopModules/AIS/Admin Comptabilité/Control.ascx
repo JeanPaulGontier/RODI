@@ -50,13 +50,33 @@
 </div>
    
 <asp:Panel runat="server" ID="P_Montant1" Visible="false" CssClass="form-inline">
-    <asp:Label runat="server" ID="LBL_libelle1"></asp:Label>
-    <asp:TextBox runat="server" ID="TXT_montant1" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control"></asp:TextBox>
+    <asp:Label runat="server" ID="LBL_libelle1" Width="50%"></asp:Label>
+    <asp:TextBox runat="server" ID="TXT_montant1" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control text-right"></asp:TextBox>
 </asp:Panel>
+<asp:Panel runat="server" ID="P_LigneSup11" Visible="false" CssClass="form-inline">
+    <asp:TextBox runat="server" ID="TXT_ligneSup11" placeholder="Ligne supplémentaire rotarien 1" Width="50%" CssClass="form-control"></asp:TextBox>
+    <asp:TextBox runat="server" ID="TXT_montantsup11" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control text-right"></asp:TextBox>
+</asp:Panel>
+<asp:Panel runat="server" ID="P_LigneSup12" Visible="false" CssClass="form-inline">
+    <asp:TextBox runat="server" ID="TXT_ligneSup12" placeholder="Ligne supplémentaire rotarien 2" Width="50%" CssClass="form-control"></asp:TextBox>
+    <asp:TextBox runat="server" ID="TXT_montantsup12" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control text-right"></asp:TextBox>
+</asp:Panel>
+
 <asp:Panel runat="server" ID="P_Montant2" Visible="false" CssClass="form-inline">
-    <asp:Label runat="server" ID="LBL_libelle2"></asp:Label>
-    <asp:TextBox runat="server" ID="TXT_montant2" TextMode="Number" inputmode="decimal" step="0.01" min="0"  CssClass="form-control"> </asp:TextBox>
+    <asp:Label runat="server" ID="LBL_libelle2" Width="50%"></asp:Label>
+    <asp:TextBox runat="server" ID="TXT_montant2" TextMode="Number" inputmode="decimal" step="0.01" min="0"  CssClass="form-control text-right"> </asp:TextBox>
 </asp:Panel>
+<asp:Panel runat="server" ID="P_LigneSup21" Visible="false" CssClass="form-inline">
+    <asp:TextBox runat="server"  ID="TXT_ligneSup21" placeholder="Ligne supplémentaire rotaractien 1" Width="50%" CssClass="form-control"></asp:TextBox>
+    <asp:TextBox runat="server" ID="TXT_montantsup21" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control text-right"></asp:TextBox>
+</asp:Panel>
+<asp:Panel runat="server" ID="P_LigneSup22" Visible="false" CssClass="form-inline">
+    <asp:TextBox runat="server"  ID="TXT_ligneSup22" placeholder="Ligne supplémentaire rotaractien 2" Width="50%" CssClass="form-control"></asp:TextBox>
+    <asp:TextBox runat="server" ID="TXT_montantsup22" TextMode="Number" inputmode="decimal" step="0.01" min="0" CssClass="form-control text-right"></asp:TextBox>
+</asp:Panel>
+<div>
+    <asp:CheckBox  runat="server" ID="CB_Generer_ProrataTemporis" Text="&nbsp;Tenir compte des membres arrivés pendant le semestre précédent (prorata temporis)" />
+</div>
 <div>
     <div class="pe-spacer size10"></div>
     <div class="txtCenter">
@@ -70,19 +90,18 @@
 
 <asp:Panel runat="server" ID="P_GenerateOrders" >
 <div>Génération des factures :</div>
-    <asp:Literal runat="server" ID="Lit_Info_Generation_Commandes"><blockquote class="blockquote">
-        <p class="text-info">
-            Pour générer les factures, il faut au préalable valider le formulaire. Le bouton de génération apparaitra alors. Attention de bien s'assurer de l'effectif après import du fichier des membres venant du RI.        
-        </p>
-    </blockquote>
-    </asp:Literal>
-    <div class="txtCenter">
-        <div class="pe-spacer size10"></div>
-    <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Generer_Orders" Text="Générer les factures" OnClick="BT_Generer_Orders_Click" />
-    <div>
-    <asp:Literal runat="server" ID="TXT_Result"></asp:Literal>
-    </div>
-</div>    
+    <asp:panel runat="server" ID="Lit_Info_Generation_Commandes" CssClass="alert alert-info" >
+        <p>Pour générer les factures, il faut au préalable valider le formulaire pour faire apparaitre le bouton de génération des factures. </p>
+        <p>Pour ne facturer que les rotary clubs il suffit de laisser vide le montant par membre rotaractien.</p>
+        <p><strong>Attention</strong> de bien s'assurer que tous les clubs ont bien autorisé la synchronisation RI > RODI.</p>
+    </asp:panel>
+    <asp:Panel runat="server" ID="P_BT_Generer_Orders" class="txtCenter">
+        <div class="pe-spacer size10"></div>        
+        <asp:Button CssClass="btn btn-primary" runat="server" ID="BT_Generer_Orders" Text="Générer les factures" OnClick="BT_Generer_Orders_Click" />
+        <div>
+            <asp:Literal runat="server" ID="TXT_Result"></asp:Literal>
+        </div>
+    </asp:Panel>    
 </asp:Panel>
 
 <div class="pe-spacer size10"></div>
