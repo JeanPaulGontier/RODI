@@ -547,7 +547,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     }
 
                 }
-                if (TXT_ligneSup22.Text.Trim()!="")
+                if (TXT_ligneSup22.Text.Trim()!="" && club.club_type=="rotaract")
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = TXT_ligneSup22.Text;
@@ -560,7 +560,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     commande.Details.Insert(0, detail);
                     commande.amount+=detail.amount;
                 }
-                if (TXT_ligneSup21.Text.Trim()!="")
+                if (TXT_ligneSup21.Text.Trim()!="" && club.club_type=="rotaract")
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = TXT_ligneSup21.Text;
@@ -573,7 +573,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     commande.Details.Insert(0, detail);
                     commande.amount+=detail.amount;
                 }
-                if (TXT_ligneSup12.Text.Trim()!="")
+                if (TXT_ligneSup12.Text.Trim()!="" && club.club_type=="rotary")
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = TXT_ligneSup12.Text;
@@ -586,7 +586,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     commande.Details.Insert(0, detail);
                     commande.amount+=detail.amount;
                 }
-                if (TXT_ligneSup11.Text.Trim()!="")
+                if (TXT_ligneSup11.Text.Trim()!="" && club.club_type=="rotary")
                 {
                     Order.Detail detail = new Order.Detail();
                     detail.wording = TXT_ligneSup11.Text;
