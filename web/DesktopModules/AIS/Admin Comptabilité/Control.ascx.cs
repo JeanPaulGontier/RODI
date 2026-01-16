@@ -64,6 +64,7 @@
 using AIS;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using EasyDNNSolutions.Modules.EasyDNNBlockBuilder.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -133,7 +134,49 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 tri2.Value = "club";
                 sens2.Value = "ASC";
 
-                
+                TXT_ligneSup11.Text="";
+                TXT_montantsup11.Text="";
+                TXT_ligneSup12.Text="";
+                TXT_montantsup12.Text="";
+                TXT_ligneSup21.Text="";
+                TXT_montantsup21.Text="";
+                TXT_ligneSup22.Text="";
+                TXT_montantsup22.Text="";
+                CB_Generer_ProrataTemporis.Checked = Const.DISTRICT_FACTURES_GENERER_PRORATA_TEMPORIS;
+                if (!String.IsNullOrEmpty(n.options))
+                {
+                    try { 
+                        Payment.Cotisation cotis = (Payment.Cotisation)Functions.Deserialize(n.options, typeof(Payment.Cotisation));
+
+                        if (cotis.Rotariens.Count> 0)
+                        {
+                            TXT_ligneSup11.Text=cotis.Rotariens[0].wording;
+                            TXT_montantsup11.Text=FromDouble(cotis.Rotariens[0].amount);
+                        }
+                        if (cotis.Rotariens.Count> 1)
+                        {
+                            TXT_ligneSup12.Text=cotis.Rotariens[1].wording;
+                            TXT_montantsup12.Text=FromDouble(cotis.Rotariens[1].amount);
+                        }
+
+                        if (cotis.Rotaractiens.Count> 0)
+                        {
+                            TXT_ligneSup21.Text=cotis.Rotaractiens[0].wording;
+                            TXT_montantsup21.Text=FromDouble(cotis.Rotaractiens[0].amount);
+                        }
+                        if (cotis.Rotaractiens.Count> 1)
+                        {
+                            TXT_ligneSup22.Text=cotis.Rotaractiens[1].wording;
+                            TXT_montantsup22.Text=FromDouble(cotis.Rotaractiens[1].amount);
+                        }
+                        
+                        CB_Generer_ProrataTemporis.Checked = cotis.DistrictFacturesGenererProrataTemporis;
+                    }
+                    catch { }
+                }
+                    
+
+
                 Panel1.Visible = false;
                 Panel2.Visible = true;
                 RefreshGridOrders();
@@ -246,6 +289,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
     void RefreshGrid()
     {
         List<Payment> liste = DataMapping.ListPayments(index: GridView1.PageIndex, max: GridView1.PageSize,sort: tri.Value+ " "+sens.Value);
+        
         GridView1.DataSource = liste;
         GridView1.DataBind();
     }
