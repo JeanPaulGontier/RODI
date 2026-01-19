@@ -535,7 +535,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     if (membre.honorary_member=="N")
                     {
                         Order.Detail detail = new Order.Detail();
-                        detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
+                        detail.wording = membre.surname + " " + membre.name ;
+
                         detail.amount = montant;
                         detail.quantity = 1;
                         detail.unitary = montant;
@@ -563,9 +564,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                                 double prorata = (double)span.Days/(double)nbdays;
                                 nb_jours += span.Days;
 
-                                detail.wording = membre.surname + " " + membre.name + " (" + membre.nim +" - "+span.Days+" jours)";
+                                detail.wording = membre.surname + " " + membre.name + " (" +span.Days+" jours)";
 
-                                double montant_prorata = Math.Round(prorata * montant, 2);
+                                double montant_prorata =prorata * montant;
                                 
                                 cumul_prorata_temporis+=montant_prorata;
                             }
@@ -673,7 +674,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     commande.amount+=detail.amount;
                 }
 
-                
+                commande.amount=Math.Round(commande.amount, 2);
 
                 if (DataMapping.UpdateOrder(commande))
                     TXT_Result.Text += "<br/>" + club.name + " facture pour " + membres.Count + " membres";
@@ -981,7 +982,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                         if (membre.honorary_member=="N")
                         {
                             Order.Detail detail = new Order.Detail();
-                            detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
+                            detail.wording = membre.surname + " " + membre.name;// + " (" + membre.nim + ")";
                             detail.amount = montant;
                             detail.quantity = 1;
                             detail.unitary = montant;
@@ -1009,9 +1010,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                                     double prorata = (double)span.Days/(double)nbdays;
                                     nb_jours += span.Days;
 
-                                    detail.wording = membre.surname + " " + membre.name + " (" + membre.nim +" - "+span.Days+" jours)";
+                                    detail.wording = membre.surname + " " + membre.name + " (" +span.Days+" jours)";
 
-                                    double montant_prorata = Math.Round(prorata * montant, 2);
+                                    double montant_prorata = prorata * montant;
 
                                     cumul_prorata_temporis+=montant_prorata;
                                 }
@@ -1118,6 +1119,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                         commande.amount+=detail.amount;
                     }
 
+                    commande.amount=Math.Round(commande.amount, 2);
                     tbx_amount.Text=FromDouble(commande.amount);
 
                     p_result.Visible=true;
