@@ -22,6 +22,7 @@
 - corriger le bug du rotary_agreement_date (D1780)
 
 ###### 19/01/2026
+- correction pb arrondi dans total prorata temporis
 - ajout du nb de jours au prorata temporis sur chaque membre concerné dans les factures district qui utilisent le rattrapage du semestre précédent
 - ajout d'une fonctionnalité qui permet de regénérer une facture district à partir de l'écran détail règlement, par exemple : suite à maj d'effectif d'un club pour avoir la bonne liste des membres
 - ajout du nb de jours au prorata temporis pris en compte dans les factures district
