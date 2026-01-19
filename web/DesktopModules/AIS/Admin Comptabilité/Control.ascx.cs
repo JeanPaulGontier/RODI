@@ -528,7 +528,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
 
                 double cumul_prorata_temporis = 0;
-
+                int nb_jours = 0;
                 foreach (Member membre in membres.OrderBy(m=>m.surname))
                 {
                     if (membre.honorary_member=="N")
@@ -560,7 +560,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                                 span = new TimeSpan(end_date.Ticks - ((DateTime)membre.year_membership_rotary).Ticks);
 
                                 double prorata = (double)span.Days/(double)nbdays;
-                               
+                                nb_jours += span.Days;
+
                                 double montant_prorata = Math.Round(prorata * montant, 2);
                                 
                                 cumul_prorata_temporis+=montant_prorata;
@@ -575,7 +576,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 if(tenir_compte_membres_prorata_temporis && cumul_prorata_temporis>0)
                 {
                     Order.Detail detail = new Order.Detail();
-                    detail.wording = "Cumul cotisation(s) membre(s) entré(s) pendant le semestre précédent\nau prorata temporis :";
+                    detail.wording = "Cumul cotisation(s) membre(s) entré(s) pendant le semestre précédent\nau prorata temporis ("+nb_jours+" jours) :";
 
                     detail.id_parent=0;
                     detail.unitary=cumul_prorata_temporis;
