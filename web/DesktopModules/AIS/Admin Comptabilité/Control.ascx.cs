@@ -74,6 +74,7 @@ using System.Web.UI.WebControls;
 
 
 
+
 public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModuleBase
 {
    /// <summary>
@@ -670,9 +671,9 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 
 
                 if (DataMapping.UpdateOrder(commande))
-                    TXT_Result.Text += "<br/>" + club.name + " commande pour " + membres.Count + " membres";
+                    TXT_Result.Text += "<br/>" + club.name + " facture pour " + membres.Count + " membres";
                 else
-                    TXT_Result.Text += "<br/>Erreur commande : " + club.name;
+                    TXT_Result.Text += "<br/>Erreur facturation : " + club.name;
 
 
 
@@ -937,6 +938,195 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         catch (Exception ex)
         {
             Functions.Error(ex);
+        }
+    }
+
+    protected void btn_regen_Click(object sender, EventArgs e)
+    {
+        l_result.Text="";
+
+        string id = hfd_id.Value;
+        if(!string.IsNullOrEmpty(id))
+        {
+            Order commande = DataMapping.GetOrder(id);
+            if (commande!=null)
+            {
+                var club = DataMapping.GetClub(commande.cric);
+                if(club!=null)
+                {
+                    double montant = ToDouble(TXT_montant1.Text);
+                    if (club.club_type=="rotaract")
+                        montant = ToDouble(TXT_montant2.Text);
+
+                    List<Member> membres = DataMapping.ListMembers(cric: club.cric, sort: "name ASC");
+
+                    bool tenir_compte_membres_prorata_temporis = CB_Generer_ProrataTemporis.Checked;
+
+                    commande.Details=new List<Order.Detail>();
+                    commande.id=int.Parse(id);
+                    commande.amount=0;
+                    commande.dt = DateTime.Now;
+                  
+                   
+                    double cumul_prorata_temporis = 0;
+                    int nb_jours = 0;
+                    foreach (Member membre in membres.OrderBy(m => m.surname))
+                    {
+                        if (membre.honorary_member=="N")
+                        {
+                            Order.Detail detail = new Order.Detail();
+                            detail.wording = membre.surname + " " + membre.name + " (" + membre.nim + ")";
+                            detail.amount = montant;
+                            detail.quantity = 1;
+                            detail.unitary = montant;
+                            detail.id_parent = membre.nim;
+
+                            commande.Details.Add(detail);
+
+                            if (tenir_compte_membres_prorata_temporis)
+                            {
+                                DateTime start_date = new DateTime(commande.dt.Year, 1, 1);
+                                DateTime end_date = new DateTime(commande.dt.Year, 7, 1);
+                                if (commande.dt.Month<7)
+                                {
+                                    start_date = new DateTime(commande.dt.Year-1, 7, 1);
+                                    end_date = new DateTime(commande.dt.Year, 1, 1);
+                                }
+
+                                if (membre.year_membership_rotary>=start_date && membre.year_membership_rotary<end_date)
+                                {
+
+                                    TimeSpan span = new TimeSpan(end_date.Ticks - start_date.Ticks);
+                                    int nbdays = span.Days;
+                                    span = new TimeSpan(end_date.Ticks - ((DateTime)membre.year_membership_rotary).Ticks);
+
+                                    double prorata = (double)span.Days/(double)nbdays;
+                                    nb_jours += span.Days;
+
+                                    double montant_prorata = Math.Round(prorata * montant, 2);
+
+                                    cumul_prorata_temporis+=montant_prorata;
+                                }
+
+
+                            }
+                        }
+                    }
+                    commande.amount = montant * (commande.Details.Count- club.nb_free_of_charge);
+
+                    if (tenir_compte_membres_prorata_temporis && cumul_prorata_temporis>0)
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = "Cumul cotisation(s) membre(s) entré(s) pendant le semestre précédent\nau prorata temporis ("+nb_jours+" jours) :";
+
+                        detail.id_parent=0;
+                        detail.unitary=cumul_prorata_temporis;
+                        detail.quantity = 1;
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        if (detail.amount>0)
+                        {
+                            commande.Details.Insert(0, detail);
+                            commande.amount+=detail.amount;
+                        }
+
+                    }
+                    if (TXT_ligneSup22.Text.Trim()!="" && club.club_type=="rotaract")
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = TXT_ligneSup22.Text;
+
+                        detail.id_parent=0;
+                        detail.unitary=ToDouble(TXT_montantsup22.Text);
+                        detail.quantity = 1;
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        commande.Details.Insert(0, detail);
+                        commande.amount+=detail.amount;
+                    }
+                    if (TXT_ligneSup21.Text.Trim()!="" && club.club_type=="rotaract")
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = TXT_ligneSup21.Text;
+
+                        detail.id_parent=0;
+                        detail.unitary=ToDouble(TXT_montantsup21.Text);
+                        detail.quantity = 1;
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        commande.Details.Insert(0, detail);
+                        commande.amount+=detail.amount;
+                    }
+                    if (TXT_ligneSup12.Text.Trim()!="" && club.club_type=="rotary")
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = TXT_ligneSup12.Text;
+
+                        detail.id_parent=0;
+                        detail.unitary=ToDouble(TXT_montantsup12.Text);
+                        detail.quantity = 1;
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        commande.Details.Insert(0, detail);
+                        commande.amount+=detail.amount;
+                    }
+                    if (TXT_ligneSup11.Text.Trim()!="" && club.club_type=="rotary")
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = TXT_ligneSup11.Text;
+
+                        detail.id_parent=0;
+                        detail.unitary=ToDouble(TXT_montantsup11.Text);
+                        detail.quantity = 1;
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        commande.Details.Insert(0, detail);
+                        commande.amount+=detail.amount;
+                    }
+
+
+
+                    if (Const.DISTRICT_ID==1680)
+                    {
+                        Order.Detail detail = new Order.Detail();
+                        detail.wording = "Participation semestrielle aux manifestations :";
+                        if (commande.Details.Count>40)
+                            detail.unitary = 900/2;
+                        else if (commande.Details.Count>30)
+                            detail.unitary = 720/2;
+                        else if (commande.Details.Count>20)
+                            detail.unitary = 540/2;
+                        else
+                            detail.unitary = 360/2;
+
+                        detail.quantity = 1;
+
+                        detail.amount = detail.quantity * detail.unitary;
+                        detail.id_parent = 0;
+                        commande.Details.Insert(0, detail);
+
+                        commande.amount+=detail.amount;
+                    }
+
+                    tbx_amount.Text=FromDouble(commande.amount);
+
+                    p_result.Visible=true;
+                    if (DataMapping.UpdateOrder(commande))
+                    {
+                        p_result.CssClass="alert alert-success";
+                        l_result.Text += "Facture regénérée pour " + membres.Count + " membres pour un montant de "+commande.amount.ToString("#,##0.00")+" €";
+                    }
+                    else
+                    {
+                        p_result.CssClass="alert alert-danger";
+                        l_result.Text += "Erreur regénération";
+                    }
+                        
+
+
+                }
+
+            }
         }
     }
 }

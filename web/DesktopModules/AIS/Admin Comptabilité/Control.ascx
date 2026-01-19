@@ -206,7 +206,7 @@
        </div>
        <div class="col-md-7">
        
-            <em class="text-info">ATTENTION : le changement de montant, change le montant de la facture</em>
+            <em class="text-info">ATTENTION : le changement de montant, change le montant de la facture lors de la validation</em>
         </div>
     </div>
     <div class="pe-spacer size10"></div>
@@ -250,8 +250,24 @@
             <asp:TextBox TextMode="MultiLine" ID="tbx_info" runat="server" CssClass="form-control" Height="200"></asp:TextBox>
         </div>
     </div>
-    <asp:Button ID="btn_validate" runat="server" Text="Valider le règlement" CssClass="btn btn-primary"  OnClick="btn_validate_Click"/>
-    <asp:Button ID="btn_cancel" runat="server" Text="Annuler" CssClass="btn btn-default" OnClick="btn_cancel_Click" />
+    <div >
+        <div class="alert alert-info">
+            Vous pouvez regénérer la facture dans le cas ou l'effectif aurait été remis à jour et que vous souhaitez avoir la bonne liste de membres dans la facture, le montant est aussi recalculé et remplace celui de cet écran vous pouvez alors valider votre règlement.
+        </div>
+        <asp:Panel runat="server" ID="p_result">
+            <asp:Literal runat="server" ID="l_result"></asp:Literal>
+        </asp:Panel>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">        
+            <asp:Button ID="btn_regen" runat="server" Text="Régénérer la facture" CssClass="btn btn-warning text-right" OnClientClick="return confirm('Voulez-vous vraiment régénérer la facture ? Le fichier précédent sera écrasé.');" OnClick="btn_regen_Click" />
+        </div>
+        <div class="col-sm-6 text-right">
+            <asp:Button ID="btn_validate" runat="server" Text="Valider le règlement" CssClass="btn btn-primary"  OnClick="btn_validate_Click"/>
+            <asp:Button ID="btn_cancel" runat="server" Text="Annuler" CssClass="btn btn-default" OnClick="btn_cancel_Click" />
+        </div>
+        
+    </div>
 </asp:Panel>
 <asp:Panel runat="server" ID="P_Admin_Commands" visible="false">
     <div class="pe-spacer size10"></div>
