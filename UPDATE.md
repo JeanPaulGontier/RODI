@@ -17,7 +17,8 @@
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - annuaire inter district rodi
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
-- dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche
+- dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche 
+- ajouter le sélecteur de club dans les modules nouveaux entrants et membres résiliés (D1780)
 - corriger le bug du rotary_agreement_date (D1780)
 
 ###### 19/01/2026
