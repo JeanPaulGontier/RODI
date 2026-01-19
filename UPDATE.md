@@ -19,6 +19,8 @@
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 - dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche
 
+###### 19/01/2026
+- ajout du nb de jours au prorata temporis pris en compte dans les factures district
 ###### 15/01/2026
 - dans la comptabilité district
 	- ajout de la possibilité de facturer les clubs rotaracts
