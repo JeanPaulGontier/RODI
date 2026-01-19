@@ -417,7 +417,11 @@ namespace AIS
                     commande.id_payment = "" + row["id_payment"];
                     commande.amount = (double)row["amount"];
                     commande.rule = "" + row["rule"];
-                    commande.rule_dt = (DateTime)row["dt_rule"];
+                    if (row["dt_rule"]==DBNull.Value)
+                        commande.rule_dt = new DateTime(1900,1,1);
+                    else
+                        commande.rule_dt = (DateTime)row["dt_rule"];
+
                     commande.rule_info = "" + row["info_rule"];
                     commande.rule_par = "" + row["par_rule"];
                     commande.rule_type = "" + row["type_rule"];
@@ -614,6 +618,7 @@ namespace AIS
                 sql.Parameters.AddWithValue("@type_rule", obj.rule_type);
                 sql.Parameters.AddWithValue("@par_rule", obj.rule_par);
                 sql.Parameters.AddWithValue("@dt_rule", obj.rule_dt);
+
                 sql.Parameters.AddWithValue("@dt", obj.dt);
                 sql.Parameters.AddWithValue("@transaction_id", obj.transaction_id);
 

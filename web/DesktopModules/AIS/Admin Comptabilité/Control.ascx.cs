@@ -541,7 +541,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                         detail.unitary = montant;
                         detail.id_parent = membre.nim ;
 
-                        commande.Details.Add(detail);
+                        
 
                         if (tenir_compte_membres_prorata_temporis)
                         {
@@ -563,13 +563,18 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                                 double prorata = (double)span.Days/(double)nbdays;
                                 nb_jours += span.Days;
 
+                                detail.wording = membre.surname + " " + membre.name + " (" + membre.nim +" - "+span.Days+" jours)";
+
                                 double montant_prorata = Math.Round(prorata * montant, 2);
                                 
                                 cumul_prorata_temporis+=montant_prorata;
                             }
 
-                            
+                        
                         }
+                        
+                        commande.Details.Add(detail);
+                        
                     }
                 }
                 commande.amount = montant * (commande.Details.Count- club.nb_free_of_charge);
@@ -796,7 +801,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
         DateTime.TryParse("" + tbx_date.Text, out dt);
         o.rule_dt = dt;
         o.rule = rbl_type.SelectedValue!=""?"O":"N";
-       // o.rule_dt = DateTime.Now;
+        if (o.rule=="N")
+            o.rule_dt=new DateTime(1900,1,1);
 
         DataMapping.UpdateOrder(o);
         RefreshGridOrders();
@@ -981,7 +987,7 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                             detail.unitary = montant;
                             detail.id_parent = membre.nim;
 
-                            commande.Details.Add(detail);
+                            
 
                             if (tenir_compte_membres_prorata_temporis)
                             {
@@ -1003,6 +1009,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                                     double prorata = (double)span.Days/(double)nbdays;
                                     nb_jours += span.Days;
 
+                                    detail.wording = membre.surname + " " + membre.name + " (" + membre.nim +" - "+span.Days+" jours)";
+
                                     double montant_prorata = Math.Round(prorata * montant, 2);
 
                                     cumul_prorata_temporis+=montant_prorata;
@@ -1010,6 +1018,8 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
 
 
                             }
+
+                            commande.Details.Add(detail);
                         }
                     }
                     commande.amount = montant * (commande.Details.Count- club.nb_free_of_charge);
