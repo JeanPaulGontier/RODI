@@ -21,6 +21,8 @@
 - ajouter le sélecteur de club dans les modules nouveaux entrants et membres résiliés (D1780)
 - corriger le bug du rotary_agreement_date (D1780)
 
+###### 21/01/2026
+- modification du fonctionnement du block nouvelles, maintenant quand il n'y a pas de photo d'accroche la nouvelle n'est plus affichée
 ###### 19/01/2026
 - correction pb arrondi dans total prorata temporis
 - ajout du nb de jours au prorata temporis sur chaque membre concerné dans les factures district qui utilisent le rattrapage du semestre précédent

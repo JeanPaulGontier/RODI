@@ -1,6 +1,12 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 21/01/2026
+```txt
+DesktopModules\AIS\News Visu\News.ascx.cs
+App_Code\AIS\Block.cs
+DesktopModules\RazorModules\RazorHost\Scripts\BlocksContent\BlockNewsCards.cshtml
+```
 ###### 19/01/2026
 ```txt
 DesktopModules\AIS\Admin Comptabilité\Control.ascx

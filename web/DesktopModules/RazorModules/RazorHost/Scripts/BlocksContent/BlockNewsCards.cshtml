@@ -113,7 +113,7 @@
 
                     <div class="card" v-for="n in news">
                         <a :href="uri(n)" :target="target(n)">
-                            <img :src="n.photo" :alt="n.title">
+                            <img :src="n.photo" :alt="n.title" v-if="n.photo">
                             <span class="news-type" style="color:turquoise;">
                                 <span>{{n.tag1}}</span>
                             </span>
@@ -129,7 +129,7 @@
 
 
                 </div>
-                <div class="text-center" v-if="c.Uri_All">
+                <div class="text-center" v-if="c.Uri_All && news && news.length>0">
                     <a :href="c.Uri_All.Href" :target="c.Uri_All.Target" class="btn btn-outline">en voir plus...</a>
                 </div>
             </div>
@@ -137,10 +137,9 @@
     </div>
 </script>
 <script>
-    if (typeof BlockNewsCards == 'undefined')
-    {
+    if (typeof BlockNewsCards == 'undefined') {
 
-        BlockNewsCards =  {
+        BlockNewsCards = {
             template: '#blocknewscards-template',
             name: 'BlockNewsCards',
             props: [
@@ -153,12 +152,12 @@
             ],
             data() {
                 return {
-                    news:null,
-                    redirectOnClick:false,
+                    news: null,
+                    redirectOnClick: false,
                     colorsList: BGCOLORSLIST,
                     editing: false,
-                    color:null,
-                    c: {                        
+                    color: null,
+                    c: {
                     },
                     fichiers: [],
                     e: {
@@ -167,13 +166,19 @@
                         Next: true,
                         Tags_Included: '',
                         Tags_Excluded: '',
-                        Color: null                  
+                        Color: null,
+                        Uri_District: { Href: '', Target: '' },
+                        Uri_Clubs: { Href: '', Target: '' },
+                        Uri_All: { Href: '', Target: '' },
+                        RI: false,
+                        Nb_Max: 3,
+                        Button_More:false
                     },
 
 
 
                 }
-                        },
+            },
             components: {
 
             },
@@ -183,9 +188,9 @@
                         return n.url;
                     if (n.cric == 0) {
                         return this.c.Uri_District.Href + n.id;
-                    } 
-                    return this.c.Uri_Clubs.Href +  n.id;
-                  
+                    }
+                    return this.c.Uri_Clubs.Href + n.id;
+
                 },
                 target(n) {
                     if (n.cric == 0) {
@@ -201,10 +206,23 @@
                     return dd.toLocaleDateString();
                 },
                 getNews() {
+                    
+                    if (!this.c.Uri_District)
+                        this.c.Uri_District = { Href: '', Target: '' };
+                    if (!this.c.Uri_Clubs)
+                        this.c.Uri_Clubs = { Href: '', Target: '' };
+                    if (!this.c.Uri_All)
+                        this.c.Uri_All = { Href: '', Target: '' };
+                    if (!this.c.RI)
+                        this.c.RI = false;
+                    if (!this.c.Nb_Max)
+                        this.c.Nb_Max = 3;
+                    if (!this.c.Button_More)
+                        this.c.Button_More = false;
                     _yemonNews[this.moduleid].service.getData('/GetBlockContentNews',
                         {
                             district: this.c.District,
-                            clubs: this.c.Clubs,                            
+                            clubs: this.c.Clubs,
                             next: this.c.Next,
                             tags_included: this.c.Tags_Included,
                             tags_excluded: this.c.Tags_Excluded,
@@ -213,11 +231,25 @@
                         },
                         (r) => {
                             this.news = JSON.parse(r.data);
-                                                  },
+                            this.news.forEach(n => {                               
+                                if (!n.Uri_District)
+                                    n.Uri_District = { Href: '', Target: '' };
+                                if (!n.Uri_Clubs)
+                                    n.Uri_Clubs = { Href: '', Target: '' };
+                                if (!n.Uri_All)
+                                    n.Uri_All = { Href: '', Target: '' };
+                                if (!n.RI)
+                                    n.RI = false;
+                                if (!n.Nb_Max)
+                                    n.Nb_Max = 3;
+                                if (!n.Button_More)
+                                    n.Button_More = false;
+                            });
+                        },
                         (e) => {
                             console.log(e);
                         }
-                        
+
                     );
                 },
                 edit() {
@@ -228,12 +260,18 @@
                         this.color = this.colorsList[i];
                     else
                         this.color = this.colorsList[0];
-                    if(!this.e.Uri_District)
+                    if (!this.e.Uri_District)
                         this.e.Uri_District = { Href: '', Target: '' };
                     if (!this.e.Uri_Clubs)
                         this.e.Uri_Clubs = { Href: '', Target: '' };
                     if (!this.e.Uri_All)
                         this.e.Uri_All = { Href: '', Target: '' };
+                    if (!this.e.RI)
+                        this.e.RI = false;
+                    if (!this.e.Nb_Max)
+                        this.e.Nb_Max = 3;
+                    if (!this.e.Button_More)
+                        this.e.Button_More = false;
                 },
                 validate() {
                     this.c = JSON.parse(JSON.stringify(this.e));
@@ -242,6 +280,18 @@
                         this.c.Tags_Included = '';
                     if (!this.c.Tags_Excluded)
                         this.c.Tags_Excluded = '';
+                    if (!this.c.Uri_District)
+                        this.c.Uri_District = { Href: '', Target: '' };
+                    if (!this.c.Uri_Clubs)
+                        this.c.Uri_Clubs = { Href: '', Target: '' };
+                    if (!this.c.Uri_All)
+                        this.c.Uri_All = { Href: '', Target: '' };
+                    if (!this.c.RI)
+                        this.c.RI = false;
+                    if (!this.c.Nb_Max)
+                        this.c.Nb_Max = 3;
+                    if (!this.c.Button_More)
+                        this.c.Button_More = false;
 
                     this.editing = false;
                     this.onChange();
@@ -257,12 +307,11 @@
 
 
             },
-            mounted()
-            {
+            mounted() {
                 this.c = this.content;
                 this.getNews();
             }
-         }
+        }
     }
 
 

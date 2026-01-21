@@ -119,7 +119,9 @@ public partial class DesktopModules_AIS_News_Visu_News : PortalModuleBase
             if (seo != null && seo != "")
             {
                 Club club = DataMapping.GetClubBySeo(seo);
-                cric = club.cric;
+                if (club!=null)
+                    cric = club.cric;
+
             }
 
 

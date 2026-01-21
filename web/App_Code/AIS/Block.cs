@@ -158,6 +158,7 @@ namespace AIS
                 Tags_Included = "";
                 if(Nb_Max==0)
                     Nb_Max = DefaultNBMax;
+                
             }
 
             public static String[] TagsList()
@@ -213,7 +214,7 @@ namespace AIS
                                                                 onlyvisible: true);
 
                                 foreach (var n in liste)
-                                    if (!n.photo.StartsWith("/"))
+                                    if (!string.IsNullOrEmpty(n.photo) && !(""+n.photo).StartsWith("/"))
                                         n.photo=Const.MEDIA_URL+n.photo;
                             }
 
@@ -250,7 +251,7 @@ namespace AIS
                                                                     where: " dt<'"+today+"'",
                                                                     onlyvisible: true);
                                 foreach (var n in liste)
-                                    if (!n.photo.StartsWith("/"))
+                                    if (!string.IsNullOrEmpty(n.photo) && !(""+n.photo).StartsWith("/"))
                                         n.photo=Const.MEDIA_URL+n.photo;
                             }
 
