@@ -235,7 +235,7 @@
             <asp:RadioButtonList runat="server" ID="SEO_MODE" RepeatDirection="Vertical">
                 <asp:ListItem Text="Carte de visite" Value=""></asp:ListItem>
                 <asp:ListItem Text="Site" Value="m"></asp:ListItem>
-                <asp:ListItem Text="Site avec domaine" Value="d"></asp:ListItem>
+                <asp:ListItem Text="Site avec domaine" Value="d" Enabled="false"></asp:ListItem>
             </asp:RadioButtonList>
         </div>
     </div> 

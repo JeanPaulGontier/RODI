@@ -163,6 +163,7 @@ namespace AIS
                     {
                         throw new Exception("Erreur récupération club : "+club.ClubName+" ("+club.ClubId+")");
                     }
+                    c.requestorOrganizations = club.requestorOrganizations;
                     clubs.Add(c);
                 }
                 return clubs;
@@ -548,11 +549,12 @@ retry:
                     if (Const.ROTARY_SYNCHRO_FULL_LOG)
                         result += "<p>" + club.ClubId + " : " + club.ClubName + "</p>";
 
-                    SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
-                    sql.Parameters.AddWithValue("cric", club.ClubId);
-
+                    
                     if (club.requestorOrganizations.Count > 0)
                     {
+                        SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
+                        sql.Parameters.AddWithValue("cric", club.ClubId);
+
                         sql.Parameters.AddWithValue("rotary_agreement_date", (DateTime)club.requestorOrganizations[0].LastUpdated);
                         Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
                     }

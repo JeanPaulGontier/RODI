@@ -4,6 +4,9 @@
 ###### 22/01/2026
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
+App_Code\AIS\rotary\RotaryHelper.cs
 ```
 ###### 21/01/2026
 ```txt

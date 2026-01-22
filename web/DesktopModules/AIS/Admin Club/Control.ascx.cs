@@ -78,6 +78,7 @@ using DotNetNuke.Security.Membership;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using System.Net;
+using Microsoft.VisualBasic.ApplicationServices;
 
 public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
 {
@@ -214,6 +215,8 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         tbx_web.Enabled = true;
         tbx_zip.Enabled = true;
 
+        tbx_domaine.ReadOnly=!(UserInfo.IsAdmin || UserInfo.IsSuperUser);
+        SEO_MODE.Items[2].Enabled=UserInfo.IsAdmin || UserInfo.IsSuperUser;
     }
 
     protected void btn_validate_Click(object sender, EventArgs e)
