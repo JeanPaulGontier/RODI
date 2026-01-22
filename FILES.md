@@ -1,6 +1,10 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 22/01/2026
+```txt
+DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml
+```
 ###### 21/01/2026
 ```txt
 DesktopModules\AIS\News Visu\News.ascx.cs

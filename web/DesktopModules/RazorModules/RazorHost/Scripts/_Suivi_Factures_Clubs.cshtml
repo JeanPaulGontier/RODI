@@ -36,55 +36,67 @@
         </h3>
 
 
-        DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
-            "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
-            "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
-            "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
-            "FROM [ais_orders] O  where id_payment='" + payment.id + "' order by "+sortby+" "+sortorder);
+                    DataSet ds = DataMapping.ExecSql("SELECT cric,club,id as 'no commande',amount as 'montant',type_rule as 'moyen',par_rule as 'par qui',dt,dt_rule as 'date reglement',[rule] as 'regle',info_rule as 'commentaire'," +
+                        "(select top 1 RoleName from Roles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric)) as groupe," +
+                        "(select top 1 displayname from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as adg," +
+                        "(select top 1 email from users where userid in (select top 1 UserID from UserRoles where RoleID = (SELECT roles from ais_clubs WHERE cric = O.cric))) as email " +
+                        "FROM [ais_orders] O  where id_payment='" + payment.id + "' order by "+sortby+" "+sortorder);
 
-        List<DataTable> liste = new List<DataTable>();
-        liste.Add(ds.Tables[0]);
-        Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
-        string guid = Guid.NewGuid().ToString();
-        Session[guid] = media;
-        //List<Order> orders= DataMapping.ListOrderByPayment(payment.id, sort: "club ASC", cric: 0);
-        if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-        {
-            int NbResteAPayer=0;
-            double MontantAttendu =0;
-            double MontantResteAPayer =0;
-            double MontantParCheque =0;
-            double MontantParVirement = 0;
-            double MontantParPrelevement = 0;
 
-            foreach (DataRow order in ds.Tables[0].Rows)
-            {
-                double montant = (double)order["montant"];
-                MontantAttendu += montant;
-                bool paye = ("" + order["regle"]).Equals(Const.YES);
-                if(paye)
-                {
-                    if (("" + order["moyen"]).Equals("Virement"))
+                    double cumul_montant_prorata = 0;
+                    try
                     {
-                        MontantParVirement += montant;
+                        cumul_montant_prorata= Math.Round((double)Yemon.dnn.DataMapping.ExecSqlScalar("SELECT sum(amount) from ais_orders_details where wording like '%prorata%' and id_parent=0 and id_order in (SELECT [id] FROM [ais_orders] where id_payment='"+payment.id+"')"), 2);
                     }
-                    else if (("" + order["moyen"]).Equals("Chèque"))
+                    catch { }
+
+                    List<DataTable> liste = new List<DataTable>();
+                    liste.Add(ds.Tables[0]);
+                    Media media = DataMapping.ExportDataTablesToXLS(liste, "Liste des commandes au " + DateTime.Now.ToShortDateString().Replace("/", "-") + ".xls", Aspose.Cells.SaveFormat.Excel97To2003);
+                    string guid = Guid.NewGuid().ToString();
+                    Session[guid] = media;
+                    //List<Order> orders= DataMapping.ListOrderByPayment(payment.id, sort: "club ASC", cric: 0);
+                    if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                     {
-                        MontantParCheque += montant;
-                    }
-                    else if (("" + order["moyen"]).Equals("Prélèvement"))
-                    {
-                        MontantParPrelevement += montant;
-                    }
-                }
-                else
-                {
-                    MontantResteAPayer += montant;
-                    NbResteAPayer += 1;
-                }
-            }
+                        int NbResteAPayer=0;
+                        double MontantAttendu =0;
+                        double MontantResteAPayer =0;
+                        double MontantParCheque =0;
+                        double MontantParVirement = 0;
+                        double MontantParPrelevement = 0;
+
+                        foreach (DataRow order in ds.Tables[0].Rows)
+                        {
+                            double montant = (double)order["montant"];
+                            MontantAttendu += montant;
+                            bool paye = ("" + order["regle"]).Equals(Const.YES);
+                            if(paye)
+                            {
+                                if (("" + order["moyen"]).Equals("Virement"))
+                                {
+                                    MontantParVirement += montant;
+                                }
+                                else if (("" + order["moyen"]).Equals("Chèque"))
+                                {
+                                    MontantParCheque += montant;
+                                }
+                                else if (("" + order["moyen"]).Equals("Prélèvement"))
+                                {
+                                    MontantParPrelevement += montant;
+                                }
+                            }
+                            else
+                            {
+                                MontantResteAPayer += montant;
+                                NbResteAPayer += 1;
+                            }
+                        }
             <div>
                 <em>Montant attendu : @MontantAttendu.ToString("#,##0.00") &euro;, montant reste &agrave; payer : @MontantResteAPayer.ToString("#,##0.00") &euro;, nb reste &agrave; payer : @NbResteAPayer, total par virement : @MontantParVirement.ToString("#,##0.00")  &euro;,  par ch&egrave;que : @MontantParCheque.ToString("#,##0.00")  &euro;,  par prélèvement : @MontantParPrelevement.ToString("#,##0.00")  &euro;</em>
+                @if (cumul_montant_prorata>0)
+                {
+                <em>Cumul montant membres entrés au semestre précédent (prorata temporis) : @cumul_montant_prorata.ToString("#,##0.00") &euro;</em>
+                }                
             </div>
             <table class="table table-striped">
                 <tr>
