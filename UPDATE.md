@@ -16,11 +16,10 @@
 - ajouter la gestion des réseaux sociaux du club et du district (D1760)
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - annuaire inter district rodi
-- dans le block d'affichage des nouvelles, masquer les nouvelles qui n'ont pas au minimum une image d'accroche 
 - ajouter le sélecteur de club dans les modules nouveaux entrants et membres résiliés (D1780)
-- corriger le bug du rotary_agreement_date (D1780)
 
 ###### 22/01/2026
+- corriger le bug du rotary_agreement_date (D1780)
 - ajout du montant cumulé des membres entrés au semestre précédent dans le suivi de facture des clubs
 - verrouillage de la modification du nom de domaine du club pour éviter les erreurs de manipulations (D1680)
 ###### 21/01/2026
