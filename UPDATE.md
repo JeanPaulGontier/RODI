@@ -1,22 +1,22 @@
 ###### en cours, sera installé lors d'une prochaine MAJ
-- ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
+- ajouter la gestion des réseaux sociaux du club et du district (D1760)
 - nouveau : possibilité de créer des listes de contacts externes (optin & optout) pour les mailings et notifications de réunions (exemple : abonnés newsletter du clubs, prospects du clubs, etc.) avec utilisation de plateforme de mass mailing du club (brevo, mailjet, mail personnel du club)
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
-- nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
-- déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
-- fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
 - possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
-- nouvelle version de l'app mobile (gestion des notifications)
+- ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
+- fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
+- déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - créer un module de carte du district pour autopositionner les clubs sur une carte (D1770)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
-- ajouter la gestion des réseaux sociaux du club et du district (D1760)
+- nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
-- annuaire inter district rodi
 - ajouter le sélecteur de club dans les modules nouveaux entrants et membres résiliés (D1780)
+- annuaire inter district rodi
+- nouvelle version de l'app mobile (gestion des notifications)
 
 ###### 22/01/2026
 - corriger le bug du rotary_agreement_date (D1780)
