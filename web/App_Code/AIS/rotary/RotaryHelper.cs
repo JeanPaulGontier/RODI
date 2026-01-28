@@ -157,13 +157,14 @@ namespace AIS
                 clubs = new List<Rotary.Club>();
                 foreach (var club in liste)
                 {
-                    var c = Get_Club_Profile(club.ClubType, club.ClubId, out result);
+                    string r = "";
+                    var c = Get_Club_Profile(club.ClubType, club.ClubId, out  r);
 
                     if (String.IsNullOrEmpty(task.Result))
                     {
                         throw new Exception("Erreur récupération club : "+club.ClubName+" ("+club.ClubId+")");
                     }
-                    c.requestorOrganizations = club.requestorOrganizations;
+
                     clubs.Add(c);
                 }
                 return clubs;
