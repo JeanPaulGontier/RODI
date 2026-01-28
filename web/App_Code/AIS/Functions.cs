@@ -1624,43 +1624,70 @@ namespace AIS
                 {
                     string nom = "" + row["name"];
                     nom = GetSEO(nom).ToLower();
-                    string cric = "" + row["cric"];
-                    string seo_mode = "" + row["seo_mode"];
-                    string domaine = "" + row["domaine"];
+                    if(nom!="")
+                    {
+                        string cric = "" + row["cric"];
+                        string seo_mode = "" + row["seo_mode"];
+                        string domaine = "" + row["domaine"];
 
-                    sql = new SqlCommand("UPDATE ais_clubs SET seo=@seo WHERE cric=@cric", conn);
-                    sql.Parameters.AddWithValue("seo", nom);
-                    sql.Parameters.AddWithValue("cric", cric);
-                    sql.ExecuteNonQuery();
-                    lines[i] = nom + ","+seo_mode+","+domaine;
+                        #region autocorrection des incohérences domaine/seo_mode                        
+                        if (seo_mode!="d")
+                            domaine="";
+                        if (seo_mode=="d")
+                        {
+                            if(domaine.Trim()=="")
+                                seo_mode="m";
+                            else if(domaine.ToLower().StartsWith("http://"))
+                                domaine = domaine.Substring(7);
+                            else if (domaine.ToLower().StartsWith("https://"))
+                                domaine = domaine.Substring(8);
 
-                    //TXT_Result.Text += TXT_Result.Text + nom + "<br/>";
+                            if(domaine.EndsWith("/"))
+                                domaine = domaine.Substring(0, domaine.Length - 1);
+                            if(domaine.Contains(" "))
+                            {
+                                domaine = "";
+                                seo_mode= "m";
+                            }
+                                
+                        }
+                        #endregion
 
-                    zonesb.Append(nom + "\tCNAME\t" + host + "." + Environment.NewLine);
-                    redirsb.Append(nom +"."+  domain + " " + Const.DISTRICT_URL + "/" + nom + "/ 301" + Environment.NewLine);
-                    iisbindings.Append("<binding protocol=\"http\" bindingInformation=\"*:80:"+ nom +"."+ domain + "\" />" + Environment.NewLine);
+                        sql = new SqlCommand("UPDATE ais_clubs SET seo=@seo,domaine=@domaine WHERE cric=@cric", conn);
+                        sql.Parameters.AddWithValue("seo", nom);
+                        sql.Parameters.AddWithValue("cric", cric);
+                        sql.Parameters.AddWithValue("domaine", domaine);
+                        sql.ExecuteNonQuery();
+                        lines[i] = nom + ","+seo_mode+","+domaine;
 
-                    string chemin = httpContext.Server.MapPath("/Portals/0/Clubs/" + nom);
-                    try
-                    {
-                        Directory.CreateDirectory(chemin);
-                    }
-                    catch
-                    {
-                    }
-                    try
-                    {
-                        Directory.CreateDirectory(chemin + "/Documents");
-                    }
-                    catch
-                    {
-                    }
-                    try
-                    {
-                        Directory.CreateDirectory(chemin + "/Images");
-                    }
-                    catch
-                    {
+                      
+
+                        zonesb.Append(nom + "\tCNAME\t" + host + "." + Environment.NewLine);
+                        redirsb.Append(nom +"."+  domain + " " + Const.DISTRICT_URL + "/" + nom + "/ 301" + Environment.NewLine);
+                        iisbindings.Append("<binding protocol=\"http\" bindingInformation=\"*:80:"+ nom +"."+ domain + "\" />" + Environment.NewLine);
+
+                        string chemin = httpContext.Server.MapPath("/Portals/0/Clubs/" + nom);
+                        try
+                        {
+                            Directory.CreateDirectory(chemin);
+                        }
+                        catch
+                        {
+                        }
+                        try
+                        {
+                            Directory.CreateDirectory(chemin + "/Documents");
+                        }
+                        catch
+                        {
+                        }
+                        try
+                        {
+                            Directory.CreateDirectory(chemin + "/Images");
+                        }
+                        catch
+                        {
+                        }
                     }
 
                     i++;

@@ -1,6 +1,16 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 28/01/2026
+```txt
+App_Code\AIS\rotary\RotaryHelper.cs
+App_Code\AIS\Const.cs
+App_Code\AIS\Functions.cs
+DesktopModules\AIS\Admin Club\Control.ascx
+DesktopModules\AIS\Admin Club\Control.ascx.cs
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
+DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+```
 ###### 22/01/2026
 ```txt
 DesktopModules\RazorModules\RazorHost\Scripts\_Suivi_Factures_Clubs.cshtml

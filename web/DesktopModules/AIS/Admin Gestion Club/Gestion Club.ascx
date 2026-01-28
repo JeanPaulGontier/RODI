@@ -307,8 +307,8 @@
         <div class="col-sm-8">
             <asp:RadioButtonList runat="server" ID="SEO_MODE" RepeatDirection="Vertical">
                 <asp:ListItem Text="Carte de visite" Value=""></asp:ListItem>
-                <asp:ListItem Text="Site" Value="m"></asp:ListItem>
-                <asp:ListItem Text="Site avec domaine" Value="d"></asp:ListItem>
+                <asp:ListItem Text="Site district" Value="m"></asp:ListItem>
+                <asp:ListItem Text="Site district avec nom de domaine" Value="d" Enabled="false"></asp:ListItem>
             </asp:RadioButtonList>
         </div>
     </div> 
@@ -323,9 +323,8 @@
             <div class="col-sm-4">  
         </div>
               <div class="col-sm-8">
-                         <em class="text-info">ATTENTION : le site avec domaine sur le district nécessite un paramétrage technique, contactez le webmaster pour en savoir plus</em>
-     
-                  </div>
+                  <em class="text-warning">ATTENTION : pour activer le site district avec nom de domaine contactez le support technique (<a href="<%=AIS.Const.RODI_SUPPORT_EMAIL %>"><%=AIS.Const.RODI_SUPPORT_EMAIL %></a>)</em>     
+              </div>
             </div>
     <h3>Informations pour la carte de visite</h3>
     <div class="row">

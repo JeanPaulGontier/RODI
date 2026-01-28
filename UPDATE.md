@@ -18,6 +18,13 @@
 - annuaire inter district rodi
 - nouvelle version de l'app mobile (gestion des notifications)
 
+###### 28/01/2026
+- verrouillage complet de l'activation des sites de clubs avec domaines afin d'éviter les erreurs de configuration qui pourraient entrainer des disfonctionnement, maintenant seuls les super admins peuvent activer l'option
+- l'outil de maj des seo clubs prend en charge l'autocorrection des paramètres
+- l'écran de gestion des paramètres du club a maintenant un message avec l'email responsable district (ou celui du support RODI s'il n'est pas défini)
+- l'écran de gestion des clubs affiche l'email du support RODI
+
+nouveau paramètre config : DistrictAdminEmail (s'il n'est pas défini c'est l'email de support RODI qui est utilisé)
 ###### 22/01/2026
 - corriger le bug du rotary_agreement_date (D1780)
 - ajout du montant cumulé des membres entrés au semestre précédent dans le suivi de facture des clubs

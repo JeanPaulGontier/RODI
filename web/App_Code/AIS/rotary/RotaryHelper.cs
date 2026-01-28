@@ -554,14 +554,11 @@ retry:
                     {
                         SqlCommand sql = new SqlCommand("update ais_clubs set rotary_agreement_date=@rotary_agreement_date where cric=@cric");
                         sql.Parameters.AddWithValue("cric", club.ClubId);
-
                         sql.Parameters.AddWithValue("rotary_agreement_date", (DateTime)club.requestorOrganizations[0].LastUpdated);
                         Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
                     }
 
-
                 }
-
                 else
                     result += "<p style='color:red'>ERREUR : " + club.ClubId + " : " + club.ClubName + "</p>";
 

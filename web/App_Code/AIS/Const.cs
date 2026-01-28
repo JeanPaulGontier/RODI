@@ -73,13 +73,19 @@ namespace AIS
         public const string YES = "O";
         public const string NO_UF = "Non";
         public const string YES_UF = "Oui";
+
+        public const string RODI_SUPPORT_EMAIL ="contact@rodi-platform.org";
+       
         public static DateTime NO_DATE = new DateTime(1900, 1, 1);
+
         public static int DISTRICT_ID = int.Parse("" + System.Configuration.ConfigurationManager.AppSettings["DistrictId"]);
-        
         public static string DISTRICT_GUID = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictGuid"];
         public static string DISTRICT_URL = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictUrl"];
         public static string DISTRICT_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictTitle"]);
         public static string DISTRICT_LOGO_TITLE = HttpUtility.HtmlDecode("" + System.Configuration.ConfigurationManager.AppSettings["DistrictLogoTitle"]);
+        public static string DISTRICT_ADMIN_EMAIL = ("" + System.Configuration.ConfigurationManager.AppSettings["DistrictAdminEmail"])!="" ? 
+                                                    ("" + System.Configuration.ConfigurationManager.AppSettings["DistrictAdminEmail"]):
+                                                    RODI_SUPPORT_EMAIL;
 
         public static string DISTRICT_NEWS_URL_PREFIX = "" + System.Configuration.ConfigurationManager.AppSettings["DistrictNewsUrlPrefix"];
         public static string CLUB_NEWS_URL_PREFIX = "" + System.Configuration.ConfigurationManager.AppSettings["ClubNewsUrlPrefix"];

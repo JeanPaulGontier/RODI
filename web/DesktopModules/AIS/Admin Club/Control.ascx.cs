@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://www.rodi-platform.org
-// Copyright (c) 2012-2025
+// Copyright (c) 2012-2026
 // by SARL AIS : https://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
@@ -215,8 +215,8 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         tbx_web.Enabled = true;
         tbx_zip.Enabled = true;
 
-        tbx_domaine.ReadOnly=!(UserInfo.IsAdmin || UserInfo.IsSuperUser);
-        SEO_MODE.Items[2].Enabled=UserInfo.IsAdmin || UserInfo.IsSuperUser;
+        tbx_domaine.ReadOnly=!UserInfo.IsSuperUser;
+        SEO_MODE.Items[2].Enabled= UserInfo.IsSuperUser;
     }
 
     protected void btn_validate_Click(object sender, EventArgs e)
@@ -252,7 +252,11 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         club.club_type = "" + RB_Type_Club.SelectedValue;
         club.name = tbx_name.Text.ToUpper(); ;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
+
         club.domaine = "" + tbx_domaine.Text;
+        if (club.seo_mode!="d")
+            club.domaine="";
+
         club.rotary_agreement_type = "" + hf_synchroRI.Value;
 
         int last_cric = 0;
