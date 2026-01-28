@@ -1630,7 +1630,8 @@ namespace AIS
                         string seo_mode = "" + row["seo_mode"];
                         string domaine = "" + row["domaine"];
 
-                        #region autocorrection des incohérences domaine/seo_mode                        
+                        #region autocorrection des incohérences domaine/seo_mode
+                        
                         if (seo_mode!="d")
                             domaine="";
                         if (seo_mode=="d")
@@ -1644,7 +1645,7 @@ namespace AIS
 
                             if(domaine.EndsWith("/"))
                                 domaine = domaine.Substring(0, domaine.Length - 1);
-                            if(domaine.Contains(" "))
+                            if(domaine.Contains(" ") || !domaine.Contains("."))
                             {
                                 domaine = "";
                                 seo_mode= "m";
@@ -1653,9 +1654,10 @@ namespace AIS
                         }
                         #endregion
 
-                        sql = new SqlCommand("UPDATE ais_clubs SET seo=@seo,domaine=@domaine WHERE cric=@cric", conn);
+                        sql = new SqlCommand("UPDATE ais_clubs SET seo=@seo,seo_mode=@seo_mode,domaine=@domaine WHERE cric=@cric", conn);
                         sql.Parameters.AddWithValue("seo", nom);
                         sql.Parameters.AddWithValue("cric", cric);
+                        sql.Parameters.AddWithValue("seo_mode", seo_mode);
                         sql.Parameters.AddWithValue("domaine", domaine);
                         sql.ExecuteNonQuery();
                         lines[i] = nom + ","+seo_mode+","+domaine;

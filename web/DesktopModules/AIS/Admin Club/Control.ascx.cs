@@ -252,11 +252,7 @@ public partial class DesktopModules_AIS_Admin_Club : PortalModuleBase
         club.club_type = "" + RB_Type_Club.SelectedValue;
         club.name = tbx_name.Text.ToUpper(); ;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
-
         club.domaine = "" + tbx_domaine.Text;
-        if (club.seo_mode!="d")
-            club.domaine="";
-
         club.rotary_agreement_type = "" + hf_synchroRI.Value;
 
         int last_cric = 0;

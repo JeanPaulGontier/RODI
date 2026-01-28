@@ -319,13 +319,10 @@
             <asp:TextBox ID="tbx_domaine" Width="500" runat="server" placeholder="Saisir le nom de domaine du site"></asp:TextBox>
         </div>
     </div>
-        <div class="row">
-            <div class="col-sm-4">  
-        </div>
-              <div class="col-sm-8">
-                  <em class="text-warning">ATTENTION : pour activer le site district avec nom de domaine contactez le support technique (<a href="<%=AIS.Const.RODI_SUPPORT_EMAIL %>"><%=AIS.Const.RODI_SUPPORT_EMAIL %></a>)</em>     
-              </div>
-            </div>
+        <div>
+            <div class="alert alert-warning">ATTENTION : pour activer le site district avec nom de domaine contactez le support technique (<a href="<%=AIS.Const.RODI_SUPPORT_EMAIL %>"><%=AIS.Const.RODI_SUPPORT_EMAIL %></a>)
+        </div>     
+    </div>
     <h3>Informations pour la carte de visite</h3>
     <div class="row">
         <div class="col-sm-4">

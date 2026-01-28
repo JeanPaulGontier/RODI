@@ -256,7 +256,6 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
             catch { }
             
         btn_delete.Visible = true;
-
         tbx_seo.Enabled = false;
 
         tbx_adr1.Enabled = true;
@@ -338,8 +337,6 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         club.roles = DDL_Role.SelectedValue;
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = tbx_domaine.Text;
-        if (club.seo_mode!="d")
-            club.domaine="";
         club.rotary_agreement_type = RB_synchroRI.SelectedValue;
 
 
