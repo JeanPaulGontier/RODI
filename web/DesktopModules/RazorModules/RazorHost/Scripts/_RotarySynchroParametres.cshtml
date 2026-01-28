@@ -366,7 +366,7 @@
             foreach (var c in clubsd)
             {
                 var club = clubsok.Find(cc => cc.ClubId == c.cric);
-                if (club == null)
+                if (club == null && !c.IsSatellite)
                 {
                     clubsko.Add(c);
                 }

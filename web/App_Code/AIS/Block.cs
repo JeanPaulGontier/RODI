@@ -356,7 +356,13 @@ namespace AIS
 
             public static List<string> ImageList()
             {
-                return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/bulles-img");
+                try { 
+                    return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/bulles-img");
+                }
+                catch
+                {
+                    return new List<string>();
+                }
             }
 
             public class Bulle 
@@ -384,7 +390,15 @@ namespace AIS
 
             public static List<string> ImageList()
             {
-                return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/cards-img");
+                try
+                {
+                    return FileList("/Portals/" + PortalSettings.Current.PortalId + "/blockcontent/cards-img");
+                }
+                catch
+                {
+                    return new List<string>();
+                }
+               
             }
 
             public class Card

@@ -24,6 +24,7 @@
 - l'écran de gestion des paramètres du club a maintenant un message avec l'email responsable district (ou celui du support RODI s'il n'est pas défini)
 - l'écran de gestion des clubs affiche l'email du support RODI
 - correction d'un pb d'autorisation de synchro club
+- suppression de l'affichage des clubs satellites dans les clubs en erreur dans l'écran synchro ri
 
 nouveau paramètre config : DistrictAdminEmail (s'il n'est pas défini c'est l'email de support RODI qui est utilisé)
 ###### 22/01/2026

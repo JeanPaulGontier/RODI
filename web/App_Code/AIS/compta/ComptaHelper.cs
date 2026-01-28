@@ -67,7 +67,6 @@ using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using Telerik.Web;
 using Yemon.dnn.SIPro;
 
 /// <summary>

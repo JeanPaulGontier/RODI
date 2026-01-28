@@ -3,6 +3,8 @@
 ```
 ###### 28/01/2026
 ```txt
+App_Code\AIS\compta\ComptaHelper.cs
+App_Code\AIS\Block.cs
 App_Code\AIS\rotary\RotaryHelper.cs
 App_Code\AIS\Const.cs
 App_Code\AIS\Functions.cs
@@ -11,6 +13,7 @@ DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 App_Code\AIS\rotary\RotaryHelper.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_RotarySynchroParametres.cshtml
 ```
 ###### 22/01/2026
 ```txt
