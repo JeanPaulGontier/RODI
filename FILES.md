@@ -10,6 +10,7 @@ DesktopModules\AIS\Admin Club\Control.ascx
 DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
+App_Code\AIS\rotary\RotaryHelper.cs
 ```
 ###### 22/01/2026
 ```txt

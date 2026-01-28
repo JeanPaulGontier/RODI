@@ -23,6 +23,7 @@
 - l'outil de maj des seo clubs prend en charge l'autocorrection des paramètres
 - l'écran de gestion des paramètres du club a maintenant un message avec l'email responsable district (ou celui du support RODI s'il n'est pas défini)
 - l'écran de gestion des clubs affiche l'email du support RODI
+- correction d'un pb d'autorisation de synchro club
 
 nouveau paramètre config : DistrictAdminEmail (s'il n'est pas défini c'est l'email de support RODI qui est utilisé)
 ###### 22/01/2026
