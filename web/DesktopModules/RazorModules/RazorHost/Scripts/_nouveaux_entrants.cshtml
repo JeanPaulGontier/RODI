@@ -1,39 +1,57 @@
 @using AIS
-@using System.Data.SqlClient 
-@{ 
+@using System.Data.SqlClient
+@{
     string d = "" + Request["debut"];
     string f = "" + Request["fin"];
+    string c = "" + Request["club"];
 
     DateTime debut = DateTime.Now.AddMonths(-2);
     DateTime fin = DateTime.Now;
 
-    if(d!="")
+    if (d!="")
     {
         DateTime.TryParse(d, out debut);
     }
-    if(f!="")
+    if (f!="")
     {
         DateTime.TryParse(f, out fin);
     }
 
+    string sqlclub = "";
+    if (c!="")
+    {
+        sqlclub = " and cric="+c+" ";
+    }
 
-    var sql = new SqlCommand("select * from ais_members where year_membership_rotary >@debut and year_membership_rotary<=@fin order by year_membership_rotary");
-    sql.Parameters.AddWithValue("debut", debut);
-    sql.Parameters.AddWithValue("fin", fin);
+
+    var sql = new SqlCommand("select * from ais_members where year_membership_rotary >@debut and year_membership_rotary<@fin and nim>0 "+sqlclub+" order by year_membership_rotary");
+    sql.Parameters.AddWithValue("debut", debut.AddDays(-1));
+    sql.Parameters.AddWithValue("fin", fin.AddDays(1));
 
     var membres = Yemon.dnn.DataMapping.ExecSql<Member>(sql);
 
-    <div class="form-inline">       
+    <div class="form-inline">
         <label for="debut">Période entre</label>&nbsp;<input type="date" id="debut" name="debut" class="form-control" value="@debut.ToString("yyyy-MM-dd")" />&nbsp;
         <label for="fin">et</label>&nbsp;<input type="date" id="fin" name="fin" class="form-control" value="@fin.ToString("yyyy-MM-dd")" />&nbsp;
-        <button class="btn btn-primary">Mettre à jour</button>               
+        <label for="club">club</label>&nbsp;
+        <select name="club" id="club" class="form-control" style="margin-bottom:8px">
+            <option value="">--- TOUS LES CLUBS ---</option>
+            @foreach (var club in DataMapping.ListClubs(sort: "name"))
+            {
+                <option value="@club.cric" @(c==""+club.cric ? "selected" : "")>@club.name</option>
+            }
+        </select>
+
+        <button class="btn btn-primary" style="margin-bottom:8px">Mettre à jour</button>
     </div>
 
-    if(membres.Count==0){
+    if (membres.Count==0)
+    {
         <div class="alert alert-warning">Aucun nouvel entrant sur la période...</div>
     }
     else
     {
+        <div class="text-right"><small>@membres.Count membre(s) trouvé(s)...</small></div>
         <table class="table table-striped">
             <tr>
                 <th>Nim</th>
@@ -41,26 +59,27 @@
                 <th>Club</th>
                 <th>e-Mail</th>
                 <th>Adhésion</th>
-                
-            </tr>
-            @foreach(var m in membres)
-            {
-            <tr>
-                <td>@m.nim</td>
-                <td>@m.name @m.surname</td>
-                <td>@m.club_name</td>
-                <td>@m.email</td>
-                @if (m.year_membership_rotary != null)
-                {
-                    <td>@(((DateTime)m.year_membership_rotary).ToString("dd/MM/yyyy"))</td>
-                }
-                else
-                {
-                    <td>Date entrée inconnue</td>
-                }
 
             </tr>
+            @foreach (var m in membres)
+            {
+                <tr>
+                    <td>@m.nim</td>
+                    <td>@m.name @m.surname</td>
+                    <td>@m.club_name</td>
+                    <td>@m.email</td>
+                    @if (m.year_membership_rotary != null)
+                    {
+                        <td>@(((DateTime)m.year_membership_rotary).ToString("dd/MM/yyyy"))</td>
+                    }
+                    else
+                    {
+                        <td>Date entrée inconnue</td>
+                    }
+
+                </tr>
             }
+
         </table>
     }
 }

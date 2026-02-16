@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+DesktopModules\RazorModules\RazorHost\Scripts\_membres_termines.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_nouveaux_entrants.cshtml
+Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 ```
 ###### 28/01/2026
 ```txt

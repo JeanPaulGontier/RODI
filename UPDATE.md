@@ -14,9 +14,15 @@
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
-- ajouter le sélecteur de club dans les modules nouveaux entrants et membres résiliés (D1780)
 - annuaire inter district rodi
 - nouvelle version de l'app mobile (gestion des notifications)
+
+- dans les modules nouveaux membres et anciens membres (D1640 D1780)
+	- prise en compte de la date début et fin de période pour éviter toute confusion
+	- ajout du nombre de membres trouvés
+	- ajout du sélecteur de club 
+	- suppression des membres d'honneur dans le module nouveaux membres
+- ajustements sur le fichier modèle de visite du gouverneur Fiche de renseignement club generique gabarit.xlsx (D1640)
 
 ###### 28/01/2026
 - verrouillage complet de l'activation des sites de clubs avec domaines afin d'éviter les erreurs de configuration qui pourraient entrainer des disfonctionnement, maintenant seuls les super admins peuvent activer l'option
