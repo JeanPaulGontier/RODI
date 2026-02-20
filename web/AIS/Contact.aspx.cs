@@ -11,7 +11,15 @@ public partial class AIS_Contact : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-  
+        if (!User.Identity.IsAuthenticated)
+        {
+            P1.Visible = false;
+            Pnl_Coord.Visible= false;
+            Pnl_Bio.Visible = false;
+            return;
+
+        }
+
         int id = 0;
         int.TryParse("" + Request.QueryString["id"], out id);
         if (id > 0)
@@ -466,7 +474,9 @@ public partial class AIS_Contact : System.Web.UI.Page
     }
     protected void BT_Envoyer_Click(object sender, EventArgs e)
     {
-      
+        if (!User.Identity.IsAuthenticated)
+            return;
+
         if (HF_id.Value != "")
         {
             int id = 0;

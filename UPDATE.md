@@ -17,6 +17,7 @@
 - annuaire inter district rodi
 - nouvelle version de l'app mobile (gestion des notifications)
 
+- le formulaire de contact de l'annuaire n'est plus utilisable sur une page publique même si on l'autorise par erreur dans les droits de la page afin d'éviter un risque de spam (D1760)
 - dans les modules nouveaux membres et anciens membres (D1640 D1780)
 	- prise en compte de la date début et fin de période pour éviter toute confusion
 	- ajout du nombre de membres trouvés
