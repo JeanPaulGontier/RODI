@@ -3,6 +3,8 @@
 ```
 ###### 28/02/2026
 ```txt
+AIS\ClubLogo.ascx
+AIS\ClubLogo.ascx.cs
 Portals\_default\Skins\Rodi2017\Controls\Meta.ascx
 Portals\_default\Skins\Rodi2017\Controls\Meta.ascx.cs
 Portals\_default\Skins\Rodi2017\Club.ascx
