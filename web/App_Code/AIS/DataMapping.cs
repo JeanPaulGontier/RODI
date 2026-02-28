@@ -1813,7 +1813,8 @@ namespace AIS
             obj.rotary_agreement_date = rd["rotary_agreement_date"] == DBNull.Value ? null: (DateTime?)rd["rotary_agreement_date"];
             obj.rotary_agreement_type = "" + rd["rotary_agreement_type"];
             if (rd["nb_free_of_charge"] == System.DBNull.Value) obj.nb_free_of_charge = 0; else obj.nb_free_of_charge = (double)rd["nb_free_of_charge"];
-
+            obj.logo=""+rd["logo"];
+            obj.headers = ""+ rd["headers"];
             return obj;
         }
 
@@ -1831,7 +1832,7 @@ namespace AIS
                 conn.Open();
                 trans = conn.BeginTransaction();
 
-                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine,type_club=@type_club,nb_free_of_charge=@nb_free_of_charge,payment_method=@payment_method,rotary_agreement_type=@rotary_agreement_type WHERE cric=@last_cric", conn, trans);
+                SqlCommand sql = new SqlCommand("UPDATE " + Const.TABLE_PREFIX + "clubs SET [district_id]=@district_id,[name]=@name,[adress_1]=@adress_1,[adress_2]=@adress_2,[adress_3]=@adress_3,[zip]=@zip,[town]=@town,[pennant]=@pennant,[meetings]=@meetings,[telephone]=@telephone,[fax]=@fax,[email]=@email,[web]=@web,[text]=@text,[seo]=@seo,[latitude]=@latitude,[longitude]=@longitude,[meeting_adr1]=@meeting_adr1,[meeting_adr2]=@meeting_adr2,[meeting_zip]=@meeting_zip,[meeting_town]=@meeting_town,[former_presidents]=@former_presidents,[cric]=@cric,roles=@roles,seo_mode=@seo_mode,domaine=@domaine,type_club=@type_club,nb_free_of_charge=@nb_free_of_charge,payment_method=@payment_method,rotary_agreement_type=@rotary_agreement_type,logo=@logo,headers=@headers WHERE cric=@last_cric", conn, trans);
 
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@last_cric", last_cric);
@@ -1863,8 +1864,10 @@ namespace AIS
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
                 sql.Parameters.AddWithValue("@type_club", "" + c.club_type);
                 sql.Parameters.AddWithValue("@payment_method", ""+c.payment_method);
-                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);              
+                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
                 sql.Parameters.AddWithValue("@rotary_agreement_type", c.rotary_agreement_type);
+                sql.Parameters.AddWithValue("@headers", c.headers);
+                sql.Parameters.AddWithValue("@logo", c.logo);
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur update club : " + c.cric);
 
@@ -1911,7 +1914,7 @@ namespace AIS
             {
                 conn.Open();
                 trans = conn.BeginTransaction();
-                SqlCommand sql = new SqlCommand("INSERT INTO  " + Const.TABLE_PREFIX + "clubs ([cric],[district_id],[name],[adress_1],[adress_2],[adress_3],[zip],[town],[pennant],[meetings],[telephone],[fax],[email],[web],[text],[seo],[latitude],[longitude],[meeting_adr1],[meeting_adr2],[meeting_zip],[meeting_town],[former_presidents],[type_club],[roles],[seo_mode],[domaine],[payment_method],[nb_free_of_charge],rotary_agreement_type) VALUES (@cric,@district_id,@name,@adress_1,@adress_2,@adress_3,@zip,@town,@pennant,@meetings,@telephone,@fax,@email,@web,@text,@seo,@latitude,@longitude,@meeting_adr1,@meeting_adr2,@meeting_zip,@meeting_town,@former_presidents,@type_club,@roles,@seo_mode,@domaine,@payment_method,@nb_free_of_charge,@rotary_agreement_type)", conn, trans);
+                SqlCommand sql = new SqlCommand("INSERT INTO  " + Const.TABLE_PREFIX + "clubs ([cric],[district_id],[name],[adress_1],[adress_2],[adress_3],[zip],[town],[pennant],[meetings],[telephone],[fax],[email],[web],[text],[seo],[latitude],[longitude],[meeting_adr1],[meeting_adr2],[meeting_zip],[meeting_town],[former_presidents],[type_club],[roles],[seo_mode],[domaine],[payment_method],[nb_free_of_charge],rotary_agreement_type,headers,logo) VALUES (@cric,@district_id,@name,@adress_1,@adress_2,@adress_3,@zip,@town,@pennant,@meetings,@telephone,@fax,@email,@web,@text,@seo,@latitude,@longitude,@meeting_adr1,@meeting_adr2,@meeting_zip,@meeting_town,@former_presidents,@type_club,@roles,@seo_mode,@domaine,@payment_method,@nb_free_of_charge,@rotary_agreement_type,@headers,@logo)", conn, trans);
 
                 sql.Parameters.AddWithValue("@cric", c.cric);
                 sql.Parameters.AddWithValue("@district_id", c.district_id);
@@ -1949,8 +1952,10 @@ namespace AIS
                 sql.Parameters.AddWithValue("@seo_mode", "" + c.seo_mode);
                 sql.Parameters.AddWithValue("@domaine", "" + c.domaine);
                 sql.Parameters.AddWithValue("@payment_method", ""+c.payment_method);
-                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);                
+                sql.Parameters.AddWithValue("@nb_free_of_charge", c.nb_free_of_charge);
                 sql.Parameters.AddWithValue("@rotary_agreement_type", c.rotary_agreement_type);
+                sql.Parameters.AddWithValue("@headers", c.headers);
+                sql.Parameters.AddWithValue("@logo", c.logo);
 
                 if (sql.ExecuteNonQuery() == 0)
                     throw new Exception("Erreur insert club");
@@ -9279,7 +9284,7 @@ cestbon:
                 }
                 sheet.Cells["C43"].Value=(float)nbriaccount/(float)ri_member.Count;
 
-                List<Member> members = ListMembers(Functions.CurrentCric).FindAll(m => m.honorary_member!=Const.YES);
+                List<Member> members = ListMembers(Functions.CurrentCric,sort:"surname").FindAll(m => m.honorary_member!=Const.YES);
                 sheet.Cells["C45"].Value=members.Count;
 
                 var terminated = Yemon.dnn.DataMapping.ExecSql<Rotary.Member_Terminated>(new SqlCommand("select * from "+Const.TABLE_PREFIX+"ri_member_terminated where districtid="+Const.DISTRICT_ID+" and clubid="+ri_club.ClubId));

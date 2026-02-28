@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org
-// Copyright (c) 2012-2025
+// Copyright (c) 2012-2026
 // by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -191,7 +191,8 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
 
 
         Literal ltitle = new Literal();
-        if(fonctionsRI.Count>0)
+      
+        if (fonctionsRI.Count>0)
         {
 
         
@@ -215,6 +216,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             Panel1.Controls.Add(lb);
 
             DropDownList dl = new DropDownList();
+           
             dl.CssClass = "dnnFormItem";
             dl.ID = cric + "_DL_" + fonction;
             dl.Items.Add(new ListItem("--- Personne ---", ""));
@@ -233,7 +235,10 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             dl.SelectedIndex = 0;
             if (DataMapping.CurrentUserIsAdminClub)
                 dl.Attributes.Add("onchange", "javascript: AfficheValider();");
+            if(fonctionsRI.Count>0)
+                dl.Attributes.Add("disabled", "disabled");
             Panel1.Controls.Add(dl);
+
             lit = new Literal();
             lit.Text = "</div>";
             Panel1.Controls.Add(lit);

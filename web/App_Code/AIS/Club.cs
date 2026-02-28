@@ -112,6 +112,8 @@ namespace AIS
         public DateTime? rotary_agreement_date { get; set; }
         public string rotary_agreement_type { get; set; } // '': pas de synchronisation , 'auto': maj auto, 'analyse': analyse seulement
 
+        public string logo { get; set; }
+        public string headers { get; set; }
 
         public string GetSynchroRI()
         {
@@ -129,12 +131,19 @@ namespace AIS
         public string GetPennant()
         {
             string chemin = PortalSettings.Current.HomeDirectory;
-            if (pennant == "")
+            if (string.IsNullOrEmpty(pennant))
                 return "";
 
             return Functions.UrlAddParam(chemin + Const.CLUBS_PREFIX + Const.PENNANT_PREFIX + pennant,"v",""+DateTime.Now.Ticks) ;
         }
+        public string GetLogo()
+        {
+            string chemin = PortalSettings.Current.HomeDirectory;
+            if (string.IsNullOrEmpty(logo))
+                return "";
 
+            return Functions.UrlAddParam(chemin + Const.CLUBS_PREFIX + Const.LOGO_PREFIX + logo, "v", ""+DateTime.Now.Ticks);
+        }
         public string GetPostalAdress()
         {
             string a = name + Environment.NewLine;

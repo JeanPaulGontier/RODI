@@ -310,6 +310,46 @@
     </div>
     </fieldset>
     
+
+     <div class="pe-spacer size40"></div>
+     <hr />
+     <fieldset>
+        <legend>Site internet du club :</legend>
+          <div class="row">
+              <div class="col-sm-4">
+                 <strong>Tags d'en-tête de Page HTML<br />(Google Analytics, Matomo, etc.)  : </strong>
+             </div>
+             <div class="col-sm-8">
+                 <asp:TextBox ID="tbx_website_headers"  TextMode="MultiLine" Width="500" Height="300" runat="server"></asp:TextBox>
+             </div>
+          </div>
+
+
+          <div class="row">
+                <div class="col-sm-4">
+                    <strong>Logo : </strong>
+                </div>
+                <div class="col-sm-4">
+                    <asp:Image ID="img_logo" runat="server" />
+                    <asp:FileUpload ID="FileUploadLogo" runat="server" onchange="OnClientLogoUploaded(this, this.files[0])" accept=".png, .jpeg, .jpg"/>
+                    <div style="display: none">
+                        <asp:Button ID="btn_logo" runat="server" OnClick="btn_logo_Click" Text="Modifier le logo" CssClass="btn btn-primary" />
+                        <script>function OnClientLogoUploaded(sender, args) { var bt = document.getElementById('<%=btn_logo.ClientID %>'); bt.click(); }</script>
+                    </div>
+                    <asp:HiddenField ID="hfd_filename_logo" runat="server" />
+                    <div class="pe-spacer size10"></div>
+                    <asp:Button runat="server"  CssClass="btn btn-xs btn-danger" ID="BT_Effacer_Logo" Text="Supprimer le logo" CausesValidation="false" OnClick="btn_effacer_logo_Click" />
+                </div>   
+                <div class="col-sm-4">
+  
+                </div>
+            </div>
+    </fieldset>
+      <div class="pe-spacer size20"></div>
+    <hr />
+
+
+
     <asp:Button ID="btn_validate" runat="server" Text="Valider" CssClass="btn btn-primary" OnClick="btn_validate_Click" />    
 
 </asp:Panel>

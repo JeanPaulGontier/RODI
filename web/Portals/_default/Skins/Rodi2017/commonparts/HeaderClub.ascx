@@ -39,9 +39,9 @@
                 <img alt="Menu" src="<%=SkinPath %>images/burger-menu.svg"  />
             </a>
             <a href="/" class="logo_style">
-                <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-district<%= AIS.Const.DISTRICT_ID %>.png" />
+                <ais:LOGO runat="server" />
             </a>
-            <h1><ais1:NAME runat="server" ></ais1:NAME></h1>
+            <h1><ais:NAME runat="server" ></ais:NAME></h1>
         </div>
     </header>
 
@@ -95,15 +95,16 @@
 <div class="pc_display">
     <header class="Public pattern_header">
         <div class="skin_width">
+            
             <a href="/" class="logo_style">
-                <img alt="Rotary District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %>" src="<%=SkinPath %>images/rotary-district<%= AIS.Const.DISTRICT_ID %>.png" />
-                 <span><%= AIS.Const.DISTRICT_LOGO_TITLE %></span>
+                <ais:LOGO runat="server" />
+                <span><%= AIS.Const.DISTRICT_LOGO_TITLE %></span>
             </a>
             <div class="icons_menu">
                 <%If Not Request.IsAuthenticated Then%>
 
                     <div class="icon_user text-right">
-                        <h1><ais1:NAME runat="server" ></ais1:NAME></h1>
+                        <h1><ais:NAME runat="server" ></ais:NAME></h1>
                          <%If Request.RawUrl = "/" Then %>
                         <a href="/connexion?returnurl=<%=HttpUtility.UrlEncode("/.") %>" class="btn-connexion" title="connexion">connexion</a>
                         <% Else %>
@@ -120,7 +121,7 @@
                 <%If Request.IsAuthenticated Then%>
                     <div class="icon_user text-right connected">
                         <div id="Login">
-                            <h1><ais1:NAME runat="server" ></ais1:NAME></h1>
+                            <h1><ais:NAME runat="server" ></ais:NAME></h1>
                             <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
 						    <a href="<%= System.Configuration.ConfigurationManager.AppSettings("DistrictUrl") %>" class="Breadcrumb HeadUser">Le District <%= System.Configuration.ConfigurationManager.AppSettings("DistrictId") %></a>
                         </div>

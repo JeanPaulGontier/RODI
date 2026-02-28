@@ -158,7 +158,9 @@ namespace AIS
         public static string IMG_PREFIX = "images/";
         public static string DOCUMENT_PREFIX = "documents/";
         public static string PENNANT_PREFIX = "fanions/";
+        public static string LOGO_PREFIX = "logos/";
         public static int PENNANT_PHOTOS_WIDTH = 200;
+
 
         public static string CLUBS_PREFIX = "clubs/";
         public static string CLUBS_MEDIA_PREFIX = "clubs/media/";

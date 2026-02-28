@@ -1,7 +1,7 @@
 ﻿<%@ Control language="vb" CodeBehind="~/admin/Skins/skin.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.UI.Skins.Skin" %>
 <%@ Register TagPrefix="dnn" TagName="CURRENTDATE" Src="~/Admin/Skins/CurrentDate.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="STYLES" Src="~/Admin/Skins/Styles.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="Meta" Src="~/Admin/Skins/Meta.ascx" %>
+<%@ Register TagPrefix="dnn" TagName="Meta" Src="Controls/Meta.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="LANGUAGE" Src="~/Admin/Skins/Language.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="LOGO" Src="~/Admin/Skins/Logo.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="SEARCH" Src="~/Admin/Skins/Search.ascx" %>
@@ -16,7 +16,8 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
 <%@ Register TagPrefix="dnn" TagName="jQuery" src="~/Admin/Skins/jQuery.ascx" %>
 <%@ Register TagPrefix="ais" TagName="MENU" Src="~/AIS/MenuClub.ascx" %>
-<%@ Register TagPrefix="ais1" TagName="NAME" Src="~/AIS/ClubName.ascx" %>
+<%@ Register TagPrefix="ais" TagName="NAME" Src="~/AIS/ClubName.ascx" %>
+<%@ Register TagPrefix="ais" TagName="LOGO" Src="~/AIS/ClubLogo.ascx" %>
 <script runat="server"> 
     Protected Overrides Sub OnInit(e As EventArgs)
         MyBase.OnInit(e)

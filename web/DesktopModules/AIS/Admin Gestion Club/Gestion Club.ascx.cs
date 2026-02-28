@@ -171,6 +171,10 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         p_synchro_ri.Visible = false;
         p_synchro_ri_na.Visible = false;
         RB_synchroRI.SelectedIndex=0;
+        tbx_website_headers.Text = "";
+        img_logo.ImageUrl = "";
+        BT_Effacer_Logo.Visible = false;
+
 
         BindRoleList();
         //btn_addClub.Text = "Ajouter le club rotaract";
@@ -297,6 +301,10 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         tbx_domaine.ReadOnly=!UserInfo.IsSuperUser;
         SEO_MODE.Items[2].Enabled= UserInfo.IsSuperUser;
 
+        tbx_website_headers.Text = club.headers;
+        img_logo.ImageUrl = club.GetLogo();
+        BT_Effacer_Logo.Visible = !string.IsNullOrEmpty(club.logo);
+        hfd_filename_logo.Value = club.logo;
     }
 
     protected void btn_addClub_Click(object sender, EventArgs e)
@@ -338,7 +346,8 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         club.seo_mode = "" + SEO_MODE.SelectedValue;
         club.domaine = tbx_domaine.Text;
         club.rotary_agreement_type = RB_synchroRI.SelectedValue;
-
+        club.headers=""+tbx_website_headers.Text;
+        club.logo = hfd_filename_logo.Value;
 
         double nbfoc = 0;
         double.TryParse(tbx_nb_free_of_charge.Text.Trim().Replace(".",","), out nbfoc);
@@ -460,5 +469,38 @@ public partial class DesktopModules_AIS_Admin_Gestion_Club_Gestion_Club : Portal
         hfd_filename.Value = "";
         img_fanion.ImageUrl = "";
         BT_Effacer_Fanion.Visible = false;
+    }
+
+    protected void btn_logo_Click(object sender, EventArgs e)
+    {
+        if (FileUploadLogo.HasFile)
+        {
+
+            Club club = new Club();
+            if (hfd_cric.Text != "")
+                club = DataMapping.GetClub(int.Parse(hfd_cric.Text));
+            string fileName;
+            if (club.cric != 0)
+                fileName = Path.GetFileName(club.club_type != "rotaract" ? "logo_" + club.cric : "logo_" + tbx_name.Text);
+            else
+                fileName = Path.GetFileName("logo_" + tbx_name.Text);
+            fileName += ".png";
+            string path = PortalSettings.HomeDirectory + Const.CLUBS_PREFIX + Const.LOGO_PREFIX;
+            DirectoryInfo d = new DirectoryInfo(Server.MapPath(path));
+            if (!d.Exists)
+                d.Create();
+            FileUploadLogo.PostedFile.SaveAs(Server.MapPath(path) + fileName);
+            hfd_filename_logo.Value = fileName;
+            club.logo = fileName;
+            img_logo.ImageUrl = club.GetLogo();
+            BT_Effacer_Logo.Visible = true;
+        }
+    }
+
+    protected void btn_effacer_logo_Click(object sender, EventArgs e)
+    {
+        hfd_filename_logo.Value = "";
+        img_logo.ImageUrl = "";
+        BT_Effacer_Logo.Visible = false;
     }
 }

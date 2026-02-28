@@ -7,15 +7,25 @@
 - possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
-- ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
 - déplacement du sélecteur de club en en-tete de l'espace membre (D1680)
 - créer un module de carte du district pour autopositionner les clubs sur une carte (D1770)
 - choix du gabarit de mailing (message simple ou newsletter format RI) (D1680,D1790)
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
-- ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - annuaire inter district rodi
 - nouvelle version de l'app mobile (gestion des notifications)
+- ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
+
+###### 28/02/2026
+- ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
+- verrouillage fonctions rotariennes issues de myrotary (D1640)
+
+ALTER TABLE [dbo].[ais_clubs]
+ADD [headers] ntext NULL;
+ALTER TABLE [dbo].[ais_clubs]
+ADD [logo] nvarchar(255) NULL;
+ALTER TABLE [dbo].[ais_notifications_users]
+ADD [date] datetime NOT NULL DEFAULT GETDATE();
 
 ###### 20/02/2026
 - le formulaire de contact de l'annuaire n'est plus utilisable sur une page publique même si on l'autorise par erreur dans les droits de la page afin d'éviter un risque de spam (D1760)
