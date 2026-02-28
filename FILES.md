@@ -3,11 +3,6 @@
 ```
 ###### 28/02/2026
 ```txt
-AIS\ClubLogo.ascx
-AIS\ClubLogo.ascx.cs
-Portals\_default\Skins\Rodi2017\Controls\Meta.ascx
-Portals\_default\Skins\Rodi2017\Controls\Meta.ascx.cs
-Portals\_default\Skins\Rodi2017\Club.ascx
 DesktopModules\AIS\Admin Club AAR\Control.ascx.cs
 App_Code\AIS\DataMapping.cs
 App_Code\AIS\Club.cs
@@ -17,6 +12,10 @@ DesktopModules\AIS\Admin Club\Control.ascx.cs
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx
 DesktopModules\AIS\Admin Gestion Club\Gestion Club.ascx.cs
 Portals\_default\Skins\Rodi2017\commonparts\HeaderClub.ascx
+AIS\ClubLogo.ascx
+AIS\ClubLogo.ascx.cs
+Portals\_default\Skins\Rodi2017\Controls\Meta.ascx
+Portals\_default\Skins\Rodi2017\Controls\Meta.ascx.cs
 Portals\_default\Skins\Rodi2017\Club.ascx
 ```
 ###### 20/02/2026
