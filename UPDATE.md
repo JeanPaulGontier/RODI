@@ -4,7 +4,6 @@
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
-- possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
 - fonctionnalité permettant de définir des champs/questions supplémentaire pour l'inscription aux réunions (D1680)
@@ -19,6 +18,7 @@
 ###### 28/02/2026
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - verrouillage fonctions rotariennes issues de myrotary (D1640)
+- possibilité de définir le logo du club a partir d'une image de logo issue du brand center du rotary 
 
 ALTER TABLE [dbo].[ais_clubs]
 ADD [headers] ntext NULL;
