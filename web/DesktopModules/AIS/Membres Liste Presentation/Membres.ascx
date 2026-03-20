@@ -21,7 +21,7 @@
     runat="server" 
     CssClass="table table-striped"
     OnRowDataBound="GridView1_RowDataBound" 
-    AllowSorting="True" GridLines="None" AllowPaging="True" PageSize="50" 
+    AllowSorting="True" GridLines="None" AllowPaging="False" PageSize="10000" 
     OnPageIndexChanging="GridView1_PageIndexChanging" 
     OnRowCommand="GridView1_RowCommand"
     
