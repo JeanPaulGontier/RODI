@@ -15,6 +15,7 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+- correction d'un bug d'affichage dans l'espace professionnel, le nb de membre était limité à 50, maintenant tous les membres qui ont une page pro sont visibles (D1760)
 ###### 28/02/2026
 - ajouter la gestion des entetes spécifiques pour les clubs (référencement, analytics ou matomo)
 - verrouillage fonctions rotariennes issues de myrotary (D1640)
