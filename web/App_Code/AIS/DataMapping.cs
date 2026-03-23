@@ -9298,7 +9298,7 @@ cestbon:
                         if (DateTime.Compare((DateTime)m.year_membership_rotary, new DateTime(Functions.GetRotaryYear(), 6, 30))>0)
                             entreeannee++;
 
-                for (int i = 0; i<100; i++)
+                for (int i = 0; i<150; i++)
                     terms[Functions.GetRotaryYear()-i]=0;
 
                 foreach (var t in terminated)
@@ -9327,7 +9327,11 @@ cestbon:
                 {
                     if (terms.ContainsKey(Functions.GetRotaryYear()-i-1))
                     {
-                        sheet.Cells[44, 3+i].Value=members.Count+ terms[Functions.GetRotaryYear()-i-1];
+                        try
+                        {
+                            sheet.Cells[44, 3+i].Value=members.Count+ terms[Functions.GetRotaryYear()-i-1];
+                        }
+                        catch { }
                     }
                 }
 
