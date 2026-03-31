@@ -15,6 +15,7 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 23/03/2026
 - correction d'un pb d'export du fichier visite gouverneur quand les membres ont de mauvaises date d'admission (D1760)
 - correction d'un bug d'affichage dans l'espace professionnel, le nb de membre était limité à 50, maintenant tous les membres qui ont une page pro sont visibles (D1760)
 ###### 28/02/2026
