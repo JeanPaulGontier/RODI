@@ -223,8 +223,8 @@ namespace AIS
                 public int MemberId { get; set; }
                 public int ClubId { get; set; }
                 public string OfficerRole { get; set; }
-                public DateTime StartDate { get; set; }
-                public DateTime EndDate { get; set; }
+                public string StartDate { get; set; }
+                public string EndDate { get; set; }
                 public string ClubName { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }

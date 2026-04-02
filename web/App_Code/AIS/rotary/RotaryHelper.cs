@@ -787,13 +787,13 @@ retry:
                     {
                         // result += "<p style='color:red'>ERREUR membre introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : "+ officer.MemberId+" " + officer.FirstName + " " + officer.LastName + "</p>";
                     }
-                    else if (officer.EndDate > DateTime.Now)
+                    else if (GetDateFromRI(officer.EndDate) > DateTime.Now)
                     {
                         string localf = null;
                         fl.TryGetValue(officer.OfficerRole, out localf);
                         if (localf == null)
                         {
-                            result += "<p style='color:red'>ERREUR fonction introuvable : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                            result += "<p style='color:red'>ERREUR fonction introuvable : " + officer.OfficerRole + " (" + GetDateFromRI(officer.StartDate).Year + "-" + GetDateFromRI(officer.StartDate).Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                         }
                         else
                         {
@@ -801,14 +801,14 @@ retry:
                             {
 
                                 var sql = new SqlCommand("delete from " + Const.TABLE_PREFIX + "rya where rotary_year=@year and cric=@cric and [function]=@function");
-                                sql.Parameters.AddWithValue("year", officer.StartDate.Year);
+                                sql.Parameters.AddWithValue("year", Functions.GetRotaryYear(GetDateFromRI(officer.StartDate)));
                                 sql.Parameters.AddWithValue("cric", club.cric);
                                 sql.Parameters.AddWithValue("function", localf);
                                 int nb = Yemon.dnn.DataMapping.ExecSqlNonQuery(sql);
 
 
                                 sql = new SqlCommand("INSERT INTO " + Const.TABLE_PREFIX + "rya ([rotary_year],[function],[cric],[nim],[name],[portalid]) VALUES (@year,@function,@cric,@nim,@name,0)");
-                                sql.Parameters.AddWithValue("year", officer.StartDate.Year);
+                                sql.Parameters.AddWithValue("year", Functions.GetRotaryYear(GetDateFromRI(officer.StartDate)));
                                 sql.Parameters.AddWithValue("cric", club.cric);
                                 sql.Parameters.AddWithValue("nim", officer.MemberId);
                                 sql.Parameters.AddWithValue("function", localf);
@@ -817,16 +817,16 @@ retry:
                                 if (Yemon.dnn.DataMapping.ExecSqlNonQuery(sql)>0)
                                 {
                                     if (Const.ROTARY_SYNCHRO_FULL_LOG)
-                                        result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                                        result += "<p>" + officer.OfficerRole + " (" + GetDateFromRI(officer.StartDate).Year + "-" + GetDateFromRI(officer.EndDate).Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                                 }
                                 else
                                 {
-                                    result += "<p style='color:red'>ERREUR maj bdd : " + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                                    result += "<p style='color:red'>ERREUR maj bdd : " + officer.OfficerRole + " (" + GetDateFromRI(officer.StartDate).Year + "-" + GetDateFromRI(officer.EndDate).Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                                 }
                             }
                             else if (Const.ROTARY_SYNCHRO_FULL_LOG)
                             {
-                                result += "<p>" + officer.OfficerRole + " (" + officer.StartDate.Year + "-" + officer.EndDate.Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
+                                result += "<p>" + officer.OfficerRole + " (" +GetDateFromRI(officer.StartDate).Year + "-" + GetDateFromRI(officer.EndDate).Year + ") : " + officer.MemberId + " " + officer.FirstName + " " + officer.LastName + "</p>";
                             }
 
                         }
@@ -1839,6 +1839,8 @@ retry:
             DateTime.TryParse(date, culture, styles, out dateTime);
             return dateTime;
         }
+
+
    
 
         public static RotaryInternational.Rss GetRotaryRSSNews(int nb=0)
