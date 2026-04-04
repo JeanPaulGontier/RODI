@@ -246,13 +246,23 @@ namespace AIS
         /// <returns></returns>
         public static int GetRotaryYear(DateTime? dateTime = null)
         {
-            int annee = DateTime.Now.Year;
             if (dateTime!=null)
-                annee=((DateTime)dateTime).Year;
+            {
+                if(((DateTime)dateTime).Month<7)
+                    return ((DateTime)dateTime).Year-1;
+                else return ((DateTime)dateTime).Year;
+            }
+            else
+            {
+                int annee = DateTime.Now.Year;
 
-            if (DateTime.Now < new DateTime(annee, 7, 1))
-                annee--;
-            return annee;
+                if (DateTime.Now < new DateTime(annee, 7, 1))
+                    annee--;
+
+                return annee;
+
+            }
+
         }
 
         /// <summary>
