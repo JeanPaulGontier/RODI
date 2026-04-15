@@ -34,14 +34,26 @@
         return;
     }
 
-    List<Club> clubs = AIS.DataMapping.ListClubs("", "", "name ASC");
-    for (int i = clubs.Count-1;i>0;i--)
+    List<Club> list = AIS.DataMapping.ListClubs("", "", "name ASC");
+    List<Club> clubs = new List<Club>();
+    for (int i = list.Count-1;i>0;i--)
     {
-        Club club = clubs[i];
+        Club club = list[i];
         if (club.cric == member.cric)
         {
-            clubs.RemoveAt(i);
+            list.RemoveAt(i);
         }
+    }
+
+    foreach(var club in list)
+    {
+        Club c = new Club()
+        {
+            cric= club.cric,
+            district_id=club.district_id,
+            name = club.name
+        };
+        clubs.Add(c);
     }
 
     bool ispresidentorsecretary = false;
