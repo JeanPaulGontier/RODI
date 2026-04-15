@@ -15,6 +15,7 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 15/04/2026
 - correction bug d'affichage module d'abonnement mailing clubs (D1730)
 - correction du format de date sur les affectations rotariennes issues du RI (D1780)
 ###### 23/03/2026
