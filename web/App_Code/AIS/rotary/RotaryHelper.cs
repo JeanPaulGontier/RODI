@@ -739,7 +739,7 @@ retry:
                 return "<p style='color:red'>Aucun officer club issu du RI annulation synchro Officers</p>";
 
             Dictionary<string, string> fl = new Dictionary<string, string>();
-            fl.Add("Rotaract Advisor", "Administration");
+            fl.Add("Rotaract Advisor", "Conseiller Rotaract");
             fl.Add("Club Public Image Chair", "Délégué Communication");
             fl.Add("Rotaract Public Image Chair", "Délégué Communication");
             fl.Add("Club Membership Chair", "Effectif");

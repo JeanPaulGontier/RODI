@@ -196,7 +196,7 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
         {
 
         
-            ltitle.Text="<h3>Fonctions rotariennes issues de myRotary</h3><div class='alert alert-info'>ATTENTION : ces fonctions doivent être définies dans myRotary par un responsable du club, tout changement ici sera remplacé par les informations reçues de myRotary lors de la prochaine synchronisation</div>";
+            ltitle.Text="<h3>Fonctions rotariennes issues de myRotary</h3><div class='alert alert-info'>ATTENTION : ces fonctions doivent être définies dans myRotary par un responsable du club, les informations seront automatiquement transférées lors de la prochaine synchronisation</div>";
             Panel1.Controls.Add(ltitle);
         }
         foreach (string fonction in fonctionsRI)
@@ -235,8 +235,9 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             dl.SelectedIndex = 0;
             if (DataMapping.CurrentUserIsAdminClub)
                 dl.Attributes.Add("onchange", "javascript: AfficheValider();");
-            if(fonctionsRI.Count>0)
-                dl.Attributes.Add("disabled", "disabled");
+            //if(fonctionsRI.Count>0)
+            //    dl.Attributes.Add("disabled", "disabled");
+            dl.Enabled=false;
             Panel1.Controls.Add(dl);
 
             lit = new Literal();
@@ -444,107 +445,6 @@ public partial class DesktopModules_AIS_Club_AAR_Control : PortalModuleBase
             Functions.Error(ex);
         }
 
-//        SqlConnection conn = new SqlConnection(Config.GetConnectionString());
-//        try
-//        {
-//            conn.Open();
-
-//            int annee = Functions.GetRotaryYear();
-
-//            RoleController rc = new RoleController();
-
-//            RoleInfo uri = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_ADMIN_CLUB);
-//            RoleInfo urip = rc.GetRoleByName(Globals.GetPortalSettings().PortalId, Const.ROLE_PRESIDENTS_CLUBS);
-//            IList<UserInfo> users = RoleController.Instance.GetUsersByRole(PortalId, Const.ROLE_ADMIN_CLUB);
-//            //ArrayList users =  rc.GetUsersByRoleName(PortalId, Const.ROLE_ADMIN_CLUB);
-
-//            List<UserInfo> club = new List<UserInfo>();
-//            foreach (UserInfo user in users)
-//            {
-//                foreach (Member m in DataMapping.ListMembers(cric: Functions.CurrentCric, sort: "Surname asc"))
-//                {
-//                    if (m.userid == user.UserID)
-//                        club.Add(user);
-//                }
-//            }
-
-//            foreach (UserInfo user in club)
-//            {
-//                if (!RoleController.DeleteUserRole(user, uri, Globals.GetPortalSettings(), false))
-//                {
-//                }
-//                if (!RoleController.DeleteUserRole(user, urip, Globals.GetPortalSettings(), false))
-//                {
-//                }
-//            }
-
-//            String query = "SELECT nim,name,[function] FROM " + Const.TABLE_PREFIX + "rya WHERE [function] IN ("+Const.AFFECTATIONS_ADMIN_CLUB+") AND cric='" + Functions.CurrentCric+"' AND rotary_year IN (";
-
-//            if (DateTime.Now.Month >= 1 && DateTime.Now.Month < 7)
-//                query += annee + "," + (annee + 1);
-//            else // if (DateTime.Now.Month >= 7)
-//                //query += (annee - 1) + "," + annee;
-//                query += annee;
-
-//            query += ")";
-
-
-//            SqlCommand sql = new SqlCommand(query, conn);
-//            SqlDataAdapter da = new SqlDataAdapter(sql);
-//            DataSet ds = new DataSet();
-//            da.Fill(ds);
-
-//            var clubCustomACL = DataMapping.ClubCustomACL;
-
-//            foreach (DataRow row in ds.Tables[0].Rows)
-//            {
-//                string function = "" + row["function"];
-//cestbon:
-
-//                Member membre = DataMapping.GetMemberByNim((int)row["nim"]);
-//                if (membre != null)
-//                {
-//                    if (membre.userid == 0)
-//                    {
-//                        //TXT_Result.Text += "<br/>Le membre : " + row["name"] + " n'a pas de user DNN";
-//                        if (DataMapping.UpdateOrCreateUser(membre.id, membre.email))
-//                        {
-//                            //TXT_Result.Text += "<br/>et a été créé";
-//                            goto cestbon;
-//                        }
-//                        else
-//                        {
-//                            // TXT_Result.Text += "<br/>et n'a pas été créé";
-//                        }
-
-//                    }
-//                    else
-//                    {
-//                        UserInfo ui = UserController.GetUserByName(Globals.GetPortalSettings().PortalId, membre.email);
-//                        if (ui != null)
-//                        {
-
-//                            rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, uri.RoleID, Null.NullDate, Null.NullDate);
-//                            if (function=="Président")
-//                            {
-//                                rc.AddUserRole(Globals.GetPortalSettings().PortalId, ui.UserID, urip.RoleID, Null.NullDate, Null.NullDate);
-//                            }
-//                            //TXT_Result.Text += "<br/>Ajout role admin club : " + row["name"];
-//                        }
-//                    }
-//                }
-//            }
-
-//        }
-//        catch (Exception ee)
-//        {
-//            Functions.Error(ee);
-
-//        }
-//        finally
-//        {
-//            conn.Close();
-//        }
     }
 
     protected void DDL_Membres_SelectedIndexChanged(object sender, EventArgs e)

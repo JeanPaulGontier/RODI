@@ -15,6 +15,10 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 29/04/2026
+- mise à jour app mobile sur tous les district sur android (correction pb de sauvegarde de l'identification)
+- correction bug changement de comité dans club (D1640)
+- la fonction Administration dans le comité club est maintenant dans la partie RODI (D1770)
 ###### 15/04/2026
 - correction bug d'affichage module d'abonnement mailing clubs (D1730)
 - correction du format de date sur les affectations rotariennes issues du RI (D1780)
