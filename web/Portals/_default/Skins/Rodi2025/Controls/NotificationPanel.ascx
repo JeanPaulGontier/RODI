@@ -12,7 +12,7 @@
     
 
         <!-- Notifications -->
-        <div id="<%=ID %>" class="card-membre card-notif" style="display:none">
+        <div id="<%=ID %>" class="card-membre card-notif" style="display:none;overflow-y:auto">
           <div class="row-fluid">
             <strong class="lead flex-grow">Notifications</strong>
             <a v-on:click="close" title="Fermer" class="close-link"><i class="fa-regular fa-circle-xmark fa-xl"></i></a>
@@ -26,20 +26,18 @@
           </div>
 
           <hr>
-
-
-            <span v-if="notifs.length==0">pas de notification pour le moment...</span>
-            <a v-for="n in notifs" class="notif" :class="{mute: n.opened}" href="#" v-on:click="Navigate(n)">
-                <i v-if="n.type==10" class="fa fa-calendar-days"></i>
-                <i v-if="n.type==20" class="fa fa-info"></i> 
-                <i v-if="n.type==30" class="fa fa-comment"></i>
-                <span>
-                  <strong>{{n.title}}</strong><br/>
-                  <span>{{ GetDetail(n).message }}</span>
-                </span>
-            </a>
-            
         
+        <span v-if="notifs.length==0">pas de notification pour le moment...</span>
+        <a v-for="n in notifs" class="notif" :class="{mute: n.opened}" href="#" v-on:click="Navigate(n)">
+            <i v-if="n.type==10" class="fa fa-calendar-days"></i>
+            <i v-if="n.type==20" class="fa fa-info"></i> 
+            <i v-if="n.type==30" class="fa fa-comment"></i>
+            <span>
+                <strong>{{n.title}}</strong><br/>
+                <span>{{ GetDetail(n).message }}</span>
+            </span>
+        </a>
+            
           <%--<a class="notif" href="#">
             <i class="fa fa-comment"></i>
             <span>

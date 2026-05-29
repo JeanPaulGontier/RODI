@@ -63,6 +63,7 @@
 #endregion Copyrights
 
 
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using System;
 using System.Collections.Generic;
@@ -168,6 +169,12 @@ namespace AIS
             else
                 chemin += Const.DISTRICT_PREFIX;
             return chemin + Const.DOCUMENT_PREFIX + url;
+        }
+
+
+        public string GetShortUrl()
+        {
+            return Const.DISTRICT_URL+"/n-" + id.Substring(9, 9);
         }
 
         List<Bloc> blocs = new List<Bloc>();

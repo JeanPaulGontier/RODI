@@ -6,6 +6,7 @@
                 moduleid: MODULEID,
                 notifications: NOTIFICATIONS,
                 unopenedcheck: false,
+                unread:0,
                 notifs: []
             }
         },
@@ -14,7 +15,11 @@
         },
         
         methods: {
+            isCloseDate() {
+                return (localStorage.getItem("notification.closed") == new Date().toDateString());       
+            },
             close() {
+                localStorage.setItem("notification.closed", new Date().toDateString());
                 $("#" + appid).fadeOut();
             },
             unopened() {
@@ -38,6 +43,20 @@
                 }
                     
                 
+            },
+            Peek() {
+                _yemon[this.moduleid].service.getData("/Peek", {                   
+                }, (r) => {
+                    localStorage.setItem("notification.peek", new Date(r.data).toDateString());
+                });
+            },
+            GetNotifications() {
+                _yemon[this.moduleid].service.getData("/GetNotifications", {
+                    onlyunopened: this.unopenedcheck == "true"
+                }, (r) => {
+                    this.notifications = r.data;
+                    this.UpdateList();
+                });
             },
             GetDetail(n) {
                 return JSON.parse(n.detail);
@@ -65,9 +84,15 @@
             }
         },
         mounted() {
-            setInterval(() => { this.unopened() }, 1000);          
-           
-
+            setInterval(() => { this.unopened() }, 10000);         
+            this.$nextTick(() => {
+                this.Peek();
+                setInterval(() => { this.Peek() }, 10000);
+            });
+            if (!this.isCloseDate())
+                this.$nextTick(() => {
+                    $("#" + appid).fadeIn();
+                });
                 
         }
     });

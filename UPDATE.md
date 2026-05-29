@@ -15,6 +15,11 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 29/05/2026
+- travaux préparatoires à la nouvelle version de l'app mobile
+- activation du tableau de bord de club dans la rubrique /espace-membre/mon-club
+- agenda public : url du district /agenda
+- agenda membres : url du district /espace-membre/agenda
 ###### 29/04/2026
 - mise à jour app mobile sur tous les district sur android (correction pb de sauvegarde de l'identification)
 - correction bug changement de comité dans club (D1640)

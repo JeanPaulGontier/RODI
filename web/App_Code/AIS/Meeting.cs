@@ -64,6 +64,11 @@ public class Meeting
     public string notificationmsg { get; set; } // message pour la notification
 
 
+    public string GetLink()
+    {
+        return Const.DISTRICT_URL+"/m-"+link;
+    }
+
     public class Period
     {
         public Guid guid { get; set; }

@@ -61,10 +61,12 @@
 
 #endregion Copyrights
 using AIS;
+using Aspose.Words.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -82,10 +84,12 @@ namespace AIS.controller
 
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage SetOpened(Guid guid, bool opened)
         {
+            if (UserInfo.UserID<1)
+                return Request.CreateResponse(HttpStatusCode.OK);
+
             Notification notification = NotificationHelper.GetNotification(guid);
             if (notification == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -93,6 +97,26 @@ namespace AIS.controller
             if(NotificationHelper.SetOpened(notification.id,UserInfo.UserID, opened))
                 return Request.CreateResponse(HttpStatusCode.OK);
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetNotifications(bool onlyunopened)
+        {
+            if (UserInfo.UserID<1)
+                return Request.CreateResponse(HttpStatusCode.OK,new List<Notification>());
+
+            return Request.CreateResponse(HttpStatusCode.OK, NotificationHelper.GetNotifications(UserInfo.UserID, onlyunopened));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage Peek()
+        {
+            if (UserInfo.UserID<1)
+                return Request.CreateResponse(HttpStatusCode.OK, new DateTime(2013, 7, 1));
+
+            return Request.CreateResponse(HttpStatusCode.OK, NotificationHelper.Peek(UserInfo.UserID));
         }
     }
 }

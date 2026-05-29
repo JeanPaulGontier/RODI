@@ -161,6 +161,12 @@ public static class NotificationHelper
 
     public static bool SetOpened(int notifid,int userid, bool opened)
     {
-        return Yemon.dnn.DataMapping.ExecSqlNonQuery("update "+AIS.Const.TABLE_PREFIX+"notifications_users set opened="+(opened?"1":"0")+" where user_id="+userid+" and notif_id="+notifid)>0;
+        return Yemon.dnn.DataMapping.ExecSqlNonQuery("update "+AIS.Const.TABLE_PREFIX+"notifications_users set opened="+(opened?"1":"0")+",date=getdate() where user_id="+userid+" and notif_id="+notifid)>0;
+    }
+
+    public static DateTime Peek(int userid)
+    {
+        var date = Yemon.dnn.DataMapping.ExecSqlScalar("select top 1 date from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+" order by date desc");
+        return date == System.DBNull.Value || date==null ? new DateTime(2013,7,1):(DateTime)date;
     }
 }

@@ -1,6 +1,23 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 29/05/2026
+```txt
+App_Code\AIS\notification\NotificationHelper.cs
+App_Code\AIS\webapi\meeting\MeetingController.cs
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+App_Code\AIS\webapi\notification\NotificationController.cs
+App_Code\AIS\Meeting.cs
+App_Code\AIS\News.cs
+DesktopModules\RazorModules\Agenda Membres\_AgendaMembres.cshtml
+DesktopModules\RazorModules\Agenda Public\_AgendaPublic.cshtml
+DesktopModules\RazorModules\Club Dashboard\_ClubDasboard.cshtml
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.min.css
+Portals\_default\Skins\Rodi2025\Controls\NotificationIcon.ascx
+Portals\_default\Skins\Rodi2025\Controls\NotificationPanel.ascx
+Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
+```
 ###### 29/04/2026
 ```txt
 App_Code\AIS\rotary\RotaryHelper.cs

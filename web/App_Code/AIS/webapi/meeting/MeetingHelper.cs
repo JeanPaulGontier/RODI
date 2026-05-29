@@ -646,4 +646,14 @@ public class MeetingHelper
 
         return sb.ToString();
     }
+
+
+    public static List<Meeting> GetMeetings(int cric, string category)
+    {
+        SqlCommand sql = new SqlCommand("SELECT * FROM ais_meetings WHERE cric=" + cric + " AND type=@type ORDER BY dtstart DESC");
+        sql.Parameters.AddWithValue("type", category);
+
+        List<Meeting> meetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(sql);
+        return meetings;
+    }
 }

@@ -1,54 +1,92 @@
-<h2 class="text-center primary-text pb-2">Bienvenue dans votre espace membre</h2>
+@using DotNetNuke.Entities.Tabs
+@{
+
+    if (AIS.Functions.CurrentCric==0)
+    {
+        <div class="alert alert-warning">Choisir un club pour visualiser son tableau de bord</div>
+        return;
+    }
+
+    var clubHelper = new ClubHelper();
+    var clubDashboard = clubHelper.GetDashboard(AIS.Functions.CurrentCric);
+}
+
+<h2 class="text-center primary-text pb-2">Tableau de bord : @AIS.Functions.CurrentClub.name</h2>
 
 <div class="grid col-3 dashboard">
     <div class="ais-news-layout-list">
-        <a href="#" class="mini-news">
-            <span class="news-date"><p>12 JAN</p></span>
-            <img src="https://rodi1730.aisdev.net/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=07741e23-69c8-49f8-abae-029927ff53b4">
-            <span>
-                <!-- <span class="news-type" style="color:#d91b5c">
-                    <span>évènements à venir</span>
-                    <span class="news-club">La londe les maures</span>
-                </span> -->
+        @{
+            var NextNewsDistrict = clubDashboard.GetDistrictFutureNews(tagexclus: new string[] { "Lettre du gouverneur", "in memoriam" }, max: 4);
 
-                <span class="news-title">Dessine-moi la paix</span>
-                <span class="news-link">en savoir plus <i class="fa-solid fa-square-full" style="color:#d91b5c"></i></span>
-            </span>
-        </a>
+            foreach (var n in NextNewsDistrict)
+            {
 
-        <a href="#" class="mini-news">
-            <span class="news-date"><p>22 JUIN</p></span>
-            <img src="https://rodi1730.aisdev.net/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=7646378c-f585-424d-ba10-2161e697be4d">
-            <span>
-                <!-- <span class="news-type" style="color:#d91b5c">
-                    <span>évènements à venir</span>
-                    <span class="news-club">District</span>
-                </span> -->
+                <a href="@n.GetShortUrl()" class="mini-news">
+                    <div class="news-date"><p>@n.dt.Day @n.dt.ToString("MMM")</p></div>
+                    <img src="@n.GetPhoto()">
+                    <span>
+                        <span class="news-type" style="color:#101f94">
+                            <span>@n.tag1</span>
+                        
+                    </span>
 
-                <span class="news-title">Convention internationale</span>
-                <span class="news-location"><i class="fa-solid fa-location-dot"></i> Singapour</span>
-                <span class="news-link">en savoir plus <i class="fa-solid fa-square-full" style="color:#d91b5c"></i></span>
-            </span>
-        </a>
+                        <span class="news-title">@n.title</span>
+                        <span class="news-link">en savoir plus <i class="fa-solid fa-square-full" style="color: #101f94"></i></span>
+                    </span>
+                </a>
+            }
 
-        <a href="/espace-membre/mon-club/communication/agenda" class="info-link small">voir l'agenda</a>
+       
+            var NextAutresClubsNews = clubDashboard.GetAutresClubsFutureNews(tagexclus: new string[] {  "Bulletin", "Galeries de photos", "Lettre du président", "in memoriam" }, max: 4);
+
+            foreach (var n in NextAutresClubsNews)
+            {
+
+                <a href="@n.GetShortUrl()" class="mini-news">
+                    <div class="news-date"><p>@n.dt.Day @n.dt.ToString("MMM")</p></div>
+                    <img src="@n.GetPhoto()">
+                    <span>
+                         <span class="news-type" style="color:#5c83ca">
+                             <span>@n.tag1</span>
+                        <span class="news-club">@n.club_name</span>
+                    </span> 
+
+                        <span class="news-title">@n.title</span>
+                        <span class="news-link">en savoir plus <i class="fa-solid fa-square-full" style="color: #5c83ca "></i></span>
+                    </span>
+                </a>
+            }
+
+        }
+
+        <div class="text-center"><a href="/espace-membre/agenda/mode/card" class="btn btn-info btn-sm small">voir l'agenda</a></div>
     </div>
 
     <div class="ais-news-layout-list">
-        <a href="#" class="mini-news">
-            <span class="news-date"><p>7 JAN</p></span>
-            <span>
-                <span class="news-type" style="color:#ff760">
-                    <span>Prochaine réunion</span>
-                </span>
+        @{
+            var meetings = clubDashboard.GetNextMeetings().OrderBy(m => m.dtstart);
 
-                <span class="news-title">Ordre du jour</span>
+            foreach (var m in meetings)
+            {
+                <a href="@m.GetLink()" class="mini-news">
+                    <span class="news-date"><p>@m.dtstart.Day @m.dtstart.ToString("MMM")</p></span>
+                    <span>
+                        <span class="news-type" style="color:#099864">
+                            <span>Prochaine réunion</span>
+                        </span>
 
-                <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#ff760"></i> s'inscrire</span>
-            </span>
-        </a>
+                        <span class="news-title">@m.name</span>
 
-        <a href="#" class="mini-news">
+                        <span class="news-link"><i class="fa-solid fa-chevron-right" style="color: #099864 "></i> s'inscrire</span>
+                    </span>
+                </a>
+            }
+        }
+
+
+
+
+        @*<a href="#" class="mini-news">
             <span class="news-date danger"><p>4</p></span>
             <span>
                 <span class="news-type" style="color:#000">
@@ -57,48 +95,112 @@
                 <span class="news-title">messages non lus</span>
                 <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#000"></i> lire</span>
             </span>
-        </a>
+        </a>*@
+        @{
+            var LastBulletins = clubDashboard.GetClubPastNews(taginclus: new string[] { "Bulletin" }, max: 1);
 
-        <a href="#" class="mini-news">
-            <span>
-                <span class="news-type" style="color:#ff760">
-                    <span>Dernier bulletin</span>
-                </span>
+            foreach (var n in LastBulletins)
+            {
+                <a href="@n.GetShortUrl()" class="mini-news">
+                    <span>
+                        <span class="news-type" style="color:#ff6a00">
+                            <span>Dernier bulletin</span>
+                        </span>
 
-                <span class="news-title">Titre</span>
+                        <span class="news-title">@n.title</span>
 
-                <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#ff760"></i> consulter</span>
-            </span>
-        </a>
+                        <span class="news-link"><i class="fa-solid fa-chevron-right" style="color: #ff6a00"></i> consulter</span>
+                    </span>
+                </a>
+            }
+        }
+        @{
+            var LastGaleries = clubDashboard.GetClubPastNews(taginclus: new string[] { "Galeries de photos" }, max: 1);
 
-        <a href="#" class="mini-news">
-            <span>
-                <span class="news-type" style="color:#ff760">
-                    <span>La lettre du Gouverneur</span>
-                </span>
+            foreach (var n in LastGaleries)
+            {
+                <a href="@n.GetShortUrl()" class="mini-news">
+                    <span>
+                        <span class="news-type" style="color: #4800ff">
+                            <span>Dernière galerie de photos</span>
+                        </span>
 
-                <span class="news-title">Titre</span>
+                        <span class="news-title">@n.title</span>
 
-                <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#ff760"></i> lire</span>
-            </span>
-        </a>
+                        <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#4800ff"></i> consulter</span>
+                    </span>
+                </a>
+            }
+        }
+
+
+        @{
+
+            string nomparenttab = ""+Yemon.dnn.DataMapping.ExecSqlScalar("select SettingValue from ModuleSettings where SettingName='page' and moduleid in (SELECT moduleid FROM MODULES WHERE MODULEDEFID IN( SELECT [ModuleDefID]  FROM [ModuleDefinitions]  where DefinitionName like '%Création du courrier%'))");
+            var tabs = TabController.GetPortalTabs(Yemon.dnn.Functions.GetPortalId(), -1, false, true);
+            TabInfo tabparent = tabs.FirstOrDefault(t =>
+                                    string.Equals(t.TabName, nomparenttab, StringComparison.OrdinalIgnoreCase));
+            if (tabparent!=null)
+            {
+
+                var urllast = "";
+                var tabtitle = "";
+                int parenttab = tabparent.TabID;
+                tabs = (from t in TabController.GetTabsByParent(parenttab, 0)
+                        where t.ParentId == parenttab &&
+                                t.IsVisible && !t.IsDeleted && !t.IsSecure &&
+                                DotNetNuke.Security.Permissions.TabPermissionController.CanViewPage(t)
+                        orderby t.TabOrder descending
+                        select t).Take(1).ToList();
+
+                if (tabs.Count>0)
+                {
+                    urllast = tabs[0].FullUrl;
+                    tabtitle = tabs[0].LocalizedTabName;
+                }
+                if (urllast != "")
+                {
+                    <a href="@urllast" class="mini-news">
+                        <span>
+                            <span class="news-type" style="color:#ff760">
+                                <span>La lettre du Gouverneur</span>
+                            </span>
+
+                            <span class="news-title">@tabtitle</span>
+
+                            <span class="news-link"><i class="fa-solid fa-chevron-right" style="color:#ff760"></i> lire</span>
+                        </span>
+                    </a>
+                }
+            }
+        }
+
     </div>
 
-        <div class="ais-news-layout">
-        <div class="mini-news">
-            <a href="#">
-                <img src='https://rodi1730.aisdev.net/DesktopModules/BlocksContent/API/Blocks/getMedia?guid=2def8340-b447-4183-bf23-4683554b529e'>
+    <div class="ais-news-layout">
+        @{
+            var NextNewsClub = clubDashboard.GetClubFutureNews(tagexclus: new string[] { "Bulletin", "Galeries de photos", "Lettre du président", "in memoriam" }, max: 2);
 
-                <span class="news-type" style="color:#d91b5c">
-                    <span>Prochain évènement de mon club</span>
-                </span>
+            foreach (var n in NextNewsClub)
+            {
+                <div class="mini-news" style="margin-bottom: 2rem" >
+                    <a href="@n.GetShortUrl()">
+                        <img src='@n.GetPhoto()'>
 
-                <span class="news-date">21 OCT</span>
-                <span class="news-title">End Polio Now - Course de T-Rex</span>
-                <span class="news-location"><i class="fa-solid fa-location-dot"></i> Base nautique de Fréjus</span>
-                <span class="news-link">voir le détail <i class="fa-solid fa-square-full" style="color:#d91b5c"></i></span>
-            </a>
-        </div>
+                        <span class="news-type" style="color:#d91b5c">
+                            <span>Prochain évènement de mon club</span>
+                        </span>
+
+                        <span class="news-date">@n.dt.ToShortDateString()</span>
+                        <span class="news-title">@n.title</span>
+                        @*<span class="news-location"><i class="fa-solid fa-location-dot"></i> Base nautique de Fréjus</span>*@
+                        <span class="news-link">voir le détail <i class="fa-solid fa-square-full" style="color:#d91b5c"></i></span>
+                    </a>
+                </div>
+                
+            }
+
+        }
     </div>
 </div>
 

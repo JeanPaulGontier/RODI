@@ -252,12 +252,8 @@ namespace AIS.controller
                 int cric = 0;
                 int.TryParse("" + application[context + ":cric"],out cric) ;
                 string cat = "" + category;
-                SqlCommand sql = new SqlCommand("SELECT * FROM ais_meetings WHERE cric=" + cric + " AND type=@type ORDER BY dtstart DESC");
-                sql.Parameters.AddWithValue("type", cat);
-
-                List<Meeting> meetings = Yemon.dnn.DataMapping.ExecSql<Meeting>(sql);
-               
-                return Request.CreateResponse(HttpStatusCode.OK, meetings);
+              
+                return Request.CreateResponse(HttpStatusCode.OK, MeetingHelper.GetMeetings(cric,cat));
             }
             catch(Exception ee)
             {

@@ -7,6 +7,7 @@
             <%=PanelClientID%>Visible = false;
         }
         else {
+            localStorage.removeItem("notification.closed");
             $("#<%=PanelClientID%>").fadeIn();
             <%=PanelClientID%>Visible = true;
         }
