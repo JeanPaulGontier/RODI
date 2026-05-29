@@ -3,6 +3,8 @@
 ```
 ###### 29/05/2026
 ```txt
+App_Code\AIS\club\ClubDashboard.cs
+App_Code\AIS\club\ClubHelper.cs
 App_Code\AIS\notification\NotificationHelper.cs
 App_Code\AIS\webapi\meeting\MeetingController.cs
 App_Code\AIS\webapi\meeting\MeetingHelper.cs
