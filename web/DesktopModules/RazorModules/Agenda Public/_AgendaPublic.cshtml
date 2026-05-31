@@ -25,8 +25,8 @@
         }
     }
     DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-    var newslist = AIS.DataMapping.ListNews(0,onlyvisible: true, category: "district", sort: "dt desc").Where(n=>n.dt>DateTime.Now.AddYears(-1)).ToList();
-    var newslistC = AIS.DataMapping.ListNews_EN(category: "Clubs", onlyvisible: true, tri: "dt desc");
+    var newslist = AIS.DataMapping.ListNews(0,onlyvisible: true, tags_included: "Actions\r\nActualités", category: "district", sort: "dt desc").Where(n=>n.dt>DateTime.Now.AddYears(-1)).ToList();
+    var newslistC = AIS.DataMapping.ListNews_EN(category: "Clubs", tags_included: "Actions\r\nActualités", onlyvisible: true, tri: "dt desc");
     newslist.InsertRange(newslist.Count, newslistC);
 
     //var tags = newslist.Select(x => x.tag1).Distinct().ToList();
@@ -36,11 +36,7 @@
     foreach(AIS.News n in newslist)
     {
         bool add = false;
-        if(userInfo.UserID>0 && n.visible=="U" )
-        {
-            add = (tag == "" || tag == n.tag1);
-        }
-        else if(n.visible == "O")
+        if(n.visible == "O")
         {
             add = (tag == "" || tag == n.tag1);
         }
