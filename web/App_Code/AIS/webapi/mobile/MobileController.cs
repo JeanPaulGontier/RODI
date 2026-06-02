@@ -357,5 +357,55 @@ namespace AIS.controller
 
             });
         }
+
+
+        [HttpGet]
+        [DnnAuthorize(AuthTypes = "JWT")]
+        public HttpResponseMessage GetNotifications()
+        {
+            try
+            {
+                if (UserInfo.UserID<0)
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                var notifs = NotificationHelper.GetNotifications(UserInfo.UserID, onlyunopened: true);
+
+                return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(notifs)); ;
+            }
+            catch (Exception e)
+            {
+                Functions.Error(e);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+
+
+        [HttpGet]
+        [DnnAuthorize(AuthTypes = "JWT")]
+        public HttpResponseMessage GetClubDashboard()
+        {
+            try
+            {
+                if (UserInfo.UserID<0)
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+                var clubHelpers = new ClubHelper();
+                var member = DataMapping.GetMemberByUserID(UserInfo.UserID);
+                if(member==null)
+                    return Request.CreateResponse(HttpStatusCode.NotFound); 
+                var dashboard = clubHelpers.GetDashboard(member.cric);
+
+                return Request.CreateResponse(HttpStatusCode.OK, Yemon.dnn.Functions.Serialize(dashboard)); ;
+            }
+            catch (Exception e)
+            {
+                Functions.Error(e);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
+        }
+
+
+
+      
     }
 }

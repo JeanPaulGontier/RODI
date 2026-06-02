@@ -1,9 +1,10 @@
-﻿#region Copyrights
+﻿
+#region Copyrights
 
 //
-// RODI - https://rodi-platform.org
-// Copyright (c) 2012-2026
-// by SARL AIS : https://www.aisdev.net
+// RODI - http://rodi.aisdev.net
+// Copyright (c) 2012-2016
+// by SAS AIS : http://www.aisdev.net
 // supervised by : Jean-Paul GONTIER (Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -60,123 +61,49 @@
 //If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy's public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
 
 #endregion Copyrights
-using AIS;
+
+
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-/// <summary>
-/// Description résumée de ClubDashboard
-/// </summary>
-public class ClubDashboard
+namespace AIS
 {
-    public ClubBase club { get; set; }
-    public List<NewsBase> newsDuClub { get; set; }
-    public List<NewsBase> newsAutresClub { get; set; }
-    public List<NewsBase> newsDistrict { get; set; }
-    public List<MeetingBase> meetings { get; set; }
-    private DateTime Now { 
-        get { return new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day); } 
-    }
-    public ClubDashboard()
+    [Serializable]
+    public partial class NewsBase
     {
-        newsDuClub = new List<NewsBase>();
-        newsAutresClub = new List<NewsBase>();
-        newsDistrict = new List<NewsBase>();
-        club = new ClubBase();
+        public string id { get; set; }
+        public int cric { get; set; }
+        public DateTime dt { get; set; }
+        public string title { get; set; }
+        public string text { get; set; }
+        public string url { get; set; }
+        public string url_text { get; set; }
+        public string photo { get; set; }
+        public string category { get; set; }
+        public string tag1 { get; set; }
+        public string tag2 { get; set; }
+        public string club_name { get; set; }
+        public string visible { get; set; }
+        public string PhotoString64 { get; set; }
+        public string urlNews { get; set; }
+
+        public int ord { get; set; }
+        public string Abstract { get; set; }
+        public DateTime end_publication { get; set; }
+        public string adress_event { get; set; }
+        public string town_event { get; set; }
+        public string zip_event { get; set; }
+        public DateTime date_start_event { get; set; }
+        public DateTime date_end_event { get; set; }
+
+        public string club_type { get; set; }
+
+       
     }
-    public List<NewsBase> GetDistrictFutureNews(string[] taginclus = null, string[] tagexclus = null, int max = 100)
-    {
-        var list = newsDistrict.OrderBy(n => n.dt).Where(n => n.dt>=Now).ToList();
-        if (taginclus!=null)
-        {
-            list = list.Where(n => taginclus.Contains(n.tag1)).ToList();
-        }
-        if (tagexclus!=null)
-        {
-            list = list.Where(n => !tagexclus.Contains(n.tag1)).ToList();
-        }
-        list = list.Take(max).ToList();
-
-        return list;
-    }
-    public List<NewsBase> GetClubFutureNews(string[] taginclus=null,string[] tagexclus=null, int max=100)
-    {
-        var list = newsDuClub.OrderBy(n => n.dt).Where(n => n.dt>=Now).ToList();
-        if(taginclus!=null)
-        {
-            list = list.Where(n => taginclus.Contains(n.tag1)).ToList();
-        }
-        if(tagexclus!=null)
-        {
-            list = list.Where(n => !tagexclus.Contains(n.tag1)).ToList();
-        }
-        list = list.Take(max).ToList();
-
-        return list;
-    }
-
-    public List<NewsBase> GetAutresClubsFutureNews(string[] taginclus = null, string[] tagexclus = null, int max = 100)
-    {
-        var list = newsAutresClub.OrderBy(n => n.dt).Where(n => n.dt>=Now).ToList();
-        if (taginclus!=null)
-        {
-            list = list.Where(n => taginclus.Contains(n.tag1)).ToList();
-        }
-        if (tagexclus!=null)
-        {
-            list = list.Where(n => !tagexclus.Contains(n.tag1)).ToList();
-        }
-        list = list.Take(max).ToList();
-
-        return list;
-    }
-
-    public List<NewsBase> GetClubPastNews(string[] taginclus = null, string[] tagexclus = null, int max=100)
-    {
-        var list = newsDuClub.OrderByDescending(n => n.dt).Where(n => n.dt<Now.AddDays(1)).ToList();
-        if (taginclus!=null)
-        {
-            list = list.Where(n => taginclus.Contains(n.tag1)).ToList();
-        }
-        if (tagexclus!=null)
-        {
-            list = list.Where(n => !tagexclus.Contains(n.tag1)).ToList();
-        }
-        list = list.Take(max).ToList();
-
-        return list;
-    }
-
-    public List<MeetingBase> GetNextMeetings(int max=2)
-    {
-        return meetings.Take(max).ToList();
-    }
-
-    public string GetShortUrl(NewsBase n)
-    {
-        return Const.DISTRICT_URL+"/n-" + n.id.Substring(9, 9);
-    }
-
-    public string GetPhoto(NewsBase n)
-    {
-        if (n.tag1=="Rotary International")
-            return n.photo;
-        if (n.photo == null || n.photo == "")
-            return Const.no_image;
-        if (n.photo.ToLower().StartsWith("/"))
-        {
-            return n.photo;
-        }
-        else
-        {
-            return Const.MEDIA_URL + n.photo;
-        }     
-    }
-
-    public string GetLink(MeetingBase m)
-    {
-          return Const.DISTRICT_URL+"/m-"+m.link;
-    }
-
+    
 }

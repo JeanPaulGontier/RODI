@@ -16,7 +16,8 @@
         
         methods: {
             isCloseDate() {
-                return (localStorage.getItem("notification.closed") == new Date().toDateString());       
+                var closedDate = localStorage.getItem("notification.closed");;   
+                return (closedDate == new Date().toDateString());       
             },
             close() {
                 localStorage.setItem("notification.closed", new Date().toDateString());
@@ -41,6 +42,11 @@
                 } else {
                     this.notifs = this.notifications;
                 }
+
+                this.unread = 0;
+                this.notifs.forEach((n) => {
+                    if (!n.opened) this.unread++;
+                });
                     
                 
             },
@@ -84,12 +90,12 @@
             }
         },
         mounted() {
-            setInterval(() => { this.unopened() }, 10000);         
+            setInterval(() => { this.unopened() }, 1000);         
             this.$nextTick(() => {
                 this.Peek();
                 setInterval(() => { this.Peek() }, 10000);
             });
-            if (!this.isCloseDate())
+            if (!this.isCloseDate() || this.unread>0)
                 this.$nextTick(() => {
                     $("#" + appid).fadeIn();
                 });

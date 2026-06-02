@@ -21,9 +21,9 @@
             foreach (var n in NextNewsDistrict)
             {
 
-                <a href="@n.GetShortUrl()" class="mini-news">
+                <a href="@clubDashboard.GetShortUrl(n)" class="mini-news">
                     <div class="news-date"><p>@n.dt.Day @n.dt.ToString("MMM")</p></div>
-                    <img src="@n.GetPhoto()">
+                    <img src="@clubDashboard.GetPhoto(n)">
                     <span>
                         <span class="news-type" style="color:#101f94">
                             <span>@n.tag1</span>
@@ -42,9 +42,9 @@
             foreach (var n in NextAutresClubsNews)
             {
 
-                <a href="@n.GetShortUrl()" class="mini-news">
+                <a href="@clubDashboard.GetShortUrl(n)" class="mini-news">
                     <div class="news-date"><p>@n.dt.Day @n.dt.ToString("MMM")</p></div>
-                    <img src="@n.GetPhoto()">
+                    <img src="@clubDashboard.GetPhoto(n)">
                     <span>
                          <span class="news-type" style="color:#5c83ca">
                              <span>@n.tag1</span>
@@ -68,7 +68,7 @@
 
             foreach (var m in meetings)
             {
-                <a href="@m.GetLink()" class="mini-news">
+                <a href="@clubDashboard.GetLink(m)" class="mini-news">
                     <span class="news-date"><p>@m.dtstart.Day @m.dtstart.ToString("MMM")</p></span>
                     <span>
                         <span class="news-type" style="color:#099864">
@@ -101,7 +101,7 @@
 
             foreach (var n in LastBulletins)
             {
-                <a href="@n.GetShortUrl()" class="mini-news">
+                <a href="@clubDashboard.GetShortUrl(n)" class="mini-news">
                     <span>
                         <span class="news-type" style="color:#ff6a00">
                             <span>Dernier bulletin</span>
@@ -119,7 +119,7 @@
 
             foreach (var n in LastGaleries)
             {
-                <a href="@n.GetShortUrl()" class="mini-news">
+                <a href="@clubDashboard.GetShortUrl(n)" class="mini-news">
                     <span>
                         <span class="news-type" style="color: #4800ff">
                             <span>Dernière galerie de photos</span>
@@ -184,8 +184,8 @@
             foreach (var n in NextNewsClub)
             {
                 <div class="mini-news" style="margin-bottom: 2rem" >
-                    <a href="@n.GetShortUrl()">
-                        <img src='@n.GetPhoto()'>
+                    <a href="@clubDashboard.GetShortUrl(n)">
+                        <img src='@clubDashboard.GetPhoto(n)'>
 
                         <span class="news-type" style="color:#d91b5c">
                             <span>Prochain évènement de mon club</span>

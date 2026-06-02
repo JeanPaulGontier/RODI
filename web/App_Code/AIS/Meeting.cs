@@ -15,24 +15,10 @@ using System.Web;
 /// Description résumée de Meeting
 /// </summary>
 
-public class Meeting
+public class Meeting : MeetingBase
 {
-    public int id { get; set; }
-    public int cric { get; set; }
-    public string name { get; set; }
-    public Guid guid { get; set; }
-
-    public string visible { get; set; }     // N : non visible (uniquement admin club)
-                                            // O : public
-                                            // M : membres du club
-                                            // D : tous les membres de tous les clubs
-    public string active { get; set; }      // O : inscriptions actives
-                                            // N : inscriptions fermées (auto N quand date est dépassée)
     public string doperiodics { get; set; } // O / N active ou pas la programmation automatique des réunions périodiques
-    public string type { get; set; }        // unitary / periodic
-    public string statutory { get; set; }   // O / N
-    public DateTime dtstart { get; set; }
-    public DateTime dtend { get; set; }
+       
     public DateTime dtendactive { get; set; }
     public Guid templateguid { get; set; }  // permet de lier le meeting unitaire avec le meeting periodique qui a servi a le créer
     public Guid periodguid { get; set; }    // permet de lier la periode unitaire avec la periode periodique correspondante afin de ne pas recreer une période si on change après coup l'heure de la période
@@ -53,12 +39,9 @@ public class Meeting
     public string notif1done { get; set; }   // O / N
     public string notif2done { get; set; }   // non utilisé pour l'instant
 
-    public DateTime dtlastupdate { get; set; }  // derniere modif de la réunion
-    public int portalid { get; set; }
-    public int nbusers { get; set; }
+   
+   
     
-    public string link { get; set; }        // code réduit pour l'accès à la réunion 
-
     public string periods { get; set; }     // périodes de programmation sérialisé JSON
 
     public string notificationmsg { get; set; } // message pour la notification

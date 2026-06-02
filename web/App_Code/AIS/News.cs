@@ -74,35 +74,8 @@ using System.Threading.Tasks;
 namespace AIS
 {
     [Serializable]
-    public class News
+    public class News : NewsBase
     {
-        public string id { get; set; }
-        public int cric { get; set; }
-        public DateTime dt { get; set; }
-        public string title { get; set; }
-        public string text { get; set; }
-        public string url { get; set; }
-        public string url_text { get; set; }
-        public string photo { get; set; }
-        public string category { get; set; }
-        public string tag1 { get; set; }
-        public string tag2 { get; set; }
-        public string club_name { get; set; }
-        public string visible { get; set; }
-        public string PhotoString64 { get; set; }
-        public string urlNews { get; set; }
-
-        public int ord { get; set; }
-        public string Abstract { get; set; }
-        public DateTime end_publication { get; set; }
-        public string adress_event { get; set; }
-        public string town_event { get; set; }
-        public string zip_event { get; set; }
-        public DateTime date_start_event { get; set; }
-        public DateTime date_end_event { get; set; }
-
-        public string club_type { get; set; }
-
         /// <summary>
         /// retourne le chemin de la photo
         /// avec le nom du club en prefixe s'il s'agit d'une news club

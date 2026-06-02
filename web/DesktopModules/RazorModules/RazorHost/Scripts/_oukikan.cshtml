@@ -219,11 +219,11 @@
             display: none;
         }
     </style>
-    <div id='@PageData["appID"]' v-cloak>
+    <div id='@PageData["appID"]' v-cloak class="table-responsive">
         <div>
             <h3>Inscriptions</h3>
         </div>
-        <table class="table">
+        <table class="table ">
             <tbody>
                 <tr>
                     <th>
@@ -264,9 +264,9 @@
 
 
             <div v-if="!user">
-                <button v-if="isLoggedUser()" type="button" class="btn btn-success" v-on:click="addLoggedUser(true)">Je m'inscris</button>&nbsp;
-                <button v-if="isLoggedUser()" type="button" class="btn btn-danger" v-on:click="addLoggedUser(false)">J'indique mon absence</button>&nbsp;
-                <button type="button" class="btn btn-info" v-on:click="addNewUser()">Inscrire un participant</button>
+                <button v-if="isLoggedUser()" type="button" class="btn btn-success mb-2" v-on:click="addLoggedUser(true)">Je m'inscris</button>&nbsp;
+                <button v-if="isLoggedUser()" type="button" class="btn btn-danger mb-2" v-on:click="addLoggedUser(false)">J'indique mon absence</button>&nbsp;
+                <button type="button" class="btn btn-info mb-2" v-on:click="addNewUser()">Inscrire un participant</button>
             </div>
 
         }

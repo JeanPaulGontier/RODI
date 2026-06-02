@@ -70,44 +70,14 @@ using System.Threading.Tasks;
 namespace AIS
 {
     [Serializable]
-    public class Club
+    public class Club : ClubBase
     {
-        public int cric { get; set; }
-        public int district_id { get; set; }
-        public string name { get; set; }
-        public string adress_1 { get; set; }
-        public string adress_2 { get; set; }
-        public string adress_3 { get; set; }
-        public string zip { get; set; }
-        public string town { get; set; }
-        public string pennant { get; set; }
-        public string meetings { get; set; }
-        public string telephone { get; set; }
-        public string fax { get; set; }
-        public string email { get; set; }
-        public string web { get; set; }
-        public string text { get; set; }
-        public string seo { get; set; }
-        public string latitude { get; set; }
-        public string longitude { get; set; }
-        public string meeting_adr1 { get; set; }
-        public string meeting_adr2 { get; set; }
-        public string meeting_zip { get; set; }
-        public string meeting_town { get; set; }
-        public string former_presidents { get; set; }
-        public string club_type { get; set; }
+        
         public string roles { get; set; }
         public string seo_mode { get; set; }
         public string domaine { get; set; }
         public string payment_method { get; set; }
         public double nb_free_of_charge { get; set; }
-        public int charter_year { get; set; }
-        #region RotaryMag Specific Fields
-        public DateTime? rm_agreement_date { get; set; }
-        public string rm_agreement_name { get; set; }
-        public string rm_agreement_firstname { get; set; }
-        public string rm_agreement_function { get; set; }
-        #endregion
 
         public DateTime? rotary_agreement_date { get; set; }
         public string rotary_agreement_type { get; set; } // '': pas de synchronisation , 'auto': maj auto, 'analyse': analyse seulement
@@ -115,6 +85,7 @@ namespace AIS
         public string logo { get; set; }
         public string headers { get; set; }
 
+        public string former_presidents { get; set; }
         public string GetSynchroRI()
         {
             if (rotary_agreement_date == null)

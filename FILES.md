@@ -1,6 +1,25 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 02/06/2026
+```txt
+App_Code\AIS\club\ClubDashboard.cs
+App_Code\AIS\club\ClubHelper.cs
+App_Code\AIS\webapi\mobile\MobileController.cs
+App_Code\AIS\Club.cs
+App_Code\AIS\ClubBase.cs
+App_Code\AIS\Meeting.cs
+App_Code\AIS\MeetingBase.cs
+App_Code\AIS\News.cs
+App_Code\AIS\NewsBase.cs
+DesktopModules\RazorModules\Club Dashboard\_ClubDasboard.cshtml
+DesktopModules\RazorModules\RazorHost\Scripts\_oukikan.cshtml
+Portals\_default\Skins\Rodi2017\skin.css
+Portals\_default\Skins\Rodi2017\skin.min.css
+Portals\_default\Skins\Rodi2017\skin.scss
+Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
+
+```
 ###### 29/05/2026
 ```txt
 App_Code\AIS\club\ClubDashboard.cs
