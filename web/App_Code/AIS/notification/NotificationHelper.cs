@@ -127,13 +127,13 @@ public static class NotificationHelper
         return 0;
     }
 
-    public static List<Notification> GetNotifications(int userid, bool onlyunopened=false)
+    public static List<Notification> GetNotifications(int userid, bool onlyunopened=false, int nbpassesmax=31)
     {
         string query = "";
         if (onlyunopened)
             query= " and opened=0";
         List<Notification> notifications = Yemon.dnn.DataMapping.ExecSql<Notification>(
-                new SqlCommand("select *,(select top 1 opened from "+AIS.Const.TABLE_PREFIX+"notifications_users where notif_id=N.id and user_id="+userid+") as opened from "+AIS.Const.TABLE_PREFIX+"notifications N where id in (select notif_id from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+query+") order by date desc")
+                new SqlCommand("select *,(select top 1 opened from "+AIS.Const.TABLE_PREFIX+"notifications_users where notif_id=N.id and user_id="+userid+") as opened from "+AIS.Const.TABLE_PREFIX+"notifications N where id in (select notif_id from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+query+") where date>getdate()-"+nbpassesmax+" order by date desc")
             );
         return notifications;
     }
