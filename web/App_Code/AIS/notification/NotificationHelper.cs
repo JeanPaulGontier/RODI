@@ -153,9 +153,9 @@ public static class NotificationHelper
         return Yemon.dnn.DataMapping.ExecSqlFirst<Notification>(sql);
     }
 
-    public static bool HaveUnopenedNotifications(int userid)
+    public static bool HaveUnopenedNotifications(int userid, int nbpassesmax=31)
     {
-        int nb=(int)Yemon.dnn.DataMapping.ExecSqlScalar("select count(*) from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+" and opened=0");
+        int nb=(int)Yemon.dnn.DataMapping.ExecSqlScalar("select count(*) from "+AIS.Const.TABLE_PREFIX+"notifications_users where user_id="+userid+" and opened=0 and date>getdate()-"+nbpassesmax);
         return nb>0;
     }
 
