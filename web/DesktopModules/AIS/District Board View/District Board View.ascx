@@ -1,8 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="District Board View.ascx.cs" Inherits="DesktopModules_AIS_District_Board_View_District_Board_View" %>
 
 <div class="panel panel-body" >
-    <div class="row text-center">
-        Année rotarienne : <asp:DropDownList ID="ddl_rotaryYear" AutoPostBack="true" OnSelectedIndexChanged="ddl_rotaryYear_SelectedIndexChanged" runat="server" ></asp:DropDownList>
+    <div class="row text-center form-inline">
+        Année rotarienne : <asp:DropDownList CssClass="form-control" Width="120" ID="ddl_rotaryYear" AutoPostBack="true" OnSelectedIndexChanged="ddl_rotaryYear_SelectedIndexChanged" runat="server" ></asp:DropDownList>
     </div>
     <div class="pe-spacer size20"></div>
 

@@ -139,7 +139,7 @@ public partial class DesktopModules_AIS_District_Board_View_District_Board_View 
         ddl_rotaryYear.Items.Clear();
         SqlConnection conn = new SqlConnection(Config.GetConnectionString()); 
         conn.Open();
-        String query = "SELECT DISTINCT rotary_year FROM ais_drya";
+        String query = "SELECT DISTINCT rotary_year FROM ais_drya WHERE rotary_year > 2012 ORDER BY rotary_year DESC";
         SqlCommand sql = new SqlCommand(query, conn);
         SqlDataAdapter da = new SqlDataAdapter(sql);
         DataSet ds = new DataSet();
