@@ -808,6 +808,16 @@ img.img-r {
   width: 100%;
 }
 
+.horizontal-datalist .sousmenu {
+  display: inline-block;
+}
+.horizontal-datalist .sousmenu > li {
+  list-style: none;
+}
+.horizontal-datalist br {
+  display: none;
+}
+
 .pc-display {
   display: none;
 }

@@ -1,5 +1,11 @@
 ##### Modified files per commit
 ```txt
+Portals\_default\Skins\Rodi2017\skin.scss
+Portals\_default\Skins\Rodi2017\skin.css
+Portals\_default\Skins\Rodi2017\skin.min.css
+Portals\_default\Skins\Rodi2025\_layout.scss
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.min.css
 App_Code\AIS\notification\NotificationHelper.cs
 Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
 DesktopModules\AIS\District Board View\District Board View.ascx

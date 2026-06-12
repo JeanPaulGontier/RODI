@@ -15,6 +15,7 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+- modification des styles de liens des sous menus pour faciliter la navigation sur tablette
 - les notifications ne sont affichées que sur les 30 derniers jours
 ###### 29/05/2026
 - travaux préparatoires à la nouvelle version de l'app mobile
