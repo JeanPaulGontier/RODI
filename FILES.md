@@ -1,5 +1,8 @@
 ##### Modified files per commit
 ```txt
+```
+###### 01/07/2026
+```txt
 Portals\_default\Skins\Rodi2017\skin.scss
 Portals\_default\Skins\Rodi2017\skin.css
 Portals\_default\Skins\Rodi2017\skin.min.css
@@ -11,6 +14,8 @@ App_Code\AIS\notification\NotificationHelper.cs
 Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
 DesktopModules\AIS\District Board View\District Board View.ascx
 DesktopModules\AIS\District Board View\District Board View.ascx.cs
+DesktopModules\AIS\Admin Comptabilité\Control.ascx.cs
+App_Code\AIS\DataMapping.cs
 ```
 ###### 02/06/2026
 ```txt

@@ -510,7 +510,20 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                 if(club.club_type=="rotaract")
                     montant = ToDouble(TXT_montant2.Text);
 
-                List<Member> membres = DataMapping.ListMembers(cric: club.cric, sort: "name ASC");
+                DateTime debutperiode = DateTime.Now;
+                if (DateTime.Now.Month>6)
+                {
+                    debutperiode = new DateTime(DateTime.Now.Year, 7, 1);
+                }
+                else
+                {
+                    debutperiode = new DateTime(DateTime.Now.Year, 1, 1);
+                    if (Const.DISTRICT_ID==1680)
+                    {
+                        debutperiode = new DateTime(DateTime.Now.Year-1, 7, 1);
+                    }
+                }
+                List<Member> membres = DataMapping.ListMembersAtDate(debutperiode,cric: club.cric);
 
                 bool tenir_compte_membres_prorata_temporis = CB_Generer_ProrataTemporis.Checked;
 
@@ -965,7 +978,21 @@ public partial class DesktopModules_AIS_Admin_Comptabilite_Control : PortalModul
                     if (club.club_type=="rotaract")
                         montant = ToDouble(TXT_montant2.Text);
 
-                    List<Member> membres = DataMapping.ListMembers(cric: club.cric, sort: "name ASC");
+                    DateTime debutperiode = DateTime.Now;
+                    if (DateTime.Now.Month>6)
+                    {
+                        debutperiode = new DateTime(DateTime.Now.Year, 7, 1);
+                    }
+                    else
+                    {
+                        debutperiode = new DateTime(DateTime.Now.Year, 1, 1);
+                        if (Const.DISTRICT_ID==1680)
+                        {
+                            debutperiode = new DateTime(DateTime.Now.Year-1, 7, 1);
+                        }
+                    }
+
+                    List<Member> membres = DataMapping.ListMembersAtDate(debutperiode,cric: club.cric);
 
                     bool tenir_compte_membres_prorata_temporis = CB_Generer_ProrataTemporis.Checked;
 

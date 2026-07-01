@@ -15,8 +15,12 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 01/07/2026
+- modification facturation district pour le D1680 pour que l'effectif soit au 1/7 de l'année rotarienne y compris pour le 2e appel de janvier
 - modification des styles de liens des sous menus pour faciliter la navigation sur tablette
 - les notifications ne sont affichées que sur les 30 derniers jours
+###### 02/06/2026
+- déploiement nouvelle version de l'app mobile qui inclut la rubrique mon club et corrige le pb de perte de mdp
 ###### 29/05/2026
 - travaux préparatoires à la nouvelle version de l'app mobile
 - activation du tableau de bord de club dans la rubrique /espace-membre/mon-club

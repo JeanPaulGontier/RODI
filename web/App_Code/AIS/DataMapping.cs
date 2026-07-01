@@ -2206,6 +2206,31 @@ namespace AIS
             return list;
         }
 
+
+        public static List<Member> ListMembersAtDate(DateTime dateTime, int cric = 0)
+        {
+            var sql = new SqlCommand("SELECT * FROM "+Const.TABLE_PREFIX+"ri_member_terminated WHERE [AdmissionDate]<@debut AND [TerminationDate]>@debut AND membertype='Member' AND clubid="+cric);
+            sql.Parameters.AddWithValue("debut",dateTime);
+            var membersTerminated = Yemon.dnn.DataMapping.ExecSql<Rotary.Member_Terminated>(sql);
+
+            var members = ListMembers(cric, sort: "name ASC").Where(m => m.year_membership_rotary<dateTime).ToList();
+            foreach(var m in membersTerminated)
+            {
+                var find = members.Find(mm => mm.nim==m.MemberId);
+                if(find==null)
+                {
+                    var me = new Member();
+                    me.cric=cric;
+                    me.nim=m.MemberId;
+                    me.surname = m.LastName;
+                    me.name = m.FirstName;
+                    members.Add(me);
+                }
+            }
+            members=members.OrderBy(m=>m.name).ToList();
+            return members;
+        }
+
         /// <summary>
         /// Get the first 10 members
         /// </summary>
