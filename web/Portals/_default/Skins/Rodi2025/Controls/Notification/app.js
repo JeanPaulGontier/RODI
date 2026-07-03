@@ -90,15 +90,19 @@
             }
         },
         mounted() {
+            this.UpdateList();
             setInterval(() => { this.unopened() }, 1000);         
             this.$nextTick(() => {
                 this.Peek();
                 setInterval(() => { this.Peek() }, 10000);
             });
-            if (!this.isCloseDate() || this.unread>0)
+            if (!this.isCloseDate() && this.unread > 0 && this.notifications.length > 0) {
+
+            
                 this.$nextTick(() => {
                     $("#" + appid).fadeIn();
                 });
+            }
                 
         }
     });

@@ -307,7 +307,7 @@
   white-space: nowrap;
   color: #ffffff;
   background: transparent url("images/menu.png") no-repeat center 80px;
-  padding: 0 2.8rem;
+  padding: 0 2rem;
 }
 .menubar-membre .m-lvl1 > div:hover > a {
   background-position: center 40px;
@@ -739,6 +739,11 @@ footer > section img {
   footer > section img {
     max-height: 45px;
     padding: 0 5px;
+  }
+}
+@media handheld, only screen and (min-width: 1280px) {
+  .menubar-membre .m-lvl1 > div > a {
+    padding: 0 2.8rem;
   }
 }
 /*--------- Retina Styles ----------*/
@@ -6936,6 +6941,11 @@ h1.DetailedArticle a:hover {
   }
   .slider_slick_1 .slick-dots {
     width: 100% !important;
+  }
+}
+@media handheld, only screen and (min-width: 955px) {
+  .card-notif {
+    top: 158px;
   }
 }
 /*--------- CSS Reset for Tablet ----------*/

@@ -15,6 +15,8 @@
 - nouvelle version de l'app mobile (gestion des notifications)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 03/07/2026
+- correction d'un pb de positionnement du pop up notification sur les écrans de taille intermédiaire (D1640)
 ###### 01/07/2026
 - modification facturation district pour le D1680 pour que l'effectif soit au 1/7 de l'année rotarienne y compris pour le 2e appel de janvier
 - modification des styles de liens des sous menus pour faciliter la navigation sur tablette

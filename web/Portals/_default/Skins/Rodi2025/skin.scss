@@ -440,7 +440,11 @@ h1.DetailedArticle a:hover {
   }
 
 
-
+@media handheld, only screen and (min-width: 955px) {
+    .card-notif {
+        top: 158px;
+    }
+}
 
 
 /*--------- CSS Reset for Tablet ----------*/

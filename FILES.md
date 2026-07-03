@@ -1,6 +1,14 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 03/07/2026
+```txt
+Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
+Portals\_default\Skins\Rodi2025\_header.scss
+Portals\_default\Skins\Rodi2025\skin.css
+Portals\_default\Skins\Rodi2025\skin.min.css
+Portals\_default\Skins\Rodi2025\skin.scss
+```
 ###### 01/07/2026
 ```txt
 Portals\_default\Skins\Rodi2017\skin.scss
