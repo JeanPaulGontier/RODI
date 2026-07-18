@@ -3,6 +3,7 @@
 - nouveau : possibilité de créer des listes de contacts externes (optin & optout) pour les mailings et notifications de réunions (exemple : abonnés newsletter du clubs, prospects du clubs, etc.) avec utilisation de plateforme de mass mailing du club (brevo, mailjet, mail personnel du club)
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
+- correction pb donnée fiche information club (D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
@@ -13,6 +14,9 @@
 - nouveau : module d'affichage des messages pour les membres (club, autres clubs et district) (D1680)
 - annuaire inter district rodi
 - nouvelle version de l'app mobile (gestion des notifications)
+- theme graphique 2025 pour les clubs (D1730)
+- fonctionnalité de téléchargement des images des galeries photos et liste fichiers (D1730)
+- correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
 ###### 03/07/2026
