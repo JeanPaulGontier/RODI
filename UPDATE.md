@@ -18,7 +18,9 @@
 - fonctionnalité de téléchargement des images des galeries photos et liste fichiers (D1730)
 - correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
-
+###### 21/07/2026
+- correction d'un pb de génération des appels de cotisations clubs (D1640)
+- correction du débordement de mise en page pour l'écran d'appel de cotisations
 ###### 03/07/2026
 - correction d'un pb de positionnement du pop up notification sur les écrans de taille intermédiaire (D1640)
 ###### 01/07/2026
