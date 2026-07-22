@@ -38,8 +38,9 @@
     bool editable = false;
     Member m = Functions.GetCurrentMember();
     var userInfo = UserController.Instance.GetCurrentUserInfo();
-    if (userInfo.IsSuperUser || 
-        userInfo.IsInRole("Administrators") || 
+    if (userInfo.IsSuperUser ||
+        userInfo.IsInRole("Administrators") ||
+        userInfo.IsInRole("Formateur Clubs") ||
         (userInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric) ||
         userInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT))
     {

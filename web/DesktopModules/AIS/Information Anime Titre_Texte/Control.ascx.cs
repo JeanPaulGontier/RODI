@@ -192,6 +192,7 @@ public partial class DesktopModules_AIS_Information_Anime_Titre_Texte_Control : 
             if (UserInfo.IsSuperUser ||
                 UserInfo.IsInRole(Const.ROLE_ADMIN_DISTRICT) ||
                 UserInfo.IsInRole("Administrators") ||
+                UserInfo.IsInRole("Formateur Clubs") ||
                 (UserInfo.IsInRole(Const.ROLE_ADMIN_CLUB) && cric != 0 && m != null && m.cric == cric) )
             {
                 isAuthorised = true;

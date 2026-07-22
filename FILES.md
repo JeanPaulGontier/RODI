@@ -1,6 +1,13 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 22/07/2026
+```txt
+DesktopModules\AIS\Club News Panel\News.ascx.cs
+DesktopModules\AIS\Club Slideshow\Control.ascx.cs
+DesktopModules\AIS\Information Anime Titre_Texte\Control.ascx.cs
+DesktopModules\RazorModules\RazorHost\Scripts\_ClubBlockContent.cshtml
+```
 ###### 21/07/2026
 ```txt
 App_Code\AIS\webapi\compta\ComptaController.cs
