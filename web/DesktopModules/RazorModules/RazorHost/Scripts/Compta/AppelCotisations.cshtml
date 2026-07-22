@@ -76,8 +76,8 @@
                 <tr>
                     <th>Nim</th>
                     <th>Nom / Prénom</th>
-                    <th class="text-center">Appel</th>
-                    <th class="text-center">Confirmation</th>
+                    <th class="text-center"><input type="checkbox" class="input-sm" v-on:click="toggleAppel()" v-model="appel" title="Tout sélectionner/désélectionner"/>Appel</th>
+                    <th class="text-center"><input type="checkbox" class="input-sm" v-on:click="toggleConfirmation()" v-model="confirmation" title="Tout sélectionner/désélectionner" />Confirmation</th>
                     <th class="text-center" v-for="l in parametres.valeurs" :title="l.libelle">
                         {{l.val}}
                     </th>
@@ -116,10 +116,11 @@
                 cotisationTypes: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(ComptaHelper.GetDomaine("PeriodiciteCotisation"))),
                 parametres: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(parametres)),
                 cotisations: @PageData["HTML"].Raw(Yemon.dnn.Functions.Serialize(cotisations)),
-                
+
                 modified: null,
                 createOnSave: false,
-
+                appel: false,
+                confirmation:false,
                 editorPlugins: [
                     'autoresize advlist autolink lists link charmap print preview anchor',
                     'searchreplace visualblocks code fullscreen',
@@ -150,6 +151,12 @@
             }
         },
         methods: {
+            toggleAppel() {
+                this.cotisations.membres.forEach(m => { m.appel = !this.appel });
+            },
+            toggleConfirmation() {
+                this.cotisations.membres.forEach(m => { m.confirmation = !this.confirmation });
+            },
             initFromParams() {
                 if (confirm("L'initialisation à partir des paramètres remplace toutes les valeurs, dois-t-on continuer ?")) {
                     this.cotisations.libelle = "Appel de cotisation " + (this.parametres.cotisation ? this.parametres.cotisation:"");

@@ -1,6 +1,11 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 21/07/2026
+```txt
+App_Code\AIS\webapi\compta\ComptaController.cs
+DesktopModules\RazorModules\RazorHost\Scripts\Compta\AppelCotisations.cshtml
+```
 ###### 03/07/2026
 ```txt
 Portals\_default\Skins\Rodi2025\Controls\Notification\app.js
