@@ -19,6 +19,8 @@
 - correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 23/07/2026
+- modification du libellé de total à payer dans facture district pour plus de clarté (D1780)
 ###### 22/07/2026
 - les utilisateurs ayant le role "Formateur Clubs" peuvent maintenant gérer les sites web des clubs (D1780)
 ###### 21/07/2026

@@ -5806,7 +5806,7 @@ namespace AIS
             }
             
             dd+="Cotisation semestrielle pour "+ nbdetail + " membres :\t\t"+(totalmembres).ToString("# ##0.00")+" €"+Environment.NewLine;
-            dd+="Total à payer pour le semestre :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
+            dd+="Total à payer pour le semestre (déductions incluses) :\t\t"+order.amount.ToString("# ##0.00")+" €"+Environment.NewLine;
             dd+=Environment.NewLine;
 
           
