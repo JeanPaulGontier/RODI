@@ -391,24 +391,24 @@ public class ComptaHelper
         row["type"] = element.type;
         row["provisoire"] = element.provisoire;
         row["moyenPaiement"] = element.moyenPaiement;
-        row["reference"] = element.reference;
+        row["reference"] = Yemon.dnn.Functions.LimitLength(element.reference,50);
 
         row["date"] = element.date;
         row["dateReglement"] = element.dateReglement;
-        row["lettrage"] = element.lettrage;
+        row["lettrage"] = Yemon.dnn.Functions.LimitLength(element.lettrage,50);
         row["dateLettrage"] = element.dateLettrage;
-        row["libelle"] = element.libelle;
+        row["libelle"] = Yemon.dnn.Functions.LimitLength(element.libelle,100);
 
         row["nim"] = element.nim;
-        row["raisonSociale"] = element.raisonSociale;
-        row["nom"] = element.nom;
-        row["prenom"] = element.prenom;
-        row["email"] = element.email;
-        row["ad1"] = element.ad1;
-        row["ad2"] = element.ad2;
-        row["cp"] = element.cp;
-        row["ville"] = element.ville;
-        row["pays"] = element.pays;
+        row["raisonSociale"] = Yemon.dnn.Functions.LimitLength(element.raisonSociale,50);
+        row["nom"] = Yemon.dnn.Functions.LimitLength(element.nom,50);
+        row["prenom"] = Yemon.dnn.Functions.LimitLength(element.prenom,50);
+        row["email"] = Yemon.dnn.Functions.LimitLength(element.email,255);
+        row["ad1"] = Yemon.dnn.Functions.LimitLength(element.ad1,50);
+        row["ad2"] = Yemon.dnn.Functions.LimitLength(element.ad2,50);
+        row["cp"] = Yemon.dnn.Functions.LimitLength(element.cp,50);
+        row["ville"] = Yemon.dnn.Functions.LimitLength(element.ville,50);
+        row["pays"] = Yemon.dnn.Functions.LimitLength(element.pays,50);
 
         row["montant"] = element.montant;
 
