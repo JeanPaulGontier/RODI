@@ -283,17 +283,17 @@ public class ComptaHelper
         foreach (var element in elements)
         {
             var t = types.Find(tt => tt.id == element.type);
-            if(tous || (!(bool)element.provisoire && element.type!=2))
+            if(tous || (!(bool)element.provisoire)) // && element.type!=2))
             {
-                if (element.type!=2)
-                {
+                //if (element.type!=2)
+                //{
                     if (!t.recette)
                         compte.debit += element.montant;
                     else
                         compte.credit += element.montant;
 
                     compte.solde = -compte.debit + compte.credit;
-                }
+                //}
 
                 if (complet)
                 {
