@@ -312,15 +312,15 @@ public class ComptaHelper
                     ligne.date = element.date;
                    
                     ligne.document_id = element.document_id;
-                    if(element.type==2)
-                    { 
-                        ligne.solde = solde;                       
-                    }
-                    else
-                    { 
+                    //if(element.type==2)
+                    //{ 
+                    //    ligne.solde = solde;                       
+                    //}
+                    //else
+                    //{ 
                         ligne.solde = solde - ligne.debit + ligne.credit;
                         solde = ligne.solde;
-                    }
+                    //}
 
                     compte.lignes.Add(ligne);
                 }
