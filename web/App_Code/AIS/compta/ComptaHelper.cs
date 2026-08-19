@@ -472,7 +472,7 @@ public class ComptaHelper
                 throw new Exception("Erreur de nim");
 
             var element = new Compta.Element();
-            element.type = 2;
+            element.type = 8;
             element.date = DateTime.Now;
             element.montant = total;
             element.libelle = "Note de crédit";
