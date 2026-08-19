@@ -1,6 +1,10 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 19/08/2026
+```txt
+App_Code\AIS\compta\ComptaHelper.cs
+```
 ###### 17/08/2026
 ```txt
 App_Code\AIS\compta\ComptaHelper.cs
