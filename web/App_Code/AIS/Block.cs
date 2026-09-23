@@ -184,8 +184,8 @@ namespace AIS
                 {
                     
                     if (_news == null){
-                        string[] tags_included = (""+Tags_Included).Split(new string[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
-                        string[] tags_excluded = ("" + Tags_Excluded).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] tags_included = (""+Tags_Included).Split(new string[] { Environment.NewLine,"\n" },StringSplitOptions.RemoveEmptyEntries);
+                        string[] tags_excluded = ("" + Tags_Excluded).Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                         DateTime today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 

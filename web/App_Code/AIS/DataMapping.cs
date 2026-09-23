@@ -3745,7 +3745,7 @@ namespace AIS
                 if (tags_excluded != "")
                 {
                     string t = "";
-                    string[] exclude = tags_excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] exclude = tags_excluded.Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ex in exclude)
                         t += "'" + ex + "',";
                     if (t.EndsWith(","))
@@ -3761,7 +3761,7 @@ namespace AIS
                 if (tags_included != "")
                 {
                     string t = "";
-                    string[] include = tags_included.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] include = tags_included.Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string inc in include)
                         t += "'" + inc + "',";
                     if (t.EndsWith(","))
@@ -3872,7 +3872,7 @@ namespace AIS
                 if (tags_excluded != "")
                 {
                     string t = "";
-                    string[] exclude = tags_excluded.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] exclude = tags_excluded.Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ex in exclude)
                         t += "'" + ex + "',";
                     if (t.EndsWith(","))
@@ -3885,7 +3885,7 @@ namespace AIS
                 if (tags_included != "")
                 {
                     string t = "";
-                    string[] include = tags_included.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] include = tags_included.Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string inc in include)
                         t += "'" + inc + "',";
                     if (t.EndsWith(","))
@@ -4730,7 +4730,7 @@ namespace AIS
                 if (tags_excluded != "")
                 {
                     string t = "";
-                    string[] exclus = ("" + tags_excluded).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] exclus = ("" + tags_excluded).Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string ex in exclus)
                         t += "'" + ex + "',";
                     if (t.EndsWith(","))
@@ -4743,7 +4743,7 @@ namespace AIS
                 if (tags_included != "")
                 {
                     string t = "";
-                    string[] inclus = (""+tags_included).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] inclus = (""+tags_included).Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string inc in inclus)
                         t += "'" + inc + "',";
                     if (t.EndsWith(","))
