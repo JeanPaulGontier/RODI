@@ -19,6 +19,8 @@
 - correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 
+###### 23/09/2026
+- correction du problème de sélections des catégories de nouvelles incluses ou exclues dans blockcontent quand il y a plusieurs lignes choisies
 ###### 04/09/2026
 - mise à jour des 9 app android pour supporter les dernières versions du système
 ###### 23/07/2026
