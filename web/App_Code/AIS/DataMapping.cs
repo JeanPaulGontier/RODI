@@ -9350,6 +9350,8 @@ cestbon:
                 }
                 for(int i = 0; i<3; i++)
                 {
+                    sheet.Cells[43, 3+i].Value=(Functions.GetRotaryYear()-2000-i-1)+"-"+(Functions.GetRotaryYear()-2000-i);
+
                     if (terms.ContainsKey(Functions.GetRotaryYear()-i-1))
                     {
                         try
@@ -9391,11 +9393,11 @@ cestbon:
                     else if (age>69)
                         nbplus70++;
                 }
-                sheet.Cells["C53"].Value=Math.Round(nbmoins40/(float)members.Count,2);
-                sheet.Cells["C54"].Value=Math.Round(nb40a49/(float)members.Count, 2);
-                sheet.Cells["C55"].Value=Math.Round(nb50a59/(float)members.Count, 2);
-                sheet.Cells["C56"].Value=Math.Round(nb60a69/(float)members.Count, 2);
-                sheet.Cells["C57"].Value=Math.Round(nbplus70/(float)members.Count, 2);
+                sheet.Cells["C53"].Value=Math.Round((float)nbmoins40/(float)members.Count,2);
+                sheet.Cells["C54"].Value=Math.Round((float)nb40a49/(float)members.Count, 2);
+                sheet.Cells["C55"].Value=Math.Round((float)nb50a59/(float)members.Count, 2);
+                sheet.Cells["C56"].Value=Math.Round((float)nb60a69/(float)members.Count, 2);
+                sheet.Cells["C57"].Value=Math.Round((float)nbplus70/(float)members.Count, 2);
                 sheet.Cells["C58"].Value=nbageinconnu;
 
                 #region club recognition

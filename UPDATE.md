@@ -18,7 +18,10 @@
 - fonctionnalité de téléchargement des images des galeries photos et liste fichiers (D1730)
 - correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
+- donner la possibilité à un club satellite indépendant de définir son commité (D1640)
 
+###### 23/09/2026
+- correction erreurs sur fiche visite gouverneur (D1640)
 ###### 23/09/2026
 - correction du problème de sélections des catégories de nouvelles incluses ou exclues dans blockcontent quand il y a plusieurs lignes choisies
 ###### 04/09/2026
