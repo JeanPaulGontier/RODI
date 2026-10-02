@@ -4,6 +4,7 @@
 ###### 02/10/2026
 ```txt
 App_Code\AIS\DataMapping.cs
+Portals\0\Modeles\Fiche de renseignement club generique gabarit.xlsx
 ```
 ###### 23/09/2026
 ```txt
