@@ -13,7 +13,7 @@
                 <button type="button" v-on:click="duplicateMeeting()" class="btn btn-sm btn-default" title="Dupliquer" v-if="this.meeting.id>0">Dupliquer</button>
             </div>
             <div class="col-sm-2">
-                <button v-if="this.id!='new'" type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer" v-if="id!='new'">Supprimer</button>
+                <button v-if="this.id!='new'" type="button" v-on:click="deleteMeeting()" class="btn btn-sm btn-danger" title="Supprimer">Supprimer</button>
             </div>
         </div>
 
@@ -354,7 +354,11 @@
                         _yemon[this.moduleid].service.getData("/DuplicateMeeting", {
                             guid: this.meeting.guid
                         }, (r) => {
-                            window.location.assign("/Espace-Membre/Mon-club/Communication/Reunions#/edit/" + r.data);
+                            this.$router.push("/");
+                            this.$nextTick(() => {
+                                window.location.href = "/Espace-Membre/Mon-club/Communication/Reunions#/edit/" + r.data;
+                                window.location.reload();
+                            });
                             
                         }, (e) => {
                             toastr["error"]("Erreur : " + e.response.data.Message);
@@ -370,6 +374,7 @@
             },
             updateDtEndActive() {
                 let dtstart = new Date(this.meeting.dtstart);
+                this.meeting.dtendactive = this.meeting.dtstart;
                 let dtend = new Date(this.meeting.dtendactive);
                 if (dtend > dtstart || !this.meeting.dtendactive)
                     this.meeting.dtendactive = this.meeting.dtstart;                
@@ -506,8 +511,10 @@
 
                 this.saveMeeting(() => {
                     _yemon[this.moduleid].service.getData("/CreateBulletin", { guid: this.meeting.guid }, (r) => {
-
-                        window.location.assign("/Espace-Membre/Mon-club/Communication/Nouvelles#/edit/" + r.data);                        
+                        setTimeout(function () {
+                            window.location.assign("/Espace-Membre/Mon-club/Communication/Nouvelles#/edit/" + r.data);
+                            
+                        },500);
                     });
                 });
             },

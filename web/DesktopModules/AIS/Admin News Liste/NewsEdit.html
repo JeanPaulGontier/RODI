@@ -261,10 +261,9 @@
                             this.blocks[i].Content = JSON.parse(this.blocks[i].Content);
                     }
                     this.$forceUpdate();
-                }
-                    //, (e) => {
+                }, (e) => {                    
                     //toastr["error"]("Erreur : " + e.response.data.Message);
-                    //}
+                }
                 )
             },
             getNewsDetail() {

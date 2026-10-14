@@ -1,6 +1,13 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 14/10/2026
+```txt
+App_Code\AIS\webapi\meeting\MeetingHelper.cs
+DesktopModules\AIS\Admin News Liste\NewsEdit.html
+DesktopModules\AIS\OuKiKan\MeetingEdit.html
+DesktopModules\AIS\OuKiKan\Meetings.html
+```
 ###### 02/10/2026
 ```txt
 App_Code\AIS\DataMapping.cs

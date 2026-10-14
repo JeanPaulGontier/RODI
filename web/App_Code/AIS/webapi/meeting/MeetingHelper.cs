@@ -58,6 +58,10 @@ public class MeetingHelper
             meeting.dtstart = DateTime.Now;
             meeting.dtend = DateTime.Now.AddHours(1);
             meeting.dtendactive = DateTime.Now;
+            meeting.dtrevision = DateTime.Now;
+            meeting.dtnotif1=DateTime.MinValue;
+            meeting.dtnotif2=DateTime.MinValue;
+
 
             if (SetMeeting(meeting, conn, trans) == 0)
             {

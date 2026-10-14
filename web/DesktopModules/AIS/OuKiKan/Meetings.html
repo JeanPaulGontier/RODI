@@ -39,7 +39,7 @@
                 <div v-if="categorie=='unitary'">
                     <ul class="nav nav-tabs">
                         <li :class="{ 'active': prochaines }">
-                            <a v-on:click="prochaines=true">Prochaines</a>
+                            <a v-on:click="prochaines=true">En cours</a>
                         </li>
                         <li :class="{ 'active': !prochaines }">
                             <a v-on:click="prochaines=false">Passées</a>
@@ -131,6 +131,7 @@
                 if (this.categorie == "periodic")
                     return this.meetings;
                 const now = new Date();
+                now.setHours(0, 0, 0);
                 if (this.prochaines) {
                     return this.meetings.filter(m => m.dtstart >= now).sort((a, b) => {
                         return a.dtstart - b.dtstart;

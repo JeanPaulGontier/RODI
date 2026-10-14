@@ -20,7 +20,11 @@
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - donner la possibilité à un club satellite indépendant de définir son commité (D1640)
 
-###### 23/09/2026
+###### 14/10/2026
+- correction pb affichage erreur inconnue dans l'édition d'une nouvelle club
+- correction d'un pb de redirection lors de la dupplication d'une réunion et de la création d'un bulletin à partir d'une réunion
+- changement de l'onglet Futures en En cours afin d'afficher les réunions de la journée y compris si l'heure est passée, les réunions des jours précédents restent dans l'onglet passées
+###### 02/10/2026
 - correction erreurs sur fiche visite gouverneur (D1640)
 ###### 23/09/2026
 - correction du problème de sélections des catégories de nouvelles incluses ou exclues dans blockcontent quand il y a plusieurs lignes choisies
