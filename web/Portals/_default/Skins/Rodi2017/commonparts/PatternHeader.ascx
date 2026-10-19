@@ -97,7 +97,7 @@
                         <a href="/Espace-Membre" class="btn-connexion" title="connexion">connexion</a>
                         <div class="user_style">
                         <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-                        <a href="https://www.rotary.org/fr/search/club-finder" class="Breadcrumb HeadUser">Recherche de club</a>
+                        <a href="https://my.rotary.org/fr/domui/club-search" class="Breadcrumb HeadUser">Recherche de club</a>
                         </div>
                     </div>
                 <% End If%>
@@ -109,7 +109,7 @@
                                 <%= AIS.Const.DISTRICT_TITLE %>
                             </h1>
                             <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-                            <a href="https://www.rotary.org/fr/search/club-finder" class="HeadUser Breadcrumb">Recherche de club</a>
+                            <a href="https://my.rotary.org/fr/domui/club-search" class="HeadUser Breadcrumb">Recherche de club</a>
                         </div>
                         <span class="HeadUser"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></span> | 
                         <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 
