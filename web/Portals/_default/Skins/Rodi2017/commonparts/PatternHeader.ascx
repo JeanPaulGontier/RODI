@@ -51,7 +51,7 @@
                             <%If Not Request.IsAuthenticated Then%>
                                 <div class="icon_user text-center">
                                     <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-                                    <a href="https://www.rotary.org/fr/search/club-finder" class="Breadcrumb HeadUser">Recherche de club</a>
+                                    <a href="https://my.rotary.org/fr/domui/club-search" class="Breadcrumb HeadUser">Recherche de club</a>
                                     <div class="relative">
                                         <a href="/Espace-Membre" class="btn-connexion" title="connexion">connexion</a>
                                     </div>
@@ -61,7 +61,7 @@
                             <%If Request.IsAuthenticated Then%>
                                 <div class="icon_user connected text-center">
                                     <a href="https://www.rotary.org/" class="Breadcrumb HeadUser">Le Rotary International</a> | 
-                                    <a href="https://www.rotary.org/fr/search/club-finder" class="HeadUser Breadcrumb">Recherche de club</a>
+                                    <a href="https://my.rotary.org/fr/domui/club-search" class="HeadUser Breadcrumb">Recherche de club</a>
                                     <p class="HeadUser text-center"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></p>
                                     <div class="relative">
                                         <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 

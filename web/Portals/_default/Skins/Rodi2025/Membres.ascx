@@ -89,7 +89,7 @@
                     </div>
                     <div>
                         <a href="https://www.rotary.org/">Rotary International</a> | 
-                        <a href="https://www.rotary.org/fr/search/club-finder">Recherche de club</a>
+                        <a href="https://my.rotary.org/fr/domui/club-search">Recherche de club</a>
                     </div>
                 </div>
             <% } %>
@@ -97,7 +97,7 @@
             <%if (Request.IsAuthenticated) {%>
                 <div class="text-center">
                     <a href="https://www.rotary.org/">Rotary International</a> | 
-                    <a href="https://www.rotary.org/fr/search/club-finder">Localiser un Rotary Club</a>
+                    <a href="https://my.rotary.org/fr/domui/club-search">Localiser un Rotary Club</a>
 
                     <div class="user-head">
                         <span><%= "Bienvenue " + PortalSettings.UserInfo.DisplayName %></span> | 

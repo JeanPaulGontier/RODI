@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="user_style">
                                             <a href="https://www.rotary.org/" class="HeadUser">Rotary International</a> | 
-                                            <a href="https://www.rotary.org/fr/search/club-finder" class="HeadUser Localiser">Recherche de club</a>
+                                            <a href="https://my.rotary.org/fr/domui/club-search" class="HeadUser Localiser">Recherche de club</a>
                                         </div>
                                     </div>
                                 <% End If%>
@@ -74,7 +74,7 @@
                                 <%If Request.IsAuthenticated Then%>
                                     <div class="icon_user membre connected text-center">
                                         <a href="https://www.rotary.org/" class="HeadUser Breadcrumb">Rotary International</a> | 
-                                        <a href="https://www.rotary.org/fr/search/club-finder" class="HeadUser Breadcrumb">Localiser un Rotary Club</a>
+                                        <a href="https://my.rotary.org/fr/domui/club-search" class="HeadUser Breadcrumb">Localiser un Rotary Club</a>
                                         <p class="HeadUser"><% Response.Write("Bienvenue " + Entities.Users.UserController.GetCurrentUserInfo.DisplayName) %></p>
                                         <div class="relative">
                                             <a href="/Espace-Membre/Mon-profil" title="Mon profil" class="HeadUser btn-profil">Mon profil</a> | 

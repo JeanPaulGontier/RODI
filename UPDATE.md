@@ -20,6 +20,8 @@
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - donner la possibilité à un club satellite indépendant de définir son commité (D1640)
 
+###### 19/10/2026
+- correction du lien de recherche club my rotary
 ###### 14/10/2026
 - correction pb affichage erreur inconnue dans l'édition d'une nouvelle club
 - correction d'un pb de redirection lors de la dupplication d'une réunion et de la création d'un bulletin à partir d'une réunion

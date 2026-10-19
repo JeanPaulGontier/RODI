@@ -1,6 +1,12 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 19/10/2026
+```txt
+Portals\_default\Skins\Rodi2017\commonparts\HeaderMembre.ascx
+Portals\_default\Skins\Rodi2017\commonparts\PatternHeader.ascx
+Portals\_default\Skins\Rodi2025\Membres.ascx
+```
 ###### 14/10/2026
 ```txt
 App_Code\AIS\webapi\meeting\MeetingHelper.cs
