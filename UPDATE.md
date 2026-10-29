@@ -20,6 +20,8 @@
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - donner la possibilité à un club satellite indépendant de définir son commité (D1640)
 
+###### 29/10/2026
+- ajout de la nouvelle fonction rotarienne : Conseiller Unité de développement communautaire de club
 ###### 19/10/2026
 - correction du lien de recherche club my rotary
 ###### 14/10/2026

@@ -1,6 +1,10 @@
 ##### Modified files per commit
 ```txt
 ```
+###### 29/10/2026
+```txt
+App_Code\AIS\rotary\RotaryHelper.cs
+```
 ###### 19/10/2026
 ```txt
 Portals\_default\Skins\Rodi2017\commonparts\HeaderMembre.ascx
