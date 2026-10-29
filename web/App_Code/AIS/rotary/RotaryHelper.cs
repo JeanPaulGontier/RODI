@@ -769,7 +769,7 @@ retry:
             fl.Add("Rotaract Young Leaders Contact", "Délégué Jeunesse");
             // nouveaux roles au 29/10/2026
             fl.Add("Club Rotary Community Corps Advisor", "Conseiller Unité de développement communautaire de club");
-            fl.Add("Club Rotaract Community Corps Advisor", "Rotaract Conseiller Unité de développement communautaire de club");
+            fl.Add("Club Rotaract Community Corps Advisor", "Conseiller Unité de développement communautaire de club");
 
 
 
