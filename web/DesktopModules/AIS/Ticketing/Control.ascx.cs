@@ -2,7 +2,7 @@
 #region Copyrights
 
 // RODI - https://rodi-platform.org/                                    
-// Copyright(c) 2012-2019                                              
+// Copyright(c) 2012-2026                                              
 // by : Jean-Paul GONTIER(Rotary Club Sophia Antipolis - District 1730)
 //
 //GNU LESSER GENERAL PUBLIC LICENSE
@@ -60,32 +60,34 @@
 
 #endregion Copyrights
 
+using AIS;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.UI.Skins;
+using Stripe;
+using Stripe.Checkout;
 using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using System.IO;
-using System.Drawing;
-
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Entities.Users;
-using AIS;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using DotNetNuke.Common.Utilities;
-using System.Collections.Specialized;
-using System.Text;
-using System.Net;
-using DotNetNuke.Common;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.Framework;
-using Stripe.Checkout;
-using Stripe;
 using System.Web.UI.WebControls.WebParts;
+using System.Workflow.Activities;
+
 
 
 /// <summary>
@@ -189,7 +191,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                     else
                     {
                         UpdateOrderPayment(order.reference, "NO", intent.ToString(), intent.Id);
-                        ShowMessage("danger", "Le paiement n'a pas été accepté...");
+                        ShowMessage2("danger", "Le paiement n'a pas été accepté...");
                     }
                 }
                 catch (Exception ee)
@@ -281,7 +283,8 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         // show tickets
         if (!String.IsNullOrEmpty(Request["ticket_guid"]))
         {
-            Check("" + Request["ticket_guid"]);
+            ShowOrderTickets(""+Request["ticket_guid"]);
+            //Check("" + Request["ticket_guid"]);
         }
         // show receipt
         if (!String.IsNullOrEmpty(Request["receipt"]))
@@ -324,26 +327,33 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         //    return;
         //}
 
+        if (ticketing!=null)
+        {
+
+
+            InitAdminPanel();
+        }
+
         if (Page.IsPostBack)
         {
-            Ticketing.Order order;
+            //Ticketing.Order order;
 
-            if (Session[TXT_GUID.Value] != null)
-            {
-                order = (Ticketing.Order)Session[TXT_GUID.Value];
+            //if (Session[TXT_GUID.Value] != null)
+            //{
+            //    order = (Ticketing.Order)Session[TXT_GUID.Value];
 
-                Member member = DataMapping.GetMemberByUserID(UserId);
-                P_People.Controls.Clear();
-                foreach (Ticketing.Order.Item item in order.items)
-                {
-                    Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
-                    p.ticketing = ticketing;
-                    p.item = item;
-                    if (member != null)
-                        p.member = member;
-                    P_People.Controls.Add(p);
-                }
-            }
+            //    Member member = DataMapping.GetMemberByUserID(UserId);
+            //    P_People.Controls.Clear();
+            //    foreach (Ticketing.Order.Item item in order.items)
+            //    {
+            //        Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
+            //        p.ticketing = ticketing;
+            //        p.item = item;
+            //        if (member != null)
+            //            p.member = member;
+            //        P_People.Controls.Add(p);
+            //    }
+            //}
             return;
         }
 
@@ -351,45 +361,29 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             if (ticketing!=null)
             {
-                UserInfo ui = UserController.GetUserById(PortalId, UserId);
-                if (ui != null)
-                {
-                    PAdmin.Visible = ui.IsSuperUser || ui.IsInRole("Administrators");
-                    P_SuperAdmin.Visible = ui.IsSuperUser;
+             
 
-                    if (!string.IsNullOrEmpty(ticketing.readonlyrole))
-                    {
-                        PAdminExport.Visible = ui.IsInRole(ticketing.readonlyrole);
-                       
-                    }
-                    if (!string.IsNullOrEmpty(ticketing.adminrole))
-                    {
-                        PAdmin.Visible = ui.IsInRole(ticketing.adminrole) || PAdmin.Visible;
-                        PAdminExport.Visible = PAdmin.Visible || PAdminExport.Visible;
-                    }
-
-                    
-                }
-
+              
                 L_Name.Text = ticketing.name;
                 L_Description.Text = ticketing.description;
                 TXT_GUID.Value = ticketing.guid;
                 DateTime now = DateTime.Now;
                 if (CurrentStep == 0 && ticketing.eventstartdate.CompareTo(now) < 0 && ticketing.eventenddate.CompareTo(now) > 0 && ticketing.opened)
                 {
+                    InitOrder();
                     GoNextStep();
                 }
 
                 if (CurrentStep == 1)
                 {
-                    
+
 
                     List<Ticketing.Option> options = new List<Ticketing.Option>();
                     foreach (Ticketing.Option o in ticketing.options)
                         if (o.enabled)
                             options.Add(o);
 
-                    
+
 
                     // auto add coupon guid form querystring
                     if (!String.IsNullOrEmpty(Request["voucher"]))
@@ -398,13 +392,13 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                         if (v == null)
                         {
                             // voucher doesn't exist                           
-                            ShowMessage("warning", "Le coupon n'existe pas, veuillez contacter : " + ticketing.email);
+                            ShowMessage2("warning", "Le coupon n'existe pas, veuillez contacter : " + ticketing.email);
                         }
                         else
                         {
                             if (!String.IsNullOrEmpty(v.order_guid)) // already used
                             {
-                                ShowMessage("warning", "Le coupon a déjà été utilisé...");
+                                ShowMessage2("warning", "Le coupon a déjà été utilisé...");
                             }
                             else
                             {
@@ -416,7 +410,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                                 o.enabled = true;
                                 o.maxqty = v.qty;
                                 options.Add(o);
-                                
+
                             }
                         }
                     }
@@ -424,9 +418,9 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                     L_Basket.DataSource = options;
                     L_Basket.DataBind();
 
-                    if (Session[TXT_GUID.Value] != null)
+                    if (Session[ticketing.guid] != null)
                     {
-                        Ticketing.Order order = (Ticketing.Order)Session[TXT_GUID.Value];
+                        Ticketing.Order order = (Ticketing.Order)Session[ticketing.guid];
 
                         foreach (Ticketing.Order.Basket basket in order.basket)
                         {
@@ -460,8 +454,131 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         }
         UpdatePanels();
     }
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+
+        
+        if (ticketing!=null && Session[ticketing.guid] != null)
+        {
+            Ticketing.Order order = (Ticketing.Order)Session[ticketing.guid];
+
+            InitItems(order);
+        
+         
+        }
 
 
+    }
+    void InitAdminPanel()
+    {
+        UserInfo ui = UserController.GetUserById(PortalId, UserId);
+        if (ui != null)
+        {
+
+
+            PAdmin.Visible = (ui.IsSuperUser || ui.IsInRole("Administrators")) && CurrentStep<2;
+            P_SuperAdmin.Visible =(ui.IsSuperUser) && CurrentStep<2;
+            GRDCommandes.Visible=PAdmin.Visible;
+           
+            if (PAdmin.Visible)
+            {
+                var orders = GetOrders("", full: true);
+                GRDCommandes.Visible=orders.Tables[0].Rows.Count>0;
+                PCommandes.Visible=GRDCommandes.Visible;
+                DataTable table = new DataTable();
+                table.Columns.Add(new DataColumn("order_id"));
+                table.Columns.Add(new DataColumn("date"));
+                table.Columns.Add(new DataColumn("clubname"));
+                table.Columns.Add(new DataColumn("customerfirstname"));
+                table.Columns.Add(new DataColumn("customerlastname"));
+                table.Columns.Add(new DataColumn("customeremail"));
+                table.Columns.Add(new DataColumn("customerphone"));
+                table.Columns.Add(new DataColumn("customercomment"));
+                table.Columns.Add(new DataColumn("paid"));
+                table.Columns.Add(new DataColumn("name"));
+                table.Columns.Add(new DataColumn("firstname"));
+                table.Columns.Add(new DataColumn("lastname"));
+                table.Columns.Add(new DataColumn("email"));
+                foreach (Ticketing.Field f in ticketing.fields)
+                    table.Columns.Add(new DataColumn(f.label));
+
+                foreach (DataRow row in orders.Tables[0].Rows)
+                {
+
+                    Ticketing.Order o = (Ticketing.Order)Functions.Deserialize("" + row["description"], typeof(Ticketing.Order));
+                    foreach (Ticketing.Order.Item item in o.items)
+                    {
+                        DataRow r = table.NewRow();
+                        r["order_id"] = row["reference"];
+                        r["date"]=row["dt"];
+                        r["clubname"] = o.clubname;
+                        r["customerfirstname"] =  o.customerfirstname;
+                        r["customerlastname"] = o.customerlastname;
+                        r["customeremail"] = o.customeremail;
+                        r["customerphone"] = o.customerphone;
+                        r["customercomment"] = o.customercomment;
+                        r["paid"] = "" + row["paid"];
+                        r["name"] = item.name;  // option name
+
+                        r["firstname"] = item.firstname;
+                        r["lastname"] = item.lastname;
+                        r["email"] = item.email;
+                        List<Ticketing.Field> fields = new List<Ticketing.Field>();
+                        if (!("" + item.fields).Equals(""))
+                        {
+                            fields = (List<Ticketing.Field>)Functions.Deserialize(item.fields, typeof(List<Ticketing.Field>));
+                            foreach (Ticketing.Field f in fields)
+                            {
+                                try
+                                {
+                                    r[f.label] = f.value;
+                                }
+                                catch { }
+                            }
+
+                        }
+                        table.Rows.Add(r);
+
+                    }
+                }
+
+
+                GRDCommandes.DataSource= table;
+                GRDCommandes.DataBind();
+
+
+            }
+
+
+            if (!string.IsNullOrEmpty(ticketing.readonlyrole))
+            {
+                PAdminExport.Visible = ui.IsInRole(ticketing.readonlyrole) && CurrentStep<2;
+
+            }
+            if (!string.IsNullOrEmpty(ticketing.adminrole))
+            {
+                PAdmin.Visible = (ui.IsInRole(ticketing.adminrole) || PAdmin.Visible) && CurrentStep<2;
+                PAdminExport.Visible = (PAdmin.Visible || PAdminExport.Visible) && CurrentStep<2;
+            }
+
+        }
+    }
+    void InitItems(Ticketing.Order order)
+    {
+        Member member = DataMapping.GetMemberByUserID(UserId);
+
+        P_People.Controls.Clear();
+        foreach (Ticketing.Order.Item item in order.items)
+        {
+            Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
+            p.ticketing = ticketing;
+            p.item = item;
+            if (member != null)
+                p.member = member;
+            P_People.Controls.Add(p);
+        }
+    }
     private void InitClubList(string selectedvalue)
     {
         DL_ClubName.Items.Clear();
@@ -714,33 +831,80 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
     protected void BT_Book_Click(object sender, EventArgs e)
     {
+        Book();
+        
+        GoNextStep();
+    }
+
+    void InitOrder()
+    {
         Member member = AIS.DataMapping.GetMemberByUserID(UserInfo.UserID);
         Ticketing.Order order;
-        
-        if(Session[TXT_GUID.Value]!=null)
+
+        order = new Ticketing.Order();
+        if (member!=null)
         {
-            order = (Ticketing.Order)Session[TXT_GUID.Value];
+            order.customerfirstname = member.name;
+            order.customerlastname = member.surname;
+            order.customeremail = member.email;
+            order.customerphone = member.telephone;
+            order.clubname = member.club_name;
         }
-        else
-        {
-            order = new Ticketing.Order();
-
-
-           
-            if(member!=null)
-            {
-                order.customerfirstname = member.name;
-                order.customerlastname = member.surname;
-                order.customeremail = member.email;
-                order.customerphone = member.telephone;
-                order.clubname = member.club_name;
-            }
-        }
-
         order.basket.Clear();
         order.items.Clear();
 
+
         double total = 0;
+
+
+        order.amount = total;
+
+
+
+        Session[ticketing.guid] = order;
+        ViewState["order"] = ticketing.guid;
+    }
+  
+    void Book()
+    {
+        Member member = AIS.DataMapping.GetMemberByUserID(UserInfo.UserID);
+        Ticketing.Order order = (Ticketing.Order)Session[ticketing.guid];
+
+        if (member!=null)
+        {
+            order.customerfirstname = member.name;
+            order.customerlastname = member.surname;
+            order.customeremail = member.email;
+            order.customerphone = member.telephone;
+            order.clubname = member.club_name;
+        }
+
+        //}
+        order.basket.Clear();
+        order.items.Clear();
+
+
+        double total = 0;
+
+
+
+        foreach (Ticketing.Order.Basket basket in order.basket)
+        {
+            foreach (DataListItem i in L_Basket.Items)
+            {
+                HiddenField g = i.FindControl("H_GUID") as HiddenField;
+                if (g.Value == basket.guid)
+                {
+                    double n = basket.qty;
+                    DropDownList dl = i.FindControl("DL_NB") as DropDownList;
+                    dl.SelectedIndex = (int)n;
+                    break;
+                }
+            }
+        }
+
+        InitClubList("");
+        CheckBTBook();
 
         foreach (DataListItem it in L_Basket.Items)
         {
@@ -750,8 +914,8 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
             HiddenField guid = it.FindControl("H_GUID") as HiddenField;
 
             int nb = ddl.SelectedIndex;
-            if(nb>0)
-            { 
+            if (nb>0)
+            {
                 Ticketing.Order.Basket basket = new Ticketing.Order.Basket();
                 basket.guid = guid.Value;
                 basket.name = name.Text;
@@ -764,14 +928,14 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                 double.TryParse("" + price.Value, out p);
                 total += p * nb;
 
-                for (int i=1;i<=nb;i++)
-                { 
+                for (int i = 1; i<=nb; i++)
+                {
                     Ticketing.Order.Item item = new Ticketing.Order.Item();
                     item.guid = Guid.NewGuid().ToString();
                     item.option_guid = guid.Value;
                     item.name = name.Text + " - Personne n°"+i;
-                    if(i==1 && member!=null)
-                    { 
+                    if (i==1 && member!=null)
+                    {
                         item.firstname = member.name;
                         item.lastname = member.surname;
                         item.email = member.email;
@@ -779,7 +943,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                     order.items.Add(item);
                 }
 
-              
+
             }
         }
 
@@ -789,37 +953,24 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         TXT_Customerphone.Text = order.customerphone;
         TXT_Comment.Text = order.customercomment;
         InitClubList(order.clubname);
-      
+
 
         order.amount = total;
+        Session[ticketing.guid] = order;
+        ViewState["order"] = ticketing.guid;
 
-        P_People.Controls.Clear();
-
-        foreach(Ticketing.Order.Item item in order.items)
-        {
-            Ticketing_People p = (Ticketing_People)Page.LoadControl("~/DesktopModules/AIS/Ticketing/People.ascx");
-            p.ticketing = ticketing;
-            p.item = item;            
-            P_People.Controls.Add(p);
-        }
-        //L_People.DataSource = order.items;
-        //L_People.DataBind();
-
-        Session[TXT_GUID.Value] = order;
-        ViewState["order"] = TXT_GUID.Value;
-
-        GoNextStep();
+        InitItems(order);
     }
-  
+
     protected void BT_ValidatePeople_Click(object sender, EventArgs e)
     {
 
 
         UpdatePayButton();
 
-        if (Session[TXT_GUID.Value] != null)
+        if (Session[ticketing.guid] != null)
         {
-            Ticketing.Order order = (Ticketing.Order)Session[TXT_GUID.Value];
+            Ticketing.Order order = (Ticketing.Order)Session[ticketing.guid];
             order.customerfirstname = TXT_Customerfirstname.Text;
             order.customerlastname = TXT_Customerlastname.Text;
             order.customeremail = TXT_Customeremail.Text;
@@ -839,7 +990,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
             
 
-            Session[TXT_GUID.Value] = order;
+            Session[ticketing.guid] = order;
             GoNextStep();
 
             if(order.amount==0)
@@ -865,9 +1016,9 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
     }
     protected void Pay()
     {
-        if (Session[TXT_GUID.Value] != null)
+        if (Session[ticketing.guid] != null)
         {
-            Ticketing.Order order = (Ticketing.Order)Session[TXT_GUID.Value];
+            Ticketing.Order order = (Ticketing.Order)Session[ticketing.guid];
             order.reference = "";
             string orderguid = Guid.NewGuid().ToString();
             SqlConnection conn = new SqlConnection(Config.GetConnectionString());
@@ -877,7 +1028,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                 conn.Open();
                 trans = conn.BeginTransaction();
                 SqlCommand sql = new SqlCommand("INSERT INTO [ais_ticketing_orders] ([ticketing_guid],[guid],[dt],[ip],[firstname],[lastname],[email],[phone],[club],[description],[paid],[payment_detail],[payment_method]) VALUES (@ticketing_guid,@guid,@dt,@ip,@firstname,@lastname,@email,@phone,@club,@description,@paid,@payment_detail,@payment_method)", conn, trans);
-                sql.Parameters.AddWithValue("ticketing_guid", TXT_GUID.Value);
+                sql.Parameters.AddWithValue("ticketing_guid", ticketing.guid);
                 sql.Parameters.AddWithValue("guid", orderguid);
                 sql.Parameters.AddWithValue("dt", DateTime.Now);
                 sql.Parameters.AddWithValue("ip", "" + Request.ServerVariables["REMOTE_ADDR"]);
@@ -913,7 +1064,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
                         sql = new SqlCommand("UPDATE [ais_ticketing_vouchers] SET order_guid=@order_guid WHERE ticketing_guid=@ticketing_guid AND guid=@guid", conn, trans);
                         sql.Parameters.AddWithValue("order_guid", orderguid);
-                        sql.Parameters.AddWithValue("ticketing_guid", TXT_GUID.Value);
+                        sql.Parameters.AddWithValue("ticketing_guid", ticketing.guid);
                         sql.Parameters.AddWithValue("guid", b.guid);
                         sql.ExecuteNonQuery();
                     }
@@ -947,7 +1098,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
             catch (Exception ee)
             {
                 Functions.Error(ee);
-                ShowMessage("danger", "Une erreur est survenue, veuillez contacter : " + ticketing.email);
+                ShowMessage2("danger", "Une erreur est survenue, veuillez contacter : " + ticketing.email);
             }
             finally
             {
@@ -1267,21 +1418,45 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
                 
                 while (rs.Read())
                 {
+
+                    string detail1 = detail; 
+                    
+                    
                     Ticketing.Order.Item it = new Ticketing.Order.Item();
                     foreach(Ticketing.Order.Item ii in order.items)
                         if(ii.guid.Equals(""+rs["item_guid"]))
                         {
                             it = ii;
+                            if(!string.IsNullOrEmpty(ii.fields))
+                            {
+                              
+                                var fields = (List<Ticketing.Field>)Functions.Deserialize(ii.fields, typeof(List<Ticketing.Field>));
+                                string op = "";
+                                foreach(var o in fields)
+                                {
+                                    op+=o.label+" : "+o.value+", ";
+                                }
+                                if (op.EndsWith(", "))
+                                    op= op.Substring(0, op.Length-2);
+                                detail1=detail1.Replace("#fields#", op);
+
+                            }
+                            else
+                            {
+                                detail1=detail1.Replace("#fields#", "");
+                            }
                             break;
                         }
 
-                    string detail1 = detail;
+                    
                     detail1 = detail1.Replace("#item#",it.name);
                     detail1 = detail1.Replace("#firstname#", "" + it.firstname);
                     detail1 = detail1.Replace("#lastname#", "" + it.lastname);
                     detail1 = detail1.Replace("#email#", it.email);
-                    detail1 = detail1.Replace("#urlqr#", "/AIS/QR.ashx?s=" + Server.UrlEncode(URL + "?ticket_guid=" + it.guid) );                    
+                    //detail1 = detail1.Replace("#urlqr#", "/AIS/QR.ashx?s=" + Server.UrlEncode(URL + "?ticket_guid=" + it.guid) );                    
+                    detail1 = detail1.Replace("#urlqr#", "/AIS/QR.ashx?s=" + Server.UrlEncode(URL + "?ticket_guid=" + rs["order_guid"]));
                     sb.Append(detail1);
+                    
                 }
 
                 ticket = ticket.Substring(0, index) + sb.ToString() + ticket.Substring(index1 + 11);
@@ -1607,11 +1782,18 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             if(full)
-                sql = new SqlCommand("SELECT * FROM ais_ticketing_orders WHERE ticketing_guid=@guid AND paid=@paid", conn);
+                if(paid=="")
+                    sql = new SqlCommand("SELECT * FROM ais_ticketing_orders WHERE ticketing_guid=@guid", conn);
+                else
+                    sql = new SqlCommand("SELECT * FROM ais_ticketing_orders WHERE ticketing_guid=@guid AND paid=@paid", conn);
             else
-                sql = new SqlCommand("SELECT reference,dt,firstname,lastname,email,phone,club,(select x.Rec.query('./amount').value('.', 'float') as amount from description.nodes('/Order') as x(Rec)) as amount,(select x.Rec.query('./customercomment').value('.', 'varchar(max)') as comment from description.nodes('/Order') as x(Rec)) as comment, paid,payment_method,payment_transaction_id FROM ais_ticketing_orders WHERE ticketing_guid=@guid AND paid=@paid", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
-            sql.Parameters.AddWithValue("paid", paid);
+                if(paid=="")
+                    sql = new SqlCommand("SELECT reference,dt,firstname,lastname,email,phone,club,(select x.Rec.query('./amount').value('.', 'float') as amount from description.nodes('/Order') as x(Rec)) as amount,(select x.Rec.query('./customercomment').value('.', 'varchar(max)') as comment from description.nodes('/Order') as x(Rec)) as comment, paid,payment_method,payment_transaction_id FROM ais_ticketing_orders WHERE ticketing_guid=@guid", conn);
+                else
+                    sql = new SqlCommand("SELECT reference,dt,firstname,lastname,email,phone,club,(select x.Rec.query('./amount').value('.', 'float') as amount from description.nodes('/Order') as x(Rec)) as amount,(select x.Rec.query('./customercomment').value('.', 'varchar(max)') as comment from description.nodes('/Order') as x(Rec)) as comment, paid,payment_method,payment_transaction_id FROM ais_ticketing_orders WHERE ticketing_guid=@guid AND paid=@paid", conn);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
+            if(paid!="")
+                sql.Parameters.AddWithValue("paid", paid);
 
             SqlDataAdapter da = new SqlDataAdapter(sql);
             DataSet ds = new DataSet();
@@ -1640,7 +1822,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("SELECT * FROM ais_ticketing_orders WHERE ticketing_guid=@guid", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
 
             SqlDataAdapter da = new SqlDataAdapter(sql);
             DataSet ds = new DataSet();
@@ -1933,6 +2115,12 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         P_Message.CssClass = "alert alert-" + type;
         L_Message.Text = text;
     }
+    void ShowMessage2(string type, string text)
+    {
+        P_Message2.Visible = true;
+        P_Message2.CssClass = "alert alert-" + type;
+        L_Message2.Text = text;
+    }
 
 
     protected void BT_Emails_Click(object sender, EventArgs e)
@@ -1945,7 +2133,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("SELECT * FROM ais_ticketing_emails WHERE ticketing_guid=@guid", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
             SqlDataReader rd = sql.ExecuteReader();
 
             while (rd.Read())
@@ -1984,7 +2172,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("SELECT * FROM ais_ticketing_vouchers WHERE ticketing_guid=@guid", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
 
             SqlDataAdapter da = new SqlDataAdapter(sql);
             DataSet ds = new DataSet();
@@ -2017,7 +2205,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("SELECT * FROM ais_paypal_ipn", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
 
             DataSet ds = new DataSet();
             SqlDataAdapter da = new SqlDataAdapter(sql);
@@ -2111,9 +2299,14 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("SELECT *,(select x.Rec.query('./amount').value('.', 'float') as amount from description.nodes('/Order') as x(Rec)) as amount FROM ais_ticketing_orders WHERE ticketing_guid=@guid AND reference=@reference", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
             sql.Parameters.AddWithValue("reference", TXT_Reference.Text.Trim());
             SqlDataReader rd = sql.ExecuteReader();
+            BT_Ticket.NavigateUrl="";
+            BT_Ticket.Visible=false;
+            BT_Recu.NavigateUrl="";
+            BT_Recu.Visible=false;
+
             if (rd.Read())
             {
                 H_Order_Reference.Value = "" + rd["reference"];
@@ -2149,6 +2342,11 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
 
                 L_Order_Detail.Text = sb.ToString();
                 P_Order.Visible = true;
+
+                BT_Ticket.NavigateUrl=Request.RawUrl+ "?order_guid="+rd["guid"];
+                BT_Ticket.Visible=(""+rd["paid"]=="YES");
+                BT_Recu.NavigateUrl=Request.RawUrl+"?receipt="+rd["guid"];
+                BT_Recu.Visible=(""+rd["paid"]=="YES");
             }
             rd.Close();
 
@@ -2179,6 +2377,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         UpdateOrderPayment(H_Order_Reference.Value, RB_Order_Payment.SelectedValue, "", TXT_Order_Transaction_ID.Text);
 
         ShowOrderDetail();
+        InitAdminPanel();
      }
 
     
@@ -2206,7 +2405,7 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         {
             conn.Open();
             sql = new SqlCommand("UPDATE ais_ticketing_orders SET ticketing_guid = ticketing_guid++'_' WHERE ticketing_guid=@guid AND reference=@reference", conn);
-            sql.Parameters.AddWithValue("guid", TXT_GUID.Value);
+            sql.Parameters.AddWithValue("guid", ticketing.guid);
             sql.Parameters.AddWithValue("reference", TXT_Reference.Text.Trim());
             if(sql.ExecuteNonQuery()>0)
                 ShowMessage("success", "Commande "+ TXT_Reference.Text.Trim()+" effacée");
@@ -2217,10 +2416,12 @@ public partial class DesktopModules_AIS_Ticketing_Control : PortalModuleBase
         }
 
         P_Order.Visible = false;
+
+        InitAdminPanel();
     }
 
 
-
+   
 
 
    

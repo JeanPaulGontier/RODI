@@ -12,9 +12,20 @@ namespace AIS
     public partial class Ticketing_People : System.Web.UI.UserControl
     {
         
-        public Ticketing.Order.Item item { get { return GetItem();  } set { ViewState["item"] = value;Init(); } }
+        public Ticketing.Order.Item item { 
+            get { 
+                return GetItem();  
+            } 
+            set {
+                ViewState["item"] = value;
+                Init(); 
+            } 
+        }
+        private string guid { get; set; }
         public Ticketing ticketing { get; set; }
         public Member member { get; set; }
+
+     
 
         protected void Page_Load(object sender, EventArgs e)
         {

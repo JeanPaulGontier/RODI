@@ -145,7 +145,7 @@ public partial class DesktopModules_AIS_Ticketing_Settings : ModuleSettingsBase
         ticketing.eventstartdate = DateTime.Now;
         ticketing.eventenddate = DateTime.Now;
         string url = Functions.GetCurrentUrlWithoutParms();
-        url = url.IndexOf("/ctl/module") > -1 ? url.Substring(0, url.IndexOf("/ctl/module")) : url;
+        url = url.ToLower().IndexOf("/ctl/module") > -1 ? url.Substring(0, url.ToLower().IndexOf("/ctl/module")) : url;
         ticketing.receipturl = url;
         ticketing.ticketurl = url;
         ticketing.eventurl = url;

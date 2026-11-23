@@ -4,18 +4,18 @@
 <script src="https://js.stripe.com/v3/"></script>
 
 <div id="billetterie"></div>
-<asp:UpdatePanel runat="server" ID="UpdatePanel1">
-    <ContentTemplate>
-        <asp:Panel runat="server" ID="P_Message" Visible="false"><asp:Label runat="server" ID="L_Message"></asp:Label></asp:Panel>
+<%--<asp:UpdatePanel runat="server" ID="UpdatePanel1">
+    <ContentTemplate>--%>
+
         <asp:Label runat="server" ID="L_Name" Visible="false"></asp:Label>
         <asp:Label runat="server" ID="L_Description" Visible="false"></asp:Label>
         <asp:HiddenField runat="server" ID="H_Step" />
         <asp:HiddenField runat="server" ID="TXT_GUID" />
-        <asp:Panel runat="server" ID="PAdminExport" Visible="false">
+        <asp:Panel runat="server" ID="PAdminExport" Visible="false" >
             <asp:Button runat="server" ID="BT_Export_Attendees" OnClick="BT_Export_Attendees_Click" Text="Exporter la liste des participants" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Reservations"  OnClick="BT_Export_Reservations_Click" Text="Exporter la liste des réservations" CssClass="btn btn-default" />
         </asp:Panel>
-        <asp:Panel runat="server" ID="PAdmin" Visible="false">
+        <asp:Panel runat="server" ID="PAdmin" Visible="false" >
             <asp:Button runat="server" ID="BT_Export_Orders_Paid" OnClick="BT_Export_Orders_Paid_Click" Text="Exporter les commandes Payées" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Orders_Unpaid" OnClick="BT_Export_Orders_Unpaid_Click" Text="Exporter les commandes non Payées" CssClass="btn btn-default" />
             <asp:Button runat="server" ID="BT_Export_Orders_Refunded" OnClick="BT_Export_Orders_Refunded_Click" Text="Exporter les commandes remboursées" CssClass="btn btn-default" />
@@ -23,15 +23,21 @@
             <div><h2>Gestion des commandes</h2></div>
             <div>Référence commande : <asp:TextBox runat="server" ID="TXT_Reference" ></asp:TextBox></div>
             <div><asp:Button runat="server" Text="Recherche par référence" ID="BT_SearchByRef" OnClick="BT_SearchByRef_Click" CssClass="btn btn-default" /></div>
-            <asp:Panel runat="server" ID="P_Order" Visible="false">
+            <asp:Panel runat="server" ID="P_Order" Visible="false" CssClass="m-2">
                 <asp:HiddenField ID="H_Order_Reference" runat="server" />
                 <asp:Literal runat="server" ID="L_Order_Detail">
 
                 </asp:Literal>
                 <div>N° Transaction, N° Chèque ou Date de virement : <asp:TextBox runat="server" ID="TXT_Order_Transaction_ID"></asp:TextBox></div>
                 <div><asp:RadioButtonList runat="server" ID="RB_Order_Payment"><asp:ListItem Text="Oui" Value="YES"></asp:ListItem><asp:ListItem Text="Non" Value="NO"></asp:ListItem><asp:ListItem Text="Rembourssée" Value="REFUNDED"></asp:ListItem></asp:RadioButtonList></div>
-                <div><asp:Button runat="server" ID="BT_ManualPayment" Text="Valider le paiement manuellement" OnClick="BT_ManualPayment_Click" CssClass="btn btn-default" /><div class="text-right"><asp:Button runat="server" ID="BT_ManualDelete" Text="Effacer la commande" OnClick="BT_ManualDelete_Click" CssClass="btn btn-default" OnClientClick="return confirm('Effacer cette commande ?')" /></div></div>
-            </asp:Panel>
+                <div><asp:Button runat="server" ID="BT_ManualPayment" Text="Valider le paiement manuellement" OnClick="BT_ManualPayment_Click" CssClass="btn btn-default" />&nbsp;<asp:HyperLink Target="_blank" runat="server" ID="BT_Ticket" Text="Voir le ticket" CssClass="btn btn-link" />&nbsp;<asp:HyperLink Target="_blank" runat="server" ID="BT_Recu" Text="Voir le reçu" CssClass="btn btn-link" />
+                <div class="text-right"><asp:Button runat="server" ID="BT_ManualDelete" Text="Effacer la commande" OnClick="BT_ManualDelete_Click" CssClass="btn btn-default" OnClientClick="return confirm('Effacer cette commande ?')" /></div></div>
+                </asp:Panel>
+                  <asp:Panel runat="server" ID="P_Message" Visible="false"><asp:Label runat="server" ID="L_Message"></asp:Label></asp:Panel>
+                <asp:Panel runat="server" ID="PCommandes" style="overflow:scroll;max-height:400px;width:100%">
+                    <asp:DataGrid runat="server" Visible="false" ID="GRDCommandes" AutoGenerateColumns="true" CssClass="table table-striped" Font-Size="XX-Small">
+                    </asp:DataGrid>
+                </asp:Panel>
             <asp:Panel runat="server" ID="P_SuperAdmin" Visible="false">
                 <asp:Button runat="server" ID="BT_PaypalIPNCheck" Visible="false" OnClick="BT_PaypalIPNCheck_Click" Text="Rapprochement Paypal" CssClass="btn btn-default" />
                 <asp:Button runat="server" ID="BT_Emails" Visible="false" Text="Envoi des emails invitation"  OnClick="BT_Emails_Click" CssClass="btn btn-default"/>
@@ -40,8 +46,9 @@
             <div class="pe-spacer size30"></div>
         </asp:Panel>
         <asp:Panel runat="server" ID="P0">
-            <div class="pe-spacer size30">La billetterie est fermée</div>
+                <div class="pe-spacer size30">La billetterie est fermée</div>
         </asp:Panel>
+        <asp:Panel runat="server" ID="P_Message2" Visible="false"><asp:Label runat="server" ID="L_Message2"></asp:Label></asp:Panel>
         <asp:Panel runat="server" ID="P1">
             <div class="small btn-group btn-group-justified">
                 <span class="btn btn-info">1. Panier</span>                       
@@ -263,6 +270,6 @@
             <asp:Literal runat="server" ID="LT_STRIPE" Visible="false"></asp:Literal>
         </asp:Panel>
        
-        </ContentTemplate>
-</asp:UpdatePanel>
+<%--        </ContentTemplate>
+</asp:UpdatePanel>--%>
 <div><em><small>Billetterie propulsée par <a href="https://rodi-platform.org">RODI-Platform.org</a></small></em></div>

@@ -3,7 +3,6 @@
 - nouveau : possibilité de créer des listes de contacts externes (optin & optout) pour les mailings et notifications de réunions (exemple : abonnés newsletter du clubs, prospects du clubs, etc.) avec utilisation de plateforme de mass mailing du club (brevo, mailjet, mail personnel du club)
 - nouveau type de bloc permettant d'épingler une nouvelle district ou club
 - fonctionnalité permettant de récupérer les informations du club venant de my rotary à la demande (lieu de réunion, siège social, ...) (D1680 D1640)
-- correction pb donnée fiche information club (D1640)
 - rendre accessible les paramètres cachés des réunions (limite nb inscrits, visibilité, etc.) (D1680)
 - ajout d'informations complémentaires sur les statistiques clubs (D1760)
 - mettre en place une fonctionnalité d'autologin entre site club avec domaine et espace membre district
@@ -19,6 +18,14 @@
 - correction export club n'ayant pas déclaré de bureau pour n'avoir que les fonctions rotariennes (D1780)
 - ajouter une fonctionnalité qui permet de revenir en administrateur dès qu'on a utilisé la fonction impersonate (D1680)
 - donner la possibilité à un club satellite indépendant de définir son commité (D1640)
+
+###### 23/11/2026
+- modification sur la billetterie de district
+	- on voit maintenant la liste des commandes passées sans avoir besoin d'exporter
+	- lorsqu'on recherche une commande et qu'elle est payée on peut voir le recu et les tickets 
+	- le bug d'url quand on crée une nouvelle billetterie dans les paramètres est corrigé
+	- le bug de perte des options dans certains cas est corrigé
+	- dans les tickets on voit maintenant les champs supplémentaires choisi (attention il faut modifier de gabarit ticket.html en ajoutant #fields#)
 
 ###### 29/10/2026
 - ajout de la nouvelle fonction rotarienne : Conseiller Unité de développement communautaire de club
