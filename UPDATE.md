@@ -26,6 +26,8 @@
 	- le bug d'url quand on crée une nouvelle billetterie dans les paramètres est corrigé
 	- le bug de perte des options dans certains cas est corrigé
 	- dans les tickets on voit maintenant les champs supplémentaires choisi (attention il faut modifier de gabarit ticket.html en ajoutant #fields#)
+	- le qr code du ticket renvoie vers la page ticket sur le site
+- dans le module agenda public on peut maintenant définir les paramètres de catégories à afficher et à exclure
 
 ###### 29/10/2026
 - ajout de la nouvelle fonction rotarienne : Conseiller Unité de développement communautaire de club

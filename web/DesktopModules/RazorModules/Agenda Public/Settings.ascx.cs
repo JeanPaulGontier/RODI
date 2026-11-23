@@ -80,6 +80,8 @@ public partial class AgendaPublic_Settings : ModuleSettingsBase
 
 
         url.Text = ""+Settings["url"];
+        Inclues.Text =""+Settings["inclues"];
+        Exclues.Text =""+Settings["exclues"];
 
     }
     public override void UpdateSettings()
@@ -88,6 +90,8 @@ public partial class AgendaPublic_Settings : ModuleSettingsBase
 
         var objModules = new ModuleController();
         objModules.UpdateModuleSetting(ModuleId, "url", ""+url.Text);
+        objModules.UpdateModuleSetting(ModuleId, "inclues", ""+Inclues.Text);
+        objModules.UpdateModuleSetting(ModuleId, "exclues", ""+Exclues.Text);
 
     }
 }
