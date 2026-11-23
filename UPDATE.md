@@ -20,14 +20,14 @@
 - donner la possibilité à un club satellite indépendant de définir son commité (D1640)
 
 ###### 23/11/2026
-- modification sur la billetterie de district
+- modification sur la billetterie de district (D1790 & D1700)
 	- on voit maintenant la liste des commandes passées sans avoir besoin d'exporter
 	- lorsqu'on recherche une commande et qu'elle est payée on peut voir le recu et les tickets 
 	- le bug d'url quand on crée une nouvelle billetterie dans les paramètres est corrigé
 	- le bug de perte des options dans certains cas est corrigé
 	- dans les tickets on voit maintenant les champs supplémentaires choisi (attention il faut modifier de gabarit ticket.html en ajoutant #fields#)
 	- le qr code du ticket renvoie vers la page ticket sur le site
-- dans le module agenda public on peut maintenant définir les paramètres de catégories à afficher et à exclure
+- dans le module agenda public on peut maintenant définir les paramètres de catégories à afficher et à exclure (D1760)
 
 ###### 29/10/2026
 - ajout de la nouvelle fonction rotarienne : Conseiller Unité de développement communautaire de club
